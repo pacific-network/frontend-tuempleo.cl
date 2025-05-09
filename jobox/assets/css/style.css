@@ -1093,6 +1093,13 @@ multi level dropdown menu
   visibility: hidden;
 }
 
+.custom-line {
+  height: 5px;
+  background-color: #ccc; /* o cualquier color que quieras */
+  border: none;
+  margin: 20px 0;
+}
+
 .navbar .nav-item .dropdown-submenu:hover .dropdown-menu {
   top: 0;
   opacity: 1;

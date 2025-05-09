@@ -10,7 +10,7 @@
     <meta name="keywords" content="">
 
     <!-- title -->
-    <title>Jobox - Job Board And Hiring HTML5 Template</title>
+    <title>Editar Perfil</title>
 
     <!-- favicon -->
     <link rel="icon" type="image/x-icon" href="assets/img/logo/favicon.png">
@@ -42,65 +42,8 @@
 
 
     <!-- header area -->
-    <header class="header">
-        <div class="main-navigation">
-            <nav class="navbar navbar-expand-lg">
-                <div class="container">
-                    <a class="navbar-brand" href="index.html">
-                        <img src="assets/img/logo/logo.png" alt="logo">
-                    </a>
-                    <div class="mobile-menu-right">
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#main_nav" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-btn-icon"><i class="far fa-bars"></i></span>
-                        </button>
-                    </div>
-                    <div class="collapse navbar-collapse" id="main_nav">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="index.html">Inicio</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="employer-dashboard.html">Empresa</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" href="candidate-dashboard.html">Candidatos</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Nosotros</a>
-                                <ul class="dropdown-menu fade-down">
-                                    <li><a class="dropdown-item" href="about.html">Sobre Nosotros</a></li>
-                                    <li><a class="dropdown-item" href="team.html">Nuestro Equipo</a></li>
-                                    <li><a class="dropdown-item" href="faq.html">Preguntas Frecuentes</a></li>
-                                    <li class="dropdown-submenu">
-                                        <a class="dropdown-item dropdown-toggle" href="#">Verificación</a>
-                                        <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="login.html">Ingresar</a></li>
-                                            <li><a class="dropdown-item" href="register.html">Registrarse</a></li>
-                                            <li><a class="dropdown-item" href="forgot-password.html">Olvidé Contraseña</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li><a class="dropdown-item" href="terms.html">Terminos de Servicio</a></li>
-                                    <li><a class="dropdown-item" href="privacy.html">Política de Privacidad</a></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item"><a class="nav-link" href="contact.html">Contáctanos</a></li>
-                        </ul>
-                        <div class="header-nav-right">
-                            <div class="header-btn">
-                                <a href="login.html" class="theme-btn theme-btn2"><span class="far fa-sign-in"></span> Ingresar </a>
-                                <a href="#" class="theme-btn"><span class="far fa-suitcase"></span> Publicar Trabajo</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </header>
+    <div id="header-placeholder"></div>
     <!-- header area end -->
-
-
 
     <main class="main">
 
@@ -142,12 +85,11 @@
                             <ul class="user-profile-sidebar-list">
                                 <li><a href="candidate-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a></li>
                                 <li><a href="candidate-profile.html"><i class="far fa-user-tie"></i> Mi Perfil</a></li>
-                                <li><a href="candidate-resume.html"><i class="far fa-file-lines"></i> Mi Curriculum</a></li>
                                 <li><a href="candidate-applied-job.html"><i class="far fa-briefcase"></i> Trabajos Postulados</a></li>
                                 <li><a href="candidate-cv-manager.html"><i class="far fa-file-zipper"></i> CV Manager</a></li>
                                 <li><a href="candidate-saved-job.html"><i class="far fa-bookmark"></i> Trabajos Guardados</a></li>
                                 <li><a href="candidate-message.html"><i class="far fa-envelope"></i> Mensajes <span class="badge">02</span></a></li>
-                                <li><a class="active" href="candidate-settings.html"><i class="far fa-cog"></i> Configuración</a></li>
+                                <li><a class="active" href="candidate-settings.html"><i class="far fa-cog"></i> Editar Perfil</a></li>
                                 <li><a href="#"><i class="far fa-trash-can"></i> Eliminar Perfil</a></li>
                                 <li><a href="#"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
                             </ul>
@@ -157,11 +99,11 @@
                         <div class="user-profile-wrapper">
                             <div class="col-lg-12 mb-4">
                                 <div class="user-profile-card">
-                                    <h4 class="user-profile-card-title">Actualizar información del Perfil</h4>
+                                    <h3 class="user-profile-card-title">Actualizar información del Perfil</h3>
                                     <div class="profile-form">
                                         <form action="#">
                                             <div class="row">
-                                                <h6 class="mb-3">Información básica</h6>
+                                                <h4 class="mb-3">Información básica</h4>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Nombre Completo</label>
@@ -172,22 +114,24 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Correo</label>
-                                                        <input type="text" class="form-control"
-                                                            value="bethapunto@gmail.com" placeholder="Correo">
+                                                        <input type="text" class="form-control" value="bethapunto@gmail.com" placeholder="Correo" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Número de Contacto</label>
-                                                        <input type="text" class="form-control"
-                                                            value="+56 9 4667 8783" placeholder="Número de Contacto">
+                                                        <div class="input-group">
+                                                            <select class="form-control" style="width: 100px;" id="codigo_pais">
+                                                                <option disabled selected></option>
+                                                            </select>
+                                                            <input type="text" class="form-control" placeholder="9 4667 8783" id="numero_telefono">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-2">
                                                     <div class="form-group">
                                                         <label>Edad</label>
-                                                        <input type="text" class="form-control"
-                                                            value="22" placeholder="Edad">
+                                                        <input type="text" class="form-control" value="22" placeholder="Edad" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -203,7 +147,7 @@
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label>Fecha de Nacimiento</label>
-                                                        <input class="form-control" value="23-09-2002">
+                                                        <input class="form-control" value="23-09-2002" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -227,7 +171,7 @@
                                                     </div>
                                                 </div>
                                                 <hr size="3px" color="black"/>
-                                                <h6 class="mb-3">Educación</h6>
+                                                <h4 class="mb-3">Educación</h4>
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
@@ -259,7 +203,12 @@
                                                             <input class="form-control" value="2024">
                                                         </div>
                                                     </div>
-                                                    <hr size="1px" color="black"/>
+                                                    <div class="col-md-12 text-end mb-3">
+                                                        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn">
+                                                            <span class="far fa-trash-alt"></span> Eliminar
+                                                        </button>
+                                                    </div>
+                                                    <hr style="opacity: 1; border: 0; border-top: 1px solid #000; margin: 20px 0;">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="todas_carreras_chile">Título</label>
@@ -284,6 +233,11 @@
                                                             <input class="form-control" value="En Curso">
                                                         </div>
                                                     </div>
+                                                    <div class="col-md-12 text-end mb-3">
+                                                        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn">
+                                                            <span class="far fa-trash-alt"></span> Eliminar
+                                                        </button>
+                                                    </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <button type="button" class="theme-btn theme-btn2"><span class="far fa-plus"></span> Añadir más</button>
@@ -291,12 +245,86 @@
                                                     </div>
                                                 </div>
                                                 <hr size="3px" color="black"/>
-                                                <h6 class="mb-3">Idiomas</h6>
-                                                <div class="row"> 
+                                                <h4 class="mb-3">Idiomas</h4>
+                                                <div class="row">
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label>Idioma</label>
-                                                            <input type="text" class="form-control" value="Inglés" placeholder="Ingrese Idioma">
+                                                            <input type="text" class="form-control" value="Español" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label>Nivel escrito</label>
+                                                            <select class="select">
+                                                                <option value="">Seleccione Estado</option>
+                                                                <option value="1">Básico</option>
+                                                                <option value="2">Intermedio</option>
+                                                                <option value="3">Avanzado</option>
+                                                                <option value="4">Experto</option>
+                                                                <option selected="5">Nativo</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label>Nivel oral</label>
+                                                            <select class="select">
+                                                                <option value="">Seleccione Estado</option>
+                                                                <option value="1">Básico</option>
+                                                                <option value="2">Intermedio</option>
+                                                                <option value="3">Avanzado</option>
+                                                                <option value="4">Experto</option>
+                                                                <option selected value="5">Nativo</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 text-end mb-3">
+                                                        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn">
+                                                            <span class="far fa-trash-alt"></span> Eliminar
+                                                        </button>
+                                                    </div> 
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label>Idioma</label>
+                                                            <input type="text" class="form-control" value="Inglés" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label>Nivel escrito</label>
+                                                            <select class="select">
+                                                                <option value="">Seleccione Estado</option>
+                                                                <option value="1">Básico</option>
+                                                                <option selected value="2">Intermedio</option>
+                                                                <option value="3">Avanzado</option>
+                                                                <option value="4">Experto</option>
+                                                                <option value="5">Nativo</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label>Nivel oral</label>
+                                                            <select class="select">
+                                                                <option value="">Seleccione Estado</option>
+                                                                <option value="1">Básico</option>
+                                                                <option selected value="2">Intermedio</option>
+                                                                <option value="3">Avanzado</option>
+                                                                <option value="4">Experto</option>
+                                                                <option value="5">Nativo</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 text-end mb-3">
+                                                        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn">
+                                                            <span class="far fa-trash-alt"></span> Eliminar
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label>Idioma</label>
+                                                            <input type="text" class="form-control" value="Alemán" readonly>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
@@ -323,35 +351,10 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Idioma</label>
-                                                            <input type="text" class="form-control" value="Alemán" placeholder="Ingrese Idioma">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Nivel escrito</label>
-                                                            <select class="select">
-                                                                <option value="">Seleccione Estado</option>
-                                                                <option value="1">Básico</option>
-                                                                <option selected value="2">Intermedio</option>
-                                                                <option value="3">Avanzado</option>
-                                                                <option value="4">Experto</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Nivel oral</label>
-                                                            <select class="select">
-                                                                <option value="">Seleccione Estado</option>
-                                                                <option value="1">Básico</option>
-                                                                <option selected value="2">Intermedio</option>
-                                                                <option value="3">Avanzado</option>
-                                                                <option value="4">Experto</option>
-                                                            </select>
-                                                        </div>
+                                                    <div class="col-md-12 text-end mb-3">
+                                                        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn">
+                                                            <span class="far fa-trash-alt"></span> Eliminar
+                                                        </button>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
@@ -360,7 +363,8 @@
                                                     </div>
                                                 </div>
                                                 <hr size="3px" color="black"/>
-                                                <h6 class="row">Experiencias</h6>
+                                                <h4 class="row">Experiencias</h4>
+                                                <br>
                                                 <br> 
                                                 <div class="row">
                                                     <div class="col-md-6">
@@ -411,13 +415,76 @@
                                                             <textarea class="form-control" cols="30" rows="5" placeholder="Analista de Soporte TI, preparación de equipos de usuarios y de planta, ingreso al dominio de empresa e instalación de software requeridos, administración de usuarios en Active directory/azure/SAP, asignación de licencias, mantenimiento de hardware de equipos e impresoras, soluciones rápidas y eficientes. Uso de Intune en preparación de equipos, preparación de equipos mobiles al dominio de empresa, uso de tomas remotas mediante anydesk, instalación de impresoras a usuarios, creación de instructivos, documentación de procesos"></textarea>
                                                         </div>
                                                     </div>
+                                                    <div class="col-md-12 text-end mb-3">
+                                                        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn">
+                                                            <span class="far fa-trash-alt"></span> Eliminar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <hr style="opacity: 1; border: 0; border-top: 1px solid #000; margin: 20px 0;">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Empresa</label>
+                                                            <input type="text" class="form-control" placeholder="Porsche Chile Spa">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Cargo</label>
+                                                            <input type="text" class="form-control" placeholder="Analista de Soporte IT ">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Actividad Empresa</label>
+                                                            <input type="text" class="form-control" placeholder="Holding">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Área del Cargo</label>
+                                                            <input type="text" class="form-control" placeholder="Tecnologias, Sistemas y Telecomunicaciones">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label>Nivel de Experiencia</label>
+                                                            <input type="text" class="form-control" placeholder="Junior">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label>Mes - Año Inicio</label>
+                                                            <input type="Text" class="form-control" placeholder="Abril - 2024">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label>Mes - Año Término</label>
+                                                            <input type="Text" class="form-control" placeholder="Noviembre - 2024">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>Descripción</label>
+                                                            <textarea class="form-control" cols="30" rows="5" placeholder="Analista de Soporte TI, preparación de equipos de usuarios y de planta, ingreso al dominio de empresa e instalación de software requeridos, administración de usuarios en Active directory/azure/SAP, asignación de licencias, mantenimiento de hardware de equipos e impresoras, soluciones rápidas y eficientes. Uso de Intune en preparación de equipos, preparación de equipos mobiles al dominio de empresa, uso de tomas remotas mediante anydesk, instalación de impresoras a usuarios, creación de instructivos, documentación de procesos"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 text-end mb-3">
+                                                        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn">
+                                                            <span class="far fa-trash-alt"></span> Eliminar
+                                                        </button>
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <button type="button" class="theme-btn theme-btn2"><span class="far fa-plus"></span> Añadir más</button>
                                                     </div>
                                                 </div>
+                                                <br>
                                                 <h4 class="col-md-5">Preferencias</h4>
+                                                <br>
                                                 <br>
                                                 <div class="row">
                                                     <div class="col-md-4">
@@ -500,8 +567,22 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button type="button" class="theme-btn mt-4">Actualizar información <i
-                                                    class="far fa-user"></i></button>
+                                            <!-- Botón original -->
+                                            <button type="button" class="theme-btn mt-4" onclick="mostrarConfirmacion()">
+                                                Actualizar información 
+                                                <i class="far fa-user"></i>
+                                            </button>
+
+                                            <!-- Contenedor de confirmación (oculto por defecto) -->
+                                            <div id="confirmacion-box" style="display: none; margin-top: 15px;">
+                                                <p>¿Estás seguro de que quieres actualizar la información?</p>
+                                                <button class="btn btn-success" onclick="confirmarActualizacion()">
+                                                    <i class="fas fa-check"></i> Confirmar
+                                                </button>
+                                                <button class="btn btn-danger" onclick="cancelarActualizacion()">
+                                                    <i class="fas fa-times"></i> Cancelar
+                                                </button>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -547,113 +628,7 @@
 
 
     <!-- footer area -->
-    <footer class="footer-area">
-        <div class="footer-widget">
-            <div class="container">
-                <div class="row footer-widget-wrapper pt-100 pb-70">
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                        <div class="footer-widget-box about-us">
-                            <a href="#" class="footer-logo">
-                                <img src="assets/img/logo/logo.png" alt="">
-                            </a>
-                            <p class="mb-4">
-                                Únete a nuestra comunidad y accede a cientos de ofertas laborales cada día. 
-                                Crece profesionalmente y conecta con empresas que valoran tu talento. 
-                                ¡Tu próximo empleo te está esperando!
-                            </p>
-                            <ul class="footer-contact">
-                                <li><a href="tel:+56993297091"><i class="far fa-phone"></i>+56 9 9329 7091</a></li>
-                                <li><i class="far fa-map-marker-alt"></i>Av. del Valle Su 662, Huechuraba</li>
-                                <li><a href="mailto:jjorquera@pacificnetwork.cl"><i
-                                            class="far fa-envelope"></i>jjorquera@pacificnetwork.cl</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 col-xl-2">
-                        <div class="footer-widget-box list">
-                            <h4 class="footer-widget-title">Compañia</h4>
-                            <ul class="footer-list">
-                                <li><a href="about.html">Sobre Nosotros</a></li>
-                                <li><a href="pricing.html">Planes y Precios</a></li>
-                                <li><a href="team.html">Nuestro Equipo</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 col-xl-2">
-                        <div class="footer-widget-box list">
-                            <h4 class="footer-widget-title">Enlaces rápidos</h4>
-                            <ul class="footer-list">
-                                <li><a href="job-list-2.html">Encuentra tu Trabajo</a></li>
-                                <li><a href="employer-dashboard.html">Empresa</a></li>
-                                <li><a href="candidate-dashboard.html">Candidatos</a></li>
-                                <li><a href="employer-post-job.html">Publica un Aviso</a></li>
-                                <li><a href="login.html">Ingresar</a></li>
-                                <li><a href="register.html">Registrarse</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 col-xl-2">
-                        <div class="footer-widget-box list">
-                            <h4 class="footer-widget-title">Soporte</h4>
-                            <ul class="footer-list">
-                                <li><a href="contact.html">Contáctanos</a></li>
-                                <li><a href="faq.html">Preguntas Frecuentas</a></li>
-                                <li><a href="privacy.html">Política de Privacidad</a></li>
-                                <li><a href="terms.html">Términos de Servicio</a></li>
-                                <li><a href="#">Chat en línea</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                        <div class="footer-widget-box list">
-                            <h4 class="footer-widget-title">Noticias</h4>
-                            <div class="footer-newsletter">
-                                <p>Subscribete para mantener al día con nuestras actualizaciones y noticias</p>
-                                <div class="subscribe-form">
-                                    <form action="#">
-                                        <div class="form-group">
-                                            <div class="form-group-icon">
-                                                <i class="fe-mail"></i>
-                                                <input type="email" class="form-control" placeholder="Ingresa Email">
-                                                <button class="theme-btn" type="submit"><span
-                                                        class="fe-send"></span></button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="footer-download">
-                                <h5>Descarga</h5>
-                                <div class="footer-download-content">
-                                    <a href="#"><img src="assets/img/download/google-play.png" alt=""></a>
-                                    <a href="#"><img src="assets/img/download/app-store.png" alt=""></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="copyright">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 align-self-center">
-                        <p class="copyright-text">
-                            &copy; Copyright <span id="date"></span> <a href="index.html"> tuempleo.cl </a> Todos los derechos reservados.
-                        </p>
-                    </div>
-                    <div class="col-md-6 align-self-center">
-                        <ul class="footer-social">
-                            <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                            <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
-                            <li><a href="#"><i class="fab fa-youtube"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <div id="footer-placeholder"></div>
     <!-- footer area end -->
 
 
@@ -679,6 +654,69 @@
     <script src="assets/js/wow.min.js"></script>
     <script src="assets/js/nice-select.min.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/loadHeaderFooterSI.js"></script>
+    <script>
+        async function cargarCodigosDePais() {
+          try {
+            const response = await fetch('https://restcountries.com/v3.1/all');
+            const data = await response.json();
+        
+            const select = document.getElementById('codigo_pais');
+            select.innerHTML = ''; // limpiar "Cargando..."
+        
+            // Filtrar solo América y que tengan prefijo telefónico
+            const paises = data
+              .filter(p => p.region === 'Americas' && p.idd && p.idd.root)
+              .map(p => {
+                const root = p.idd.root || '';
+                const suffixes = p.idd.suffixes || [''];
+                return suffixes.map(suffix => ({
+                  nombre: p.name.common,
+                  codigo: root + suffix,
+                  bandera: p.flag,
+                  iso2: p.cca2
+                }));
+              })
+              .flat();
+          
+            paises.sort((a, b) => a.nombre.localeCompare(b.nombre));
+          
+            for (const pais of paises) {
+              const option = document.createElement('option');
+              option.value = pais.codigo;
+              option.textContent = `${pais.bandera} ${pais.codigo} (${pais.nombre})`;
+            
+              if (pais.nombre === 'Chile') {
+                option.selected = true;
+              }
+          
+              select.appendChild(option);
+            }
+        
+          } catch (error) {
+            console.error('Error al cargar países:', error);
+            const select = document.getElementById('codigo_pais');
+            select.innerHTML = '<option disabled>Error al cargar países</option>';
+          }
+        }
+    
+        cargarCodigosDePais();
+    </script>
+    <script>
+        function mostrarConfirmacion() {
+            document.getElementById("confirmacion-box").style.display = "block";
+        }
+
+        function confirmarActualizacion() {
+            // Aquí colocas la lógica real de actualización
+            alert("Información actualizada correctamente.");
+            document.getElementById("confirmacion-box").style.display = "none";
+        }
+
+        function cancelarActualizacion() {
+            document.getElementById("confirmacion-box").style.display = "none";
+        }
+    </script>
 
 </body>
 

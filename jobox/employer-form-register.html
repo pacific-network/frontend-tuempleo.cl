@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
 
-    <title>Registro</title>
+    <title>Registro Empresa</title>
 
     <link rel="icon" type="image/x-icon" href="assets/img/logo/favicon.png">
 
@@ -37,10 +37,10 @@
     <main class="main">
         <div class="site-breadcrumb">
             <div class="container">
-                <h2 class="breadcrumb-title">Ingresa tus Datos</h2>
+                <h2 class="breadcrumb-title">Llenar datos empresa</h2>
                 <ul class="breadcrumb-menu">
                     <li><a href="index.html">Registro</a></li>
-                    <li class="active">Ingresa tus Datos</li>
+                    <li class="active">Llenar datos empresa</li>
                 </ul>
             </div>
             <div class="hero-shape">
@@ -59,14 +59,20 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Nombre de la Empresa</label>
-                                        <input type="text" name="nombre_empresa" class="form-control" placeholder="Ingrese el Nombre de la Empresa">
+                                        <label>RUT</label>
+                                        <input type="text" class="form-control" placeholder="Ingrese el RUT de la Empresa">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Razón Social</label>
                                         <input type="text" class="form-control" placeholder="Ingrese la Razón Social">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Nombre de la Empresa</label>
+                                        <input type="text" name="nombre_empresa" class="form-control" placeholder="Ingrese el Nombre de la Empresa">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -79,10 +85,22 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">                                    <div class="form-group">
+                                        <label>Actividad Empresa</label>
+                                        <select class="form-control" name="actividad_empresa" id="actividad_empresa_select">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
                                     <div class="form-group">
-                                        <label>RUT</label>
-                                        <input type="text" class="form-control" placeholder="Ingrese el RUT de la Empresa">
+                                        <label>Dirección</label>
+                                        <input type="text" class="form-control" placeholder="Ingrese dirección">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Número Calle</label>
+                                        <input type="number" class="form-control" placeholder="Ingrese número">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -107,40 +125,27 @@
                                         <input type="text" class="form-control" placeholder="Ingrese País">
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>Dirección</label>
-                                        <input type="text" class="form-control" placeholder="Ingrese dirección">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>Número Calle</label>
-                                        <input type="number" class="form-control" placeholder="Ingrese número">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Tamaño Equipo</label>
                                         <select class="select">
                                             <option value="">Seleccione Tamaño de equipo</option>
-                                            <option value="1">10-29</option>
-                                            <option value="2">30-49</option>
-                                            <option value="3">50-79</option>
-                                            <option value="4">80-99</option>
-                                            <option value="5">+100</option>
+                                            <option value="1">MicroEmpresa(1-9 trabajadores) </option>
+                                            <option value="2">Pequeña Empresa(10-49 trabajadores)</option>
+                                            <option value="3">Mediana Empresa(50-199 trabajadores)</option>
+                                            <option value="4">Gran Empresa(+200 trabajadores)</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label>Año Fundación</label>
+                                        <label>Año Inicio Actividades</label>
                                         <input type="number" class="form-control" placeholder="Ingrese Año">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                      <label>Número de Contacto</label>
+                                      <label>Fono Empresa</label>
                                       <div class="input-group">
                                         <select class="form-control" style="width: 100px;" id="codigo_pais">
                                           <option disabled selected>Cargando...</option>
@@ -149,15 +154,6 @@
                                       </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Actividad Empresa</label>
-                                        <select class="form-control" name="actividad_empresa" id="actividad_empresa_select">
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <h6 class="mb-3">Descrición</h6>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Descripción de Empresa</label>
@@ -166,17 +162,17 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <h6 class="mb-3">Datos de Encargado</h6>
+                                    <h6 class="mb-3">Datos Usuario Empresa</h6>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label>Nombre/s Encargado</label>
-                                            <input type="text" class="form-control" placeholder="Ingrese el/los nombre/s del Encargado">
+                                            <label>Nombre</label>
+                                            <input type="text" class="form-control" placeholder="Ingrese nombre">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label>Apellido/s Encargado</label>
-                                            <input type="text" class="form-control" placeholder="Ingrese el/los apellido/s del Encargado">
+                                            <label>Apellido</label>
+                                            <input type="text" class="form-control" placeholder="Ingrese apellido">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -185,35 +181,54 @@
                                             <input type="text" class="form-control" placeholder="Ingrese su Correo">
                                         </div>
                                     </div>
-                                </div>
-                                <h6 class="mb-3">Enlaces sociales</h6>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>URL de Facebook</label>
-                                        <input type="text" class="form-control" placeholder="https://www.facebook.com/">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                          <label>Número Contacto</label>
+                                          <div class="input-group">
+                                            <select class="form-control" style="width: 100px;" id="codigo_pais">
+                                              <option disabled selected>Cargando...</option>
+                                            </select>
+                                            <input type="text" class="form-control" placeholder="Ej: 9 1234 5678" id="numero_telefono">
+                                          </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Cargo</label>
+                                            <input type="text" class="form-control" placeholder="Ingrese su Cargo">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>URL de Twitter</label>
-                                        <input type="text" class="form-control" placeholder="https://www.twitter.com/">
+                                <div class="row">
+                                    <h6 class="mb-3">Enlaces sociales</h6>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>URL de Facebook</label>
+                                            <input type="text" class="form-control" placeholder="https://www.facebook.com/">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>URL de Linkedin</label>
-                                        <input type="text" class="form-control" placeholder="https://www.linkedin.com/">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>URL de Twitter</label>
+                                            <input type="text" class="form-control" placeholder="https://www.twitter.com/">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>URL de Instagram</label>
-                                        <input type="text" class="form-control" placeholder="https://www.instagram.com/">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>URL de Linkedin</label>
+                                            <input type="text" class="form-control" placeholder="https://www.linkedin.com/">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group mt-3">
-                                        <button type="submit" class="theme-btn"><span class="far fa-paper-plane"></span> Enviar Datos</button>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>URL de Instagram</label>
+                                            <input type="text" class="form-control" placeholder="https://www.instagram.com/">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group mt-3">
+                                            <button type="submit" class="theme-btn"><span class="far fa-paper-plane"></span> Enviar Datos</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

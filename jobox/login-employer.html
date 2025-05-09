@@ -10,7 +10,7 @@
     <meta name="keywords" content="">
 
     <!-- title -->
-    <title>Registro</title>
+    <title>Login</title>
 
     <!-- favicon -->
     <link rel="icon" type="image/x-icon" href="assets/img/logo/favicon.png">
@@ -52,10 +52,10 @@
         <!-- breadcrumb -->
         <div class="site-breadcrumb">
             <div class="container">
-                <h2 class="breadcrumb-title">Registro</h2>
+                <h2 class="breadcrumb-title">Ingresar</h2>
                 <ul class="breadcrumb-menu">
                     <li><a href="index.html">Inicio</a></li>
-                    <li class="active">Registro</li>
+                    <li class="active">Ingresar</li>
                 </ul>
             </div>
             <div class="hero-shape">
@@ -68,20 +68,17 @@
 
 
 
-        <!-- register area -->
+
+        <!-- login area -->
         <div class="login-area py-120">
             <div class="container">
                 <div class="col-md-8 col-lg-7 col-xl-5 mx-auto">
                     <div class="login-form">
                         <div class="login-header">
                             <img src="assets/img/logo/logo.png" alt="">
-                            <p>Crea tu cuenta en Tuempleo</p>
+                            <p>Ingresa tu cuenta de Tuempleo</p>
                         </div>
-                        <form action="candidate-form-register.html">
-                            <div class="form-group">
-                                <label>Nombre Completo</label>
-                                <input type="text" class="form-control" placeholder="Tu Nombre">
-                            </div>
+                        <form action="#">
                             <div class="form-group">
                                 <label>Correo Electrónico</label>
                                 <input type="email" class="form-control" placeholder="Tu Correo">
@@ -90,29 +87,42 @@
                                 <label>Contraseña</label>
                                 <input type="password" class="form-control" placeholder="Tu Contraseña">
                             </div>
-                            <div class="form-check form-group">
-                                <input class="form-check-input" type="checkbox" value="" id="agree">
-                                <label class="form-check-label" for="agree">
-                                   Acepto los <a href="#">Terminos de Servicio.</a>
-                                </label>
+                            <div class="d-flex justify-content-between mb-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="remember">
+                                    <label class="form-check-label" for="remember">
+                                        Recuérdame
+                                    </label>
+                                </div>
+                                <a href="forgot-password.html" class="forgot-pass">¿Olvidaste tu contraseña?</a>
                             </div>
                             <div class="d-flex align-items-center">
-                                <button type="submit" class="theme-btn"><i class="far fa-paper-plane"></i> Registrarse</button>
+                                <a href="employer-dashboard.html" class="theme-btn">
+                                    <i class="far fa-sign-in"></i> Ingresar
+                                </a>
                             </div>
                         </form>
                         <div class="login-footer">
                             <div class="login-divider"><span>O</span></div>
                             <div class="social-login">
-                                <a href="#" class="btn-fb"><i class="fab fa-facebook"></i> Registrarse con Facebook</a>
-                                <a href="#" class="btn-gl"><i class="fab fa-google"></i> Registrarse con Google</a>
+                                <a href="#" class="btn-fb"><i class="fab fa-facebook"></i> Ingresa con Facebook</a>
+                                <a href="#" class="btn-gl"><i class="fab fa-google"></i> Ingresa con Google</a>
                             </div>
-                            <p>¿Tienes una cuenta? <a href="login.html">Ingresar.</a></p>
+                            <p>¿Aún no tienes una cuenta? Regístrate como:</p>
+                            <div class="register-options">
+                                <a href="register.html" class="theme-btn theme-btn2">
+                                    <span class="far fa-user"></span> Candidato
+                                </a>
+                                <a href="employer-register.html" class="theme-btn theme-btn2">
+                                    <span class="far fa-building"></span> Empresa
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- register area end -->
+        <!-- login area end -->
 
 
     </main>
@@ -146,7 +156,7 @@
     <script src="assets/js/wow.min.js"></script>
     <script src="assets/js/nice-select.min.js"></script>
     <script src="assets/js/main.js"></script>
-    <script src="assets/js/loadHeaderFooterSO.js"></script>
+    <script src="assets/js/loadHeaderFooterEmpSO2.js"></script>
 
 </body>
 
