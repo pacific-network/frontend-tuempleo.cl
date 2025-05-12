@@ -90,12 +90,17 @@
                                 <li><a href="employer-post-job.html"><i class="far fa-paper-plane"></i> Publicar un Trabajo</a></li>
                                 <li><a href="employer-manage-job.html"><i class="far fa-briefcase"></i> Gestionar Avisos</a></li>
                                 <li><a href="employer-candidate.html"><i class="far fa-file-lines"></i> Todos los Candidatos</a></li>
-                                <li><a href="employer-message.html"><i class="far fa-envelope"></i> Mensajes <span class="badge">02</span></a></li>
                                 <li><a href="employer-transaction.html"><i class="far fa-coins"></i> Transacción</a></li>
                                 <li><a class="active" href="employer-settings.html"><i class="far fa-cog"></i> Configuración</a></li>
-                                <li><a href="#"><i class="far fa-trash-can"></i> Eliminar Perfil</a></li>
-                                <li><a href="#"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
+                                <li><a href="index.html"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
                             </ul>
+                        </div>
+                        <div class="user-profile-sidebar">
+                            <div class="user-profile">      
+                                <ul class="user-profile-sidebar-list">
+                                    <li><a href="employer-message.html"><i class="far fa-headset"></i>Soporte</a></li>
+                                </ul>
+                            </div> 
                         </div>
                     </div>
                     <div class="col-lg-9">
@@ -109,6 +114,12 @@
                                                 <h6 class="mb-3">Información básica</h6>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
+                                                        <label>RUT Empresa</label>
+                                                        <input type="text" class="form-control" value="12.345.678-9" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
                                                         <label>Nombre Empresa</label>
                                                         <input type="text" class="form-control" value="Pacific Network"
                                                             placeholder="Nombre Empresa">
@@ -116,53 +127,45 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>Correo empresa</label>
-                                                        <input type="text" class="form-control"
-                                                            value="jjorquera@pacificnetwork.cl" placeholder="Correo Empresa">
+                                                        <label>Razón Social</label>
+                                                        <input type="text" class="form-control" value="Pacific Network"
+                                                            placeholder="Nombre Empresa">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>Número de contacto</label>
-                                                        <input type="text" class="form-control"
-                                                            value="+56 9 9329 7091" placeholder="Número de Contacto">
+                                                        <label>Fono Empresa</label>
+                                                        <div class="input-group">
+                                                            <select class="form-control" style="width: 100px;" id="codigo_pais">
+                                                                <option disabled selected></option>
+                                                            </select>
+                                                            <input type="text" class="form-control" placeholder="9 9183 6445" id="numero_telefono">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-5">
                                                     <div class="form-group">
-                                                        <label>Sitio Web</label>
-                                                        <input type="url" class="form-control"
-                                                            value="www.pacificnetwork.cl" placeholder="Sitio Web empresa">
+                                                        <label>Actividad Empresa</label>
+                                                        <input type="text" class="form-control" placeholder="Telecomunicaciones">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Tamaño Equipo</label>
-                                                        <input type="text" class="form-control"
-                                                            value="20 - 39" placeholder="Tamaño equipo">
+                                                        <select class="select">
+                                                            <option value="">Seleccione Tamaño de equipo</option>
+                                                            <option value="1">MicroEmpresa </option>
+                                                            <option value="2" selected>Pequeña Empresa</option>
+                                                            <option value="3">Mediana Empresa</option>
+                                                            <option value="4">Gran Empresa</option>
+                                                        </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-3">
                                                     <div class="form-group">
-                                                        <label>Fundada</label>
+                                                        <label>Inicio Actividades</label>
                                                         <input type="text" class="form-control"
                                                             value="2020" placeholder="Año fundación">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label>Sector Primario</label>
-                                                        <select class="select">
-                                                            <option value="">Elija una categoría</option>
-                                                            <option value="1">Web Designer</option>
-                                                            <option value="2">Developer</option>
-                                                            <option value="3">IT & Software</option>
-                                                            <option value="4">Finance</option>
-                                                            <option value="5">Management</option>
-                                                            <option value="6">Advertising</option>
-                                                            <option value="7">Accountant</option>
-                                                            <option value="8" selected>Telecomunicaciones</option>
-                                                        </select>
                                                     </div>
                                                 </div>
                                                 <h6 class="mb-3">Sobre la Empresa</h6>
@@ -172,7 +175,7 @@
                                                         <textarea class="form-control" cols="30" rows="5" placeholder="Write Description">Somos una empresa de Telecomunicaciones. En nuestro equipo, contamos con gente dedicada exclusivamente a ayudarte. Nuestros expertos están disponibles para resolver cualquier duda, problema o consulta que puedas tener. Nos apasiona brindar un excelente servicio al cliente y estamos comprometidos en asegurarnos de que recibas la asistencia que necesitas de manera rápida y eficiente. Tu satisfacción es nuestra prioridad y estamos aquí para ayudarte en todo momento.</textarea>
                                                     </div>
                                                 </div>
-                                                <h6 class="mb-3">Información de Contacto</h6>
+                                                <h6 class="mb-3">Información de Contacto Empresa</h6>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>País</label>
@@ -186,22 +189,64 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Región</label>
                                                         <input type="text" class="form-control" value="Metropolitana de Santiago" placeholder="Ciudad">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Comuna</label>
                                                         <input type="text" class="form-control" value="Huechuraba" placeholder="Comuna">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Dirección</label>
-                                                        <input type="text" class="form-control" value="Av. del Valle Sur 662" placeholder="Dirección">
+                                                        <input type="text" class="form-control" value="Av. del Valle Sur" placeholder="Dirección">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label>Número de Calle</label>
+                                                        <input type="text" class="form-control" value="662" placeholder="Dirección">
+                                                    </div>
+                                                </div>
+                                                <h6 class="mb-3">Datos Usuario Empresa</h6>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Nombre</label>
+                                                        <input type="text" class="form-control" value="Jose Luis">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Apellido</label>
+                                                        <input type="text" class="form-control" value="Jorquera">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Correo</label>
+                                                        <input type="text" class="form-control" value="jjorquera@pacificnetwork.cl">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Número de Contacto</label>
+                                                        <div class="input-group">
+                                                            <select class="form-control" style="width: 100px;" id="codigo_pais_1">
+                                                                <option disabled selected></option>
+                                                            </select>
+                                                            <input type="text" class="form-control" placeholder="9 9329 7091" id="numero_telefono">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Cargo</label>
+                                                        <input type="text" class="form-control" placeholder="CEO de Empresa">
                                                     </div>
                                                 </div>
                                                 <h6 class="mb-3">Redes Sociales</h6>
@@ -307,6 +352,101 @@
     <script src="assets/js/nice-select.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/loadHeaderFooterEmp.js"></script>
+    <script src="assets/js/actividad-empresa.js"></script>
+    <script>
+        async function cargarCodigosDePais() {
+          try {
+            const response = await fetch('https://restcountries.com/v3.1/all');
+            const data = await response.json();
+        
+            const select = document.getElementById('codigo_pais');
+            select.innerHTML = ''; // limpiar "Cargando..."
+        
+            // Filtrar solo América y que tengan prefijo telefónico
+            const paises = data
+              .filter(p => p.region === 'Americas' && p.idd && p.idd.root)
+              .map(p => {
+                const root = p.idd.root || '';
+                const suffixes = p.idd.suffixes || [''];
+                return suffixes.map(suffix => ({
+                  nombre: p.name.common,
+                  codigo: root + suffix,
+                  bandera: p.flag,
+                  iso2: p.cca2
+                }));
+              })
+              .flat();
+          
+            paises.sort((a, b) => a.nombre.localeCompare(b.nombre));
+          
+            for (const pais of paises) {
+              const option = document.createElement('option');
+              option.value = pais.codigo;
+              option.textContent = `${pais.bandera} ${pais.codigo} (${pais.nombre})`;
+            
+              if (pais.nombre === 'Chile') {
+                option.selected = true;
+              }
+          
+              select.appendChild(option);
+            }
+        
+          } catch (error) {
+            console.error('Error al cargar países:', error);
+            const select = document.getElementById('codigo_pais');
+            select.innerHTML = '<option disabled>Error al cargar países</option>';
+          }
+        }
+    
+        cargarCodigosDePais();
+    </script>
+    <script>
+        async function cargarCodigosDePais() {
+          try {
+            const response = await fetch('https://restcountries.com/v3.1/all');
+            const data = await response.json();
+        
+            const select = document.getElementById('codigo_pais_1');
+            select.innerHTML = ''; // limpiar "Cargando..."
+        
+            // Filtrar solo América y que tengan prefijo telefónico
+            const paises = data
+              .filter(p => p.region === 'Americas' && p.idd && p.idd.root)
+              .map(p => {
+                const root = p.idd.root || '';
+                const suffixes = p.idd.suffixes || [''];
+                return suffixes.map(suffix => ({
+                  nombre: p.name.common,
+                  codigo: root + suffix,
+                  bandera: p.flag,
+                  iso2: p.cca2
+                }));
+              })
+              .flat();
+          
+            paises.sort((a, b) => a.nombre.localeCompare(b.nombre));
+          
+            for (const pais of paises) {
+              const option = document.createElement('option');
+              option.value = pais.codigo;
+              option.textContent = `${pais.bandera} ${pais.codigo} (${pais.nombre})`;
+            
+              if (pais.nombre === 'Chile') {
+                option.selected = true;
+              }
+          
+              select.appendChild(option);
+            }
+        
+          } catch (error) {
+            console.error('Error al cargar países:', error);
+            const select = document.getElementById('codigo_pais_1');
+            select.innerHTML = '<option disabled>Error al cargar países</option>';
+          }
+        }
+    
+        cargarCodigosDePais();
+    </script>
 
 </body>
 

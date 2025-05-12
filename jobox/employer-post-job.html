@@ -87,12 +87,17 @@
                                 <li><a class="active" href="employer-post-job.html"><i class="far fa-paper-plane"></i> Publicar un Trabajo</a></li>
                                 <li><a href="employer-manage-job.html"><i class="far fa-briefcase"></i> Gestionar Avisos</a></li>
                                 <li><a href="employer-candidate.html"><i class="far fa-file-lines"></i> Todos los Candidatos</a></li>
-                                <li><a href="employer-message.html"><i class="far fa-envelope"></i> Mensajes <span class="badge">02</span></a></li>
                                 <li><a href="employer-transaction.html"><i class="far fa-coins"></i> Transacción</a></li>
                                 <li><a href="employer-settings.html"><i class="far fa-cog"></i> Configuración</a></li>
-                                <li><a href="#"><i class="far fa-trash-can"></i> Eliminar Perfil</a></li>
-                                <li><a href="#"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
+                                <li><a href="index.html"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
                             </ul>
+                        </div>
+                        <div class="user-profile-sidebar">
+                            <div class="user-profile">      
+                                <ul class="user-profile-sidebar-list">
+                                    <li><a href="employer-message.html"><i class="far fa-headset"></i>Soporte</a></li>
+                                </ul>
+                            </div> 
                         </div>
                     </div>
                     <div class="col-lg-9">
@@ -103,7 +108,7 @@
                                     <div class="profile-form">
                                         <form action="#">
                                             <div class="row">
-                                                <div class="col-md-12">
+                                                <div class="col-md-8">
                                                     <div class="form-group">
                                                         <label>Título del Trabajo</label>
                                                         <input type="text" class="form-control" placeholder="Ingrese el título del trabajo">
@@ -111,7 +116,7 @@
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label>Categoría del Trabajo</label>
+                                                        <label>Área del Trabajo</label>
                                                         <select class="select">
                                                             <option value="">Elige Categoría</option>
                                                             <option value="1">Web Designer</option>
@@ -126,7 +131,56 @@
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label>Tipo de Trabajo</label>
+                                                        <label>Renta salarial</label>
+                                                        <input type="text" class="form-control" placeholder="Ingresa Oferta Salarial">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label>Años de Experiencia</label>
+                                                        <input type="text" class="form-control" placeholder="Ingresa Exp...">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5">
+                                                  <div class="form-group">
+                                                    <label>Región</label>
+                                                    <select id="region-select" class="form-control">
+                                                      <option value="">Seleccione una región</option>
+                                                    </select>
+                                                  </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Educación Requerida</label>
+                                                        <select class="select">
+                                                            <option value="">-- Selecciona Educación --</option>
+                                                            <option value="primario">Primario</option>
+                                                            <option value="secundario">Secundario</option>
+                                                            <option value="cft">CFT</option>
+                                                            <option value="tecnico">Técnico</option>
+                                                            <option value="superior">Superior</option>
+                                                            <option value="universitario">Universitario</option>
+                                                            <option value="otro">Otro</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Tipo de Contratación</label>
+                                                        <select class="select">
+                                                            <option value="Indeterminado">Indeterminado</option>
+                                                            <option value="Temporal">Temporal</option>
+                                                            <option value="Voluntario">Voluntario</option>
+                                                            <option value="Pasantía">Pasantía</option>
+                                                            <option value="Autónomo">Autónomo</option>
+                                                            <option value="Reemplazo">Reemplazo</option>
+                                                            <option value="Práctica">Práctica</option>
+                                                        </select> 
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Modalidad</label>
                                                         <select class="select">
                                                             <option value="">Elige Modalidad</option>
                                                             <option value="1">Full Time</option>
@@ -137,39 +191,29 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label>Renta salarial</label>
-                                                        <input type="text" class="form-control" placeholder="Ingresa Oferta Salarial">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label>Experiencia Requerida</label>
-                                                        <input type="text" class="form-control" placeholder="Ingresa Exp...">
+                                                        <label>Beneficios</label>
+                                                        <input type="text" class="form-control" placeholder="Ingresa Beneficios">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label>Herramientas Requeridas</label>
-                                                        <input type="text" class="form-control" placeholder="Ejemplo: Excel, Word, Adobe, etc.">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label>Rango edad</label>
-                                                        <input type="text" class="form-control" placeholder="Ingresa Rango de edad">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label>Ciudad</label>
-                                                        <input type="text" class="form-control" placeholder="Ciudad de Origen">
+                                                        <label>Conocimientos/Habilidades</label>
+                                                        <input type="text" class="form-control" placeholder="Ingresa requerimientos">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label>Descripcion</label>
+                                                        <label>Herramientas básicas</label>
+                                                        <div id="checkbox-container" class="form-check">
+                                                          <!-- Los checkboxes se llenarán dinámicamente aquí -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>Descripcion del puesto</label>
                                                         <textarea class="form-control" cols="30" rows="4" placeholder="Escribe una descripción del Trabajo"></textarea>
                                                     </div>
                                                 </div>
@@ -217,6 +261,75 @@
     <script src="assets/js/nice-select.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/loadHeaderFooterEmp.js"></script>
+    <script src="assets/js/regiones.js"></script>
+    <script>
+        const select = document.getElementById("region-select");
+        
+        regionesDeChile.forEach(region => {
+          const option = document.createElement("option");
+          option.value = region.numero;
+          option.textContent = region.nombre;
+          select.appendChild(option);
+        });
+    </script>
+    <script>
+          const herramientasBasicas = [
+  "Office 365",
+  "Office 2016",
+  "Windows 10",
+  "Adobe PDF",
+  "Google Chrome",
+  "Zoom",
+  "Microsoft Teams",
+  "Windows 11",
+  "SAP",
+  "Google Drive",
+  "One Drive",
+  "MySql"
+];
+
+const container = document.getElementById("checkbox-container");
+
+for (let i = 0; i < herramientasBasicas.length; i += 3) {
+  const row = document.createElement("div");
+  row.className = "row";
+  row.style.marginBottom = "25px"; // Más espacio entre filas
+  
+  for (let j = i; j < i + 3 && j < herramientasBasicas.length; j++) {
+    const col = document.createElement("div");
+    col.className = "col-md-4";
+    col.style.paddingLeft = "30px"; // Más espacio entre columnas
+    col.style.paddingRight = "30px"; // Más espacio entre columnas
+    
+    const divFormCheck = document.createElement("div");
+    divFormCheck.className = "form-check";
+    divFormCheck.style.padding = "10px 0"; // Espacio vertical interno
+    
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.className = "form-check-input";
+    checkbox.id = `herramienta-${j}`;
+    checkbox.name = "herramientas";
+    checkbox.value = herramientasBasicas[j];
+    checkbox.style.marginRight = "15px"; // Más espacio entre checkbox y texto
+    checkbox.style.transform = "scale(1.3)"; // Checkbox más grande
+    checkbox.style.marginTop = "5px";
+    
+    const label = document.createElement("label");
+    label.className = "form-check-label";
+    label.htmlFor = checkbox.id;
+    label.textContent = herramientasBasicas[j];
+    label.style.fontSize = "16px"; // Texto más grande
+    
+    divFormCheck.appendChild(checkbox);
+    divFormCheck.appendChild(label);
+    col.appendChild(divFormCheck);
+    row.appendChild(col);
+  }
+
+  container.appendChild(row);
+}
+    </script>
 
 </body>
 

@@ -299,24 +299,24 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-12">
-                                <div class="job-item">
+                                <div class="job-item" id="clickable-job-item">
                                     <div class="job-img">
                                         <img src="assets/img/job/01.jpg" alt="">
                                     </div>
-                                    <a href="#" class="job-bookmark"><i class="fe-bookmark"></i></a>
+                                    <a href="job-single-2.html" class="job-bookmark"><i class="fe-bookmark"></i></a>
                                     <div class="job-content">
                                         <div class="job-top">
                                             <div class="job-title">
                                                 <h5><a href="#">Desarrollador de Aplicaciones</a></h5>
-                                                <a href="#" class="job-employer"><i class="far fa-building"></i> Vertice Call Center</a>
+                                                <a href="job-single-2.html" class="job-employer"><i class="far fa-building"></i> Vertice Call Center</a>
                                             </div>
                                         </div>
                                         <ul class="job-info-list">
-                                            <li><i class="fe-briefcase"></i> Desarrollador</li>
+                                            <li><i class="fe-briefcase"></i> Tecnologias, Sistemas y Telecomunicaciones</li>
                                             <li><i class="fe-check-circle"></i> Full Time</li>
                                             <li><i class="fe-clock"></i> Hace 2 días</li>
                                             <li><i class="fe-dollar-sign"></i> Salario: 500.000 - 850.000</li>
-                                            <li><i class="fe-map-pin"></i> Av. Del Valle Sur 662 - Huechuraba</li>
+                                            <li><i class="fe-map-pin"></i> Huechuraba - Región Metropolitana de Santiago</li>
                                         </ul>
                                         <div class="job-skill">
                                             <a href="#">JavaScript</a>
@@ -344,7 +344,7 @@
                                             <li><i class="fe-check-circle"></i> Full Time</li>
                                             <li><i class="fe-clock"></i> Hace 1 semana</li>
                                             <li><i class="fe-dollar-sign"></i> Salario: 1.000.000 - 2.000.000</li>
-                                            <li><i class="fe-map-pin"></i> Av. Del Valle Sur 662 - Huechuraba</li>
+                                            <li><i class="fe-map-pin"></i> Huechuraba - Región Metropolitana de Santiago</li>
                                         </ul>
                                         <div class="job-skill">
                                             <a href="#">Excel</a>
@@ -615,6 +615,14 @@
     <script src="assets/js/jquery-ui.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/loadHeaderFooter.js"></script>
+    <script>
+    document.getElementById('clickable-job-item').addEventListener('click', function(e) {
+        // Evitar que se active si se hace clic en un enlace interno
+        if (e.target.tagName !== 'A' && !e.target.closest('a')) {
+            window.location.href = 'job-single-2.html';
+        }
+    });
+    </script>
 
 </body>
 
