@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
         areasCargo.forEach(area => {
             const option = document.createElement("option");
             option.value = area;
-            option.textContent = area || "Seleccione un área";
+            option.textContent = area || "-- Seleccione un Área --";
             areaSelect.appendChild(option);
         });
     }
