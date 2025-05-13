@@ -1,6 +1,6 @@
 class ApiService {
     constructor() {
-      this.baseUrl = "https://172.25.100.201/"; // URL base del backend
+      this.baseUrl = "http://localhost:3000/"; // URL base del backend
     }
   
     async request(endpoint, method = "GET", data = null) {
