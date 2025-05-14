@@ -1650,10 +1650,6 @@ job css
   flex-direction: column;
 }
 
-.row > [class*='col-'] {
-    display: flex;
-}
-
 .job-item:hover{
   transform: translateY(-7px);
 }
