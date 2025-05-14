@@ -13,12 +13,19 @@ document.addEventListener("DOMContentLoaded", function () {
     const areaSelect = document.getElementById("area_cargo_select");
 
     if (areaSelect) {
+        const areaSeleccionada = areaSelect.dataset.areaSeleccionada || "";
+
         areaSelect.innerHTML = '';
 
         areasCargo.forEach(area => {
             const option = document.createElement("option");
             option.value = area;
             option.textContent = area || "-- Seleccione un Área --";
+
+            if (area === areaSeleccionada) {
+                option.selected = true;
+            }
+
             areaSelect.appendChild(option);
         });
     }

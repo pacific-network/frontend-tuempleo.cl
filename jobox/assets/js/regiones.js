@@ -17,7 +17,22 @@ const regionesDeChile = [
   { numero: 16, nombre: "Región de Magallanes y de la Antártica Chilena" }
 ];
 
-// Ejemplo de uso:
-regionesDeChile.forEach(region => {
-  console.log(`${region.numero}: ${region.nombre}`);
+document.addEventListener("DOMContentLoaded", function () {
+  const regionSelect = document.getElementById("region-select");
+
+  if (regionSelect) {
+    const regionSeleccionada = parseInt(regionSelect.dataset.regionSeleccionada || "0");
+
+    regionesDeChile.forEach(region => {
+      const option = document.createElement("option");
+      option.value = region.numero;
+      option.textContent = region.nombre;
+
+      if (region.numero === regionSeleccionada) {
+        option.selected = true;
+      }
+
+      regionSelect.appendChild(option);
+    });
+  }
 });
