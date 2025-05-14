@@ -10,7 +10,7 @@
     <meta name="keywords" content="">
 
     <!-- title -->
-    <title>Jobox - Job Board And Hiring HTML5 Template</title>
+    <title>Gestion Avisos</title>
 
     <!-- favicon -->
     <link rel="icon" type="image/x-icon" href="assets/img/logo/favicon.png">
@@ -25,11 +25,23 @@
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="assets/css/nice-select.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .profile-job-content h6 a {
+            white-space: normal;
+            word-break: break-word;
+            display: inline-block;
+            max-width: 27ch;
+        }
+        .profile-job-list li {
+          max-width: 27ch;            /* 25 caracteres como máximo por línea */
+          white-space: normal;        /* Permite el salto de línea */
+          word-wrap: break-word;      /* Corta las palabras largas si es necesario */
+          overflow-wrap: break-word;  /* Asegura compatibilidad en todos los navegadores */
+        }
+    </style>
 
 </head>
-
 <body>
-
     <!-- preloader -->
     <div class="preloader">
         <div class="loader">
@@ -39,16 +51,10 @@
         </div>
     </div>
     <!-- preloader end -->
-
-
     <!-- header area -->
     <div id="header-placeholder"></div>
     <!-- header area end -->
-
-
-
     <main class="main">
-
         <!-- breadcrumb -->
         <div class="site-breadcrumb">
             <div class="container">
@@ -65,10 +71,6 @@
                 <img class="hero-shape-4" src="assets/img/shape/07.svg" alt="">
             </div>
         </div>
-
-
-
-
         <!-- employer-manage-job -->
         <div class="user-profile py-120">
             <div class="container">
@@ -77,12 +79,12 @@
                         <div class="user-profile-sidebar">
                             <div class="user-profile-sidebar-top">
                                 <div class="user-profile-img">
-                                    <img src="assets/img/job/04.jpg" alt="">
+                                    <img src="assets/img/job/verticecc.jpeg" alt="">
                                     <button type="button" class="profile-img-btn"><i class="far fa-camera"></i></button>
                                     <input type="file" class="profile-img-file">
                                 </div>
-                                <h4>Rubic Corner</h4>
-                                <p>Software & Technology Company</p>
+                                <h4>Vertice Call Center</h4>
+                                <p>Call Center</p>
                             </div>
                             <ul class="user-profile-sidebar-list">
                                 <li><a href="employer-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a></li>
@@ -132,7 +134,6 @@
                                     <thead>
                                         <tr>
                                             <th>Título de Trabajo</th>
-                                            <th>Categoria</th>
                                             <th>Postulantes</th>
                                             <th>Expiración</th>
                                             <th>Estado</th>
@@ -144,35 +145,33 @@
                                             <td>
                                                 <div class="profile-job-info">
                                                     <div class="profile-job-content">
-                                                        <h6><a href="#">Diseñador Web</a></h6>
+                                                        <h6><a href="#">Desarrallador de Aplicaciones</a></h6>
                                                         <ul class="profile-job-list">
-                                                            <li><i class="far fa-location-dot"></i> Huechuraba</li>
+                                                            <li><i class="far fa-location-dot"></i> Región Metropolitana de Santiago</li>
                                                         </ul>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>Diseñador</td>
                                             <td>36 Postulantes</td>
                                             <td>29 Mayo, 2025</td>
                                             <td><span class="badge badge-success">Activo</span></td>
                                             <td>
-                                                <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
-                                                <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-pen"></i></a>
-                                                <a href="#" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-can"></i></a>
+                                                <a href="employer-view-job.html" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
+                                                <a href="employer-edit-job.html" class="btn btn-outline-secondary btn-sm"><i class="far fa-pen"></i></a>
+                                                <a href="#" class="btn btn-outline-danger btn-sm btn-delete"><i class="far fa-trash-can"></i></a>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <div class="profile-job-info">
+                                                <divlass="profile-job-info">
                                                     <div class="profile-job-content">
                                                         <h6><a href="#">Gerente de Finanzas</a></h6>
                                                         <ul class="profile-job-list">
-                                                            <li><i class="far fa-location-dot"></i> Huechuraba</li>
+                                                            <li><i class="far fa-location-dot"></i> Región Metropolitana de Santiago</li>
                                                         </ul>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>Gerente</td>
                                             <td>16 Postulantes</td>
                                             <td>06 Mayo, 2025</td>
                                             <td><span class="badge badge-success">Activo</span></td>
@@ -186,14 +185,13 @@
                                             <td>
                                                 <div class="profile-job-info">
                                                     <div class="profile-job-content">
-                                                        <h6><a href="#">Desarrollador de Software</a></h6>
+                                                        <h6><a href="#">Desarrollador de Software fdsfssdfssdsfs</a></h6>
                                                         <ul class="profile-job-list">
-                                                            <li><i class="far fa-location-dot"></i> Huechuraba</li>
+                                                            <li><i class="far fa-location-dot"></i> Región Metropolitana de Santiago</li>
                                                         </ul>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>Desarrollo</td>
                                             <td>41 Postulantes</td>
                                             <td>12 Diciembre, 2024</td>
                                             <td><span class="badge badge-danger">Expirado</span></td>
@@ -209,12 +207,11 @@
                                                     <div class="profile-job-content">
                                                         <h6><a href="#">Soporte IT</a></h6>
                                                         <ul class="profile-job-list">
-                                                            <li><i class="far fa-location-dot"></i> Huechuraba</li>
+                                                            <li><i class="far fa-location-dot"></i> Región Metropolitana de Santiago</li>
                                                         </ul>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>Soporte</td>
                                             <td>68 Postulantes</td>
                                             <td>25 Abril, 2024</td>
                                             <td><span class="badge badge-warning">Pendiente</span></td>
@@ -226,7 +223,6 @@
                                         </tr>
                                     </tbody>
                                 </table>
-
                                 <!-- pagination -->
                                 <div class="pagination-area">
                                     <div aria-label="Page navigation example">
@@ -255,22 +251,34 @@
         </div>
         <!-- employer-manage-job end -->
 
-
     </main>
 
-
+    <!-- Modal de Confirmación -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteConfirmLabel">Confirmar eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                  ¿Estás seguro que deseas eliminar este aviso?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- footer area -->
     <div id="footer-placeholder"></div>
     <!-- footer area end -->
 
-
-
-
     <!-- scroll-top -->
     <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
     <!-- scroll-top end -->
-
 
     <!-- js -->
     <script src="assets/js/jquery-3.6.0.min.js"></script>
@@ -288,7 +296,38 @@
     <script src="assets/js/nice-select.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/loadHeaderFooterEmp.js"></script>
-
+    <script>
+        document.querySelectorAll(".profile-job-content h6 a").forEach(link => {
+            const text = link.textContent.trim();
+            if (text.length > 28) {
+                link.classList.add("h6-overflow");
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          let trToDelete = null;
+        
+          // Escucha todos los botones de eliminar
+          document.querySelectorAll('.btn-delete').forEach(button => {
+            button.addEventListener('click', function (e) {
+              e.preventDefault();
+              trToDelete = this.closest('tr');
+              const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+              modal.show();
+            });
+          });
+      
+          // Cuando confirman eliminar
+          document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+            if (trToDelete) {
+              trToDelete.remove();
+              trToDelete = null;
+            }
+            bootstrap.Modal.getInstance(document.getElementById('deleteConfirmModal')).hide();
+          });
+        });
+    </script>
 </body>
 
 </html>

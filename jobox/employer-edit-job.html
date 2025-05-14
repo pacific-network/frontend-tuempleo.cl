@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <!-- meta tags -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,9 +8,8 @@
     <meta name="keywords" content="">
 
     <!-- title -->
-    <title>Publicar Trabajo</title>
+    <title>Editar Trabajo</title>
 
-    <!-- favicon -->
     <link rel="icon" type="image/x-icon" href="assets/img/logo/favicon.png">
 
     <!-- css -->
@@ -25,9 +22,8 @@
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="assets/css/nice-select.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-
 <body>
 
     <!-- preloader -->
@@ -40,33 +36,14 @@
     </div>
     <!-- preloader end -->
 
+
     <!-- header area -->
     <div id="header-placeholder"></div>
     <!-- header area end -->
 
+
+
     <main class="main">
-
-        <!-- breadcrumb -->
-        <div class="site-breadcrumb">
-            <div class="container">
-                <h2 class="breadcrumb-title">Publicar un Trabajo</h2>
-                <ul class="breadcrumb-menu">
-                    <li><a href="index.html">Empresa</a></li>
-                    <li class="active">Publicar un Trabajo</li>
-                </ul>
-            </div>
-            <div class="hero-shape">
-                <img class="hero-shape-1" src="assets/img/shape/03.svg" alt="">
-                <img class="hero-shape-2" src="assets/img/shape/05.svg" alt="">
-                <img class="hero-shape-3" src="assets/img/shape/06.svg" alt="">
-                <img class="hero-shape-4" src="assets/img/shape/07.svg" alt="">
-            </div>
-        </div>
-
-
-
-
-        <!-- employer-post-job -->
         <div class="user-profile py-120">
             <div class="container">
                 <div class="row">
@@ -75,35 +52,48 @@
                             <div class="user-profile-sidebar-top">
                                 <div class="user-profile-img">
                                     <img src="assets/img/job/verticecc.jpeg" alt="">
-                                    <button type="button" class="profile-img-btn"><i class="far fa-camera"></i></button>
                                     <input type="file" class="profile-img-file">
                                 </div>
                                 <h4>Vertice Call Center</h4>
                                 <p>Call Center</p>
                             </div>
-                            <ul class="user-profile-sidebar-list">
-                                <li><a href="employer-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a></li>
-                                <li><a href="employer-profile.html"><i class="far fa-user-tie"></i> Perfil de Empresa</a></li>
-                                <li><a class="active" href="employer-post-job.html"><i class="far fa-paper-plane"></i> Publicar un Trabajo</a></li>
-                                <li><a href="employer-manage-job.html"><i class="far fa-briefcase"></i> Gestionar Avisos</a></li>
-                                <li><a href="employer-candidate.html"><i class="far fa-file-lines"></i> Todos los Candidatos</a></li>
-                                <li><a href="employer-transaction.html"><i class="far fa-coins"></i> Transacción</a></li>
-                                <li><a href="employer-settings.html"><i class="far fa-cog"></i> Configuración</a></li>
-                                <li><a href="index.html"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
-                            </ul>
-                        </div>
-                        <div class="user-profile-sidebar">
-                            <div class="user-profile">      
-                                <ul class="user-profile-sidebar-list">
-                                    <li><a href="employer-message.html"><i class="far fa-headset"></i>Soporte</a></li>
-                                </ul>
-                            </div> 
+                            <!-- Botón Actualizar -->
+                            <div class="form-group mt-3">
+                                <button type="button" class="theme-btn w-100" data-bs-toggle="modal" data-bs-target="#confirmModal">
+                                    <span class="far fa-check-circle"></span> Actualizar Información
+                                </button>
+                            </div>
+
+                            <!-- Botón Volver -->
+                            <div class="form-group mt-2">
+                                <a href="employer-manage-job.html" class="theme-btn w-100" style="text-decoration: none;">
+                                    <span class="fas fa-arrow-left"></span> Volver sin cambios
+                                </a>
+                            </div>
+                            <!-- Modal de Confirmación -->
+                            <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="confirmModalLabel">¿Estás seguro?</h5>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                          Se actualizará la información. ¿Deseas continuar?
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                          <button type="button" class="btn btn-primary" id="confirmarBtn">Confirmar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-9">
                         <div class="user-profile-wrapper">
                             <div class="user-profile-card">
-                                <h4 class="user-profile-card-title">Publicar Trabajo</h4>
+                                <h4 class="user-profile-card-title">Editar Trabajo</h4>
                                 <div class="profile-resume">
                                     <div class="profile-form">
                                         <form action="#">
@@ -111,28 +101,28 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Título del Trabajo</label>
-                                                        <input type="text" class="form-control" placeholder="Ingrese el título del trabajo">
+                                                        <input type="text" class="form-control" placeholder="Desarrallor de Aplicaciones">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Área del Trabajo</label>
-                                                        <select class="form-control" name="area_cargo" id="area_cargo_select"></select>
+                                                        <select class="form-control" name="area_cargo" id="area_cargo_select" data-area-seleccionada="Tecnologías, Sistemas y Telecomunicaciones"></select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label>Años de Experiencia</label>
-                                                        <input type="text" class="form-control" placeholder="Ingresa Exp...">
+                                                        <input type="text" class="form-control" placeholder="3">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-5">
-                                                  <div class="form-group">
-                                                    <label>Región</label>
-                                                        <select id="region-select" class="form-control">
+                                                    <div class="form-group">
+                                                        <label>Región</label>
+                                                        <select id="region-select" class="form-control" data-region-seleccionada="7">
                                                             <option value="">-- Seleccione una región --</option>
                                                         </select>
-                                                  </div>
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
@@ -144,7 +134,7 @@
                                                             <option value="cft">CFT</option>
                                                             <option value="tecnico">Técnico</option>
                                                             <option value="superior">Superior</option>
-                                                            <option value="universitario">Universitario</option>
+                                                            <option value="universitario" selected>Universitario</option>
                                                             <option value="otro">Otro</option>
                                                         </select>
                                                     </div>
@@ -155,7 +145,7 @@
                                                         <select class="form-control">
                                                             <option value="">-- Seleccione tipo Contrato --</option>
                                                             <option value="plazo_fijo">Plazo Fijo</option>
-                                                            <option value="Indefinido">Indefinido</option>
+                                                            <option value="Indefinido" selected>Indefinido</option>
                                                             <option value="Temporal">Temporal</option>
                                                             <option value="otro_contrato">Otro tipo de Contrato</option>
                                                             <option value="Reemplazo">Reemplazo</option>
@@ -168,7 +158,7 @@
                                                         <label>Modalidad</label>
                                                         <select class="form-control">
                                                             <option value="">-- Seleccione Modalidad --</option>
-                                                            <option value="1">Full Time</option>
+                                                            <option value="1" selected>Full Time</option>
                                                             <option value="2">Part Time</option>
                                                             <option value="3">Remoto</option>
                                                             <option value="4">Freelancer</option>
@@ -180,7 +170,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label>Descripción del puesto</label>
-                                                        <textarea id="descripcion" class="form-control" rows="4" placeholder="Escribe una descripción del trabajo"></textarea>
+                                                        <textarea id="descripcion" class="form-control" rows="4" placeholder="En Vertice CC, estamos en búsqueda de un Desarrollador Full Stack para colaborar con un cliente del sector bancario en el desarrollo de productos digitales."></textarea>
                                                     </div>
                                                 </div>
 
@@ -188,7 +178,11 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label>Responsabilidades (una por línea)</label>
-                                                        <textarea id="responsabilidades" class="form-control" rows="3" placeholder="Ej: Desarrollar interfaces con React&#10;Crear APIs con Node.js"></textarea>
+                                                        <textarea id="responsabilidades" class="form-control" rows="3" placeholder="Crear interfaces de usuario responsivas con React
+Desarrollar lógica server-side con Node.js y NestJS
+Diseñar y gestionar bases de datos SQL y NoSQL
+Implementar soluciones en la nube con AWS
+Automatizar procesos CI/CD"></textarea>
                                                     </div>
                                                 </div>
 
@@ -196,7 +190,10 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label>Requisitos mínimos (uno por línea)</label>
-                                                        <textarea id="requisitos" class="form-control" rows="3" placeholder="Ej: 3+ años de experiencia en desarrollo&#10;Conocimiento de metodologías ágiles"></textarea>
+                                                        <textarea id="requisitos" class="form-control" rows="3" placeholder="3+ años de experiencia en desarrollo Full Stack
+Dominio de JavaScript/TypeScript
+Experiencia con bases de datos relacionales
+Conocimiento de metodologías ágiles"></textarea>
                                                     </div>
                                                 </div>
 
@@ -204,7 +201,9 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label>Beneficios (uno por línea)</label>
-                                                        <textarea id="beneficios" class="form-control" rows="3" placeholder="Ej: Modalidad híbrida&#10;Capacitaciones constantes"></textarea>
+                                                        <textarea id="beneficios" class="form-control" rows="3" placeholder="Modalidad híbrida
+Seguro complementario de salud
+Capacitaciones constantes"></textarea>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -213,12 +212,12 @@
 
                                                         <div class="mb-2">
                                                             <label for="salaryFrom" class="small mb-1">Desde:</label>
-                                                            <input type="text" class="form-control form-control-sm" id="salaryFrom" placeholder="Ej: $900.000">
+                                                            <input type="text" class="form-control form-control-sm" id="salaryFrom" placeholder="$500.000">
                                                         </div>
 
                                                         <div class="mb-2">
                                                             <label for="salaryTo" class="small mb-1">Hasta:</label>
-                                                            <input type="text" class="form-control form-control-sm" id="salaryTo" placeholder="Ej: $1.200.000">
+                                                            <input type="text" class="form-control form-control-sm" id="salaryTo" placeholder="$850.000">
                                                         </div>
 
                                                         <small class="text-muted">De acuerdo al mercado</small>
@@ -232,11 +231,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group mt-3">
-                                                        <button type="submit" class="theme-btn"><span class="far fa-check-circle"></span> Publica Tu Empleo</button>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </form>
                                     </div>
@@ -247,13 +241,16 @@
                 </div>
             </div>
         </div>
-        <!-- employer-post-job end -->
-
     </main>
 
+
+
     <!-- footer area -->
-     <div id="footer-placeholder"></div>
+    <div id="footer-placeholder"></div>
     <!-- footer area end -->
+
+
+
 
     <!-- scroll-top -->
     <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
@@ -289,7 +286,7 @@
         });
     </script>
     <script>
-        const herramientasBasicas = [
+    const herramientasBasicas = [
         "Office 365",
         "Office 2016",
         "Windows 10",
@@ -299,24 +296,30 @@
         "Windows 11",
         "Google Drive",
         "One Drive"
-        ];
+    ];
 
-        const container = document.getElementById("checkbox-container");
+    const herramientasSeleccionadas = [
+        "Office 365",
+        "Windows 10",
+        "Adobe PDF"
+    ];
 
-        for (let i = 0; i < herramientasBasicas.length; i += 3) {
+    const container = document.getElementById("checkbox-container");
+
+    for (let i = 0; i < herramientasBasicas.length; i += 3) {
         const row = document.createElement("div");
         row.className = "row";
-        row.style.marginBottom = "15px"; // Más espacio entre filas
+        row.style.marginBottom = "15px"; 
         
         for (let j = i; j < i + 3 && j < herramientasBasicas.length; j++) {
             const col = document.createElement("div");
             col.className = "col-md-4";
-            col.style.paddingLeft = "25px"; // Más espacio entre columnas
-            col.style.paddingRight = "25px"; // Más espacio entre columnas
+            col.style.paddingLeft = "25px";
+            col.style.paddingRight = "25px";
             
             const divFormCheck = document.createElement("div");
             divFormCheck.className = "form-check";
-            divFormCheck.style.padding = "10px 0"; // Espacio vertical interno
+            divFormCheck.style.padding = "10px 0";
             
             const checkbox = document.createElement("input");
             checkbox.type = "checkbox";
@@ -324,15 +327,20 @@
             checkbox.id = `herramienta-${j}`;
             checkbox.name = "herramientas";
             checkbox.value = herramientasBasicas[j];
-            checkbox.style.marginRight = "20px"; // Más espacio entre checkbox y texto
-            checkbox.style.transform = "scale(1)"; // Checkbox más grande
+            checkbox.style.marginRight = "20px";
+            checkbox.style.transform = "scale(1)";
             checkbox.style.marginTop = "5px";
+
+            // ✅ Marcar por defecto si está en la lista
+            if (herramientasSeleccionadas.includes(herramientasBasicas[j])) {
+                checkbox.checked = true;
+            }
             
             const label = document.createElement("label");
             label.className = "form-check-label";
             label.htmlFor = checkbox.id;
             label.textContent = herramientasBasicas[j];
-            label.style.fontSize = "16px"; // Texto más grande
+            label.style.fontSize = "16px";
             
             divFormCheck.appendChild(checkbox);
             divFormCheck.appendChild(label);
@@ -341,9 +349,14 @@
         }
 
         container.appendChild(row);
-        }
-    </script>
+    }
+</script>
+<script>
+  document.getElementById("confirmarBtn").addEventListener("click", function () {
+    window.location.href = "employer-manage-job.html";
+  });
+</script>
 
+    
 </body>
-
 </html>
