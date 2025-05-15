@@ -10,7 +10,7 @@
     <meta name="keywords" content="">
 
     <!-- title -->
-    <title>Jobox - Job Board And Hiring HTML5 Template</title>
+    <title>Candidatos</title>
 
     <!-- favicon -->
     <link rel="icon" type="image/x-icon" href="assets/img/logo/favicon.png">
@@ -106,31 +106,10 @@
                     <div class="col-lg-9">
                         <div class="user-profile-card">
                             <div class="user-profile-card-header">
-                                <h4 class="user-profile-card-title">All Candidates</h4>
-                                <div class="user-profile-card-header-right">
-                                    <div class="user-profile-search">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Search...">
-                                            <i class="far fa-search"></i>
-                                        </div>
-                                    </div>
-                                    <div class="user-profile-sort">
-                                        <form action="#">
-                                            <div class="form-group">
-                                                <select class="select">
-                                                    <option value="1">Last 1 Month</option>
-                                                    <option value="2">Last 2 Months</option>
-                                                    <option value="3">Last 3 Months</option>
-                                                    <option value="4">Last 6 Months</option>
-                                                    <option value="5">Last 1 Year</option>
-                                                </select>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
+                                <h4 class="user-profile-card-title">Todos los Candidatos</h4>
                             </div>
                             <div class="user-profile-candidate">
-                                <div class="row">
+                                <div class="row" id="candidates-container">
                                     <div class="col-md-6 col-lg-6">
                                         <div class="candidate-item">
                                             <div class="candidate-bio">
@@ -145,7 +124,7 @@
                                                 </div>
                                             </div>
                                             <div class="candidate-content">
-                                                <p><i class="far fa-location-dot"></i> Quilicura - Santiago</p>
+                                                <p><i class="far fa-location-dot"></i> Quilicura - Región Metropolitana de Santiago</p>
                                                 <div class="candidate-skill">
                                                     <a href="#">JavaScript</a>
                                                     <a href="#">HTML5</a>
@@ -155,13 +134,12 @@
                                                 </div>
                                                 <div class="candidate-bottom">
                                                     <div class="candidate-salary">
-                                                        $ 520.000 <span>Mensual</span>
+                                                        $ 1.500.000 <span>Mensual</span>
                                                     </div>
                                                     <div class="profile-btns">
-                                                        <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
+                                                        <a href="employer-view-candidate.html" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
                                                         <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-check"></i></a>
-                                                        <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-circle-xmark"></i></a>
-                                                        <a href="#" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-can"></i></a>
+                                                        <a href="#" class="btn btn-outline-danger btn-sm delete-btn" data-candidate="Benjamin Perez"><i class="far fa-trash-can"></i></a>                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -181,7 +159,7 @@
                                                 </div>
                                             </div>
                                             <div class="candidate-content">
-                                                <p><i class="far fa-location-dot"></i> Maipú - Santiago</p>
+                                                <p><i class="far fa-location-dot"></i> Maipú - Región Metropolitana de Santiago</p>
                                                 <div class="candidate-skill">
                                                     <a href="#">Python</a>
                                                     <a href="#">JavaScript</a>
@@ -191,12 +169,11 @@
                                                 </div>
                                                 <div class="candidate-bottom">
                                                     <div class="candidate-salary">
-                                                        $ 520.000 <span>Mensual</span>
+                                                        $ 1.500.000 <span>Mensual</span>
                                                     </div>
                                                     <div class="profile-btns">
                                                         <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
                                                         <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-check"></i></a>
-                                                        <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-circle-xmark"></i></a>
                                                         <a href="#" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-can"></i></a>
                                                     </div>
                                                 </div>
@@ -217,7 +194,7 @@
                                                 </div>
                                             </div>
                                             <div class="candidate-content">
-                                                <p><i class="far fa-location-dot"></i> Providencia - Santiago</p>
+                                                <p><i class="far fa-location-dot"></i> Providencia - Región Metropolitana de Santiago</p>
                                                 <div class="candidate-skill">
                                                     <a href="#">Excel</a>
                                                     <a href="#">Adobe XD</a>
@@ -230,7 +207,6 @@
                                                     <div class="profile-btns">
                                                         <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
                                                         <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-check"></i></a>
-                                                        <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-circle-xmark"></i></a>
                                                         <a href="#" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-can"></i></a>
                                                     </div>
                                                 </div>
@@ -251,7 +227,7 @@
                                                 </div>
                                             </div>
                                             <div class="candidate-content">
-                                                <p><i class="far fa-location-dot"></i> Providencia - Santiago</p>
+                                                <p><i class="far fa-location-dot"></i> Providencia - Región Metropolitana de Santiago</p>
                                                 <div class="candidate-skill">
                                                     <a href="#">Excel</a>
                                                     <a href="#">Adobe XD</a>
@@ -264,7 +240,6 @@
                                                     <div class="profile-btns">
                                                         <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
                                                         <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-check"></i></a>
-                                                        <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-circle-xmark"></i></a>
                                                         <a href="#" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-can"></i></a>
                                                     </div>
                                                 </div>
@@ -300,6 +275,25 @@
         </div>
         <!-- employer-all-candidate end -->
 
+        <!-- Modal de confirmación -->
+        <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmar eliminación</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Desea eliminar al candidato <span id="candidateName"></span> de la lista?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     </main>
 
@@ -333,6 +327,55 @@
     <script src="assets/js/nice-select.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/loadHeaderFooterEmp.js"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Variables para almacenar el candidato a eliminar y su elemento padre
+    let candidateToDelete = null;
+    let candidateElement = null;
+    
+    // Seleccionar todos los botones de eliminar
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    
+    // Configurar el modal de confirmación
+    const confirmDeleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+    const candidateNameSpan = document.getElementById('candidateName');
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    
+    // Agregar evento click a cada botón de eliminar
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Obtener el nombre del candidato desde el atributo data
+            const candidateName = this.getAttribute('data-candidate');
+            
+            // Guardar referencia al candidato y al elemento padre
+            candidateToDelete = candidateName;
+            candidateElement = this.closest('.col-md-6.col-lg-6');
+            
+            // Mostrar el nombre en el modal
+            candidateNameSpan.textContent = candidateName;
+            
+            // Mostrar el modal
+            confirmDeleteModal.show();
+        });
+    });
+    
+    // Configurar el botón de confirmar eliminación
+    confirmDeleteBtn.addEventListener('click', function() {
+        if (candidateElement) {
+            // Eliminar el elemento del DOM
+            candidateElement.remove();
+            
+            // Aquí podrías agregar código para eliminar el candidato de tu base de datos
+            // mediante una llamada AJAX si es necesario
+            
+            // Cerrar el modal
+            confirmDeleteModal.hide();
+        }
+    });
+});
+</script>
 
 </body>
 
