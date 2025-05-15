@@ -25,6 +25,44 @@
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="assets/css/nice-select.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        /* Estilos para ocultar datos */
+        .secure-text {
+            color: transparent;
+            text-shadow: 0 0 8px rgba(0,0,0,0.5);
+            user-select: none;
+        }
+
+        .secure-img {
+            filter: blur(5px);
+            opacity: 0.8;
+            transition: filter 0.3s ease, opacity 0.3s ease;
+        }
+
+        /* Estilos cuando se muestran los datos */
+        .show-data .secure-text {
+            color: inherit;
+            text-shadow: none;
+        }
+
+        .show-data .secure-img {
+            filter: none;
+            opacity: 1;
+        }
+
+        /* Estilos originales de botones */
+        .profile-btns .btn {
+            transition: all 0.3s ease;
+        }
+
+        .profile-btns .btn:hover {
+            transform: scale(1.1);
+        }
+
+        .toggle-secure-btn {
+            margin-left: 5px;
+        }
+    </style>
 
 </head>
 
@@ -81,15 +119,14 @@
                                     <button type="button" class="profile-img-btn"><i class="far fa-camera"></i></button>
                                     <input type="file" class="profile-img-file">
                                 </div>
-                                <h4>Rubic Corner</h4>
-                                <p>Software & Technology Company</p>
+                                <h4>Vertice Call Center</h4>
+                                <p>Call Center</p>
                             </div>
                             <ul class="user-profile-sidebar-list">
                                 <li><a href="employer-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a></li>
                                 <li><a href="employer-profile.html"><i class="far fa-user-tie"></i> Perfil de Empresa</a></li>
                                 <li><a href="employer-post-job.html"><i class="far fa-paper-plane"></i> Publicar un Trabajo</a></li>
-                                <li><a href="employer-manage-job.html"><i class="far fa-briefcase"></i> Gestionar Avisos</a></li>
-                                <li><a class="active" href="employer-candidate.html"><i class="far fa-file-lines"></i> Todos los Candidatos</a></li>
+                                <li><a class="active" href="employer-manage-job.html"><i class="far fa-briefcase"></i> Gestionar Avisos</a></li>
                                 <li><a href="employer-transaction.html"><i class="far fa-coins"></i> Transacción</a></li>
                                 <li><a href="employer-settings.html"><i class="far fa-cog"></i> Configuración</a></li>
                                 <li><a href="index.html"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
@@ -117,8 +154,8 @@
                                                     <img src="assets/img/candidate/01.jpg" alt="thumb">
                                                 </div>
                                                 <div class="candidate-bio-content">
-                                                    <h5><a href="#">Benjamin Perez</a></h5>
-                                                    <span>Analista Programador</span>
+                                                    <h5><a>Benjamin Perez</a></h5>
+                                                    <span>Programador</span>
                                                     <div class="candidate-bio-rate">
                                                     </div>
                                                 </div>
@@ -152,8 +189,8 @@
                                                     <img src="assets/img/candidate/02.jpg" alt="thumb">
                                                 </div>
                                                 <div class="candidate-bio-content">
-                                                    <h5><a href="#">Paulo Ramirez</a></h5>
-                                                    <span>Analista Programador</span>
+                                                    <h5><a>Paulo Ramirez</a></h5>
+                                                    <span>Programador</span>
                                                     <div class="candidate-bio-rate">
                                                     </div>
                                                 </div>
@@ -184,17 +221,16 @@
                                         <div class="candidate-item">
                                             <div class="candidate-bio">
                                                 <div class="candidate-img">
-                                                    <img src="assets/img/candidate/03.jpg" alt="thumb">
+                                                    <img src="assets/img/candidate/03.jpg" alt="thumb" class="secure-img" data-real-src="assets/img/candidate/03.jpg">
                                                 </div>
                                                 <div class="candidate-bio-content">
-                                                    <h5><a href="#">Marie Choate</a></h5>
-                                                    <span>Administrador de Recursos Humanos</span>
-                                                    <div class="candidate-bio-rate">
-                                                    </div>
+                                                    <h5><a class="secure-text" data-real-text="Marie Choate">•••••• ••••••</a></h5>
+                                                    <span class="secure-text" data-real-text="Administrador de Recursos Humanos">•••••••• ••••• ••••••• ••••••••</span>
+                                                    <div class="candidate-bio-rate"></div>
                                                 </div>
                                             </div>
                                             <div class="candidate-content">
-                                                <p><i class="far fa-location-dot"></i> Providencia - Región Metropolitana de Santiago</p>
+                                                <p><i class="far fa-location-dot"></i> <span class="secure-text" data-real-text="Providencia - Región Metropolitana de Santiago">•••••••••• - ••••••• ••••••••••••</span></p>
                                                 <div class="candidate-skill">
                                                     <a href="#">Excel</a>
                                                     <a href="#">Adobe XD</a>
@@ -202,12 +238,15 @@
                                                 </div>
                                                 <div class="candidate-bottom">
                                                     <div class="candidate-salary">
-                                                        $800.000 <span>Mensual</span>
+                                                        <span class="secure-text" data-real-text="$800.000">•••••••</span> <span>Mensual</span>
                                                     </div>
                                                     <div class="profile-btns">
-                                                        <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
+                                                        <a href="employer-view-candidate.html" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
                                                         <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-check"></i></a>
-                                                        <a href="#" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-can"></i></a>
+                                                        <a href="#" class="btn btn-outline-danger btn-sm delete-btn" data-candidate="Marie Choate"><i class="far fa-trash-can"></i></a>
+                                                        <button class="btn btn-outline-primary btn-sm toggle-secure-btn">
+                                                            <i class="fas fa-eye"></i> Mostrar
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -217,17 +256,16 @@
                                         <div class="candidate-item">
                                             <div class="candidate-bio">
                                                 <div class="candidate-img">
-                                                    <img src="assets/img/candidate/03.jpg" alt="thumb">
+                                                    <img src="assets/img/candidate/03.jpg" alt="thumb" class="secure-img" data-real-src="assets/img/candidate/03.jpg">
                                                 </div>
                                                 <div class="candidate-bio-content">
-                                                    <h5><a href="#">Marie Choate</a></h5>
-                                                    <span>Administrador de Recursos Humanos</span>
-                                                    <div class="candidate-bio-rate">
-                                                    </div>
+                                                    <h5><a class="secure-text" data-real-text="Marie Choate">•••••• ••••••</a></h5>
+                                                    <span class="secure-text" data-real-text="Administrador de Recursos Humanos">•••••••• ••••• ••••••• ••••••••</span>
+                                                    <div class="candidate-bio-rate"></div>
                                                 </div>
                                             </div>
                                             <div class="candidate-content">
-                                                <p><i class="far fa-location-dot"></i> Providencia - Región Metropolitana de Santiago</p>
+                                                <p><i class="far fa-location-dot"></i> <span class="secure-text" data-real-text="Providencia - Región Metropolitana de Santiago">•••••••••• - ••••••• ••••••••••••</span></p>
                                                 <div class="candidate-skill">
                                                     <a href="#">Excel</a>
                                                     <a href="#">Adobe XD</a>
@@ -235,12 +273,15 @@
                                                 </div>
                                                 <div class="candidate-bottom">
                                                     <div class="candidate-salary">
-                                                        $800.000 <span>Mensual</span>
+                                                        <span class="secure-text" data-real-text="$800.000">•••••••</span> <span>Mensual</span>
                                                     </div>
                                                     <div class="profile-btns">
-                                                        <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
+                                                        <a href="employer-view-candidate.html" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
                                                         <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-check"></i></a>
-                                                        <a href="#" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-can"></i></a>
+                                                        <a href="#" class="btn btn-outline-danger btn-sm delete-btn" data-candidate="Marie Choate"><i class="far fa-trash-can"></i></a>
+                                                        <button class="btn btn-outline-primary btn-sm toggle-secure-btn">
+                                                            <i class="fas fa-eye"></i> Mostrar
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -328,55 +369,87 @@
     <script src="assets/js/main.js"></script>
     <script src="assets/js/loadHeaderFooterEmp.js"></script>
     <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Variables para almacenar el candidato a eliminar y su elemento padre
-    let candidateToDelete = null;
-    let candidateElement = null;
-    
-    // Seleccionar todos los botones de eliminar
-    const deleteButtons = document.querySelectorAll('.delete-btn');
-    
-    // Configurar el modal de confirmación
-    const confirmDeleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
-    const candidateNameSpan = document.getElementById('candidateName');
-    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-    
-    // Agregar evento click a cada botón de eliminar
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Obtener el nombre del candidato desde el atributo data
-            const candidateName = this.getAttribute('data-candidate');
-            
-            // Guardar referencia al candidato y al elemento padre
-            candidateToDelete = candidateName;
-            candidateElement = this.closest('.col-md-6.col-lg-6');
-            
-            // Mostrar el nombre en el modal
-            candidateNameSpan.textContent = candidateName;
-            
-            // Mostrar el modal
-            confirmDeleteModal.show();
+    document.addEventListener('DOMContentLoaded', function() {
+        // Variables para almacenar el candidato a eliminar y su elemento padre
+        let candidateToDelete = null;
+        let candidateElement = null;
+        
+        // Seleccionar todos los botones de eliminar
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        
+        // Configurar el modal de confirmación
+        const confirmDeleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+        const candidateNameSpan = document.getElementById('candidateName');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        
+        // Agregar evento click a cada botón de eliminar
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // Obtener el nombre del candidato desde el atributo data
+                const candidateName = this.getAttribute('data-candidate');
+
+                // Guardar referencia al candidato y al elemento padre
+                candidateToDelete = candidateName;
+                candidateElement = this.closest('.col-md-6.col-lg-6');
+
+                // Mostrar el nombre en el modal
+                candidateNameSpan.textContent = candidateName;
+
+                // Mostrar el modal
+                confirmDeleteModal.show();
+            });
+        });
+
+        // Configurar el botón de confirmar eliminación
+        confirmDeleteBtn.addEventListener('click', function() {
+            if (candidateElement) {
+                // Eliminar el elemento del DOM
+                candidateElement.remove();
+
+                // Aquí podrías agregar código para eliminar el candidato de tu base de datos
+                // mediante una llamada AJAX si es necesario
+
+                // Cerrar el modal
+                confirmDeleteModal.hide();
+            }
         });
     });
-    
-    // Configurar el botón de confirmar eliminación
-    confirmDeleteBtn.addEventListener('click', function() {
-        if (candidateElement) {
-            // Eliminar el elemento del DOM
-            candidateElement.remove();
-            
-            // Aquí podrías agregar código para eliminar el candidato de tu base de datos
-            // mediante una llamada AJAX si es necesario
-            
-            // Cerrar el modal
-            confirmDeleteModal.hide();
-        }
-    });
-});
-</script>
+    </script>
+    <script>
+    document.querySelectorAll('.toggle-secure-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const candidateItem = this.closest('.candidate-item');
+            const isRevealed = candidateItem.classList.contains('show-data');
 
+            if (!isRevealed) {
+                // Mostrar datos
+                candidateItem.classList.add('show-data');
+                candidateItem.querySelectorAll('.secure-text').forEach(el => {
+                    el.textContent = el.getAttribute('data-real-text');
+                });
+                const img = candidateItem.querySelector('.secure-img');
+                if (img) {
+                    img.src = img.getAttribute('data-real-src');
+                }
+                this.innerHTML = '<i class="fas fa-eye-slash"></i> Ocultar';
+                this.classList.remove('btn-outline-primary');
+                this.classList.add('btn-outline-secondary');
+            } else {
+                // Ocultar datos
+                candidateItem.classList.remove('show-data');
+                candidateItem.querySelectorAll('.secure-text').forEach(el => {
+                    const original = el.getAttribute('data-real-text');
+                    el.textContent = original.replace(/[^\s]/g, '•');
+                });
+                this.innerHTML = '<i class="fas fa-eye"></i> Mostrar';
+                this.classList.remove('btn-outline-secondary');
+                this.classList.add('btn-outline-primary');
+            }
+        });
+    });
+    </script>
 </body>
 
 </html>
