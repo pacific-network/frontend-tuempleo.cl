@@ -77,23 +77,23 @@
                             <img src="assets/img/logo/logo.png" alt="">
                             <p>Crea tu cuenta en Tuempleo</p>
                         </div>
-                        <form action="candidate-form-register.html">
+                        <form id="registerForm">
                             <div class="form-group">
                                 <label>Nombre Completo</label>
-                                <input type="text" class="form-control" placeholder="Tu Nombre">
+                                <input type="text" class="form-control" id="nombre_completo" placeholder="Tu Nombre">
                             </div>
                             <div class="form-group">
                                 <label>Correo Electrónico</label>
-                                <input type="email" class="form-control" placeholder="Tu Correo">
+                                <input type="email" class="form-control" id="email" placeholder="Tu Correo">
                             </div>
                             <div class="form-group">
                                 <label>Contraseña</label>
-                                <input type="password" class="form-control" placeholder="Tu Contraseña">
+                                <input type="password" class="form-control" id="password" placeholder="Tu Contraseña">
                             </div>
                             <div class="form-check form-group">
-                                <input class="form-check-input" type="checkbox" value="" id="agree">
+                                <input class="form-check-input" type="checkbox" id="agree">
                                 <label class="form-check-label" for="agree">
-                                   Acepto los <a href="#">Terminos de Servicio.</a>
+                                    Acepto los <a href="#">Términos de Servicio.</a>
                                 </label>
                             </div>
                             <div class="d-flex align-items-center">
@@ -147,6 +147,8 @@
     <script src="assets/js/nice-select.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/loadHeaderFooterSO.js"></script>
+    <script src="assets/js/modules/auth/auth.js" type="module"></script>
+
 
 </body>
 

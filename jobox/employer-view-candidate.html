@@ -122,6 +122,15 @@
                                     </li>
                                     <li>
                                         <div class="job-single-list-icon">
+                                            <i class="fas fa-file-user"></i>
+                                        </div>
+                                        <div class="job-single-list-info">
+                                            <h6>Curriculum Candidato</h6>
+                                            <p><a href="#" id="downloadEmptyPdf">Descargar aquí</a></p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="job-single-list-icon">
                                             <i class="fas fa-language"></i>
                                         </div>
                                         <div class="job-single-list-info">
@@ -157,6 +166,31 @@
                         </div>
                     </div>
                     <div class="col-lg-8">
+                        <div class="user-profile-card">
+                            <h4 class="user-profile-card-title">Descripción</h4>
+                            <div class="col-lg-12">
+                                <div class="profile-bio">
+                                    <p>
+                                        Soy un joven de 22 años, titulado en Programación y Análisis de Sistemas en AIEP, con un enfoque fuerte en el desarrollo de software y soporte IT. Me apasiona aprender nuevas tecnologías y aplicarlas en proyectos que generen valor. Cuento con experiencia en el desarrollo de soluciones web, administración de bases de datos y soporte técnico a usuarios. Tengo un excelente desempeño trabajando en equipo, una rápida capacidad de aprendizaje y una gran disposición para ayudar a mis compañeros y usuarios a encontrar soluciones eficaces. Busco oportunidades donde pueda seguir desarrollando mis habilidades técnicas y aportar al crecimiento de proyectos tecnológicos
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-profile-wrapper">
+                            <div class="user-profile-card">
+                                <h4 class="user-profile-card-title">Herramientas</h4>
+                                <div class="col-lg-12">
+                                    <div class="profile-skill">
+                                        <a href="#">Figma</a>
+                                        <a href="#">Adobe XD</a>
+                                        <a href="#">Next Js</a>
+                                        <a href="#">React Js</a>
+                                        <a href="#">App</a>
+                                        <a href="#">Node Js</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="user-profile-card">
                                 <h4 class="user-profile-card-title">Educación</h4>
                                 <div class="row g-6 profile-education">
@@ -253,5 +287,38 @@
     <script src="assets/js/nice-select.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/loadHeaderFooterEmp.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfkit/0.12.3/pdfkit.standalone.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/blob-polyfill/5.0.20210301/Blob.min.js"></script>
+<script>
+document.getElementById('downloadEmptyPdf').addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    // Crear un PDF vacío
+    const doc = new PDFDocument();
+    const stream = doc.pipe(blobStream());
+    
+    // Puedes añadir texto vacío si lo deseas
+    doc.text(' ', 50, 50);
+    doc.end();
+    
+    stream.on('finish', function() {
+        const blob = stream.toBlob('application/pdf');
+        const url = URL.createObjectURL(blob);
+        
+        // Crear enlace temporal
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'CV_Vacio.pdf';
+        document.body.appendChild(a);
+        a.click();
+        
+        // Limpiar
+        setTimeout(function() {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }, 100);
+    });
+});
+</script>
 </body>
 </html>
