@@ -25,6 +25,27 @@
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="assets/css/nice-select.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .profile-job-content h6 a,
+.profile-job-list li,
+.profile-job-content ul:not(.profile-job-list) li {
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 27ch; /* 27 caracteres aproximadamente */
+    display: inline-block;
+    vertical-align: top;
+    line-height: 1.4;
+}
+
+.profile-job-list li i,
+.profile-job-content ul:not(.profile-job-list) li i {
+    margin-right: 5px;
+    min-width: 16px;
+    display: inline-block;
+    text-align: center;
+}
+    </style>
 
 </head>
 
@@ -139,12 +160,12 @@
                                                 <div class="profile-job-info">
                                                     <img src="assets/img/job/01.jpg" alt="">
                                                     <div class="profile-job-content">
-                                                        <h6><a href="#">Desarrollador de Software</a></h6>
+                                                        <h6><a href="#">Desarrollador de Aplicaciones</a></h6>
                                                         <ul class="profile-job-list">
-                                                            <li><i class="far fa-briefcase"></i> Pacific Network</li>
+                                                            <li><i class="far fa-briefcase"></i> Vertice Call Center</li>
                                                         </ul>
                                                         <ul>
-                                                            <li><i class="far fa-location-dot"></i> Huechuraba - Santiago</li>
+                                                            <li><i class="far fa-location-dot"></i> Región Metropolitana de Santiago</li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -155,7 +176,7 @@
                                             </td>
                                             <td><span class="badge badge-success">Activo</span></td>
                                             <td>
-                                                <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
+                                                <a href="job-single.html" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
                                                 <a href="#" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-can"></i></a>
                                             </td>
                                         </tr>
@@ -169,7 +190,7 @@
                                                             <li><i class="far fa-briefcase"></i> Pacific Network</li>
                                                         </ul>
                                                         <ul>
-                                                            <li><i class="far fa-location-dot"></i> Huechuraba - Santiago</li>
+                                                            <li><i class="far fa-location-dot"></i> Región Metropolitana de Santiago</li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -194,7 +215,7 @@
                                                             <li><i class="far fa-briefcase"></i> Pacific Network</li>
                                                         </ul>
                                                         <ul>
-                                                            <li><i class="far fa-location-dot"></i> Huechuraba - Santiago</li>
+                                                            <li><i class="far fa-location-dot"></i> Región Metropolitana de Santiago</li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -219,7 +240,7 @@
                                                             <li><i class="far fa-briefcase"></i> Pacific Network</li>
                                                         </ul>
                                                         <ul>
-                                                            <li><i class="far fa-location-dot"></i> Huechuraba - Santiago</li>
+                                                            <li><i class="far fa-location-dot"></i> Región Metropolitana de Santiago</li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -290,6 +311,25 @@
         </div>
         <!-- candidate-applied-job end -->
 
+        <!-- Modal de confirmación (añadir al final del body) -->
+        <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmar eliminación</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Estás seguro que deseas eliminar esta postulación? Esta acción no se puede deshacer.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     </main>
 
@@ -323,6 +363,27 @@
     <script src="assets/js/nice-select.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/loadHeaderFooterSI.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const deleteModal = new bootstrap.Modal('#confirmDeleteModal');
+      let rowToDelete = null;
+    
+      // Configurar botones de eliminar
+      document.querySelectorAll('.btn-outline-danger').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          rowToDelete = this.closest('tr');
+          deleteModal.show();
+        });
+      });
+
+      // Confirmar eliminación
+      document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+        deleteModal.hide();
+        rowToDelete?.remove();
+      });
+    });
+    </script>
 
 </body>
 
