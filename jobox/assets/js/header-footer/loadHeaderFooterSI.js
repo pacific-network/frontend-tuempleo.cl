@@ -3,7 +3,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const footer = document.getElementById("footer-placeholder");
 
   // Cargar header
-  fetch("header-candidate.html")
+  fetch("headers/header-si.html")
     .then(res => {
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       return res.text();
