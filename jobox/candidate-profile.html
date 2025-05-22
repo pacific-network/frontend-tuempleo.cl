@@ -40,15 +40,11 @@
     </div>
     <!-- preloader end -->
 
-
     <!-- header area -->
     <div id="header-placeholder"></div>
     <!-- header area end -->
 
-
-
     <main class="main">
-
         <!-- breadcrumb -->
         <div class="site-breadcrumb">
             <div class="container">
@@ -66,9 +62,6 @@
             </div>
         </div>
 
-
-
-
         <!-- candidate-profile -->
         <div class="user-profile py-120">
             <div class="container">
@@ -77,12 +70,12 @@
                         <div class="user-profile-sidebar">
                             <div class="user-profile-sidebar-top">
                                 <div class="user-profile-img">
-                                    <img src="assets/img/candidate/01.jpg" alt="">
+                                    <img id="profile-photo" src="assets/img/candidate/01.jpg" alt="">
                                     <button type="button" class="profile-img-btn"><i class="far fa-camera"></i></button>
                                     <input type="file" class="profile-img-file">
                                 </div>
-                                <h4>Laura Packer</h4>
-                                <p>Programador</p>
+                                <h4 id="profile-name">Cargando...</h4>
+                                <p id="profile-title">Cargando...</p>
                             </div>
                             <ul class="user-profile-sidebar-list">
                                 <li><a href="candidate-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a></li>
@@ -104,181 +97,110 @@
                     </div>
                     <div class="col-lg-9">
                         <div class="user-profile-wrapper">
+                            <!-- Información básica del Perfil -->
                             <div class="user-profile-card">
                                 <h4 class="user-profile-card-title">Información básica del Perfil</h4>
                                 <div class="row g-5">
                                     <div class="col-lg-6">
                                         <div class="profile-info-list">
                                             <ul>
-                                                <li>Nombre Completo: <span>Benjamin Perez Palacios</span></li>
-                                                <li>RUT: <span>12.345.678-9</span></li>
-                                                <li>Correo: <span>bethapunto@gmail.com</span></li>
-                                                <li>Edad: <span>22 Años</span></li>
-                                                <li>Fecha de Nacimiento: <span>21 Agosto, 1986</span></li>
+                                                <li>Nombre Completo: <span id="full-name">Cargando...</span></li>
+                                                <li>RUT: <span id="rut">Cargando...</span></li>
+                                                <li>Correo: <span id="email">Cargando...</span></li>
+                                                <li>Edad: <span id="age">Cargando...</span></li>
+                                                <li>Fecha de Nacimiento: <span id="birth-date">Cargando...</span></li>
                                             </ul>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="profile-info-list">
                                             <ul>
-                                                <li>Género: <span>Masculino</span></li>
-                                                <li>Estado Civil: <span>Soltero/a</span></li>
-                                                <li>Categoría: <span>Programador</span></li>
-                                                <li>Expectativa Salarial: <span>$1.500.000</span></li>
-                                                <li>Modalidad Esperada: <span>Hibrida</span></li>
+                                                <li>Género: <span id="gender">Cargando...</span></li>
+                                                <li>Estado Civil: <span id="marital-status">Cargando...</span></li>
+                                                <li>Categoría: <span id="job-category">Cargando...</span></li>
+                                                <li>Expectativa Salarial: <span id="expected-salary">Cargando...</span></li>
+                                                <li>Modalidad Esperada: <span id="work-modality">Cargando...</span></li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            
+                            <!-- Educación -->
                             <div class="user-profile-card">
                                 <h4 class="user-profile-card-title">Educación</h4>
-                                <div class="row g-6 profile-education">
-                                    <div class="col-lg-6" style="position: relative;">
-                                        <div class="profile-info-list">
-                                            <ul>
-                                                <li>Titulo: <span>Analista Programador</span></li>
-                                                <li>Institución: <span>IP AIEP</span></li>
-                                                <li>Tipo Estudio: <span>Superior</span></li>
-                                                <li>Estado: <span>Graduado - 2024</span></li>
-                                            </ul>
-                                        </div>
-                                        <!-- Línea vertical -->
-                                        <div style="position: absolute; right: 0; top: 0; bottom: 0; width: 1px; background-color: #ccc;"></div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="profile-info-list">
-                                            <ul>
-                                                <li>Titulo: <span>Ingenieria Civil Informatica</span></li>
-                                                <li>Institución: <span>Universidad Andrés Bello</span></li>
-                                                <li>Tipo Estudio: <span>Universitario</span></li>
-                                                <li>Estado: <span>En Curso</span></li>
-                                            </ul>
+                                <div class="row g-6" id="education-container">
+                                    <!-- Se llenará dinámicamente con JavaScript -->
+                                    <div class="col-12 text-center py-3">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Cargando...</span>
                                         </div>
                                     </div>
                                 </div>
-                            </div>                            
+                            </div>
+                            
+                            <!-- Experiencias -->
                             <div class="user-profile-card">
                                 <h4 class="user-profile-card-title">Experiencias</h4>
-                                <div class="row g-12">
-                                    <div class="col-lg-12">
-                                        <div class="profile-info-list">
-                                            <ul>
-                                                <li>Empresa: <span>Porsche Chile Spa</span></li>
-                                                <li>Cargo: <span>Soporte IT</span></li>
-                                                <li>Actividad Empresa: <span>Holding</span></li>
-                                                <li>Nivel Experiencia: <span>Junior</span></li>
-                                                <li>Área del Cargo: <span>Tecnologias, Sistemas y Telecomunicaciones</span></li>
-                                                <li>Mes - Año Inicio: <span>Abril - 2024</span></li>
-                                                <li>Mes - Año Término: <span>Noviembre - 2024</span></li>
-                                                <li>Descrición Cargo: <span>Manejo de Active Directory, sistema de tickets (plataforma Odoo), instalación de impresoras, preparación de equipos desde 0 y preparación de equipos mediante Intune, mantención física e interna de los equipos, preparación de iPhone, iPad, Android, salida a terreno por asignación de entrega de equipos.
-                                                    Creación de instructivos para una correcta instalación y uso de las herramientas requeridas de la empresa, tales como Citrix, Adobe, Cross, etc. Documentación de procesos de avance sobre los casos</span></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr style="opacity: 1; border: 0; border-top: 1px solid #000; margin: 20px 0;">
-                                <div class="row g-12">
-                                    <div class="col-lg-12">
-                                        <div class="profile-info-list">
-                                            <ul>
-                                                <li>Empresa: <span>Pacific Network</span></li>
-                                                <li>Cargo: <span>Programador</span></li>
-                                                <li>Actividad Empresa: <span>Telecomunicaciones</span></li>
-                                                <li>Nivel Experiencia: <span>Trainee</span></li>
-                                                <li>Área del Cargo: <span>Tecnologias, Sistemas y Telecomunicaciones</span></li>
-                                                <li>Mes - Año Inicio: <span>Noviembre - 2024</span></li>
-                                                <li>Mes - Año Término: <span>Actualmente</span></li>
-                                                <li>Descrición Cargo: <span>Creación de endpoints utilizando Express y JavaScript para el consumo de bases de datos y gestión de datos, implementación de API REST con métodos GET, POST, PUT, DELETE, diseño de interfaces de usuario utilizando Jade (Pug) y Bootstrap, creando dashboards interactivos para mostrar datos visualmente atractivos y funcionales, implementación y gestión de bases de datos MySQL, con consultas optimizadas para mejorar la eficiencia del acceso y la manipulación de datos, integración de tecnologías Backend y Frontend para crear soluciones completas, desde el consumo de datos hasta la presentación visual al usuario, optimización de código y bases de datos para mejorar el rendimiento de las aplicaciones y garantizar la escalabilidad del sistema.</span></li>
-                                            </ul>
+                                <div id="experiences-container">
+                                    <!-- Se llenará dinámicamente con JavaScript -->
+                                    <div class="col-12 text-center py-3">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Cargando...</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            
+                            <!-- Idiomas -->
                             <div class="user-profile-card">
                                 <h4 class="user-profile-card-title">Idiomas</h4>
-                                <div class="row g-4">
-                                    <div class="col-lg-3">
-                                        <div class="language-box">
-                                            <h5>Español</h5>
-                                            <ul>
-                                                <li><strong>Escrito:</strong> Nativo</li>
-                                                <li><strong>Oral:</strong> Nativo</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <div class="language-box">
-                                            <h5>Inglés</h5>
-                                            <ul>
-                                                <li><strong>Escrito:</strong> Intermedio</li>
-                                                <li><strong>Oral:</strong> Intermedio</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <div class="language-box">
-                                            <h5>Alemán</h5>
-                                            <ul>
-                                                <li><strong>Escrito:</strong> Avanzado</li>
-                                                <li><strong>Oral:</strong> Avanzado</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>                            
-                            <div class="user-profile-wrapper">
-                                <div class="user-profile-card">
-                                    <h4 class="user-profile-card-title">Herramientas</h4>
-                                    <div class="col-lg-12">
-                                        <div class="profile-skill">
-                                            <a href="#">Figma</a>
-                                            <a href="#">Adobe XD</a>
-                                            <a href="#">Next Js</a>
-                                            <a href="#">React Js</a>
-                                            <a href="#">App</a>
-                                            <a href="#">Node Js</a>
+                                <div class="row g-4" id="languages-container">
+                                    <!-- Se llenará dinámicamente con JavaScript -->
+                                    <div class="col-12 text-center py-3">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Cargando...</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            
+                            <!-- Descripción -->
                             <div class="user-profile-wrapper">
                                 <div class="user-profile-card">
                                     <h4 class="user-profile-card-title">Descripción</h4>
                                     <div class="col-lg-12">
                                         <div class="profile-bio">
-                                            <p>
-                                                Soy un joven de 22 años, titulado en Programación y Análisis de Sistemas en AIEP, con un enfoque fuerte en el desarrollo de software y soporte IT. Me apasiona aprender nuevas tecnologías y aplicarlas en proyectos que generen valor. Cuento con experiencia en el desarrollo de soluciones web, administración de bases de datos y soporte técnico a usuarios. Tengo un excelente desempeño trabajando en equipo, una rápida capacidad de aprendizaje y una gran disposición para ayudar a mis compañeros y usuarios a encontrar soluciones eficaces. Busco oportunidades donde pueda seguir desarrollando mis habilidades técnicas y aportar al crecimiento de proyectos tecnológicos
-                                            </p>
+                                            <p id="bio-description">Cargando...</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            
+                            <!-- Información de Contacto -->
                             <div class="user-profile-wrapper">
                                 <div class="user-profile-card">
                                     <h4 class="user-profile-card-title">Información de Contacto</h4>
                                     <div class="col-lg-6">
                                         <div class="profile-info-list">
                                             <ul>
-                                                <li>Nacionalidad: <span>Chilena</span></li>
-                                                <li>Región: <span>Metropolitana de Santiago</span></li>
-                                                <li>Comuna: <span>Quilicura</span></li>
-                                                <li>Número de Contacto: <span>+56 9 4667 8783</span></li>
+                                                <li>Nacionalidad: <span id="nationality">Cargando...</span></li>
+                                                <li>Región: <span id="region">Cargando...</span></li>
+                                                <li>Comuna: <span id="commune">Cargando...</span></li>
+                                                <li>Número de Contacto: <span id="phone">Cargando...</span></li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            
+                            <!-- Redes Sociales -->
                             <div class="user-profile-wrapper">
                                 <div class="user-profile-card">
                                     <h4 class="user-profile-card-title">Redes Sociales</h4>
                                     <div class="col-lg-6">
-                                        <div class="profile-social">
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
-                                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                            <a href="#"><i class="fab fa-pinterest"></i></a>
-                                            <a href="#"><i class="fab fa-whatsapp"></i></a>
+                                        <div class="profile-social" id="social-media-container">
+                                            <!-- Se llenará dinámicamente con JavaScript -->
                                         </div>
                                     </div>
                                 </div>
@@ -290,19 +212,13 @@
         </div>
     </main>
 
-
-
     <!-- footer area -->
     <div id="footer-placeholder"></div>
     <!-- footer area end -->
 
-
-
-
     <!-- scroll-top -->
     <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
     <!-- scroll-top end -->
-
 
     <!-- js -->
     <script src="assets/js/jquery-3.6.0.min.js"></script>
@@ -321,6 +237,320 @@
     <script src="assets/js/main.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooterSI.js"></script>
 
-</body>
+    <!-- Script para cargar datos del perfil -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Obtener el token del localStorage
+        const token = localStorage.getItem('token');
+        
+        if (!token) {
+            console.error('No se encontró token en localStorage');
+            window.location.href = 'login.html'; // Redirigir al login si no hay token
+            return;
+        }
+        
+        // Decodificar el token para obtener el userId (sub)
+        let userId;
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            userId = payload.sub;
+        } catch (e) {
+            console.error('Error al decodificar el token:', e);
+            return;
+        }
+        
+        if (!userId) {
+            console.error('No se pudo obtener el userId del token');
+            return;
+        }
+        
+        // URL del endpoint
+        const apiUrl = `http://172.25.100.201:3000/v1/postulante/${userId}`;
+        
+        // Función para formatear fecha
+        function formatDate(dateString) {
+            if (!dateString) return 'No especificado';
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('es-ES', options);
+        }
+        
+        // Función para calcular edad
+        function calculateAge(birthDate) {
+            if (!birthDate) return 'No especificado';
+            const today = new Date();
+            const birth = new Date(birthDate);
+            let age = today.getFullYear() - birth.getFullYear();
+            const monthDiff = today.getMonth() - birth.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+                age--;
+            }
+            
+            return age;
+        }
+        
+        // Función para formatear salario
+        function formatSalary(salary) {
+            if (!salary) return 'No especificado';
+            const numericValue = String(salary).replace(/[^0-9]/g, '');
+            const amoun = Number(numericValue);
 
+            if (isNaN(amoun)) {
+                return 'No especificado';
+            }
+
+            return '$' + amoun.toLocaleString('es-CL', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+        }
+        
+        // Función para cargar los datos del perfil
+        async function loadProfileData() {
+            try {
+                const response = await fetch(apiUrl, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status}`);
+                }
+
+                const data = await response.json();
+                updateProfileUI(data);
+            } catch (error) {
+                console.error('Error al cargar el perfil:', error);
+                // Mostrar mensaje de error al usuario
+                alert('Error al cargar los datos del perfil. Por favor intenta nuevamente.');
+            }
+        }
+        
+        // Función para actualizar la UI con los datos del perfil
+        function updateProfileUI(profileData) {
+            // Datos del usuario
+            const usuario = profileData.usuario;
+            const datosPersonales = profileData.data.datos_personales;
+            const preferencias = profileData.data.preferencias;
+            
+            // Actualizar sidebar
+            document.getElementById('profile-name').textContent = `${usuario.nombres} ${usuario.apellidos}`;
+            document.getElementById('profile-title').textContent = preferencias?.categoria_empleo || 'No especificado';
+            
+            // Actualizar información básica
+            document.getElementById('full-name').textContent = `${usuario.nombres} ${usuario.apellidos}`;
+            document.getElementById('rut').textContent = usuario.rut || 'No especificado';
+            document.getElementById('email').textContent = usuario.email || 'No especificado';
+            document.getElementById('birth-date').textContent = formatDate(datosPersonales?.fecha_nacimiento);
+            document.getElementById('age').textContent = datosPersonales?.fecha_nacimiento ? 
+                `${calculateAge(datosPersonales.fecha_nacimiento)} años` : 'No especificado';
+            
+            document.getElementById('gender').textContent = datosPersonales?.genero || 'No especificado';
+            document.getElementById('marital-status').textContent = datosPersonales?.estado_civil || 'No especificado';
+            document.getElementById('job-category').textContent = preferencias?.categoria_empleo || 'No especificado';
+            document.getElementById('expected-salary').textContent = preferencias?.salario_esperado ? 
+                formatSalary(preferencias.salario_esperado) : 'No especificado';
+            document.getElementById('work-modality').textContent = preferencias?.modalidad || 'No especificado';
+            
+            // Actualizar educación
+            updateEducationSection(profileData.data.educacion || []);
+            
+            // Actualizar experiencias
+            updateExperienceSection(profileData.data.experiencias || []);
+            
+            // Actualizar idiomas
+            updateLanguagesSection(profileData.data.idiomas || []);
+            
+            // Actualizar descripción
+            document.getElementById('bio-description').textContent = datosPersonales?.descripcion_bio || 'No hay descripción disponible';
+            
+            // Actualizar información de contacto
+            document.getElementById('nationality').textContent = datosPersonales?.nacionalidad || 'No especificado';
+            document.getElementById('region').textContent = datosPersonales?.region || 'No especificado';
+            document.getElementById('commune').textContent = datosPersonales?.comuna || 'No especificado';
+            document.getElementById('phone').textContent = datosPersonales?.telefono || 'No especificado';
+            
+            // Actualizar redes sociales
+            updateSocialMediaSection(profileData.data.redes_sociales || []);
+        }
+        
+        // Función para actualizar la sección de educación
+        // Función para actualizar la sección de educación (2 columnas con línea de separación)
+        function updateEducationSection(educationData) {
+            const container = document.getElementById('education-container');
+            container.innerHTML = '';
+
+            if (!educationData || educationData.length === 0) {
+                container.innerHTML = '<div class="col-12"><p>No hay información de educación disponible</p></div>';
+                return;
+            }
+
+            // Restauramos la clase original del contenedor
+            container.className = 'row g-6';
+
+            // Dividimos los datos en pares para las 2 columnas
+            for (let i = 0; i < educationData.length; i += 2) {
+                const rowGroup = document.createElement('div');
+                rowGroup.className = 'w-100'; // Ocupa todo el ancho
+
+                const row = document.createElement('div');
+                row.className = 'row g-6';
+
+                // Primera columna
+                if (educationData[i]) {
+                    const col1 = document.createElement('div');
+                    col1.className = 'col-lg-6';
+                    col1.innerHTML = `
+                        <div class="profile-info-list">
+                            <ul>
+                                <li>Titulo: <span>${educationData[i].titulo || 'No especificado'}</span></li>
+                                <li>Institución: <span>${educationData[i].institucion || 'No especificado'}</span></li>
+                                <li>Tipo Estudio: <span>${educationData[i].grado || 'No especificado'}</span></li>
+                                <li>Estado: <span>${educationData[i].estado || 'No especificado'}${educationData[i].anio_finalizacion ? ' - ' + educationData[i].anio_finalizacion : ''}</span></li>
+                            </ul>
+                        </div>
+                    `;
+                    row.appendChild(col1);
+                }
+
+                // Segunda columna
+                if (educationData[i + 1]) {
+                    const col2 = document.createElement('div');
+                    col2.className = 'col-lg-6';
+                    col2.innerHTML = `
+                        <div class="profile-info-list">
+                            <ul>
+                                <li>Titulo: <span>${educationData[i + 1].titulo || 'No especificado'}</span></li>
+                                <li>Institución: <span>${educationData[i + 1].institucion || 'No especificado'}</span></li>
+                                <li>Tipo Estudio: <span>${educationData[i + 1].grado || 'No especificado'}</span></li>
+                                <li>Estado: <span>${educationData[i + 1].estado || 'No especificado'}${educationData[i + 1].anio_finalizacion ? ' - ' + educationData[i + 1].anio_finalizacion : ''}</span></li>
+                            </ul>
+                        </div>
+                    `;
+                    row.appendChild(col2);
+                }
+
+                rowGroup.appendChild(row);
+
+                // Añadir línea de separación después de cada par (excepto el último)
+                if (i + 2 < educationData.length) {
+                    const separator = document.createElement('hr');
+                    separator.style.opacity = '1';
+                    separator.style.border = '0';
+                    separator.style.borderTop = '1px solid #ddd';
+                    separator.style.margin = '20px 0';
+                    rowGroup.appendChild(separator);
+                }
+
+                container.appendChild(rowGroup);
+            }
+        }
+        
+        // Función para actualizar la sección de experiencias
+        function updateExperienceSection(experiences) {
+            const container = document.getElementById('experiences-container');
+            container.innerHTML = '';
+            
+            if (experiences.length === 0) {
+                container.innerHTML = '<div class="col-12"><p>No hay información de experiencias disponibles</p></div>';
+                return;
+            }
+            
+            experiences.forEach((exp, index) => {
+                const expElement = document.createElement('div');
+                expElement.className = 'row g-12';
+                expElement.innerHTML = `
+                    <div class="col-lg-12">
+                        <div class="profile-info-list">
+                            <ul>
+                                <li>Empresa: <span>${exp.empresa || 'No especificado'}</span></li>
+                                <li>Cargo: <span>${exp.cargo || 'No especificado'}</span></li>
+                                <li>Actividad Empresa: <span>${exp.actividad_empresa || 'No especificado'}</span></li>
+                                <li>Nivel Experiencia: <span>${exp.nivel_experiencia || 'No especificado'}</span></li>
+                                <li>Área del Cargo: <span>${exp.area_cargo || 'No especificado'}</span></li>
+                                <li>Mes - Año Inicio: <span>${exp.anno_inicio || 'No especificado'}</span></li>
+                                <li>Mes - Año Término: <span>${exp.anno_termino || 'Actualmente'}</span></li>
+                                <li>Descrición Cargo: <span>${exp.descripcion || 'No hay descripción disponible'}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(expElement);
+                
+                // Agregar separador si no es el último elemento
+                if (index < experiences.length - 1) {
+                    const separator = document.createElement('hr');
+                    separator.style.opacity = '1';
+                    separator.style.border = '0';
+                    separator.style.borderTop = '1px solid #000';
+                    separator.style.margin = '20px 0';
+                    container.appendChild(separator);
+                }
+            });
+        }
+        
+        // Función para actualizar la sección de idiomas
+        function updateLanguagesSection(languages) {
+            const container = document.getElementById('languages-container');
+            container.innerHTML = '';
+            
+            if (languages.length === 0) {
+                container.innerHTML = '<div class="col-12"><p>No hay información de idiomas disponibles</p></div>';
+                return;
+            }
+            
+            languages.forEach(lang => {
+                const langCol = document.createElement('div');
+                langCol.className = 'col-lg-3';
+                langCol.innerHTML = `
+                    <div class="language-box">
+                        <h5>${lang.idioma || 'Idioma'}</h5>
+                        <ul>
+                            <li><strong>Escrito:</strong> ${lang.nivel_escrito || 'No especificado'}</li>
+                            <li><strong>Oral:</strong> ${lang.nivel_oral || 'No especificado'}</li>
+                        </ul>
+                    </div>
+                `;
+                container.appendChild(langCol);
+            });
+        }
+        
+        // Función para actualizar la sección de redes sociales
+        function updateSocialMediaSection(socialMedia) {
+            const container = document.getElementById('social-media-container');
+            container.innerHTML = '';
+            
+            if (socialMedia.length === 0) {
+                container.innerHTML = '<p>No hay redes sociales disponibles</p>';
+                return;
+            }
+            
+            // Mapeo de redes sociales a iconos
+            const socialIcons = {
+                'LinkedIn': 'fab fa-linkedin-in',
+                'GitHub': 'fab fa-github',
+                'Twitter': 'fab fa-twitter',
+                'Facebook': 'fab fa-facebook-f',
+                'Instagram': 'fab fa-instagram',
+                'Pinterest': 'fab fa-pinterest',
+                'WhatsApp': 'fab fa-whatsapp'
+            };
+            
+            socialMedia.forEach(social => {
+                const iconClass = socialIcons[social.red_social] || 'fas fa-share-alt';
+                const socialLink = document.createElement('a');
+                socialLink.href = social.url || '#';
+                socialLink.target = '_blank';
+                socialLink.rel = 'noopener noreferrer';
+                socialLink.innerHTML = `<i class="${iconClass}"></i>`;
+                container.appendChild(socialLink);
+            });
+        }
+        
+        // Cargar los datos del perfil cuando la página esté lista
+        loadProfileData();
+    });
+    </script>
+</body>
 </html>

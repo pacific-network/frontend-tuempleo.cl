@@ -114,14 +114,13 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>RUT Empresa</label>
-                                                        <input type="text" class="form-control" value="12.345.678-9" readonly>
+                                                        <input type="text" class="form-control" value="12.345.678-9" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Razón Social</label>
-                                                        <input type="text" class="form-control" value="Pacific Network"
-                                                            placeholder="Nombre Empresa">
+                                                        <input type="text" class="form-control" value="Pacific Network" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -134,8 +133,11 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Categoría</label>
-                                                        <input type="text" class="form-control" value="Primera"
-                                                            placeholder="Ingrese Categoría">
+                                                        <select class="select">
+                                                            <option value="">Seleccione una categoria</option>
+                                                            <option selected value="1">Primera</option>
+                                                            <option value="2">Segunda</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -178,7 +180,7 @@
                                                     <div class="form-group">
                                                         <label>Año Inicio Actividades</label>
                                                         <input type="text" class="form-control"
-                                                            value="2020" placeholder="Año fundación" readonly>
+                                                            value="2020" disabled>
                                                     </div>
                                                 </div>
                                                 <h6 class="mb-3">Sobre la Empresa</h6>

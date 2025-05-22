@@ -46,11 +46,7 @@
         <!-- breadcrumb -->
         <div class="site-breadcrumb">
             <div class="container">
-                <h2 class="breadcrumb-title">Ingresar como Candidato</h2>
-                <ul class="breadcrumb-menu">
-                    <li><a href="index.html">Inicio</a></li>
-                    <li class="active">Ingresar</li>
-                </ul>
+                <h1 class="breadcrumb-title">Ingreso Candidatos</h1>
             </div>
             <div class="hero-shape">
                 <img class="hero-shape-1" src="assets/img/shape/03.svg" alt="" />
@@ -161,7 +157,8 @@
         }
 
         try {
-            const response = await fetch('http://172.25.100.201:3000/v1/auth/login', {
+            // Paso 1: Login para obtener token
+            const loginResponse = await fetch('http://172.25.100.201:3000/v1/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -169,27 +166,51 @@
                 body: JSON.stringify({ email, password }),
             });
 
-            if (response.status === 401) {
+            if (loginResponse.status === 401) {
                 messageEl.textContent = 'Usuario no existe o la contraseña es incorrecta.';
                 return;
             }
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                messageEl.textContent = 'Error: ' + errorText;
+            if (!loginResponse.ok) {
+                const errorText = await loginResponse.text();
+                messageEl.textContent = 'Error en el login: ' + errorText;
                 return;
             }
 
-            const data = await response.json();
+            const loginData = await loginResponse.json();
 
-            if (data && data.token) {
-                // Guardar token en localStorage
-                localStorage.setItem('token', data.token);
-
-                // Redireccionar al formulario
-                window.location.href = 'candidate-form-register.html';
-            } else {
+            if (!loginData || !loginData.token) {
                 messageEl.textContent = 'No se recibió un token válido.';
+                return;
+            }
+
+            // Guardar token en localStorage
+            localStorage.setItem('token', loginData.token);
+
+            // Paso 2: Verificar si el usuario ya completó su registro
+            try {
+                const userCheckResponse = await fetch('http://172.25.100.201:3000/v1/postulante/userId', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${loginData.token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (userCheckResponse.status === 404) {
+                    // Usuario no ha completado registro
+                    window.location.href = 'candidate-form-register.html';
+                } else if (userCheckResponse.ok) {
+                    // Usuario ya está registrado
+                    window.location.href = 'candidate-dashboard.html';
+                } else {
+                    // Otro error
+                    const errorText = await userCheckResponse.text();
+                    messageEl.textContent = 'Error verificando usuario: ' + errorText;
+                }
+            } catch (error) {
+                console.error('Error al verificar usuario:', error);
+                messageEl.textContent = 'Error al verificar el estado del usuario.';
             }
 
         } catch (error) {

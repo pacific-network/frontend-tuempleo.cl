@@ -513,6 +513,7 @@
       
       if (response.ok) {
         alert('Datos guardados correctamente!');
+        window.location.href = 'login.html'; // Redirigir al login
       } else {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Error al guardar los datos');
@@ -552,7 +553,7 @@ function getFormData() {
   formacionEntries.forEach(entry => {
     const titulo = entry.querySelector('[name="titulo[]"]').value;
     const institucion = entry.querySelector('[name="institucion[]"]').value;
-    const tipoEstudio = entry.querySelector('[name="tipo_estudio[]"]').value;
+    const grado = entry.querySelector('[name="tipo_estudio[]"]').value;
     const estado = entry.querySelector('[name="estado_estudio[]"]').value;
     const anioInicio = entry.querySelector('[name="anio_inicio[]"]').value;
     const anioFinalizacion = entry.querySelector('[name="anio_finalizacion[]"]')?.value || null;
@@ -560,7 +561,7 @@ function getFormData() {
     educacion.push({
       titulo,
       institucion,
-      tipo_estudio: tipoEstudio,
+      grado: grado,
       estado,
       anio_inicio: anioInicio,
       anio_finalizacion: estado === 'En Curso' ? null : anioFinalizacion
