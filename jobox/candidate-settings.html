@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <!-- meta tags -->
@@ -40,7 +40,6 @@
     </div>
     <!-- preloader end -->
 
-
     <!-- header area -->
     <div id="header-placeholder"></div>
     <!-- header area end -->
@@ -64,9 +63,6 @@
             </div>
         </div>
 
-
-
-
         <!-- candidate-settings -->
         <div class="user-profile py-120">
             <div class="container">
@@ -79,8 +75,8 @@
                                     <button type="button" class="profile-img-btn"><i class="far fa-camera"></i></button>
                                     <input type="file" class="profile-img-file">
                                 </div>
-                                <h4>Laura Packer</h4>
-                                <p>Full Stack Web Developer</p>
+                                <h4 id="sidebar-nombre">Cargando...</h4>
+                                <p id="sidebar-profesion">Profesión</p>
                             </div>
                             <ul class="user-profile-sidebar-list">
                                 <li><a href="candidate-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a></li>
@@ -89,7 +85,7 @@
                                 <li><a href="candidate-cv-manager.html"><i class="far fa-file-zipper"></i> CV Manager</a></li>
                                 <li><a href="candidate-saved-job.html"><i class="far fa-bookmark"></i> Trabajos Guardados</a></li>
                                 <li><a class="active" href="candidate-settings.html"><i class="far fa-cog"></i> Editar Perfil</a></li>
-                                <li><a href="index.html"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
+                                <li><a href="#" id="logout-btn"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
                             </ul>
                         </div>
                         <div class="user-profile-sidebar">
@@ -106,20 +102,19 @@
                                 <div class="user-profile-card">
                                     <h3 class="user-profile-card-title">Actualizar información del Perfil</h3>
                                     <div class="profile-form">
-                                        <form action="#">
+                                        <form id="profile-form">
                                             <div class="row">
                                                 <h4 class="mb-3">Información básica</h4>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Nombre Completo</label>
-                                                        <input type="text" class="form-control" value="Benjamín Andrés Pérez Palacios"
-                                                            placeholder="Nombre Completo">
+                                                        <input type="text" class="form-control" placeholder="Nombre Completo" id="nombre-completo">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Correo</label>
-                                                        <input type="text" class="form-control" value="bethapunto@gmail.com" placeholder="Correo" readonly>
+                                                        <input type="text" class="form-control" placeholder="Correo" id="email" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -127,391 +122,118 @@
                                                         <label>Número de Contacto</label>
                                                         <div class="input-group">
                                                             <select class="form-control" style="width: 100px;" id="codigo_pais">
-                                                                <option disabled selected></option>
+                                                                <option value="" disabled selected>+56</option>
+                                                                <option value="+56">+56 (CL)</option>
+                                                                <option value="+54">+54 (AR)</option>
+                                                                <option value="+55">+55 (BR)</option>
+                                                                <option value="+1">+1 (US)</option>
                                                             </select>
-                                                            <input type="text" class="form-control" placeholder="9 4667 8783" id="numero_telefono">
+                                                            <input type="text" class="form-control" placeholder="Número de teléfono" id="numero_telefono">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2">
                                                     <div class="form-group">
                                                         <label>Edad</label>
-                                                        <input type="text" class="form-control" value="22" placeholder="Edad" disabled>
+                                                        <input type="text" class="form-control" placeholder="Edad" id="edad" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Género</label>
-                                                        <select class="select">
+                                                        <select class="form-control" name="genero" id="genero">
                                                             <option value="">Elija un género</option>
-                                                            <option selected value="1">Masculino</option>
-                                                            <option value="2">Femenino</option>
+                                                            <option value="Masculino">Masculino</option>
+                                                            <option value="Femenino">Femenino</option>
+                                                            <option value="Otro">Otro</option>
+                                                            <option value="Prefiero no decir">Prefiero no decir</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label>Fecha de Nacimiento</label>
-                                                        <input class="form-control" value="23-09-2002" disabled>
+                                                        <input type="date" class="form-control" id="fecha_nacimiento">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Estado Civil</label>
-                                                        <select class="select">
+                                                        <select class="form-control" name="estado_civil" id="estado_civil">
                                                             <option value="">Seleccione Estado</option>
-                                                            <option selected value="1">Soltero/a</option>
-                                                            <option value="2">Casado/a</option>
-                                                            <option value="3">Viudo/a</option>
-                                                            <option value="4">Divorciado/a</option>
+                                                            <option value="Soltero/a">Soltero/a</option>
+                                                            <option value="Casado/a">Casado/a</option>
+                                                            <option value="Viudo/a">Viudo/a</option>
+                                                            <option value="Divorciado/a">Divorciado/a</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label>Descripción Biografica</label>
-                                                            <textarea class="form-control" cols="30" rows="5" placeholder="Soy un joven de 22 años, titulado en Programación y Análisis de Sistemas en AIEP, con un enfoque fuerte en el desarrollo de software y soporte IT. Me apasiona aprender nuevas tecnologías y aplicarlas en proyectos que generen valor. Cuento con experiencia en el desarrollo de soluciones web, administración de bases de datos y soporte técnico a usuarios. Tengo un excelente desempeño trabajando en equipo, una rápida capacidad de aprendizaje y una gran disposición para ayudar a mis compañeros y usuarios a encontrar soluciones eficaces. Busco oportunidades donde pueda seguir desarrollando mis habilidades técnicas y aportar al crecimiento de proyectos tecnológicos."></textarea>
+                                                            <label>Descripción Biográfica</label>
+                                                            <textarea class="form-control" cols="30" rows="5" placeholder="Descripción biográfica" id="descripcion_bio"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <hr size="3px" color="black"/>
                                                 <h4 class="mb-3">Educación</h4>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="todas_carreras_chile">Título</label>
-                                                            <input class="form-control" value="Analista Programador">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="instituciones_chile">Institución</label>
-                                                            <input class="form-control" value="IP AIEP">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Tipo Estudio</label>
-                                                            <input class="form-control" value="Superior">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="form-group">
-                                                            <label>Estado</label>
-                                                            <input class="form-control" value="Graduado">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="form-group">
-                                                            <label>Año de Finalización</label>
-                                                            <input class="form-control" value="2024">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 text-end mb-3">
-                                                        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn">
-                                                            <span class="far fa-trash-alt"></span> Eliminar
+                                                <div class="educacion-container" id="educacion-container">
+                                                    <!-- Las entradas de educación se agregarán dinámicamente aquí -->
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <button type="button" class="theme-btn theme-btn2" id="agregar-educacion">
+                                                            <span class="far fa-plus"></span> Añadir más
                                                         </button>
-                                                    </div>
-                                                    <hr style="opacity: 1; border: 0; border-top: 1px solid #000; margin: 20px 0;">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="todas_carreras_chile">Título</label>
-                                                            <input class="form-control" value="Ingeniero Civil Informático">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="instituciones_chile">Institución</label>
-                                                            <input class="form-control" value="Universidad Andrés Bello">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Tipo de Estudio</label>
-                                                            <input class="form-control" value="Universitario">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="form-group">
-                                                            <label>Estado</label>
-                                                            <input class="form-control" value="En Curso">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 text-end mb-3">
-                                                        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn">
-                                                            <span class="far fa-trash-alt"></span> Eliminar
-                                                        </button>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <button type="button" class="theme-btn theme-btn2"><span class="far fa-plus"></span> Añadir más</button>
-                                                        </div>
                                                     </div>
                                                 </div>
                                                 <hr size="3px" color="black"/>
                                                 <h4 class="mb-3">Idiomas</h4>
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Idioma</label>
-                                                            <input type="text" class="form-control" value="Español" readonly>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Nivel escrito</label>
-                                                            <select class="select">
-                                                                <option value="">Seleccione Estado</option>
-                                                                <option value="1">Básico</option>
-                                                                <option value="2">Intermedio</option>
-                                                                <option value="3">Avanzado</option>
-                                                                <option value="4">Experto</option>
-                                                                <option selected="5">Nativo</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Nivel oral</label>
-                                                            <select class="select">
-                                                                <option value="">Seleccione Estado</option>
-                                                                <option value="1">Básico</option>
-                                                                <option value="2">Intermedio</option>
-                                                                <option value="3">Avanzado</option>
-                                                                <option value="4">Experto</option>
-                                                                <option selected value="5">Nativo</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 text-end mb-3">
-                                                        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn">
-                                                            <span class="far fa-trash-alt"></span> Eliminar
+                                                <div class="idiomas-container" id="idiomas-container">
+                                                    <!-- Las entradas de idiomas se agregarán dinámicamente aquí -->
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <button type="button" class="theme-btn theme-btn2" id="agregar-idioma">
+                                                            <span class="far fa-plus"></span> Añadir más
                                                         </button>
-                                                    </div> 
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Idioma</label>
-                                                            <input type="text" class="form-control" value="Inglés" readonly>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Nivel escrito</label>
-                                                            <select class="select">
-                                                                <option value="">Seleccione Estado</option>
-                                                                <option value="1">Básico</option>
-                                                                <option selected value="2">Intermedio</option>
-                                                                <option value="3">Avanzado</option>
-                                                                <option value="4">Experto</option>
-                                                                <option value="5">Nativo</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Nivel oral</label>
-                                                            <select class="select">
-                                                                <option value="">Seleccione Estado</option>
-                                                                <option value="1">Básico</option>
-                                                                <option selected value="2">Intermedio</option>
-                                                                <option value="3">Avanzado</option>
-                                                                <option value="4">Experto</option>
-                                                                <option value="5">Nativo</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 text-end mb-3">
-                                                        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn">
-                                                            <span class="far fa-trash-alt"></span> Eliminar
-                                                        </button>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Idioma</label>
-                                                            <input type="text" class="form-control" value="Alemán" readonly>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Nivel escrito</label>
-                                                            <select class="select">
-                                                                <option value="">Seleccione Estado</option>
-                                                                <option value="1">Básico</option>
-                                                                <option selected value="2">Intermedio</option>
-                                                                <option value="3">Avanzado</option>
-                                                                <option value="4">Experto</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Nivel oral</label>
-                                                            <select class="select">
-                                                                <option value="">Seleccione Estado</option>
-                                                                <option value="1">Básico</option>
-                                                                <option selected value="2">Intermedio</option>
-                                                                <option value="3">Avanzado</option>
-                                                                <option value="4">Experto</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 text-end mb-3">
-                                                        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn">
-                                                            <span class="far fa-trash-alt"></span> Eliminar
-                                                        </button>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <button type="button" class="theme-btn theme-btn2"><span class="far fa-plus"></span> Añadir más</button>
-                                                        </div>
                                                     </div>
                                                 </div>
                                                 <hr size="3px" color="black"/>
                                                 <h4 class="row">Experiencias</h4>
-                                                <br>
-                                                <br> 
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Empresa</label>
-                                                            <input type="text" class="form-control" placeholder="Porsche Chile Spa">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Cargo</label>
-                                                            <input type="text" class="form-control" placeholder="Analista de Soporte IT ">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Actividad Empresa</label>
-                                                            <input type="text" class="form-control" placeholder="Holding">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Área del Cargo</label>
-                                                            <input type="text" class="form-control" placeholder="Tecnologias, Sistemas y Telecomunicaciones">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Nivel de Experiencia</label>
-                                                            <input type="text" class="form-control" placeholder="Junior">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Mes - Año Inicio</label>
-                                                            <input type="Text" class="form-control" placeholder="Abril - 2024">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Mes - Año Término</label>
-                                                            <input type="Text" class="form-control" placeholder="Noviembre - 2024">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label>Descripción</label>
-                                                            <textarea class="form-control" cols="30" rows="5" placeholder="Analista de Soporte TI, preparación de equipos de usuarios y de planta, ingreso al dominio de empresa e instalación de software requeridos, administración de usuarios en Active directory/azure/SAP, asignación de licencias, mantenimiento de hardware de equipos e impresoras, soluciones rápidas y eficientes. Uso de Intune en preparación de equipos, preparación de equipos mobiles al dominio de empresa, uso de tomas remotas mediante anydesk, instalación de impresoras a usuarios, creación de instructivos, documentación de procesos"></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 text-end mb-3">
-                                                        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn">
-                                                            <span class="far fa-trash-alt"></span> Eliminar
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <hr style="opacity: 1; border: 0; border-top: 1px solid #000; margin: 20px 0;">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Empresa</label>
-                                                            <input type="text" class="form-control" placeholder="Porsche Chile Spa">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Cargo</label>
-                                                            <input type="text" class="form-control" placeholder="Analista de Soporte IT ">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Actividad Empresa</label>
-                                                            <input type="text" class="form-control" placeholder="Holding">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Área del Cargo</label>
-                                                            <input type="text" class="form-control" placeholder="Tecnologias, Sistemas y Telecomunicaciones">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Nivel de Experiencia</label>
-                                                            <input type="text" class="form-control" placeholder="Junior">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Mes - Año Inicio</label>
-                                                            <input type="Text" class="form-control" placeholder="Abril - 2024">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Mes - Año Término</label>
-                                                            <input type="Text" class="form-control" placeholder="Noviembre - 2024">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label>Descripción</label>
-                                                            <textarea class="form-control" cols="30" rows="5" placeholder="Analista de Soporte TI, preparación de equipos de usuarios y de planta, ingreso al dominio de empresa e instalación de software requeridos, administración de usuarios en Active directory/azure/SAP, asignación de licencias, mantenimiento de hardware de equipos e impresoras, soluciones rápidas y eficientes. Uso de Intune en preparación de equipos, preparación de equipos mobiles al dominio de empresa, uso de tomas remotas mediante anydesk, instalación de impresoras a usuarios, creación de instructivos, documentación de procesos"></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 text-end mb-3">
-                                                        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn">
-                                                            <span class="far fa-trash-alt"></span> Eliminar
-                                                        </button>
-                                                    </div>
+                                                <div class="experiencias-container" id="experiencias-container">
+                                                    <!-- Las entradas de experiencias se agregarán dinámicamente aquí -->
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <button type="button" class="theme-btn theme-btn2"><span class="far fa-plus"></span> Añadir más</button>
+                                                        <button type="button" class="theme-btn theme-btn2" id="agregar-experiencia">
+                                                            <span class="far fa-plus"></span> Añadir más
+                                                        </button>
                                                     </div>
                                                 </div>
-                                                <br>
                                                 <h4 class="col-md-5">Preferencias</h4>
-                                                <br>
-                                                <br>
                                                 <div class="row">
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label>Categoría</label>
-                                                            <input type="text" class="form-control" placeholder="Desarrollo de Software">
+                                                            <input type="text" class="form-control" placeholder="Categoría de empleo" id="categoria_empleo">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label>Salario esperado</label>
-                                                            <input type="text" class="form-control" placeholder="1.500.000">
+                                                            <input type="text" class="form-control" placeholder="Salario esperado" id="salario_esperado">
                                                         </div>
                                                     </div>                                                                                                          
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label>Modalidad</label>
-                                                            <select class="form-control" name="modalidad">
+                                                            <select class="form-control" name="modalidad" id="modalidad">
                                                                 <option value="">Seleccione una opción</option>
                                                                 <option value="presencial">Presencial</option>
                                                                 <option value="online">Online</option>
-                                                                <option selected value="hibrida">Híbrida</option>
+                                                                <option value="hibrida">Híbrida</option>
                                                                 <option value="part-time">Part-Time</option>
                                                                 <option value="full-time">Full-Time</option>
                                                                 <option value="freelance">Freelance</option>
@@ -520,71 +242,50 @@
                                                         </div>
                                                     </div>                                    
                                                 </div>
-                                                <h6 class="mb-3">Herramientas</h6>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label>Herramientas (Max 10 Herramientas)</label>
-                                                        <input type="text" class="form-control" value="Figma, Adobe XD, Next Js, React Js, App, Node Js" placeholder="Skills">
-                                                    </div>
-                                                </div>
                                                 <h6 class="mb-3">Información de Contacto</h6>
                                                 <div class="col-md-5">
                                                     <div class="form-group">
                                                         <label>Región</label>
-                                                        <input type="text" class="form-control" value="Región Metropolitana" placeholder="Escriba una Región">
+                                                        <input type="text" class="form-control" placeholder="Región" id="region">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label>Comuna</label>
-                                                        <input type="text" class="form-control" value="Quilicura" placeholder="Escriba una Comuna">
+                                                        <input type="text" class="form-control" placeholder="Comuna" id="comuna">
                                                     </div>
                                                 </div>
                                                 <h6 class="mb-3">Redes Sociales</h6>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Facebook URL</label>
-                                                        <input type="text" class="form-control" value="https://www.facebook.com/" placeholder="https://www.facebook.com/">
+                                                        <input type="text" class="form-control" placeholder="Facebook URL" id="facebook_url">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Twitter URL</label>
-                                                        <input type="text" class="form-control" value="https://www.twitter.com/" placeholder="https://www.twitter.com/">
+                                                        <input type="text" class="form-control" placeholder="Twitter URL" id="twitter_url">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Linkedin URL</label>
-                                                        <input type="text" class="form-control" value="https://www.linkedin.com/" placeholder="https://www.linkedin.com/">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Pinterest URL</label>
-                                                        <input type="text" class="form-control" value="https://www.pinterest.com/" placeholder="https://www.pinterest.com/">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Whatsapp URL</label>
-                                                        <input type="text" class="form-control" value="https://www.whatsapp.com" placeholder="https://www.whatsapp.com/">
+                                                        <input type="text" class="form-control" placeholder="LinkedIn URL" id="linkedin_url">
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- Botón original -->
-                                            <button type="button" class="theme-btn mt-4" onclick="mostrarConfirmacion()">
+                                            <button type="button" class="theme-btn mt-4" id="btn-actualizar">
                                                 Actualizar información 
                                                 <i class="far fa-user"></i>
                                             </button>
 
-                                            <!-- Contenedor de confirmación (oculto por defecto) -->
                                             <div id="confirmacion-box" style="display: none; margin-top: 15px;">
                                                 <p>¿Estás seguro de que quieres actualizar la información?</p>
-                                                <button class="btn btn-success" onclick="confirmarActualizacion()">
+                                                <button type="button" class="btn btn-success" id="btn-confirmar-actualizacion">
                                                     <i class="fas fa-check"></i> Confirmar
                                                 </button>
-                                                <button class="btn btn-danger" onclick="cancelarActualizacion()">
+                                                <button type="button" class="btn btn-danger" id="btn-cancelar-actualizacion">
                                                     <i class="fas fa-times"></i> Cancelar
                                                 </button>
                                             </div>
@@ -594,27 +295,23 @@
                             </div>
                             <div class="col-lg-12">
                                 <div class="user-profile-card">
-                                    <h4 class="user-profile-card-title">Change Password</h4>
+                                    <h4 class="user-profile-card-title">Cambiar Contraseña</h4>
                                     <div class="col-lg-12">
                                         <div class="profile-form">
                                             <form action="#">
                                                 <div class="form-group">
-                                                    <label>Old Password</label>
-                                                    <input type="password" class="form-control"
-                                                        placeholder="Old Password">
+                                                    <label>Contraseña Actual</label>
+                                                    <input type="password" class="form-control" placeholder="Contraseña Actual">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label>New Password</label>
-                                                    <input type="password" class="form-control"
-                                                        placeholder="New Password">
+                                                    <label>Nueva Contraseña</label>
+                                                    <input type="password" class="form-control" placeholder="Nueva Contraseña">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label>Re-Type Password</label>
-                                                    <input type="password" class="form-control"
-                                                        placeholder="Re-Type Password">
+                                                    <label>Confirmar Contraseña</label>
+                                                    <input type="password" class="form-control" placeholder="Confirmar Contraseña">
                                                 </div>
-                                                <button type="button" class="theme-btn mt-4">Change Password <i
-                                                        class="far fa-key"></i></button>
+                                                <button type="button" class="theme-btn mt-4">Cambiar Contraseña <i class="far fa-key"></i></button>
                                             </form>
                                         </div>
                                     </div>
@@ -627,22 +324,15 @@
         </div>
         <!-- candidate-settings end -->
 
-
     </main>
-
-
 
     <!-- footer area -->
     <div id="footer-placeholder"></div>
     <!-- footer area end -->
 
-
-
-
     <!-- scroll-top -->
     <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
     <!-- scroll-top end -->
-
 
     <!-- js -->
     <script src="assets/js/jquery-3.6.0.min.js"></script>
@@ -660,23 +350,785 @@
     <script src="assets/js/nice-select.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooterSI.js"></script>
-    <script src="assets/js/codigo-pais.js"></script>
+    
     <script>
+        // Variables globales
+        let userId = null;
+        let educacionData = [];
+        let experienciasData = [];
+        let idiomasData = [];
+
+        // Función para decodificar el token JWT
+        function parseJwt(token) {
+            try {
+                if (!token) {
+                    throw new Error('No se proporcionó token');
+                }
+                
+                const parts = token.split('.');
+                if (parts.length !== 3) {
+                    throw new Error('Token JWT malformado');
+                }
+                
+                const base64Url = parts[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(
+                    atob(base64)
+                        .split('')
+                        .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                        .join('')
+                );
+
+                const decoded = JSON.parse(jsonPayload);
+                
+                if (!decoded.sub) {
+                    throw new Error('Token no contiene sub (userID)');
+                }
+                
+                return decoded;
+            } catch (e) {
+                console.error('Error al decodificar token:', e);
+                return null;
+            }
+        }
+
+        // Obtener userId del token en localStorage
+        function getUserIdFromToken() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.error('No se encontró token en localStorage');
+                return null;
+            }
+
+            const decodedToken = parseJwt(token);
+            if (!decodedToken) {
+                console.error('Token inválido');
+                return null;
+            }
+
+            return decodedToken.sub;
+        }
+
+        // Función para inicializar el select de actividad empresa
+        function inicializarSelectActividadEmpresa(selectElement) {
+            selectElement.innerHTML = '';
+            
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = '-- Selecciona una actividad --';
+            selectElement.appendChild(defaultOption);
+            
+            const actividades = [
+                'Administración Pública',
+                'Agricultura, Ganadería, Caza y Silvicultura',
+                'Alojamiento y Servicios de Comida',
+                'Arte, Entretenimiento y Recreación',
+                'Comercio al por Mayor y Menor',
+                'Construcción',
+                'Educación',
+                'Explotación de Minas y Canteras',
+                'Fabricación Industrial',
+                'Finanzas y Seguros',
+                'Información y Comunicaciones',
+                'Otras Industrias',
+                'Otras Industrias Manufactureras',
+                'Otras Industrias de Servicios',
+                'Otros Servicios',
+                'Profesionales, Científicos y Técnicos',
+                'Salud Humana y Asistencia Social',
+                'Servicios Administrativos y de Apoyo',
+                'Servicios Comunitarios, Sociales y Personales',
+                'Servicios de Transporte y Almacenamiento',
+                'Suministro de Electricidad, Gas, Agua y Gestión de Residuos',
+                'Tecnologías de Información y Comunicación (TIC)'
+            ];
+            
+            actividades.sort();
+            
+            actividades.forEach(actividad => {
+                const option = document.createElement('option');
+                option.value = actividad;
+                option.textContent = actividad;
+                selectElement.appendChild(option);
+            });
+            
+            if (typeof $.fn.niceSelect !== 'undefined') {
+                $(selectElement).niceSelect();
+            }
+        }
+
+        // Función para cargar los datos del postulante
+        async function cargarDatosPostulante() {
+            console.log('Iniciando carga de datos del postulante...');
+            
+            if (!userId) {
+                const error = 'No se pudo obtener el userId del token';
+                console.error(error);
+                throw new Error(error);
+            }
+
+            try {
+                console.log('Realizando solicitud a la API...');
+                const response = await fetch(`http://172.25.100.201:3000/v1/postulante/${userId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                
+                console.log('Respuesta recibida:', response);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Error HTTP: ${response.status} - ${errorText}`);
+                }
+                
+                const data = await response.json();
+                console.log('Datos recibidos:', data);
+                
+                llenarFormulario(data);
+                actualizarSidebar(data);
+                
+                return data;
+            } catch (error) {
+                console.error('Error en cargarDatosPostulante:', error);
+                throw error;
+            }
+        }
+
+        // Función para actualizar el sidebar
+        function actualizarSidebar(data) {
+            if (data.usuario) {
+                const nombreCompleto = `${data.usuario.nombres || ''} ${data.usuario.apellidos || ''}`.trim();
+                document.getElementById('sidebar-nombre').textContent = nombreCompleto || 'Nombre no disponible';
+            }
+            
+            if (data.data?.preferencias?.categoria_empleo) {
+                document.getElementById('sidebar-profesion').textContent = data.data.preferencias.categoria_empleo;
+            } else {
+                document.getElementById('sidebar-profesion').textContent = 'Profesión no especificada';
+            }
+        }
+
+        // Función para llenar el formulario con los datos obtenidos
+        function llenarFormulario(data) {
+            console.log('Llenando formulario con datos:', data);
+            const postulante = data;
+            
+            // Datos personales
+            if (postulante.usuario) {
+                document.getElementById('nombre-completo').value = 
+                    `${postulante.usuario.nombres || ''} ${postulante.usuario.apellidos || ''}`.trim();
+                    
+                if (postulante.usuario.email) {
+                    document.getElementById('email').value = postulante.usuario.email;
+                }
+            }
+            
+            // Teléfono
+            if (postulante.data?.datos_personales?.telefono) {
+                const telefono = postulante.data.datos_personales.telefono;
+                // Extraer los últimos 8 dígitos (asumiendo formato internacional)
+                document.getElementById('numero_telefono').value = telefono.substring(telefono.length - 8);
+                
+                // Extraer código de país (primeros caracteres)
+                const codigoPais = telefono.substring(0, telefono.length - 8);
+                const selectCodigo = document.getElementById('codigo_pais');
+                for (let i = 0; i < selectCodigo.options.length; i++) {
+                    if (selectCodigo.options[i].value === codigoPais) {
+                        selectCodigo.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            
+            // Fecha de nacimiento y edad
+            if (postulante.data?.datos_personales?.fecha_nacimiento) {
+                const fechaNac = new Date(postulante.data.datos_personales.fecha_nacimiento);
+                document.getElementById('fecha_nacimiento').value = fechaNac.toISOString().split('T')[0];
+                
+                // Calcular edad
+                const hoy = new Date();
+                let edad = hoy.getFullYear() - fechaNac.getFullYear();
+                const mes = hoy.getMonth() - fechaNac.getMonth();
+                if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNac.getDate())) {
+                    edad--;
+                }
+                document.getElementById('edad').value = edad;
+            }
+            
+            // Género
+            if (postulante.data?.datos_personales?.genero) {
+                document.getElementById('genero').value = postulante.data.datos_personales.genero;
+                // Actualizar nice-select si existe
+                if (typeof $.fn.niceSelect !== 'undefined') {
+                    $('#genero').niceSelect('update');
+                }
+            }
+            
+            // Estado civil
+            if (postulante.data?.datos_personales?.estado_civil) {
+                document.getElementById('estado_civil').value = postulante.data.datos_personales.estado_civil;
+                if (typeof $.fn.niceSelect !== 'undefined') {
+                    $('#estado_civil').niceSelect('update');
+                }
+            }
+            
+            // Descripción biográfica
+            if (postulante.data?.datos_personales?.descripcion_bio) {
+                document.getElementById('descripcion_bio').value = postulante.data.datos_personales.descripcion_bio;
+            }
+            
+            // Región y comuna
+            if (postulante.data?.datos_personales?.region) {
+                document.getElementById('region').value = postulante.data.datos_personales.region;
+            }
+            if (postulante.data?.datos_personales?.comuna) {
+                document.getElementById('comuna').value = postulante.data.datos_personales.comuna;
+            }
+            
+            // Educación - Usamos el array de educación directamente del data
+            if (postulante.data?.educacion && postulante.data.educacion.length > 0) {
+                educacionData = postulante.data.educacion;
+                const container = document.getElementById('educacion-container');
+                container.innerHTML = '';
+                
+                postulante.data.educacion.forEach((edu) => {
+                    agregarEducacion(edu);
+                });
+            }
+            
+            // Experiencias
+            if (postulante.data?.experiencias && postulante.data.experiencias.length > 0) {
+                experienciasData = postulante.data.experiencias;
+                const container = document.getElementById('experiencias-container');
+                container.innerHTML = '';
+
+                postulante.data.experiencias.forEach((exp) => {
+                    agregarExperiencia(exp);
+                });
+            }
+            
+            // Idiomas
+            if (postulante.data?.idiomas && postulante.data.idiomas.length > 0) {
+                idiomasData = postulante.data.idiomas;
+                const container = document.getElementById('idiomas-container');
+                container.innerHTML = '';
+                
+                postulante.data.idiomas.forEach((idioma) => {
+                    agregarIdioma(idioma);
+                });
+            }
+            
+            // Preferencias
+            if (postulante.data?.preferencias) {
+                const pref = postulante.data.preferencias;
+                if (pref.modalidad) {
+                    document.getElementById('modalidad').value = pref.modalidad;
+                    if (typeof $.fn.niceSelect !== 'undefined') {
+                        $('#modalidad').niceSelect('update');
+                    }
+                }
+                if (pref.categoria_empleo) {
+                    document.getElementById('categoria_empleo').value = pref.categoria_empleo;
+                }
+                if (pref.salario_esperado) {
+                    // Formatear salario si es necesario
+                    document.getElementById('salario_esperado').value = pref.salario_esperado.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                }
+            }
+            
+            // Redes sociales
+            if (postulante.data?.redes_sociales) {
+                postulante.data.redes_sociales.forEach(red => {
+                    if (red.red_social === 'Facebook') {
+                        document.getElementById('facebook_url').value = red.url || '';
+                    } else if (red.red_social === 'Twitter') {
+                        document.getElementById('twitter_url').value = red.url || '';
+                    } else if (red.red_social === 'LinkedIn') {
+                        document.getElementById('linkedin_url').value = red.url || '';
+                    }
+                });
+            }
+            
+            console.log('Formulario llenado correctamente');
+        }
+
+        function agregarEducacion(educacionData = {}) {
+            const container = document.getElementById('educacion-container');
+            const nuevaEducacion = document.createElement('div');
+            nuevaEducacion.className = 'educacion-entry';
+            
+            const mostrarAnioFinalizacion = educacionData.estado === "Finalizado" || educacionData.estado === "Abandonado";
+            
+            nuevaEducacion.innerHTML = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Título</label>
+                            <input type="text" class="form-control titulo-input" placeholder="Título" value="${educacionData.titulo || ''}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Institución</label>
+                            <input type="text" class="form-control institucion-input" placeholder="Institución" value="${educacionData.institucion || ''}">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Tipo de Estudio</label>
+                            <select class="form-control grado-input">
+                                <option value="">Seleccione tipo</option>
+                                <option value="Universitario">Universitario</option>
+                                <option value="Licenciatura">Licenciatura</option>
+                                <option value="Magister">Magister</option>
+                                <option value="Doctorado">Doctorado</option>
+                                <option value="Diplomado">Diplomado</option>
+                                <option value="Curso">Curso</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Estado</label>
+                            <select class="form-control estado-input">
+                                <option value="">Seleccione estado</option>
+                                <option value="En Curso">En Curso</option>
+                                <option value="Finalizado">Finalizado</option>
+                                <option value="Abandonado">Abandonado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4 anio-finalizacion-container" style="${mostrarAnioFinalizacion ? '' : 'display: none;'}">
+                        <div class="form-group">
+                            <label>Año de Finalización</label>
+                            <input type="text" class="form-control anio-input" placeholder="Año" value="${educacionData.anio_finalizacion || ''}">
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-end mb-3">
+                        <button type="button" class="btn btn-danger btn-sm remove-educacion-btn">
+                            <span class="far fa-trash-alt"></span> Eliminar
+                        </button>
+                    </div>
+                </div>
+                <hr style="opacity: 1; border: 0; border-top: 1px solid #000; margin: 20px 0;">
+            `;
+            
+            // Establecer valores de los selects
+            const gradoSelect = nuevaEducacion.querySelector('.grado-input');
+            if (educacionData.grado) {
+                gradoSelect.value = educacionData.grado;
+            }
+            
+            const estadoSelect = nuevaEducacion.querySelector('.estado-input');
+            if (educacionData.estado) {
+                estadoSelect.value = educacionData.estado;
+            }
+            
+            // Actualizar nice-select si existe
+            if (typeof $.fn.niceSelect !== 'undefined') {
+                $(gradoSelect).niceSelect('update');
+                $(estadoSelect).niceSelect('update');
+            }
+            
+            // Manejar cambio de estado
+            estadoSelect.addEventListener('change', function() {
+                const anioFinalizacionContainer = this.closest('.row').querySelector('.anio-finalizacion-container');
+                const anioInput = anioFinalizacionContainer.querySelector('.anio-input');
+                
+                if (this.value === "Finalizado" || this.value === "Abandonado") {
+                    anioFinalizacionContainer.style.display = 'block';
+                } else {
+                    anioFinalizacionContainer.style.display = 'none';
+                    anioInput.value = '';
+                }
+            });
+            
+            container.appendChild(nuevaEducacion);
+            
+            // Manejar eliminación
+            nuevaEducacion.querySelector('.remove-educacion-btn').addEventListener('click', () => {
+                container.removeChild(nuevaEducacion);
+            });
+        }
+
+        function agregarExperiencia(experienciaData = {}) {
+            const container = document.getElementById('experiencias-container');
+            const nuevaExperiencia = document.createElement('div');
+            nuevaExperiencia.className = 'experiencia-entry';
+            nuevaExperiencia.innerHTML = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Empresa</label>
+                            <input type="text" class="form-control empresa-input" placeholder="Empresa" value="${experienciaData.empresa || ''}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Cargo</label>
+                            <input type="text" class="form-control cargo-input" placeholder="Cargo" value="${experienciaData.cargo || ''}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Actividad Empresa</label>
+                            <select class="form-control actividad-input" placeholder="Actividad"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Área del Cargo</label>
+                            <input type="text" class="form-control area-input" placeholder="Área" value="${experienciaData.area_cargo || ''}">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Nivel de Experiencia</label>
+                            <select class="form-control nivel-input">
+                                <option value="">-- Selecciona un nivel --</option>
+                                <option value="Practicante">Practicante</option>
+                                <option value="Trainee">Trainee</option>
+                                <option value="Junior">Junior</option>
+                                <option value="Semi Senior">Semi Senior</option>
+                                <option value="Senior">Senior</option>
+                                <option value="Líder Técnico">Líder Técnico / Lead</option>
+                                <option value="Manager">Manager</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Año Inicio</label>
+                            <input type="text" class="form-control inicio-input" placeholder="Año inicio" value="${experienciaData.anno_inicio || ''}">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Año Término</label>
+                            <input type="text" class="form-control termino-input" placeholder="Año término" value="${experienciaData.anno_termino || ''}">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Descripción</label>
+                            <textarea class="form-control descripcion-input" cols="30" rows="5" placeholder="Descripción">${experienciaData.descripcion || ''}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-end mb-3">
+                        <button type="button" class="btn btn-danger btn-sm remove-experiencia-btn">
+                            <span class="far fa-trash-alt"></span> Eliminar
+                        </button>
+                    </div>
+                </div>
+                <hr style="opacity: 1; border: 0; border-top: 1px solid #000; margin: 20px 0;">
+            `;
+            
+            // Establecer valores de los selects
+            const nivelSelect = nuevaExperiencia.querySelector('.nivel-input');
+            if (experienciaData.nivel_experiencia) {
+                nivelSelect.value = experienciaData.nivel_experiencia;
+            }
+            
+            // Inicializar select de actividad empresa
+            const actividadSelect = nuevaExperiencia.querySelector('.actividad-input');
+            inicializarSelectActividadEmpresa(actividadSelect);
+            
+            // Establecer valor de actividad empresa después de inicializar
+            setTimeout(() => {
+                if (experienciaData.actividad_empresa) {
+                    actividadSelect.value = experienciaData.actividad_empresa;
+                    if (typeof $.fn.niceSelect !== 'undefined') {
+                        $(actividadSelect).niceSelect('update');
+                    }
+                }
+            }, 100);
+            
+            // Actualizar nice-select si existe
+            if (typeof $.fn.niceSelect !== 'undefined') {
+                $(nivelSelect).niceSelect('update');
+            }
+            
+            container.appendChild(nuevaExperiencia);
+            
+            // Manejar eliminación
+            nuevaExperiencia.querySelector('.remove-experiencia-btn').addEventListener('click', () => {
+                container.removeChild(nuevaExperiencia);
+            });
+        }
+
+        function agregarIdioma(idiomaData = {}) {
+            const container = document.getElementById('idiomas-container');
+            const nuevoIdioma = document.createElement('div');
+            nuevoIdioma.className = 'idioma-entry';
+            nuevoIdioma.innerHTML = `
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Idioma</label>
+                            <input type="text" class="form-control idioma-input" placeholder="Idioma" value="${idiomaData.idioma || ''}">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Nivel escrito</label>
+                            <select class="form-control escrito-input">
+                                <option value="">Seleccione nivel</option>
+                                <option value="Básico">Básico</option>
+                                <option value="Intermedio">Intermedio</option>
+                                <option value="Avanzado">Avanzado</option>
+                                <option value="Experto">Experto</option>
+                                <option value="Nativo">Nativo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Nivel oral</label>
+                            <select class="form-control oral-input">
+                                <option value="">Seleccione nivel</option>
+                                <option value="Básico">Básico</option>
+                                <option value="Intermedio">Intermedio</option>
+                                <option value="Avanzado">Avanzado</option>
+                                <option value="Experto">Experto</option>
+                                <option value="Nativo">Nativo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-end mb-3">
+                        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn">
+                            <span class="far fa-trash-alt"></span> Eliminar
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Establecer valores de los selects
+            if (idiomaData.nivel_escrito) {
+                nuevoIdioma.querySelector('.escrito-input').value = idiomaData.nivel_escrito;
+            }
+            if (idiomaData.nivel_oral) {
+                nuevoIdioma.querySelector('.oral-input').value = idiomaData.nivel_oral;
+            }
+            
+            // Actualizar nice-select si existe
+            if (typeof $.fn.niceSelect !== 'undefined') {
+                $(nuevoIdioma.querySelector('.escrito-input')).niceSelect('update');
+                $(nuevoIdioma.querySelector('.oral-input')).niceSelect('update');
+            }
+            
+            container.appendChild(nuevoIdioma);
+            
+            // Manejar eliminación
+            nuevoIdioma.querySelector('.remove-idioma-btn').addEventListener('click', () => {
+                container.removeChild(nuevoIdioma);
+            });
+        }
+
+        // Función para recolectar los datos del formulario
+        function recolectarDatosFormulario() {
+            const nombreCompleto = document.getElementById('nombre-completo').value.split(' ');
+            const nombres = nombreCompleto[0] || '';
+            const apellidos = nombreCompleto.slice(1).join(' ') || '';
+            
+            const codigoPais = document.getElementById('codigo_pais').value || '';
+            const numeroTelefono = document.getElementById('numero_telefono').value || '';
+            const telefonoCompleto = codigoPais + numeroTelefono;
+            
+            const data = {
+                usuario: {
+                    id: userId,
+                    nombres: nombres,
+                    apellidos: apellidos,
+                    email: document.getElementById('email').value
+                },
+                data: {
+                    datos_personales: {
+                        telefono: telefonoCompleto,
+                        genero: document.getElementById('genero').value,
+                        fecha_nacimiento: document.getElementById('fecha_nacimiento').value,
+                        estado_civil: document.getElementById('estado_civil').value,
+                        descripcion_bio: document.getElementById('descripcion_bio').value,
+                        region: document.getElementById('region').value,
+                        comuna: document.getElementById('comuna').value
+                    },
+                    educacion: [],
+                    experiencias: [],
+                    idiomas: [],
+                    preferencias: {
+                        modalidad: document.getElementById('modalidad').value,
+                        categoria_empleo: document.getElementById('categoria_empleo').value,
+                        salario_esperado: document.getElementById('salario_esperado').value.replace(/\./g, '')
+                    },
+                    redes_sociales: [
+                        {
+                            url: document.getElementById('facebook_url').value,
+                            red_social: "Facebook"
+                        },
+                        {
+                            url: document.getElementById('twitter_url').value,
+                            red_social: "Twitter"
+                        },
+                        {
+                            url: document.getElementById('linkedin_url').value,
+                            red_social: "LinkedIn"
+                        }
+                    ]
+                }
+            };
+            
+            // Recolectar educación
+            document.querySelectorAll('.educacion-entry').forEach(entry => {
+                data.data.educacion.push({
+                    titulo: entry.querySelector('.titulo-input')?.value || '',
+                    institucion: entry.querySelector('.institucion-input')?.value || '',
+                    grado: entry.querySelector('.grado-input')?.value || '',
+                    estado: entry.querySelector('.estado-input')?.value || '',
+                    anio_finalizacion: entry.querySelector('.anio-input')?.value || ''
+                });
+            });
+            
+            // Recolectar experiencias
+            document.querySelectorAll('.experiencia-entry').forEach(entry => {
+                data.data.experiencias.push({
+                    empresa: entry.querySelector('.empresa-input')?.value || '',
+                    cargo: entry.querySelector('.cargo-input')?.value || '',
+                    actividad_empresa: entry.querySelector('.actividad-input')?.value || '',
+                    area_cargo: entry.querySelector('.area-input')?.value || '',
+                    nivel_experiencia: entry.querySelector('.nivel-input')?.value || '',
+                    anno_inicio: entry.querySelector('.inicio-input')?.value || '',
+                    anno_termino: entry.querySelector('.termino-input')?.value || '',
+                    descripcion: entry.querySelector('.descripcion-input')?.value || ''
+                });
+            });
+            
+            // Recolectar idiomas
+            document.querySelectorAll('.idioma-entry').forEach(entry => {
+                data.data.idiomas.push({
+                    idioma: entry.querySelector('.idioma-input')?.value || '',
+                    nivel_escrito: entry.querySelector('.escrito-input')?.value || '',
+                    nivel_oral: entry.querySelector('.oral-input')?.value || ''
+                });
+            });
+            
+            return data;
+        }
+
+        // Función para actualizar los datos del postulante
+        async function actualizarPostulante() {
+            try {
+                const datosActualizados = recolectarDatosFormulario();
+                console.log('Datos a enviar:', datosActualizados);
+                
+                const response = await fetch(`http://172.25.100.201:3000/v1/postulante/update/${userId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify(datosActualizados)
+                });
+                
+                console.log('Respuesta de actualización:', response);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Error HTTP: ${response.status} - ${errorText}`);
+                }
+                
+                const result = await response.json();
+                console.log('Resultado de actualización:', result);
+                
+                alert('Perfil actualizado correctamente');
+                return result;
+            } catch (error) {
+                console.error('Error en actualizarPostulante:', error);
+                alert('Ocurrió un error al actualizar el perfil: ' + error.message);
+                throw error;
+            }
+        }
+
+        // Funciones de confirmación
         function mostrarConfirmacion() {
             document.getElementById("confirmacion-box").style.display = "block";
         }
 
-        function confirmarActualizacion() {
-            // Aquí colocas la lógica real de actualización
-            alert("Información actualizada correctamente.");
+        function ocultarConfirmacion() {
             document.getElementById("confirmacion-box").style.display = "none";
         }
 
-        function cancelarActualizacion() {
-            document.getElementById("confirmacion-box").style.display = "none";
-        }
+        // Inicialización cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM cargado, iniciando carga de datos...');
+            
+            // Verificar autenticación primero
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('No estás autenticado. Redirigiendo a login...');
+                window.location.href = '/login.html';
+                return;
+            }
+
+            // Obtener userId del token
+            userId = getUserIdFromToken();
+            console.log('UserID obtenido:', userId);
+            
+            if (!userId) {
+                alert('Error al obtener información del usuario. Por favor, inicia sesión nuevamente.');
+                window.location.href = '/login.html';
+                return;
+            }
+
+            // Cargar datos del postulante
+            cargarDatosPostulante()
+                .catch(error => {
+                    console.error('Error al cargar datos:', error);
+                    alert('Error al cargar los datos del perfil. Por favor, recarga la página.');
+                });
+            
+            // Configurar botones de añadir
+            document.getElementById('agregar-educacion').addEventListener('click', () => {
+                agregarEducacion({
+                    estado: "En Curso"
+                });
+            });
+            
+            document.getElementById('agregar-experiencia').addEventListener('click', () => {
+                agregarExperiencia();
+            });
+            
+            document.getElementById('agregar-idioma').addEventListener('click', () => {
+                agregarIdioma();
+            });
+            
+            // Configurar botón de actualización
+            document.getElementById('btn-actualizar').addEventListener('click', mostrarConfirmacion);
+            
+            // Configurar botones de confirmación
+            document.getElementById('btn-confirmar-actualizacion').addEventListener('click', () => {
+                actualizarPostulante()
+                    .then(() => {
+                        ocultarConfirmacion();
+                    })
+                    .catch(() => {
+                        ocultarConfirmacion();
+                    });
+            });
+            
+            document.getElementById('btn-cancelar-actualizacion').addEventListener('click', ocultarConfirmacion);
+            
+            // Configurar logout
+            document.getElementById('logout-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('token');
+                window.location.href = '/login.html';
+            });
+            
+            // Inicializar selects con nice-select si es necesario
+            if (typeof $.fn.niceSelect !== 'undefined') {
+                $('select').niceSelect();
+            }
+        });
     </script>
-
 </body>
-
 </html>
