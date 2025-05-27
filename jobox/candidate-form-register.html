@@ -22,6 +22,25 @@
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="assets/css/nice-select.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .required-field::after {
+            content: " *";
+            color: red;
+        }
+        .is-invalid {
+            border-color: #dc3545 !important;
+        }
+        .invalid-feedback {
+            color: #dc3545;
+            font-size: 0.875em;
+            display: none;
+            width: 100%;
+            margin-top: 0.25rem;
+        }
+        .is-invalid ~ .invalid-feedback {
+            display: block;
+        }
+    </style>
 
 </head>
 
@@ -57,376 +76,375 @@
                     <div class="profile-resume">
                         <div class="profile-form">
                             <form id="postulanteForm">
-  <div class="row">
-    <div class="col-md-3">
-      <div class="form-group">
-        <label>RUT</label>
-        <input type="text" class="form-control" id="rut" placeholder="Ingrese tu RUT" required>
-      </div>
-    </div>
-    <div class="col-md-5">
-      <div class="form-group">
-        <label>Nombre</label>
-        <input type="text" class="form-control" id="nombre" placeholder="Ingrese Nombre" required>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="form-group">
-        <label>Apellido</label>
-        <input type="text" class="form-control" id="apellido" placeholder="Ingrese Apellido" required>
-      </div>
-    </div>  
-    <div class="col-md-3">
-      <div class="form-group">
-        <label>Correo</label>
-        <input type="email" class="form-control" id="correo" placeholder="Correo del Registro (Defecto luego del login)" required>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="form-group">
-        <label>Número de Contacto</label>
-        <div class="input-group">
-          <select class="form-control" style="width: 100px;" id="codigo_pais" required>
-            <option value="+56" selected>+56 (CL)</option>
-            <option value="+54">+54 (AR)</option>
-            <option value="+55">+55 (BR)</option>
-            <option value="+1">+1 (US)</option>
-          </select>
-          <input type="text" class="form-control" placeholder="Ej: 9 1234 5678" id="numero_telefono" required>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <div class="form-group">
-        <label>Género</label>
-        <select class="form-control" id="genero" required>
-          <option value="">Seleccionar género</option>
-          <option value="Masculino">Masculino</option>
-          <option value="Femenino">Femenino</option>
-        </select>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label>Fecha de nacimiento</label>
-        <input type="date" class="form-control" id="fecha_nacimiento" required>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label>Estado Civil</label>
-        <select class="form-control" id="estado_civil" required>
-          <option value="">Seleccione Estado</option>
-          <option value="Soltero/a">Soltero/a</option>
-          <option value="Casado/a">Casado/a</option>
-          <option value="Viudo/a">Viudo/a</option>
-          <option value="Divorciado/a">Divorciado/a</option>
-          <option value="Separado/a">Separado/a</option>
-        </select>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="form-group">
-        <label for="region">Región</label>
-        <select id="region" class="form-control" required>
-          <!-- Agrega más regiones según sea necesario -->
-        </select>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="form-group">
-        <label for="comuna">Comuna</label>
-        <select id="comuna" class="form-control" required>
-          <!-- Agrega más comunas según sea necesario -->
-        </select>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label>Nacionalidad</label>
-        <input type="text" class="form-control" id="nacionalidad" placeholder="Ingrese nacionalidad" required>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <div class="form-group">
-        <label>Descripción Biografica</label>
-        <textarea class="form-control" id="descripcion_bio" cols="30" rows="5" placeholder="Escriba una descripción" required></textarea>
-      </div>
-    </div>
-  </div>
-  <h4 class="col-md-5">Educación</h4>
-  <br>
-  <div id="formacion-container">
-    <div class="row formacion-entry">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="todas_carreras_chile">Título</label>
-          <select type="text" class="form-control" name="titulo[]" id="todas_carreras_chile" required></select>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="instituciones_chile">Institución</label>
-          <select type="text" class="form-control" name="institucion[]" id="instituciones_chile" required></select>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="form-group">
-          <label for="tipo_estudio">Tipo de Estudio</label>
-          <select class="form-control" name="tipo_estudio[]" required>
-            <option value="">-- Selecciona un tipo de estudio --</option>
-            <option value="Primario">Primario</option>
-            <option value="Secundario">Secundario</option>
-            <option value="CFT">CFT</option>
-            <option value="Tecnico">Técnico</option>
-            <option value="Superior">Superior</option>
-            <option value="Universitario">Universitario</option>
-            <option value="Postgrado">Postgrado</option>
-            <option value="Doctorado">Doctorado</option>
-            <option value="Otro">Otro</option>
-          </select>
-        </div>
-      </div>                                    
-      <div class="col-md-2">
-        <div class="form-group">
-          <label>Estado</label>
-          <select class="form-control" name="estado_estudio[]" onchange="toggleAnioFinalizacion(this)" required>
-            <option value="">Seleccione Estado</option>
-            <option value="En Curso">En Curso</option>
-            <option value="Graduado">Graduado</option>
-            <option value="Abandonado">Abandonado</option> 
-          </select>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="form-group">
-          <label>Año de Inicio</label>
-          <input type="text" class="form-control" name="anio_inicio[]" placeholder="Ingrese año inicio" required>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="form-group anio-finalizacion-group" style="display: none;">
-          <label>Año de Finalización</label>
-          <input type="text" class="form-control" name="anio_finalizacion[]" placeholder="Ingrese año finalización">
-        </div>
-      </div>
-      
-      <div class="col-md-12 text-end mb-3">
-        <button type="button" class="btn btn-danger btn-sm remove-formacion-btn" onclick="removeFormacion(this)">
-          <span class="far fa-trash-alt"></span> Eliminar
-        </button>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-12 mt-3">
-    <div class="form-group">
-      <button type="button" class="theme-btn theme-btn2" id="addFormacionBtn">
-        <span class="far fa-plus"></span> Añadir más formación
-      </button>
-    </div>
-  </div>
-  <h4 class="col-md-5">Experiencia</h4>
-  <br>
-  <div id="experiencia-container">
-    <div class="row exp-entry">
-      <div class="col-md-4">
-        <div class="form-group">
-          <label>Empresa</label>
-          <input type="text" class="form-control" name="empresa[]" placeholder="Ingrese nombre Empresa" required>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="form-group">
-          <label>Cargo</label>
-          <input type="text" class="form-control" name="cargo[]" placeholder="Ingrese Cargo" required>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="form-group">
-          <label>Actividad Empresa</label>
-          <select type="text" class="form-control" name="actividad_empresa[]" id="actividad_empresa_select" required></select>
-        </div>
-      </div>                                    
-      <div class="col-md-3">
-        <div class="form-group">
-          <label for="nivel_experiencia">Nivel de Experiencia</label>
-          <select class="form-control" name="nivel_experiencia[]" required>
-            <option value="">-- Selecciona un nivel --</option>
-            <option value="Practicante">Practicante</option>
-            <option value="Trainee">Trainee</option>
-            <option value="Junior">Junior</option>
-            <option value="Semi Senior">Semi Senior</option>
-            <option value="Senior">Senior</option>
-            <option value="Líder Técnico">Líder Técnico / Lead</option>
-            <option value="Manager">Manager</option>
-          </select>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="form-group">
-          <label>Área del Cargo</label>
-          <select type="text" class="form-control" name="area_cargo[]" id="area_cargo_select" required></select>
-        </div>
-      </div>                                                                                                       
-      <div class="col-md-3">
-        <div class="form-group">
-          <label>Año Inicio</label>
-          <input type="text" class="form-control" name="anno_inicio[]" placeholder="Ingrese año inicio" required>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="form-group">
-          <label>Año Término</label>
-          <input type="text" class="form-control" name="anno_termino[]" placeholder="Ingrese año término" required>
-        </div>
-      </div>                  
-      <div class="col-md-12">
-        <div class="form-group">
-          <label>Descripción del Cargo</label>
-          <textarea class="form-control" name="descripcion_cargo[]" cols="30" rows="5" placeholder="Escriba una descripción" required></textarea>
-        </div>
-      </div>
-      <div class="col-md-12 text-end mb-3">
-        <button type="button" class="btn btn-danger btn-sm remove-exp-btn" onclick="removeExperience(this)">
-          <span class="far fa-trash-alt"></span> Eliminar
-        </button>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-12 mt-3">
-    <div class="form-group">
-      <button type="button" class="theme-btn theme-btn2" id="addExpBtn">
-        <span class="far fa-plus"></span> Añadir más experiencia
-      </button>
-    </div>
-  </div>
-  <div id="idiomas-container">
-    <div class="row idioma-entry">
-      <div class="col-md-4">
-        <div class="form-group">
-          <label>Idioma</label>
-          <input type="text" class="form-control" name="idioma[]" placeholder="Ej: Español, Inglés, Alemán" required>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="form-group">
-          <label>Nivel escrito</label>
-          <select class="form-control" name="nivel_escrito[]" required>
-            <option value="">Seleccione nivel</option>
-            <option value="Básico">Básico</option>
-            <option value="Intermedio">Intermedio</option>
-            <option value="Avanzado">Avanzado</option>
-            <option value="Experto">Experto</option>
-            <option value="Nativo">Nativo</option>
-          </select>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="form-group">
-          <label>Nivel oral</label>
-          <select class="form-control" name="nivel_oral[]" required>
-            <option value="">Seleccione nivel</option>
-            <option value="Básico">Básico</option>
-            <option value="Intermedio">Intermedio</option>
-            <option value="Avanzado">Avanzado</option>
-            <option value="Experto">Experto</option>
-            <option value="Nativo">Nativo</option>
-          </select>
-        </div>
-      </div>
-      <div class="col-md-12 text-end mb-3">
-        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn" onclick="removeIdioma(this)">
-          <span class="far fa-trash-alt"></span> Eliminar
-        </button>
-      </div>
-    </div>
-  </div>
-  
-  <div class="col-md-12 mt-3">
-    <div class="form-group">
-      <button type="button" class="theme-btn theme-btn2" id="addIdiomaBtn">
-        <span class="far fa-plus"></span> Añadir más idiomas
-      </button>
-    </div>
-  </div>
-  <h4 class="col-md-5">Preferencias</h4>
-  <br>
-  <div class="row">
-    <div class="col-md-4">
-      <div class="form-group">
-        <label>Categoría</label>
-        <input type="text" class="form-control" id="categoria_empleo" placeholder="Ingrese Empleo Deseado" required>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="form-group">
-        <label>Salario esperado</label>
-        <div style="position: relative;">
-          <span style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); font-weight: bold;">$</span>
-          <input type="text" class="form-control" placeholder="Ej: 800.000" id="salario_esperado"
-                 style="padding-left: 25px;" required>
-        </div>
-      </div>
-    </div>                                                                                                          
-    <div class="col-md-4">
-      <div class="form-group">
-        <label>Modalidad</label>
-        <select class="form-control" id="modalidad" required>
-          <option value="">Seleccione una opción</option>
-          <option value="Presencial">Presencial</option>
-          <option value="Online">Online</option>
-          <option value="Híbrida">Híbrida</option>
-          <option value="Part-Time">Part-Time</option>
-          <option value="Full-Time">Full-Time</option>
-          <option value="Freelance">Freelance</option>
-          <option value="Remoto">Remoto</option>
-        </select>
-      </div>
-    </div>                                    
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <div class="form-group">
-        <label>Herramientas</label>
-        <input type="text" class="form-control" id="herramientas" placeholder="Ingrese herramientas (Max 10 Herramientas). Ejemplo: Excel - Word - PowerBi">
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <h6 class="mb-3">Enlaces sociales</h6>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label>URL de Facebook</label>
-        <input type="url" class="form-control" id="facebook_url" placeholder="https://www.facebook.com/">
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label>URL de Twitter</label>
-        <input type="url" class="form-control" id="twitter_url" placeholder="https://www.twitter.com/">
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label>URL de Linkedin</label>
-        <input type="url" class="form-control" id="linkedin_url" placeholder="https://www.linkedin.com/" required>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label>URL de Instagram</label>
-        <input type="url" class="form-control" id="instagram_url" placeholder="https://www.instagram.com/">
-      </div>
-    </div>
-    <div class="col-md-12">
-      <div class="form-group mt-3">
-        <button type="submit" class="theme-btn"><span class="far fa-paper-plane"></span> Enviar tu currículum</button>
-      </div>
-    </div>
-  </div>
-</form>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>RUT</label>
+                                        <input type="text" class="form-control" id="rut" placeholder="Ingrese tu RUT" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <input type="text" class="form-control" id="nombre" placeholder="Ingrese Nombre" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Apellido</label>
+                                        <input type="text" class="form-control" id="apellido" placeholder="Ingrese Apellido" required>
+                                    </div>
+                                </div>  
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Correo</label>
+                                        <input type="email" class="form-control" id="correo" placeholder="Correo del Registro (Defecto luego del login)" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Número de Contacto</label>
+                                        <div class="input-group">
+                                            <select class="form-control" style="width: 100px;" id="codigo_pais" required>
+                                                <option value="+56" selected>+56 (CL)</option>
+                                                <option value="+54">+54 (AR)</option>
+                                                <option value="+55">+55 (BR)</option>
+                                                <option value="+1">+1 (US)</option>
+                                            </select>
+                                            <input type="text" class="form-control" placeholder="Ej: 9 1234 5678" id="numero_telefono" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Género</label>
+                                        <select class="form-control" id="genero" required>
+                                            <option value="">Seleccionar género</option>
+                                            <option value="Masculino">Masculino</option>
+                                            <option value="Femenino">Femenino</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Fecha de nacimiento</label>
+                                        <input type="date" class="form-control" id="fecha_nacimiento" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Estado Civil</label>
+                                        <select class="form-control" id="estado_civil" required>
+                                            <option value="">Seleccione Estado</option>
+                                            <option value="Soltero/a">Soltero/a</option>
+                                            <option value="Casado/a">Casado/a</option>
+                                            <option value="Viudo/a">Viudo/a</option>
+                                            <option value="Divorciado/a">Divorciado/a</option>
+                                            <option value="Separado/a">Separado/a</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="region">Región</label>
+                                        <select id="region" class="form-control" required>
+                                          <!-- Agrega más regiones según sea necesario -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="comuna">Comuna</label>
+                                        <select id="comuna" class="form-control" required>
+                                          <!-- Agrega más comunas según sea necesario -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Nacionalidad</label>
+                                        <input type="text" class="form-control" id="nacionalidad" placeholder="Ingrese nacionalidad" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Descripción Biografica</label>
+                                        <textarea class="form-control" id="descripcion_bio" cols="30" rows="5" placeholder="Escriba una descripción" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <h4 class="col-md-5">Educación</h4>
+                            <br>
+                            <div id="formacion-container">
+                                <div class="row formacion-entry">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="todas_carreras_chile">Título</label>
+                                            <select type="text" class="form-control" name="titulo[]" id="todas_carreras_chile" required></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="instituciones_chile">Institución</label>
+                                            <select type="text" class="form-control" name="institucion[]" id="instituciones_chile" required></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="tipo_estudio">Tipo de Estudio</label>
+                                            <select class="form-control" name="tipo_estudio[]" required>
+                                                <option value="">-- Selecciona un tipo de estudio --</option>
+                                                <option value="Primario">Primario</option>
+                                                <option value="Secundario">Secundario</option>
+                                                <option value="CFT">CFT</option>
+                                                <option value="Tecnico">Técnico</option>
+                                                <option value="Superior">Superior</option>
+                                                <option value="Universitario">Universitario</option>
+                                                <option value="Postgrado">Postgrado</option>
+                                                <option value="Doctorado">Doctorado</option>
+                                                <option value="Otro">Otro</option>
+                                            </select>
+                                        </div>
+                                    </div>                                    
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Estado</label>
+                                            <select class="form-control" name="estado_estudio[]" onchange="toggleAnioFinalizacion(this)" required>
+                                                <option value="">Seleccione Estado</option>
+                                                <option value="En Curso">En Curso</option>
+                                                <option value="Graduado">Graduado</option>
+                                                <option value="Abandonado">Abandonado</option> 
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Año de Inicio</label>
+                                            <input type="text" class="form-control" name="anio_inicio[]" placeholder="Ingrese año inicio" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group anio-finalizacion-group" style="display: none;">
+                                            <label>Año de Finalización</label>
+                                            <input type="text" class="form-control" name="anio_finalizacion[]" placeholder="Ingrese año finalización">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 text-end mb-3">
+                                        <button type="button" class="btn btn-danger btn-sm remove-formacion-btn" onclick="removeFormacion(this)">
+                                          <span class="far fa-trash-alt"></span> Eliminar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-3">
+                                <div class="form-group">
+                                    <button type="button" class="theme-btn theme-btn2" id="addFormacionBtn">
+                                        <span class="far fa-plus"></span> Añadir más formación
+                                    </button>
+                                </div>
+                            </div>
+                            <h4 class="col-md-5">Experiencia</h4>
+                            <br>
+                            <div id="experiencia-container">
+                                <div class="row exp-entry">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Empresa</label>
+                                            <input type="text" class="form-control" name="empresa[]" placeholder="Ingrese nombre Empresa" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Cargo</label>
+                                            <input type="text" class="form-control" name="cargo[]" placeholder="Ingrese Cargo" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Actividad Empresa</label>
+                                            <select type="text" class="form-control" name="actividad_empresa[]" id="actividad_empresa_select" required></select>
+                                        </div>
+                                    </div>                                    
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="nivel_experiencia">Nivel de Experiencia</label>
+                                            <select class="form-control" name="nivel_experiencia[]" required>
+                                                <option value="">-- Selecciona un nivel --</option>
+                                                <option value="Practicante">Practicante</option>
+                                                <option value="Trainee">Trainee</option>
+                                                <option value="Junior">Junior</option>
+                                                <option value="Semi Senior">Semi Senior</option>
+                                                <option value="Senior">Senior</option>
+                                                <option value="Líder Técnico">Líder Técnico / Lead</option>
+                                                <option value="Manager">Manager</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Área del Cargo</label>
+                                            <select type="text" class="form-control" name="area_cargo[]" id="area_cargo_select" required></select>
+                                        </div>
+                                    </div>                                                                                                       
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Año Inicio</label>
+                                            <input type="text" class="form-control" name="anno_inicio[]" placeholder="Ingrese año inicio" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Año Término</label>
+                                            <input type="text" class="form-control" name="anno_termino[]" placeholder="Ingrese año término" required>
+                                        </div>
+                                    </div>                  
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Descripción del Cargo</label>
+                                            <textarea class="form-control" name="descripcion_cargo[]" cols="30" rows="5" placeholder="Escriba una descripción" required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 text-end mb-3">
+                                        <button type="button" class="btn btn-danger btn-sm remove-exp-btn" onclick="removeExperience(this)">
+                                            <span class="far fa-trash-alt"></span> Eliminar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-3">
+                                <div class="form-group">
+                                    <button type="button" class="theme-btn theme-btn2" id="addExpBtn">
+                                        <span class="far fa-plus"></span> Añadir más experiencia
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="idiomas-container">
+                                <div class="row idioma-entry">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Idioma</label>
+                                            <input type="text" class="form-control" name="idioma[]" placeholder="Ej: Español, Inglés, Alemán" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Nivel escrito</label>
+                                            <select class="form-control" name="nivel_escrito[]" required>
+                                                <option value="">Seleccione nivel</option>
+                                                <option value="Básico">Básico</option>
+                                                <option value="Intermedio">Intermedio</option>
+                                                <option value="Avanzado">Avanzado</option>
+                                                <option value="Experto">Experto</option>
+                                                <option value="Nativo">Nativo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Nivel oral</label>
+                                            <select class="form-control" name="nivel_oral[]" required>
+                                                <option value="">Seleccione nivel</option>
+                                                <option value="Básico">Básico</option>
+                                                <option value="Intermedio">Intermedio</option>
+                                                <option value="Avanzado">Avanzado</option>
+                                                <option value="Experto">Experto</option>
+                                                <option value="Nativo">Nativo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 text-end mb-3">
+                                        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn" onclick="removeIdioma(this)">
+                                            <span class="far fa-trash-alt"></span> Eliminar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt-3">
+                                <div class="form-group">
+                                    <button type="button" class="theme-btn theme-btn2" id="addIdiomaBtn">
+                                        <span class="far fa-plus"></span> Añadir más idiomas
+                                    </button>
+                                </div>
+                            </div>
+                            <h4 class="col-md-5">Preferencias</h4>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Categoría</label>
+                                        <input type="text" class="form-control" id="categoria_empleo" placeholder="Ingrese Empleo Deseado" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Salario esperado</label>
+                                        <div style="position: relative;">
+                                            <span style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); font-weight: bold;">$</span>
+                                            <input type="text" class="form-control" placeholder="Ej: 800.000" id="salario_esperado"
+                                                   style="padding-left: 25px;" required>
+                                        </div>
+                                    </div>
+                                </div>                                                                                                          
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Modalidad</label>
+                                        <select class="form-control" id="modalidad" required>
+                                            <option value="">Seleccione una opción</option>
+                                            <option value="Presencial">Presencial</option>
+                                            <option value="Online">Online</option>
+                                            <option value="Híbrida">Híbrida</option>
+                                            <option value="Part-Time">Part-Time</option>
+                                            <option value="Full-Time">Full-Time</option>
+                                            <option value="Freelance">Freelance</option>
+                                            <option value="Remoto">Remoto</option>
+                                        </select>
+                                    </div>
+                                </div>                                    
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Herramientas</label>
+                                        <input type="text" class="form-control" id="herramientas" placeholder="Ingrese herramientas (Max 10 Herramientas). Ejemplo: Excel - Word - PowerBi">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <h6 class="mb-3">Enlaces sociales</h6>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>URL de Facebook</label>
+                                        <input type="url" class="form-control" id="facebook_url" placeholder="https://www.facebook.com/">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>URL de Twitter</label>
+                                        <input type="url" class="form-control" id="twitter_url" placeholder="https://www.twitter.com/">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>URL de Linkedin</label>
+                                        <input type="url" class="form-control" id="linkedin_url" placeholder="https://www.linkedin.com/" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>URL de Instagram</label>
+                                        <input type="url" class="form-control" id="instagram_url" placeholder="https://www.instagram.com/">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group mt-3">
+                                        <button type="submit" class="theme-btn"><span class="far fa-paper-plane"></span> Enviar tu currículum</button>
+                                    </div>
+                                </div>
+                              </div>
+                          </form>
                         </div>
                     </div>
                 </div>
@@ -463,290 +481,7 @@
     <script src="assets/js/experiencia.js"></script>
     <script src="assets/js/formacion.js"></script>
     <script src="assets/js/form-experiencia.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-  // Obtener el token del localStorage
-  const token = localStorage.getItem('token');
-  
-  if (!token) {
-    alert('No se encontró el token de autenticación. Por favor, inicie sesión.');
-    return;
-  }
-  
-  // Decodificar el token para obtener el ID del usuario
-  let userId;
-  try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    userId = payload.sub;
-  } catch (e) {
-    console.error('Error al decodificar el token:', e);
-    alert('Error al obtener la información del usuario. Por favor, inicie sesión nuevamente.');
-    return;
-  }
-  
-  // Configurar el formulario
-  const form = document.getElementById('postulanteForm');
-  
-  // Manejar el envío del formulario
-  form.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    // Validar el formulario
-    if (!form.checkValidity()) {
-      alert('Por favor complete todos los campos requeridos.');
-      return;
-    }
-    
-    // Obtener los datos del formulario
-    const formData = getFormData();
-    
-    try {
-      // Enviar los datos al endpoint
-      const response = await sendData(userId, formData, token);
-      
-      if (response.ok) {
-        alert('Datos guardados correctamente!');
-        window.location.href = 'login.html'; // Redirigir al login
-      } else {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Error al guardar los datos');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Error al enviar los datos: ' + error.message);
-    }
-  });
-  
-  // Funciones para manejar los campos dinámicos
-  document.getElementById('addFormacionBtn').addEventListener('click', addFormacion);
-  document.getElementById('addExpBtn').addEventListener('click', addExperiencia);
-  document.getElementById('addIdiomaBtn').addEventListener('click', addIdioma);
-});
-
-// Función para obtener los datos del formulario
-function getFormData() {
-  // Datos personales
-  const telefono = document.getElementById('codigo_pais').value + document.getElementById('numero_telefono').value;
-  
-  const datosPersonales = {
-    telefono: telefono,
-    genero: document.getElementById('genero').value,
-    fecha_nacimiento: document.getElementById('fecha_nacimiento').value,
-    estado_civil: document.getElementById('estado_civil').value,
-    region: document.getElementById('region').value,
-    comuna: document.getElementById('comuna').value,
-    nacionalidad: document.getElementById('nacionalidad').value,
-    descripcion_bio: document.getElementById('descripcion_bio').value
-  };
-  
-  // Educación
-  const educacion = [];
-  const formacionEntries = document.querySelectorAll('.formacion-entry');
-  
-  formacionEntries.forEach(entry => {
-    const titulo = entry.querySelector('[name="titulo[]"]').value;
-    const institucion = entry.querySelector('[name="institucion[]"]').value;
-    const grado = entry.querySelector('[name="tipo_estudio[]"]').value;
-    const estado = entry.querySelector('[name="estado_estudio[]"]').value;
-    const anioInicio = entry.querySelector('[name="anio_inicio[]"]').value;
-    const anioFinalizacion = entry.querySelector('[name="anio_finalizacion[]"]')?.value || null;
-    
-    educacion.push({
-      titulo,
-      institucion,
-      grado: grado,
-      estado,
-      anio_inicio: anioInicio,
-      anio_finalizacion: estado === 'En Curso' ? null : anioFinalizacion
-    });
-  });
-  
-  // Experiencia
-  const experiencias = [];
-  const expEntries = document.querySelectorAll('.exp-entry');
-  
-  expEntries.forEach(entry => {
-    experiencias.push({
-      empresa: entry.querySelector('[name="empresa[]"]').value,
-      cargo: entry.querySelector('[name="cargo[]"]').value,
-      actividad_empresa: entry.querySelector('[name="actividad_empresa[]"]').value,
-      nivel_experiencia: entry.querySelector('[name="nivel_experiencia[]"]').value,
-      area_cargo: entry.querySelector('[name="area_cargo[]"]').value,
-      anno_inicio: entry.querySelector('[name="anno_inicio[]"]').value,
-      anno_termino: entry.querySelector('[name="anno_termino[]"]').value,
-      descripcion: entry.querySelector('[name="descripcion_cargo[]"]').value
-    });
-  });
-  
-  // Idiomas
-  const idiomas = [];
-  const idiomaEntries = document.querySelectorAll('.idioma-entry');
-  
-  idiomaEntries.forEach(entry => {
-    idiomas.push({
-      idioma: entry.querySelector('[name="idioma[]"]').value,
-      nivel_escrito: entry.querySelector('[name="nivel_escrito[]"]').value,
-      nivel_oral: entry.querySelector('[name="nivel_oral[]"]').value
-    });
-  });
-  
-  // Preferencias
-  const preferencias = {
-    categoria_empleo: document.getElementById('categoria_empleo').value,
-    salario_esperado: document.getElementById('salario_esperado').value,
-    modalidad: document.getElementById('modalidad').value
-  };
-  
-  // Redes sociales
-  const redesSociales = [];
-  
-  if (document.getElementById('facebook_url').value) {
-    redesSociales.push({
-      red_social: 'Facebook',
-      url: document.getElementById('facebook_url').value
-    });
-  }
-  
-  if (document.getElementById('twitter_url').value) {
-    redesSociales.push({
-      red_social: 'Twitter',
-      url: document.getElementById('twitter_url').value
-    });
-  }
-  
-  if (document.getElementById('linkedin_url').value) {
-    redesSociales.push({
-      red_social: 'LinkedIn',
-      url: document.getElementById('linkedin_url').value
-    });
-  }
-  
-  if (document.getElementById('instagram_url').value) {
-    redesSociales.push({
-      red_social: 'Instagram',
-      url: document.getElementById('instagram_url').value
-    });
-  }
-  
-  // Construir el objeto final
-  return {
-    rut: document.getElementById('rut').value,
-    data: {
-      datos_personales: datosPersonales,
-      educacion,
-      experiencias,
-      idiomas,
-      preferencias,
-      redes_sociales: redesSociales
-    }
-  };
-}
-
-// Función para enviar los datos al servidor
-async function sendData(userId, data, token) {
-  const url = `http://172.25.100.201:3000/v1/postulante/${userId}`;
-  
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    },
-    body: JSON.stringify(data)
-  });
-  
-  return response;
-}
-
-// Funciones para manejar campos dinámicos
-function addFormacion() {
-  const container = document.getElementById('formacion-container');
-  const newEntry = document.querySelector('.formacion-entry').cloneNode(true);
-  
-  // Limpiar los valores del nuevo elemento
-  const inputs = newEntry.querySelectorAll('input, select, textarea');
-  inputs.forEach(input => {
-    if (input.type !== 'button') {
-      input.value = '';
-    }
-  });
-  
-  // Ocultar el campo de año de finalización por defecto
-  newEntry.querySelector('.anio-finalizacion-group').style.display = 'none';
-  
-  container.appendChild(newEntry);
-}
-
-function addExperiencia() {
-  const container = document.getElementById('experiencia-container');
-  const newEntry = document.querySelector('.exp-entry').cloneNode(true);
-  
-  // Limpiar los valores del nuevo elemento
-  const inputs = newEntry.querySelectorAll('input, select, textarea');
-  inputs.forEach(input => {
-    if (input.type !== 'button') {
-      input.value = '';
-    }
-  });
-  
-  container.appendChild(newEntry);
-}
-
-function addIdioma() {
-  const container = document.getElementById('idiomas-container');
-  const newEntry = document.querySelector('.idioma-entry').cloneNode(true);
-  
-  // Limpiar los valores del nuevo elemento
-  const inputs = newEntry.querySelectorAll('input, select, textarea');
-  inputs.forEach(input => {
-    if (input.type !== 'button') {
-      input.value = '';
-    }
-  });
-  
-  container.appendChild(newEntry);
-}
-
-function removeFormacion(button) {
-  const entries = document.querySelectorAll('.formacion-entry');
-  if (entries.length > 1) {
-    button.closest('.formacion-entry').remove();
-  } else {
-    alert('Debe mantener al menos un registro de formación.');
-  }
-}
-
-function removeExperience(button) {
-  const entries = document.querySelectorAll('.exp-entry');
-  if (entries.length > 1) {
-    button.closest('.exp-entry').remove();
-  } else {
-    alert('Debe mantener al menos un registro de experiencia.');
-  }
-}
-
-function removeIdioma(button) {
-  const entries = document.querySelectorAll('.idioma-entry');
-  if (entries.length > 1) {
-    button.closest('.idioma-entry').remove();
-  } else {
-    alert('Debe mantener al menos un registro de idioma.');
-  }
-}
-
-function toggleAnioFinalizacion(select) {
-  const entry = select.closest('.formacion-entry');
-  const anioFinalizacionGroup = entry.querySelector('.anio-finalizacion-group');
-  
-  if (select.value === 'En Curso') {
-    anioFinalizacionGroup.style.display = 'none';
-    anioFinalizacionGroup.querySelector('input').removeAttribute('required');
-  } else {
-    anioFinalizacionGroup.style.display = 'block';
-    anioFinalizacionGroup.querySelector('input').setAttribute('required', 'required');
-  }
-}
-    </script>
+    <script src="assets/js/candidate-add-info.js"></script>
     
 </body>
 

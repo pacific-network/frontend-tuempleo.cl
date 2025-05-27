@@ -142,54 +142,56 @@
     <script src="assets/js/header-footer/loadHeaderFooterCan.js"></script>
 
     <script>
-    document.getElementById('loginForm').addEventListener('submit', async function (e) {
-        e.preventDefault();
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
 
-        const messageEl = document.getElementById('message');
-        messageEl.textContent = '';
+            const messageEl = document.getElementById('message');
+            messageEl.textContent = '';
 
-        const email = this.querySelector('input[type="email"]').value.trim();
-        const password = this.querySelector('input[type="password"]').value.trim();
+            const email = this.querySelector('input[type="email"]').value.trim();
+            const password = this.querySelector('input[type="password"]').value.trim();
 
-        if (!email || !password) {
-            messageEl.textContent = 'Por favor completa ambos campos.';
-            return;
-        }
-
-        try {
-            // Paso 1: Login para obtener token
-            const loginResponse = await fetch('http://172.25.100.201:3000/v1/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-            });
-
-            if (loginResponse.status === 401) {
-                messageEl.textContent = 'Usuario no existe o la contraseña es incorrecta.';
+            if (!email || !password) {
+                messageEl.textContent = 'Por favor completa ambos campos.';
                 return;
             }
 
-            if (!loginResponse.ok) {
-                const errorText = await loginResponse.text();
-                messageEl.textContent = 'Error en el login: ' + errorText;
-                return;
-            }
-
-            const loginData = await loginResponse.json();
-
-            if (!loginData || !loginData.token) {
-                messageEl.textContent = 'No se recibió un token válido.';
-                return;
-            }
-
-            // Guardar token en localStorage
-            localStorage.setItem('token', loginData.token);
-
-            // Paso 2: Verificar si el usuario ya completó su registro
             try {
-                const userCheckResponse = await fetch('http://172.25.100.201:3000/v1/postulante/userId', {
+                // Paso 1: Login
+                const loginResponse = await fetch('http://172.25.100.201:3000/v1/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                if (loginResponse.status === 401) {
+                    messageEl.textContent = 'Usuario no existe o la contraseña es incorrecta.';
+                    return;
+                }
+
+                if (!loginResponse.ok) {
+                    const errorText = await loginResponse.text();
+                    messageEl.textContent = 'Error en el login: ' + errorText;
+                    return;
+                }
+
+                const loginData = await loginResponse.json();
+
+                if (!loginData || !loginData.token) {
+                    messageEl.textContent = 'No se recibió un token válido.';
+                    return;
+                }
+
+                localStorage.setItem('token', loginData.token);
+
+                // Decodificar token (extraer sub)
+                const base64Url = loginData.token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const payload = JSON.parse(atob(base64));
+                const userId = payload.sub;
+
+                // Paso 2: Verificar si el usuario ya está registrado
+                const userCheckResponse = await fetch(`http://172.25.100.201:3000/v1/postulante/${userId}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${loginData.token}`,
@@ -198,27 +200,20 @@
                 });
 
                 if (userCheckResponse.status === 404) {
-                    // Usuario no ha completado registro
                     window.location.href = 'candidate-form-register.html';
                 } else if (userCheckResponse.ok) {
-                    // Usuario ya está registrado
                     window.location.href = 'candidate-dashboard.html';
                 } else {
-                    // Otro error
                     const errorText = await userCheckResponse.text();
                     messageEl.textContent = 'Error verificando usuario: ' + errorText;
                 }
-            } catch (error) {
-                console.error('Error al verificar usuario:', error);
-                messageEl.textContent = 'Error al verificar el estado del usuario.';
-            }
 
-        } catch (error) {
-            console.error('Error al conectar con el servidor:', error);
-            messageEl.textContent = 'No se pudo conectar con el servidor.';
-        }
-    });
-</script>
+            } catch (error) {
+                console.error('Error en login:', error);
+                messageEl.textContent = 'No se pudo conectar con el servidor.';
+            }
+        });
+    </script>
 
 </body>
 
