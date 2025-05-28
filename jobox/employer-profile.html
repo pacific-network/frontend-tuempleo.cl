@@ -91,8 +91,22 @@
                                 <li><a href="employer-manage-job.html"><i class="far fa-briefcase"></i> Gestionar Avisos</a></li>
                                 <li><a href="employer-transaction.html"><i class="far fa-coins"></i> Transacción</a></li>
                                 <li><a href="employer-settings.html"><i class="far fa-cog"></i> Configuración</a></li>
-                                <li><a href="index.html"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
+                                <li><a href="#" id="logoutButton"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
                             </ul>
+                        </div>
+                        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="logoutModalLabel">¿Seguro que quieres cerrar sesión?</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar Sesión</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="user-profile-sidebar">
                             <div class="user-profile">      
@@ -224,6 +238,18 @@
     <script src="assets/js/nice-select.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooterEmp.js"></script>
+    <script>
+        document.getElementById('logoutButton').addListener('click', function (e) {
+            e.preventDefault();
+            const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
+            modal.show();
+        });
+
+        document.getElementById('confirmLogout').addEventListener('click', function (){
+            localStorage.removeItem('token');
+            window.location.href = 'index.html';
+        });
+    </script>
 
 </body>
 

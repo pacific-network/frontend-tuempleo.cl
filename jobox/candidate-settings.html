@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <!-- meta tags -->
@@ -40,7 +40,6 @@
     </div>
     <!-- preloader end -->
 
-
     <!-- header area -->
     <div id="header-placeholder"></div>
     <!-- header area end -->
@@ -64,9 +63,6 @@
             </div>
         </div>
 
-
-
-
         <!-- candidate-settings -->
         <div class="user-profile py-120">
             <div class="container">
@@ -79,8 +75,8 @@
                                     <button type="button" class="profile-img-btn"><i class="far fa-camera"></i></button>
                                     <input type="file" class="profile-img-file">
                                 </div>
-                                <h4>Laura Packer</h4>
-                                <p>Full Stack Web Developer</p>
+                                <h4 id="sidebar-nombre">Cargando...</h4>
+                                <p id="sidebar-profesion">Profesión</p>
                             </div>
                             <ul class="user-profile-sidebar-list">
                                 <li><a href="candidate-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a></li>
@@ -89,8 +85,22 @@
                                 <li><a href="candidate-cv-manager.html"><i class="far fa-file-zipper"></i> CV Manager</a></li>
                                 <li><a href="candidate-saved-job.html"><i class="far fa-bookmark"></i> Trabajos Guardados</a></li>
                                 <li><a class="active" href="candidate-settings.html"><i class="far fa-cog"></i> Editar Perfil</a></li>
-                                <li><a href="index.html"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
+                                <li><a href="#" id="logoutButton"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
                             </ul>
+                        </div>
+                        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="logoutModalLabel">¿Seguro que quieres cerrar sesión?</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar Sesión</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="user-profile-sidebar">
                             <div class="user-profile">      
@@ -106,20 +116,19 @@
                                 <div class="user-profile-card">
                                     <h3 class="user-profile-card-title">Actualizar información del Perfil</h3>
                                     <div class="profile-form">
-                                        <form action="#">
+                                        <form id="profile-form">
                                             <div class="row">
                                                 <h4 class="mb-3">Información básica</h4>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Nombre Completo</label>
-                                                        <input type="text" class="form-control" value="Benjamín Andrés Pérez Palacios"
-                                                            placeholder="Nombre Completo">
+                                                        <input type="text" class="form-control" placeholder="Nombre Completo" id="nombre-completo">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Correo</label>
-                                                        <input type="text" class="form-control" value="bethapunto@gmail.com" placeholder="Correo" readonly>
+                                                        <input type="text" class="form-control" placeholder="Correo" id="email" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -127,464 +136,171 @@
                                                         <label>Número de Contacto</label>
                                                         <div class="input-group">
                                                             <select class="form-control" style="width: 100px;" id="codigo_pais">
-                                                                <option disabled selected></option>
+                                                                <option value="" disabled selected>+56</option>
+                                                                <option value="+56">+56 (CL)</option>
+                                                                <option value="+54">+54 (AR)</option>
+                                                                <option value="+55">+55 (BR)</option>
+                                                                <option value="+1">+1 (US)</option>
                                                             </select>
-                                                            <input type="text" class="form-control" placeholder="9 4667 8783" id="numero_telefono">
+                                                            <input type="text" class="form-control" placeholder="Número de teléfono" id="numero_telefono">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2">
                                                     <div class="form-group">
                                                         <label>Edad</label>
-                                                        <input type="text" class="form-control" value="22" placeholder="Edad" disabled>
+                                                        <input type="text" class="form-control" placeholder="Edad" id="edad" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Género</label>
-                                                        <select class="select">
+                                                        <select class="form-control" name="genero" id="genero">
                                                             <option value="">Elija un género</option>
-                                                            <option selected value="1">Masculino</option>
-                                                            <option value="2">Femenino</option>
+                                                            <option value="Masculino">Masculino</option>
+                                                            <option value="Femenino">Femenino</option>
+                                                            <option value="Otro">Otro</option>
+                                                            <option value="Prefiero no decir">Prefiero no decir</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label>Fecha de Nacimiento</label>
-                                                        <input class="form-control" value="23-09-2002" disabled>
+                                                        <input type="date" class="form-control" id="fecha_nacimiento">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Estado Civil</label>
-                                                        <select class="select">
+                                                        <select class="form-control" name="estado_civil" id="estado_civil">
                                                             <option value="">Seleccione Estado</option>
-                                                            <option selected value="1">Soltero/a</option>
-                                                            <option value="2">Casado/a</option>
-                                                            <option value="3">Viudo/a</option>
-                                                            <option value="4">Divorciado/a</option>
+                                                            <option value="Soltero/a">Soltero/a</option>
+                                                            <option value="Casado/a">Casado/a</option>
+                                                            <option value="Viudo/a">Viudo/a</option>
+                                                            <option value="Divorciado/a">Divorciado/a</option>
+                                                            <option value="Separado/a">Separado/a</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label>Descripción Biografica</label>
-                                                            <textarea class="form-control" cols="30" rows="5" placeholder="Soy un joven de 22 años, titulado en Programación y Análisis de Sistemas en AIEP, con un enfoque fuerte en el desarrollo de software y soporte IT. Me apasiona aprender nuevas tecnologías y aplicarlas en proyectos que generen valor. Cuento con experiencia en el desarrollo de soluciones web, administración de bases de datos y soporte técnico a usuarios. Tengo un excelente desempeño trabajando en equipo, una rápida capacidad de aprendizaje y una gran disposición para ayudar a mis compañeros y usuarios a encontrar soluciones eficaces. Busco oportunidades donde pueda seguir desarrollando mis habilidades técnicas y aportar al crecimiento de proyectos tecnológicos."></textarea>
+                                                            <label>Descripción Biográfica</label>
+                                                            <textarea class="form-control" cols="30" rows="5" placeholder="Descripción biográfica" id="descripcion_bio"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <hr size="3px" color="black"/>
                                                 <h4 class="mb-3">Educación</h4>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="todas_carreras_chile">Título</label>
-                                                            <input class="form-control" value="Analista Programador">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="instituciones_chile">Institución</label>
-                                                            <input class="form-control" value="IP AIEP">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Tipo Estudio</label>
-                                                            <input class="form-control" value="Superior">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="form-group">
-                                                            <label>Estado</label>
-                                                            <input class="form-control" value="Graduado">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="form-group">
-                                                            <label>Año de Finalización</label>
-                                                            <input class="form-control" value="2024">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 text-end mb-3">
-                                                        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn">
-                                                            <span class="far fa-trash-alt"></span> Eliminar
+                                                <div class="educacion-container" id="educacion-container">
+                                                    <!-- Las entradas de educación se agregarán dinámicamente aquí -->
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <button type="button" class="theme-btn theme-btn2" id="agregar-educacion">
+                                                            <span class="far fa-plus"></span> Añadir más
                                                         </button>
-                                                    </div>
-                                                    <hr style="opacity: 1; border: 0; border-top: 1px solid #000; margin: 20px 0;">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="todas_carreras_chile">Título</label>
-                                                            <input class="form-control" value="Ingeniero Civil Informático">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="instituciones_chile">Institución</label>
-                                                            <input class="form-control" value="Universidad Andrés Bello">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Tipo de Estudio</label>
-                                                            <input class="form-control" value="Universitario">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="form-group">
-                                                            <label>Estado</label>
-                                                            <input class="form-control" value="En Curso">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 text-end mb-3">
-                                                        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn">
-                                                            <span class="far fa-trash-alt"></span> Eliminar
-                                                        </button>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <button type="button" class="theme-btn theme-btn2"><span class="far fa-plus"></span> Añadir más</button>
-                                                        </div>
                                                     </div>
                                                 </div>
                                                 <hr size="3px" color="black"/>
                                                 <h4 class="mb-3">Idiomas</h4>
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Idioma</label>
-                                                            <input type="text" class="form-control" value="Español" readonly>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Nivel escrito</label>
-                                                            <select class="select">
-                                                                <option value="">Seleccione Estado</option>
-                                                                <option value="1">Básico</option>
-                                                                <option value="2">Intermedio</option>
-                                                                <option value="3">Avanzado</option>
-                                                                <option value="4">Experto</option>
-                                                                <option selected="5">Nativo</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Nivel oral</label>
-                                                            <select class="select">
-                                                                <option value="">Seleccione Estado</option>
-                                                                <option value="1">Básico</option>
-                                                                <option value="2">Intermedio</option>
-                                                                <option value="3">Avanzado</option>
-                                                                <option value="4">Experto</option>
-                                                                <option selected value="5">Nativo</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 text-end mb-3">
-                                                        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn">
-                                                            <span class="far fa-trash-alt"></span> Eliminar
+                                                <div class="idiomas-container" id="idiomas-container">
+                                                    <!-- Las entradas de idiomas se agregarán dinámicamente aquí -->
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <button type="button" class="theme-btn theme-btn2" id="agregar-idioma">
+                                                            <span class="far fa-plus"></span> Añadir más
                                                         </button>
-                                                    </div> 
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Idioma</label>
-                                                            <input type="text" class="form-control" value="Inglés" readonly>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Nivel escrito</label>
-                                                            <select class="select">
-                                                                <option value="">Seleccione Estado</option>
-                                                                <option value="1">Básico</option>
-                                                                <option selected value="2">Intermedio</option>
-                                                                <option value="3">Avanzado</option>
-                                                                <option value="4">Experto</option>
-                                                                <option value="5">Nativo</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Nivel oral</label>
-                                                            <select class="select">
-                                                                <option value="">Seleccione Estado</option>
-                                                                <option value="1">Básico</option>
-                                                                <option selected value="2">Intermedio</option>
-                                                                <option value="3">Avanzado</option>
-                                                                <option value="4">Experto</option>
-                                                                <option value="5">Nativo</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 text-end mb-3">
-                                                        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn">
-                                                            <span class="far fa-trash-alt"></span> Eliminar
-                                                        </button>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Idioma</label>
-                                                            <input type="text" class="form-control" value="Alemán" readonly>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Nivel escrito</label>
-                                                            <select class="select">
-                                                                <option value="">Seleccione Estado</option>
-                                                                <option value="1">Básico</option>
-                                                                <option selected value="2">Intermedio</option>
-                                                                <option value="3">Avanzado</option>
-                                                                <option value="4">Experto</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Nivel oral</label>
-                                                            <select class="select">
-                                                                <option value="">Seleccione Estado</option>
-                                                                <option value="1">Básico</option>
-                                                                <option selected value="2">Intermedio</option>
-                                                                <option value="3">Avanzado</option>
-                                                                <option value="4">Experto</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 text-end mb-3">
-                                                        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn">
-                                                            <span class="far fa-trash-alt"></span> Eliminar
-                                                        </button>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <button type="button" class="theme-btn theme-btn2"><span class="far fa-plus"></span> Añadir más</button>
-                                                        </div>
                                                     </div>
                                                 </div>
                                                 <hr size="3px" color="black"/>
                                                 <h4 class="row">Experiencias</h4>
-                                                <br>
-                                                <br> 
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Empresa</label>
-                                                            <input type="text" class="form-control" placeholder="Porsche Chile Spa">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Cargo</label>
-                                                            <input type="text" class="form-control" placeholder="Analista de Soporte IT ">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Actividad Empresa</label>
-                                                            <input type="text" class="form-control" placeholder="Holding">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Área del Cargo</label>
-                                                            <input type="text" class="form-control" placeholder="Tecnologias, Sistemas y Telecomunicaciones">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Nivel de Experiencia</label>
-                                                            <input type="text" class="form-control" placeholder="Junior">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Mes - Año Inicio</label>
-                                                            <input type="Text" class="form-control" placeholder="Abril - 2024">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Mes - Año Término</label>
-                                                            <input type="Text" class="form-control" placeholder="Noviembre - 2024">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label>Descripción</label>
-                                                            <textarea class="form-control" cols="30" rows="5" placeholder="Analista de Soporte TI, preparación de equipos de usuarios y de planta, ingreso al dominio de empresa e instalación de software requeridos, administración de usuarios en Active directory/azure/SAP, asignación de licencias, mantenimiento de hardware de equipos e impresoras, soluciones rápidas y eficientes. Uso de Intune en preparación de equipos, preparación de equipos mobiles al dominio de empresa, uso de tomas remotas mediante anydesk, instalación de impresoras a usuarios, creación de instructivos, documentación de procesos"></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 text-end mb-3">
-                                                        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn">
-                                                            <span class="far fa-trash-alt"></span> Eliminar
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <hr style="opacity: 1; border: 0; border-top: 1px solid #000; margin: 20px 0;">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Empresa</label>
-                                                            <input type="text" class="form-control" placeholder="Porsche Chile Spa">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Cargo</label>
-                                                            <input type="text" class="form-control" placeholder="Analista de Soporte IT ">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Actividad Empresa</label>
-                                                            <input type="text" class="form-control" placeholder="Holding">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Área del Cargo</label>
-                                                            <input type="text" class="form-control" placeholder="Tecnologias, Sistemas y Telecomunicaciones">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Nivel de Experiencia</label>
-                                                            <input type="text" class="form-control" placeholder="Junior">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Mes - Año Inicio</label>
-                                                            <input type="Text" class="form-control" placeholder="Abril - 2024">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Mes - Año Término</label>
-                                                            <input type="Text" class="form-control" placeholder="Noviembre - 2024">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label>Descripción</label>
-                                                            <textarea class="form-control" cols="30" rows="5" placeholder="Analista de Soporte TI, preparación de equipos de usuarios y de planta, ingreso al dominio de empresa e instalación de software requeridos, administración de usuarios en Active directory/azure/SAP, asignación de licencias, mantenimiento de hardware de equipos e impresoras, soluciones rápidas y eficientes. Uso de Intune en preparación de equipos, preparación de equipos mobiles al dominio de empresa, uso de tomas remotas mediante anydesk, instalación de impresoras a usuarios, creación de instructivos, documentación de procesos"></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 text-end mb-3">
-                                                        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn">
-                                                            <span class="far fa-trash-alt"></span> Eliminar
-                                                        </button>
-                                                    </div>
+                                                <div class="experiencias-container" id="experiencias-container">
+                                                    <!-- Las entradas de experiencias se agregarán dinámicamente aquí -->
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <button type="button" class="theme-btn theme-btn2"><span class="far fa-plus"></span> Añadir más</button>
+                                                        <button type="button" class="theme-btn theme-btn2" id="agregar-experiencia">
+                                                            <span class="far fa-plus"></span> Añadir más
+                                                        </button>
                                                     </div>
                                                 </div>
-                                                <br>
                                                 <h4 class="col-md-5">Preferencias</h4>
-                                                <br>
-                                                <br>
                                                 <div class="row">
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label>Categoría</label>
-                                                            <input type="text" class="form-control" placeholder="Desarrollo de Software">
+                                                            <input type="text" class="form-control" placeholder="Categoría de empleo" id="categoria_empleo">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label>Salario esperado</label>
-                                                            <input type="text" class="form-control" placeholder="1.500.000">
+                                                            <input type="text" class="form-control" placeholder="Salario esperado" id="salario_esperado">
                                                         </div>
                                                     </div>                                                                                                          
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label>Modalidad</label>
-                                                            <select class="form-control" name="modalidad">
+                                                            <select class="form-control" name="modalidad" id="modalidad">
                                                                 <option value="">Seleccione una opción</option>
-                                                                <option value="presencial">Presencial</option>
-                                                                <option value="online">Online</option>
-                                                                <option selected value="hibrida">Híbrida</option>
-                                                                <option value="part-time">Part-Time</option>
-                                                                <option value="full-time">Full-Time</option>
-                                                                <option value="freelance">Freelance</option>
-                                                                <option value="remoto">Remoto</option>
+                                                                <option value="Presencial">Presencial</option>
+                                                                <option value="Online">Online</option>
+                                                                <option value="Híbrida">Híbrida</option>
+                                                                <option value="Part-Time">Part-Time</option>
+                                                                <option value="Full-Time">Full-Time</option>
+                                                                <option value="Freelance">Freelance</option>
+                                                                <option value="Remoto">Remoto</option>
                                                             </select>
                                                         </div>
                                                     </div>                                    
-                                                </div>
-                                                <h6 class="mb-3">Herramientas</h6>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label>Herramientas (Max 10 Herramientas)</label>
-                                                        <input type="text" class="form-control" value="Figma, Adobe XD, Next Js, React Js, App, Node Js" placeholder="Skills">
-                                                    </div>
                                                 </div>
                                                 <h6 class="mb-3">Información de Contacto</h6>
                                                 <div class="col-md-5">
                                                     <div class="form-group">
                                                         <label>Región</label>
-                                                        <input type="text" class="form-control" value="Región Metropolitana" placeholder="Escriba una Región">
+                                                        <input type="text" class="form-control" placeholder="Región" id="region">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label>Comuna</label>
-                                                        <input type="text" class="form-control" value="Quilicura" placeholder="Escriba una Comuna">
+                                                        <input type="text" class="form-control" placeholder="Comuna" id="comuna">
                                                     </div>
                                                 </div>
                                                 <h6 class="mb-3">Redes Sociales</h6>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Facebook URL</label>
-                                                        <input type="text" class="form-control" value="https://www.facebook.com/" placeholder="https://www.facebook.com/">
+                                                        <input type="text" class="form-control" placeholder="Facebook URL" id="facebook_url">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Twitter URL</label>
-                                                        <input type="text" class="form-control" value="https://www.twitter.com/" placeholder="https://www.twitter.com/">
+                                                        <input type="text" class="form-control" placeholder="Twitter URL" id="twitter_url">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Linkedin URL</label>
-                                                        <input type="text" class="form-control" value="https://www.linkedin.com/" placeholder="https://www.linkedin.com/">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Pinterest URL</label>
-                                                        <input type="text" class="form-control" value="https://www.pinterest.com/" placeholder="https://www.pinterest.com/">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Whatsapp URL</label>
-                                                        <input type="text" class="form-control" value="https://www.whatsapp.com" placeholder="https://www.whatsapp.com/">
+                                                        <input type="text" class="form-control" placeholder="LinkedIn URL" id="linkedin_url">
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- Botón original -->
-                                            <button type="button" class="theme-btn mt-4" onclick="mostrarConfirmacion()">
+                                            <button type="button" class="theme-btn mt-4" id="btn-actualizar">
                                                 Actualizar información 
                                                 <i class="far fa-user"></i>
                                             </button>
 
-                                            <!-- Contenedor de confirmación (oculto por defecto) -->
                                             <div id="confirmacion-box" style="display: none; margin-top: 15px;">
                                                 <p>¿Estás seguro de que quieres actualizar la información?</p>
-                                                <button class="btn btn-success" onclick="confirmarActualizacion()">
+                                                <button type="button" class="btn btn-success" id="btn-confirmar-actualizacion">
                                                     <i class="fas fa-check"></i> Confirmar
                                                 </button>
-                                                <button class="btn btn-danger" onclick="cancelarActualizacion()">
+                                                <button type="button" class="btn btn-danger" id="btn-cancelar-actualizacion">
                                                     <i class="fas fa-times"></i> Cancelar
                                                 </button>
                                             </div>
@@ -594,27 +310,23 @@
                             </div>
                             <div class="col-lg-12">
                                 <div class="user-profile-card">
-                                    <h4 class="user-profile-card-title">Change Password</h4>
+                                    <h4 class="user-profile-card-title">Cambiar Contraseña</h4>
                                     <div class="col-lg-12">
                                         <div class="profile-form">
                                             <form action="#">
                                                 <div class="form-group">
-                                                    <label>Old Password</label>
-                                                    <input type="password" class="form-control"
-                                                        placeholder="Old Password">
+                                                    <label>Contraseña Actual</label>
+                                                    <input type="password" class="form-control" placeholder="Contraseña Actual">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label>New Password</label>
-                                                    <input type="password" class="form-control"
-                                                        placeholder="New Password">
+                                                    <label>Nueva Contraseña</label>
+                                                    <input type="password" class="form-control" placeholder="Nueva Contraseña">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label>Re-Type Password</label>
-                                                    <input type="password" class="form-control"
-                                                        placeholder="Re-Type Password">
+                                                    <label>Confirmar Contraseña</label>
+                                                    <input type="password" class="form-control" placeholder="Confirmar Contraseña">
                                                 </div>
-                                                <button type="button" class="theme-btn mt-4">Change Password <i
-                                                        class="far fa-key"></i></button>
+                                                <button type="button" class="theme-btn mt-4">Cambiar Contraseña <i class="far fa-key"></i></button>
                                             </form>
                                         </div>
                                     </div>
@@ -627,22 +339,15 @@
         </div>
         <!-- candidate-settings end -->
 
-
     </main>
-
-
 
     <!-- footer area -->
     <div id="footer-placeholder"></div>
     <!-- footer area end -->
 
-
-
-
     <!-- scroll-top -->
     <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
     <!-- scroll-top end -->
-
 
     <!-- js -->
     <script src="assets/js/jquery-3.6.0.min.js"></script>
@@ -660,23 +365,19 @@
     <script src="assets/js/nice-select.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooterSI.js"></script>
+    <script src="assets/js/update-info.js"></script>
     <script src="assets/js/codigo-pais.js"></script>
     <script>
-        function mostrarConfirmacion() {
-            document.getElementById("confirmacion-box").style.display = "block";
-        }
+    document.getElementById('logoutButton').addEventListener('click', function (e) {
+            e.preventDefault();
+            const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
+            modal.show();
+        });
 
-        function confirmarActualizacion() {
-            // Aquí colocas la lógica real de actualización
-            alert("Información actualizada correctamente.");
-            document.getElementById("confirmacion-box").style.display = "none";
-        }
-
-        function cancelarActualizacion() {
-            document.getElementById("confirmacion-box").style.display = "none";
-        }
+        document.getElementById('confirmLogout').addEventListener('click', function () {
+            localStorage.removeItem('token');
+            window.location.href = 'index.html';
+        });
     </script>
-
 </body>
-
 </html>
