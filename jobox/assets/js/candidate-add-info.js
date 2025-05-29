@@ -7,11 +7,25 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
+    const rutInput = document.getElementById('rut');
+    if (rutInput) {
+        rutInput.addEventListener('blur', function() {
+            this.value = formatRUT(this.value);
+        });
+    }
+
     // Decodificar token para obtener userId
-    let userId;
+    let userId, userEmail;
     try {
         const payload = JSON.parse(atob(token.split('.')[1]));
         userId = payload.sub;
+        userEmail = payload.email;
+
+        const emailfield = document.getElementById('correo');
+        if (emailfield) {
+            emailfield.value = userEmail;
+            emailfield.disabled = true; // Deshabilitar campo de correo
+        }
     } catch (e) {
         console.error('Error al decodificar el token:', e);
         alert('Error al obtener la información del usuario. Por favor, inicie sesión nuevamente.');
@@ -167,6 +181,47 @@ function validateForm() {
     }
 
     return isValid;
+}
+
+function formatRUT(rut) {
+    // Limpiar RUT
+    rut = rut.replace(/[^0-9kK]/g, '').toUpperCase();
+    if (rut.length < 2) return rut;
+
+    const cuerpo = rut.slice(0, -1);
+    const dv = rut.slice(-1);
+
+    // Validar dígito verificador
+    if (!validateDV(cuerpo, dv)) {
+        alert('RUT inválido');
+        return '';
+    }
+
+    // Formatear
+    let formatted = '';
+    let i = cuerpo.length;
+    while (i > 3) {
+        formatted = '.' + cuerpo.slice(i - 3, i) + formatted;
+        i -= 3;
+    }
+    formatted = cuerpo.slice(0, i) + formatted;
+
+    return `${formatted}-${dv}`;
+}
+
+function validateDV(cuerpo, dv) {
+    let suma = 0;
+    let multiplo = 2;
+
+    for (let i = cuerpo.length - 1; i >= 0; i--) {
+        suma += parseInt(cuerpo[i]) * multiplo;
+        multiplo = multiplo === 7 ? 2 : multiplo + 1;
+    }
+
+    const resto = 11 - (suma % 11);
+    let dvEsperado = resto === 11 ? '0' : resto === 10 ? 'K' : resto.toString();
+
+    return dv.toUpperCase() === dvEsperado;
 }
 
 // Preparar datos del formulario para envío

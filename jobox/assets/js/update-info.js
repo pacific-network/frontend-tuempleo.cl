@@ -411,7 +411,7 @@ async function agregarEducacion(educacionData = {}) {
                         <option value="">Seleccione estado</option>
                         <option value="En Curso">En Curso</option>
                         <option value="Graduado">Graduado</option>
-                        <option value="Abandonado">Abandonado</option>
+                        <option value="Abandonado">Abandonado</option> 
                     </select>
                 </div>
             </div>
@@ -685,6 +685,10 @@ function recolectarDatosFormulario() {
                 {
                     url: document.getElementById('linkedin_url').value,
                     red_social: "LinkedIn"
+                },
+                {
+                    url: document.getElementById('instagram_url').value,
+                    red_social: "Instagram"
                 }
             ]
         }

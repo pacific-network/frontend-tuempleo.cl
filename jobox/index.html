@@ -26,6 +26,81 @@
     <link rel="stylesheet" href="assets/css/nice-select.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
 
+    <style>
+        #header-placeholder {
+            position: relative;
+            z-index: 2000; 
+        }
+        /* Solución mejorada para los select */
+        .search-form-wrapper {
+            position: relative;
+        }
+        
+        /* Contenedor del select */
+        .form-group-icon {
+            position: relative;
+            z-index: auto; /* Reset para evitar conflictos */
+        }
+        
+        /* Select estilizado (nice-select) */
+        .nice-select {
+            z-index: 1100;
+            position: relative;
+        }
+        
+        /* Lista desplegable */
+        .nice-select .list {
+            z-index: 9999 !important;
+            position: absolute !important;
+            width: 100% !important;
+        }
+
+        .nice-select.open .list {
+            z-index: 1200 !important;;
+        }
+        
+        /* Footer - debe estar debajo */
+        footer {
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* Contenedor principal */
+        .main {
+            overflow: visible;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Hero section - ajuste para imágenes */
+        .hero-section {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Imágenes del héroe */
+        .hero-img {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Asegurar que los selects tengan espacio */
+        .select {
+            position: relative;
+        }
+        
+        /* Ajuste para el formulario de búsqueda */
+        .search-form {
+            position: relative;
+            z-index: 100;
+        }
+        
+        .hero-selection {
+            position: relative;
+            z-index: 1000;
+            overflow: visible;
+        }
+    </style>
 </head>
 
 <body>
@@ -40,12 +115,9 @@
     </div>
     <!-- preloader end -->
 
-
     <!-- header area -->
     <div id="header-placeholder"></div>
     <!-- header area end -->
-
-
 
     <main class="main">
 
@@ -163,13 +235,46 @@
                 </div>
             </div>
         </div>
+        <div class="partner-area bg pt-30 pb-20">
+            <div class="container">
+                <div class="partner-wrapper">
+                    <div class="partner-slider owl-carousel owl-theme">
+                        <div class="partner-item">
+                            <img src="assets/img/partner/01.png" alt="thumb">
+                        </div>
+                        <div class="partner-item">
+                            <img src="assets/img/partner/02.png" alt="thumb">
+                        </div>
+                        <div class="partner-item">
+                            <img src="assets/img/partner/03.png" alt="thumb">
+                        </div>
+                        <div class="partner-item">
+                            <img src="assets/img/partner/04.png" alt="thumb">
+                        </div>
+                        <div class="partner-item">
+                            <img src="assets/img/partner/05.png" alt="thumb">
+                        </div>
+                        <div class="partner-item">
+                            <img src="assets/img/partner/06.png" alt="thumb">
+                        </div>
+                        <div class="partner-item">
+                            <img src="assets/img/partner/03.png" alt="thumb">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
+    <br>
+    
     <!-- footer area -->
     <div id="footer-placeholder"></div>
     <!-- footer area end -->
+    
     <!-- scroll-top -->
     <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
     <!-- scroll-top end -->
+    
     <!-- js -->
     <script src="assets/js/jquery-3.6.0.min.js"></script>
     <script src="assets/js/modernizr.min.js"></script>
