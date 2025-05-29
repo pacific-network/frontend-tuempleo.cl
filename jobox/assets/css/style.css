@@ -6556,10 +6556,10 @@ footer css
 .footer-area::before{
   content: "";
   position: absolute;
-  width: 200px;
-  height: 200px;
+  width: 130px;
+  height: 130px;
   background: #3C65F5;
-  left: 30%;
+  left: 20%;
   top: -50px;
   border-radius: 50%;
   opacity: .08;
@@ -6568,9 +6568,9 @@ footer css
 .footer-area::after{
   content: "";
   position: absolute;
-  width: 200px;
-  height: 200px;
-  border: 20px solid #3C65F5;
+  width: 150px;
+  height: 150px;
+  border: 15px solid #3C65F5;
   right: 30%;
   bottom: -50px;
   border-radius: 50%;
@@ -6578,7 +6578,7 @@ footer css
 }
 
 .footer-widget-box {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .footer-widget {

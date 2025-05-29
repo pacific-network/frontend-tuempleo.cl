@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <!-- meta tags -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <!-- title -->
+    <title>Editar Perfil</title>
+
+    <!-- favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/img/logo/favicon.png">
+
+    <!-- css -->
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/all-fontawesome.min.css">
+    <link rel="stylesheet" href="../assets/css/feather.min.css">
+    <link rel="stylesheet" href="../assets/css/flaticon.css">
+    <link rel="stylesheet" href="../assets/css/animate.min.css">
+    <link rel="stylesheet" href="../assets/css/magnific-popup.min.css">
+    <link rel="stylesheet" href="../assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="../assets/css/nice-select.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+
+</head>
+
+<body>
+
+    <!-- preloader -->
+    <div class="preloader">
+        <div class="loader">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <!-- preloader end -->
+
+    <!-- header area -->
+    <div id="header-placeholder"></div>
+    <!-- header area end -->
+
+    <main class="main">
+
+        <!-- breadcrumb -->
+        <div class="site-breadcrumb">
+            <div class="container">
+                <h2 class="breadcrumb-title">Configuración</h2>
+            </div>
+            <div class="hero-shape">
+                <img class="hero-shape-1" src="../assets/img/shape/03.svg" alt="">
+                <img class="hero-shape-2" src="../assets/img/shape/05.svg" alt="">
+                <img class="hero-shape-3" src="../assets/img/shape/06.svg" alt="">
+                <img class="hero-shape-4" src="../assets/img/shape/07.svg" alt="">
+            </div>
+        </div>
+
+        <!-- candidate-settings -->
+        <div class="user-profile py-120">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="user-profile-sidebar">
+                            <div class="user-profile-sidebar-top">
+                                <div class="user-profile-img">
+                                    <img src="../assets/img/candidate/01.jpg" alt="">
+                                    <button type="button" class="profile-img-btn"><i class="far fa-camera"></i></button>
+                                    <input type="file" class="profile-img-file">
+                                </div>
+                                <h4 id="sidebar-nombre">Cargando...</h4>
+                                <p id="sidebar-profesion">Profesión</p>
+                            </div>
+                            <ul class="user-profile-sidebar-list">
+                                <li><a href="candidate-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a></li>
+                                <li><a href="candidate-profile.html"><i class="far fa-user-tie"></i> Mi Perfil</a></li>
+                                <li><a href="candidate-applied-job.html"><i class="far fa-briefcase"></i> Trabajos Postulados</a></li>
+                                <li><a href="candidate-cv-manager.html"><i class="far fa-file-zipper"></i> Archivo CV</a></li>
+                                <li><a href="candidate-saved-job.html"><i class="far fa-bookmark"></i> Trabajos Guardados</a></li>
+                                <li><a class="active" href="candidate-settings.html"><i class="far fa-cog"></i> Editar Perfil</a></li>
+                                <li><a href="#" id="logoutButton"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
+                            </ul>
+                        </div>
+                        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="logoutModalLabel">¿Seguro que quieres cerrar sesión?</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar Sesión</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-profile-sidebar">
+                            <div class="user-profile">      
+                                <ul class="user-profile-sidebar-list">
+                                    <li><a href="candidate-message.html"><i class="far fa-headset"></i>Soporte</a></li>
+                                </ul>
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-lg-9">
+                        <div class="user-profile-wrapper">
+                            <div class="col-lg-12 mb-4">
+                                <div class="user-profile-card">
+                                    <h3 class="user-profile-card-title">Actualizar información del Perfil</h3>
+                                    <div class="profile-form">
+                                        <form id="profile-form">
+                                            <div class="row">
+                                                <h4 class="mb-3">Información básica</h4>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Nombre Completo</label>
+                                                        <input type="text" class="form-control" placeholder="Nombre Completo" id="nombre-completo">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Correo</label>
+                                                        <input type="text" class="form-control" placeholder="Correo" id="email" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Número de Contacto</label>
+                                                        <div class="input-group">
+                                                            <select class="form-control" style="width: 100px;" id="codigo_pais">
+                                                                <option value="" disabled selected>+56</option>
+                                                                <option value="+56">+56 (CL)</option>
+                                                                <option value="+54">+54 (AR)</option>
+                                                                <option value="+55">+55 (BR)</option>
+                                                                <option value="+1">+1 (US)</option>
+                                                            </select>
+                                                            <input type="text" class="form-control" placeholder="Número de teléfono" id="numero_telefono">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <label>Edad</label>
+                                                        <input type="text" class="form-control" placeholder="Edad" id="edad" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Género</label>
+                                                        <select class="form-control" name="genero" id="genero">
+                                                            <option value="">Elija un género</option>
+                                                            <option value="Masculino">Masculino</option>
+                                                            <option value="Femenino">Femenino</option>
+                                                            <option value="Otro">Otro</option>
+                                                            <option value="Prefiero no decir">Prefiero no decir</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label>Fecha de Nacimiento</label>
+                                                        <input type="date" class="form-control" id="fecha_nacimiento">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Estado Civil</label>
+                                                        <select class="form-control" name="estado_civil" id="estado_civil">
+                                                            <option value="">Seleccione Estado</option>
+                                                            <option value="Soltero/a">Soltero/a</option>
+                                                            <option value="Casado/a">Casado/a</option>
+                                                            <option value="Viudo/a">Viudo/a</option>
+                                                            <option value="Divorciado/a">Divorciado/a</option>
+                                                            <option value="Separado/a">Separado/a</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>Descripción Biográfica</label>
+                                                            <textarea class="form-control" cols="30" rows="5" placeholder="Descripción biográfica" id="descripcion_bio"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr size="3px" color="black"/>
+                                                <h4 class="mb-3">Educación</h4>
+                                                <div class="educacion-container" id="educacion-container">
+                                                    <!-- Las entradas de educación se agregarán dinámicamente aquí -->
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <button type="button" class="theme-btn theme-btn2" id="agregar-educacion">
+                                                            <span class="far fa-plus"></span> Añadir más
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <hr size="3px" color="black"/>
+                                                <h4 class="mb-3">Idiomas</h4>
+                                                <div class="idiomas-container" id="idiomas-container">
+                                                    <!-- Las entradas de idiomas se agregarán dinámicamente aquí -->
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <button type="button" class="theme-btn theme-btn2" id="agregar-idioma">
+                                                            <span class="far fa-plus"></span> Añadir más
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <hr size="3px" color="black"/>
+                                                <h4 class="row">Experiencias</h4>
+                                                <div class="experiencias-container" id="experiencias-container">
+                                                    <!-- Las entradas de experiencias se agregarán dinámicamente aquí -->
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <button type="button" class="theme-btn theme-btn2" id="agregar-experiencia">
+                                                            <span class="far fa-plus"></span> Añadir más
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <h4 class="col-md-5">Preferencias</h4>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label>Categoría</label>
+                                                            <input type="text" class="form-control" placeholder="Categoría de empleo" id="categoria_empleo">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label>Salario esperado</label>
+                                                            <input type="text" class="form-control" placeholder="Salario esperado" id="salario_esperado">
+                                                        </div>
+                                                    </div>                                                                                                          
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label>Modalidad</label>
+                                                            <select class="form-control" name="modalidad" id="modalidad">
+                                                                <option value="">Seleccione una opción</option>
+                                                                <option value="Presencial">Presencial</option>
+                                                                <option value="Online">Online</option>
+                                                                <option value="Híbrida">Híbrida</option>
+                                                                <option value="Part-Time">Part-Time</option>
+                                                                <option value="Full-Time">Full-Time</option>
+                                                                <option value="Freelance">Freelance</option>
+                                                                <option value="Remoto">Remoto</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>                                    
+                                                </div>
+                                                <h6 class="mb-3">Información de Contacto</h6>
+                                                <div class="col-md-5">
+                                                    <div class="form-group">
+                                                        <label>Región</label>
+                                                        <input type="text" class="form-control" id="region" name="region">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label>Comuna</label>
+                                                        <input type="text" class="form-control" id="comuna" name="comuna" disabled>
+                                                    </div>
+                                                </div>
+                                                <h6 class="mb-3">Redes Sociales</h6>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Facebook URL</label>
+                                                        <input type="text" class="form-control" placeholder="Facebook URL" id="facebook_url">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Twitter URL</label>
+                                                        <input type="text" class="form-control" placeholder="Twitter URL" id="twitter_url">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Linkedin URL</label>
+                                                        <input type="text" class="form-control" placeholder="LinkedIn URL" id="linkedin_url">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Instagram URL</label>
+                                                        <input type="text" class="form-control" placeholder="Instagram URL" id="instagram_url">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="theme-btn mt-4" id="btn-actualizar">
+                                                Actualizar información 
+                                                <i class="far fa-user"></i>
+                                            </button>
+
+                                            <div id="confirmacion-box" style="display: none; margin-top: 15px;">
+                                                <p>¿Estás seguro de que quieres actualizar la información?</p>
+                                                <button type="button" class="btn btn-success" id="btn-confirmar-actualizacion">
+                                                    <i class="fas fa-check"></i> Confirmar
+                                                </button>
+                                                <button type="button" class="btn btn-danger" id="btn-cancelar-actualizacion">
+                                                    <i class="fas fa-times"></i> Cancelar
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="user-profile-card">
+                                    <h4 class="user-profile-card-title">Cambiar Contraseña</h4>
+                                    <div class="col-lg-12">
+                                        <div class="profile-form">
+                                            <form action="#">
+                                                <div class="form-group">
+                                                    <label>Contraseña Actual</label>
+                                                    <input type="password" class="form-control" placeholder="Contraseña Actual">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Nueva Contraseña</label>
+                                                    <input type="password" class="form-control" placeholder="Nueva Contraseña">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Confirmar Contraseña</label>
+                                                    <input type="password" class="form-control" placeholder="Confirmar Contraseña">
+                                                </div>
+                                                <button type="button" class="theme-btn mt-4">Cambiar Contraseña <i class="far fa-key"></i></button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- candidate-settings end -->
+
+    </main>
+
+    <!-- footer area -->
+    <div id="footer-placeholder"></div>
+    <!-- footer area end -->
+
+    <!-- scroll-top -->
+    <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
+    <!-- scroll-top end -->
+
+    <!-- js -->
+    <script src="../assets/js/jquery-3.6.0.min.js"></script>
+    <script src="../assets/js/modernizr.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/imagesloaded.pkgd.min.js"></script>
+    <script src="../assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="../assets/js/isotope.pkgd.min.js"></script>
+    <script src="../assets/js/jquery.appear.min.js"></script>
+    <script src="../assets/js/jquery.easing.min.js"></script>
+    <script src="../assets/js/owl.carousel.min.js"></script>
+    <script src="../assets/js/counter-up.js"></script>
+    <script src="../assets/js/masonry.pkgd.min.js"></script>
+    <script src="../assets/js/wow.min.js"></script>
+    <script src="../assets/js/nice-select.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/header-footer/loadHeaderFooterSI.js"></script>
+    <script src="../assets/js/update-info.js"></script>
+    <script src="../assets/js/codigo-pais.js"></script>
+    <script src="../assets/js/region-comuna.js"></script>
+    <script>
+    document.getElementById('logoutButton').addEventListener('click', function (e) {
+            e.preventDefault();
+            const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
+            modal.show();
+        });
+
+        document.getElementById('confirmLogout').addEventListener('click', function () {
+            localStorage.removeItem('token');
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

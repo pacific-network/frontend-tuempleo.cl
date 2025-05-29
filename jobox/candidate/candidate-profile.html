@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- meta tags -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <!-- title -->
+    <title>Perfil Candidato</title>
+
+    <!-- favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/img/logo/favicon.png">
+
+    <!-- css -->
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/all-fontawesome.min.css">
+    <link rel="stylesheet" href="../assets/css/feather.min.css">
+    <link rel="stylesheet" href="../assets/css/flaticon.css">
+    <link rel="stylesheet" href="../assets/css/animate.min.css">
+    <link rel="stylesheet" href="../assets/css/magnific-popup.min.css">
+    <link rel="stylesheet" href="../assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="../assets/css/nice-select.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+
+</head>
+
+<body>
+
+    <!-- preloader -->
+    <div class="preloader">
+        <div class="loader">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <!-- preloader end -->
+
+    <!-- header area -->
+    <div id="header-placeholder"></div>
+    <!-- header area end -->
+
+    <main class="main">
+        <!-- breadcrumb -->
+        <div class="site-breadcrumb">
+            <div class="container">
+                <h2 class="breadcrumb-title">Mi Perfil</h2>
+            </div>
+            <div class="hero-shape">
+                <img class="hero-shape-1" src="../assets/img/shape/03.svg" alt="">
+                <img class="hero-shape-2" src="../assets/img/shape/05.svg" alt="">
+                <img class="hero-shape-3" src="../assets/img/shape/06.svg" alt="">
+                <img class="hero-shape-4" src="../assets/img/shape/07.svg" alt="">
+            </div>
+        </div>
+
+        <!-- candidate-profile -->
+        <div class="user-profile py-120">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="user-profile-sidebar">
+                            <div class="user-profile-sidebar-top">
+                                <div class="user-profile-img">
+                                    <img id="profile-photo" src="../assets/img/candidate/01.jpg" alt="">
+                                    <button type="button" class="profile-img-btn"><i class="far fa-camera"></i></button>
+                                    <input type="file" class="profile-img-file">
+                                </div>
+                                <h4 id="profile-name">Cargando...</h4>
+                                <p id="profile-title">Cargando...</p>
+                            </div>
+                            <ul class="user-profile-sidebar-list">
+                                <li><a href="candidate-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a></li>
+                                <li><a class="active" href="candidate-profile.html"><i class="far fa-user-tie"></i> Mi Perfil</a></li>
+                                <li><a href="candidate-applied-job.html"><i class="far fa-briefcase"></i> Trabajos Postulados</a></li>
+                                <li><a href="candidate-cv-manager.html"><i class="far fa-file-zipper"></i> Archivo CV</a></li>
+                                <li><a href="candidate-saved-job.html"><i class="far fa-bookmark"></i> Trabajos Guardados</a></li>
+                                <li><a href="candidate-settings.html"><i class="far fa-cog"></i> Editar Perfil</a></li>
+                                <li><a href="#" id="logoutButton"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
+                            </ul>
+                        </div>
+                        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="logoutModalLabel">¿Seguro que quieres cerrar sesión?</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar Sesión</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-profile-sidebar">
+                            <div class="user-profile">      
+                                <ul class="user-profile-sidebar-list">
+                                    <li><a href="candidate-message.html"><i class="far fa-headset"></i>Soporte</a></li>
+                                </ul>
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-lg-9">
+                        <div class="user-profile-wrapper">
+                            <!-- Información básica del Perfil -->
+                            <div class="user-profile-card">
+                                <h4 class="user-profile-card-title">Información básica del Perfil</h4>
+                                <div class="row g-5">
+                                    <div class="col-lg-6">
+                                        <div class="profile-info-list">
+                                            <ul>
+                                                <li>Nombre Completo: <span id="full-name">Cargando...</span></li>
+                                                <li>RUT: <span id="rut">Cargando...</span></li>
+                                                <li>Correo: <span id="email">Cargando...</span></li>
+                                                <li>Edad: <span id="age">Cargando...</span></li>
+                                                <li>Fecha de Nacimiento: <span id="birth-date">Cargando...</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="profile-info-list">
+                                            <ul>
+                                                <li>Género: <span id="gender">Cargando...</span></li>
+                                                <li>Estado Civil: <span id="marital-status">Cargando...</span></li>
+                                                <li>Categoría: <span id="job-category">Cargando...</span></li>
+                                                <li>Expectativa Salarial: <span id="expected-salary">Cargando...</span></li>
+                                                <li>Modalidad Esperada: <span id="work-modality">Cargando...</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Educación -->
+                            <div class="user-profile-card">
+                                <h4 class="user-profile-card-title">Educación</h4>
+                                <div class="row g-6" id="education-container">
+                                    <!-- Se llenará dinámicamente con JavaScript -->
+                                    <div class="col-12 text-center py-3">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Cargando...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Experiencias -->
+                            <div class="user-profile-card">
+                                <h4 class="user-profile-card-title">Experiencias</h4>
+                                <div id="experiences-container">
+                                    <!-- Se llenará dinámicamente con JavaScript -->
+                                    <div class="col-12 text-center py-3">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Cargando...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Idiomas -->
+                            <div class="user-profile-card">
+                                <h4 class="user-profile-card-title">Idiomas</h4>
+                                <div class="row g-4" id="languages-container">
+                                    <!-- Se llenará dinámicamente con JavaScript -->
+                                    <div class="col-12 text-center py-3">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Cargando...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Descripción -->
+                            <div class="user-profile-wrapper">
+                                <div class="user-profile-card">
+                                    <h4 class="user-profile-card-title">Descripción</h4>
+                                    <div class="col-lg-12">
+                                        <div class="profile-bio">
+                                            <p id="bio-description">Cargando...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Información de Contacto -->
+                            <div class="user-profile-wrapper">
+                                <div class="user-profile-card">
+                                    <h4 class="user-profile-card-title">Información de Contacto</h4>
+                                    <div class="col-lg-6">
+                                        <div class="profile-info-list">
+                                            <ul>
+                                                <li>Nacionalidad: <span id="nationality">Cargando...</span></li>
+                                                <li>Región: <span id="region">Cargando...</span></li>
+                                                <li>Comuna: <span id="commune">Cargando...</span></li>
+                                                <li>Número de Contacto: <span id="phone">Cargando...</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Redes Sociales -->
+                            <div class="user-profile-wrapper">
+                                <div class="user-profile-card">
+                                    <h4 class="user-profile-card-title">Redes Sociales</h4>
+                                    <div class="col-lg-6">
+                                        <div class="profile-social" id="social-media-container">
+                                            <!-- Se llenará dinámicamente con JavaScript -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- footer area -->
+    <div id="footer-placeholder"></div>
+    <!-- footer area end -->
+
+    <!-- scroll-top -->
+    <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
+    <!-- scroll-top end -->
+
+    <!-- js -->
+    <script src="../assets/js/jquery-3.6.0.min.js"></script>
+    <script src="../assets/js/modernizr.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/imagesloaded.pkgd.min.js"></script>
+    <script src="../assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="../assets/js/isotope.pkgd.min.js"></script>
+    <script src="../assets/js/jquery.appear.min.js"></script>
+    <script src="../assets/js/jquery.easing.min.js"></script>
+    <script src="../assets/js/owl.carousel.min.js"></script>
+    <script src="../assets/js/counter-up.js"></script>
+    <script src="../assets/js/masonry.pkgd.min.js"></script>
+    <script src="../assets/js/wow.min.js"></script>
+    <script src="../assets/js/nice-select.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="./assets/js/header-footer/loadHeaderFooterSI.js"></script>
+    <script>
+    document.getElementById('logoutButton').addEventListener('click', function (e) {
+            e.preventDefault();
+            const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
+            modal.show();
+        });
+
+        document.getElementById('confirmLogout').addEventListener('click', function () {
+            localStorage.removeItem('token');
+            window.location.href = 'index.html';
+        });
+    </script>
+    <script src="assets/js/candidate-info.js"></script>
+</body>
+</html>

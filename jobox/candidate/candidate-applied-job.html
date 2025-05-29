@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- meta tags -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <!-- title -->
+    <title>Trabajos Postulados</title>
+
+    <!-- favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/img/logo/favicon.png">
+
+    <!-- css -->
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/all-fontawesome.min.css">
+    <link rel="stylesheet" href="../assets/css/feather.min.css">
+    <link rel="stylesheet" href="../assets/css/flaticon.css">
+    <link rel="stylesheet" href="../assets/css/animate.min.css">
+    <link rel="stylesheet" href="../assets/css/magnific-popup.min.css">
+    <link rel="stylesheet" href="../assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="../assets/css/nice-select.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        .profile-job-content h6 a,
+.profile-job-list li,
+.profile-job-content ul:not(.profile-job-list) li {
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 27ch; /* 27 caracteres aproximadamente */
+    display: inline-block;
+    vertical-align: top;
+    line-height: 1.4;
+}
+
+.profile-job-list li i,
+.profile-job-content ul:not(.profile-job-list) li i {
+    margin-right: 5px;
+    min-width: 16px;
+    display: inline-block;
+    text-align: center;
+}
+    </style>
+
+</head>
+
+<body>
+
+    <!-- preloader -->
+    <div class="preloader">
+        <div class="loader">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <!-- preloader end -->
+
+
+    <!-- header area -->
+    <div id="header-placeholder"></div>
+    <!-- header area end -->
+
+
+
+    <main class="main">
+
+        <!-- breadcrumb -->
+        <div class="site-breadcrumb">
+            <div class="container">
+                <h2 class="breadcrumb-title">Trabajos Postulados</h2>
+            </div>
+            <div class="hero-shape">
+                <img class="hero-shape-1" src="../assets/img/shape/03.svg" alt="">
+                <img class="hero-shape-2" src="../assets/img/shape/05.svg" alt="">
+                <img class="hero-shape-3" src="../assets/img/shape/06.svg" alt="">
+                <img class="hero-shape-4" src="../assets/img/shape/07.svg" alt="">
+            </div>
+        </div>
+
+
+
+
+        <!-- candidate-applied-job -->
+        <div class="user-profile py-120">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="user-profile-sidebar">
+                            <div class="user-profile-sidebar-top">
+                                <div class="user-profile-img">
+                                    <img src="../assets/img/candidate/01.jpg" alt="">
+                                    <button type="button" class="profile-img-btn"><i class="far fa-camera"></i></button>
+                                    <input type="file" class="profile-img-file">
+                                </div>
+                                <h4>Laura Packer</h4>
+                                <p>Full Stack Web Developer</p>
+                            </div>
+                            <ul class="user-profile-sidebar-list">
+                                <li><a href="candidate-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a></li>
+                                <li><a href="candidate-profile.html"><i class="far fa-user-tie"></i> Mi Perfil</a></li>
+                                <li><a class="active" href="candidate-applied-job.html"><i class="far fa-briefcase"></i> Trabajos Postulados</a></li>
+                                <li><a href="candidate-cv-manager.html"><i class="far fa-file-zipper"></i> Archivo CV</a></li>
+                                <li><a href="candidate-saved-job.html"><i class="far fa-bookmark"></i> Trabajos Guardados</a></li>
+                                <li><a href="candidate-settings.html"><i class="far fa-cog"></i> Editar Perfil</a></li>
+                                <li><a href="#" id="logoutButton"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
+                            </ul>
+                        </div>
+                        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="logoutModalLabel">¿Seguro que quieres cerrar sesión?</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar Sesión</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-profile-sidebar">
+                            <div class="user-profile">      
+                                <ul class="user-profile-sidebar-list">
+                                    <li><a href="candidate-message.html"><i class="far fa-headset"></i>Soporte</a></li>
+                                </ul>
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-lg-9">
+                        <div class="user-profile-card">
+                            <div class="user-profile-card-header">
+                                <h4 class="user-profile-card-title">Trabajos Postulados</h4>
+                                <div class="user-profile-card-header-right">
+                                    <div class="user-profile-sort">
+                                        <form action="#">
+                                            <div class="form-group">
+                                                <select class="select">
+                                                    <option value="1">Last 1 Month</option>
+                                                    <option value="2">Last 2 Months</option>
+                                                    <option value="3">Last 3 Months</option>
+                                                    <option value="4">Last 6 Months</option>
+                                                    <option value="5">Last 1 Year</option>
+                                                </select>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive profile-applied-job">
+                                <table class="table text-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th>Información del Trabajo</th>
+                                            <th>Fecha Postulación</th>
+                                            <th>Descargar CV</th>
+                                            <th>Estado</th>
+                                            <th>Acción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="profile-job-info">
+                                                    <img src="../assets/img/job/01.jpg" alt="">
+                                                    <div class="profile-job-content">
+                                                        <h6><a href="#">Desarrollador de Aplicaciones</a></h6>
+                                                        <ul class="profile-job-list">
+                                                            <li><i class="far fa-briefcase"></i> Vertice Call Center</li>
+                                                        </ul>
+                                                        <ul>
+                                                            <li><i class="far fa-location-dot"></i> Región Metropolitana de Santiago</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>05 Agosto, 2024</td>
+                                            <td>
+                                                <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-download"></i> Descargar CV</a>
+                                            </td>
+                                            <td><span class="badge badge-success">Activo</span></td>
+                                            <td>
+                                                <a href="job-single.html" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
+                                                <a href="#" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-can"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="profile-job-info">
+                                                    <img src="../assets/img/job/02.jpg" alt="">
+                                                    <div class="profile-job-content">
+                                                        <h6><a href="#">Desarrollador Backend</a></h6>
+                                                        <ul class="profile-job-list">
+                                                            <li><i class="far fa-briefcase"></i> Pacific Network</li>
+                                                        </ul>
+                                                        <ul>
+                                                            <li><i class="far fa-location-dot"></i> Región Metropolitana de Santiago</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>05 Octubre, 2024</td>
+                                            <td>
+                                                <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-download"></i> Descargar CV</a>
+                                            </td>
+                                            <td><span class="badge badge-success">Active</span></td>
+                                            <td>
+                                                <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
+                                                <a href="#" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-can"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="profile-job-info">
+                                                    <img src="../assets/img/job/03.jpg" alt="">
+                                                    <div class="profile-job-content">
+                                                        <h6><a href="#">Desarrollador Frontend</a></h6>
+                                                        <ul class="profile-job-list">
+                                                            <li><i class="far fa-briefcase"></i> Pacific Network</li>
+                                                        </ul>
+                                                        <ul>
+                                                            <li><i class="far fa-location-dot"></i> Región Metropolitana de Santiago</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>23 Mayo, 2025</td>
+                                            <td>
+                                                <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-download"></i> Descargar CV</a>
+                                            </td>
+                                            <td><span class="badge badge-success">Activo</span></td>
+                                            <td>
+                                                <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
+                                                <a href="#" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-can"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="profile-job-info">
+                                                    <img src="../assets/img/job/04.jpg" alt="">
+                                                    <div class="profile-job-content">
+                                                        <h6><a href="#">Ejecutivo Comercial</a></h6>
+                                                        <ul class="profile-job-list">
+                                                            <li><i class="far fa-briefcase"></i> Pacific Network</li>
+                                                        </ul>
+                                                        <ul>
+                                                            <li><i class="far fa-location-dot"></i> Región Metropolitana de Santiago</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>16 Abril, 2025</td>
+                                            <td>
+                                                <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-download"></i> Descargar CV</a>
+                                            </td>
+                                            <td><span class="badge badge-success">Activo</span></td>
+                                            <td>
+                                                <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
+                                                <a href="#" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-can"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="profile-job-info">
+                                                    <img src="../assets/img/job/05.jpg" alt="">
+                                                    <div class="profile-job-content">
+                                                        <h6><a href="#">Administrador de Activos</a></h6>
+                                                        <ul class="profile-job-list">
+                                                            <li><i class="far fa-briefcase"></i> Pacific Network</li>
+                                                        </ul>
+                                                        <ul>
+                                                            <li><i class="far fa-location-dot"></i> Huechuraba - Santiago</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>20 Julio, 2024</td>
+                                            <td>
+                                                <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-download"></i> Descargar CV</a>
+                                            </td>
+                                            <td><span class="badge badge-danger">Expirado</span></td>
+                                            <td>
+                                                <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
+                                                <a href="#" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-can"></i></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <!-- pagination -->
+                                <div class="pagination-area">
+                                    <div aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <li class="page-item">
+                                                <a class="page-link" href="#" aria-label="Previous">
+                                                    <span aria-hidden="true"><i class="far fa-angle-double-left"></i></span>
+                                                </a>
+                                            </li>
+                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#" aria-label="Next">
+                                                    <span aria-hidden="true"><i class="far fa-angle-double-right"></i></span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- candidate-applied-job end -->
+
+        <!-- Modal de confirmación (añadir al final del body) -->
+        <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmar eliminación</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Estás seguro que deseas eliminar esta postulación? Esta acción no se puede deshacer.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </main>
+
+
+
+    <!-- footer area -->
+    <div id="footer-placeholder"></div>
+    <!-- footer area end -->
+
+
+
+
+    <!-- scroll-top -->
+    <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
+    <!-- scroll-top end -->
+
+
+    <!-- js -->
+    <script src="../assets/js/jquery-3.6.0.min.js"></script>
+    <script src="../assets/js/modernizr.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/imagesloaded.pkgd.min.js"></script>
+    <script src="../assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="../assets/js/isotope.pkgd.min.js"></script>
+    <script src="../assets/js/jquery.appear.min.js"></script>
+    <script src="../assets/js/jquery.easing.min.js"></script>
+    <script src="../assets/js/owl.carousel.min.js"></script>
+    <script src="../assets/js/counter-up.js"></script>
+    <script src="../assets/js/masonry.pkgd.min.js"></script>
+    <script src="../assets/js/wow.min.js"></script>
+    <script src="../assets/js/nice-select.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/header-footer/loadHeaderFooterSI.js"></script>
+    <script>
+    document.getElementById('logoutButton').addEventListener('click', function (e) {
+            e.preventDefault();
+            const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
+            modal.show();
+        });
+
+        document.getElementById('confirmLogout').addEventListener('click', function () {
+            localStorage.removeItem('token');
+            window.location.href = 'index.html';
+        });
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const deleteModal = new bootstrap.Modal('#confirmDeleteModal');
+      let rowToDelete = null;
+    
+      // Configurar botones de eliminar
+      document.querySelectorAll('.btn-outline-danger').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          rowToDelete = this.closest('tr');
+          deleteModal.show();
+        });
+      });
+
+      // Confirmar eliminación
+      document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+        deleteModal.hide();
+        rowToDelete?.remove();
+      });
+    });
+    </script>
+
+</body>
+
+</html>
