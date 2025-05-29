@@ -13,7 +13,7 @@
     <title>Precios</title>
 
     <!-- favicon -->
-    <link rel="icon" type="image/x-icon" href="assets/img/logo/favicon.png">
+    <link rel="icon" type="image/x-icon" href="../assets/img/logo/favicon.png">
 
     <!-- css -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -71,7 +71,7 @@
         <!-- breadcrumb -->
         <div class="site-breadcrumb">
             <div class="container">
-                <h1 class="breadcrumb-title">Precio de Avisos</h1>
+                <h1 class="breadcrumb-title">Nuestros Productos</h1>
             </div>
             <div class="hero-shape">
                 <img class="hero-shape-1" src="assets/img/shape/03.svg" alt="">
@@ -82,95 +82,119 @@
         </div>
 
         <!-- pricing-area -->
-        <div class="pricing-area py-120">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-7 mx-auto wow fadeInDown" data-wow-duration="1s" data-wow-delay=".25s">
-                        <div class="site-heading text-center">
-                            <span class="site-title-tagline">Tipos de Avisos</span>
-                            <h2 class="site-title">Escoge el plan mas adecuado</h2>
-                            <p>Ofrecemos paquetes de precios estándar globales</p>
-                            <p>Para mayor información, contactar a nuestro WhatsApp</p>
-                            <a href="https://wa.me/56991836445" target="_blank" class="theme-btn whatsapp-btn">
-                                <span class="fab fa-whatsapp"></span> Contactar por WhatsApp
-                            </a>
-                        </div>
-                        <div class="site-heading text-center">
-                            <button onclick="togglePhoneForm()" class="theme-btn">
-                                <span class="fas fa-phone"></span> Te llamamos
-                            </button>
+        <div class="site-heading text-center pt-5">
+            <!-- <span class="site-title-tagline">Nuestros Servicios</span> -->
+            <h2 class="site-title">Elige el tipo de aviso ideal para ti</h2>
+            <p>Contamos con paquetes de precios competitivos adaptados a tus necesidades.</p>
+            <p>¿Tienes dudas? Escríbenos directamente por WhatsApp o Nosotros te llamamos</p>
+          
+            <!-- Contenedor de botones en fila -->
+            <div class="d-flex justify-content-center flex-wrap gap-3 mt-4 pb-5">
+              <a href="https://wa.me/56991836445" target="_blank" class="theme-btn whatsapp-btn">
+                <span class="fab fa-whatsapp"></span> Contactar por WhatsApp
+              </a>
+          
+              <button id="toggle-call-form" class="theme-btn">
+                <span class="fas fa-phone"></span> Te llamamos
+              </button>
+            </div>
+          </div>
                         
-                            <form id="phoneForm" onsubmit="return submitPhone()" class="mt-4" style="display: none;">
-                                <div class="row justify-content-center">
-                                    <div class="col-md-6 col-lg-4">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">+56</span>
-                                            </div>
-                                            <input type="tel" class="form-control" id="phoneInput" name="phone"
-                                                placeholder="9 1234 5678" required pattern="[9][0-9]{8}">
-                                        </div>
-                                    </div>
-                                    <div class="col-12 mt-3">
-                                        <button type="submit" class="theme-btn">
-                                            Enviar
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
+                <!-- Modal (oculto por defecto) -->
+                <div id="phoneModal" class="modal-overlay">
+                    <div class="modal-content">
+                    <button class="close-btn" id="closeModal">&times;</button>
+                    <form id="phoneForm" class="mt-3">
+                    <div>
+                        <h3>Ingresa tu numero</h3>
+                        <p>Te llamaremos en unos minutos</p>
+                    </div>
+                        <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">+56</span>
                         </div>
+                        <input
+                            type="tel"
+                            class="form-control"
+                            id="phoneInput"
+                            name="phone"
+                            placeholder="9 1234 5678"
+                            required
+                            pattern="[9][0-9]{8}"
+                        />
+                        </div>
+                        <div class="mt-3 text-center">
+                        <button type="submit" class="theme-btn">Enviar</button>
+                        </div>
+                    </form>
                     </div>
                 </div>
-                <div class="pricing-wrapper mt-4">
+  
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <!-- Inicio Tipos de avisos -->
+                <div class="pricing-wrapper mt-4 ">
                     <div class="row">
                         <div class="col-md-6 col-lg-3">
                             <div class="pricing-item">
-                                <div class="pricing-content">
-                                    <h4>Gratis</h4>
-                                    <p>Este es el Aviso Gratis, incluye todo lo que esta abajo</p>
-                                </div>
-                                <div class="pricing-feature">
-                                    <ul>
-                                        <li>La mejor opción para todo tipo de búsquedas</li>
-                                        <li>Ubicación estándar en listado general</li>
-                                    </ul>
-                                    <a href="login-employer.html" class="theme-btn">Conocer Más <i class="far fa-arrow-right"></i></a>
-                                </div>
+                              <div class="pricing-content">
+                                <h4>Gratis</h4>
+                                <p>Publica sin costo y llega a quienes buscan oportunidades como la tuya.</p>
+                              </div>
+                              <div class="pricing-feature">
+                                <ul>
+                                  <li>Visibilidad en el listado general</li>
+                                  <li>Ideal para búsquedas estándar</li>
+                                </ul>
+                                <a href="login-employer.html" class="theme-btn">
+                                  Conocer Más <i class="far fa-arrow-right"></i>
+                                </a>
+                              </div>
                             </div>
-                        </div>
+                          </div>
+                          
                         <div class="col-md-6 col-lg-3">
                             <div class="pricing-item">
-                                <div class="pricing-content">
-                                    <h4>Básico</h4>
-                                    <p>Este es el Aviso básico, incluye todo lo que esta abajo</p>
-                                </div>
-                                <div class="pricing-feature">
-                                    <ul>
-                                        <li>La mejor opción para todo tipo de búsquedas</li>
-                                        <li>Ubicación estándar en listado general</li>
-                                    </ul>
-                                    <a href="login-employer.html" class="theme-btn">Conocer Más <i class="far fa-arrow-right"></i></a>
-                                </div>
+                              <div class="pricing-content">
+                                <h4>Básico</h4>
+                                <p>Ideal para comenzar: visibilidad en el listado general y lo esencial para tu aviso.</p>
+                              </div>
+                              <div class="pricing-feature">
+                                <ul>
+                                  <li>Perfecto para cualquier tipo de búsqueda</li>
+                                  <li>Ubicación estándar en el listado</li>
+                                </ul>
+                                <a href="login-employer.html" class="theme-btn">
+                                  Conocer Más <i class="far fa-arrow-right"></i>
+                                </a>
+                              </div>
                             </div>
-                        </div>
-                        <div class="col-md-6 col-lg-3">
+                          </div>
+                          
+                          <div class="col-md-6 col-lg-3">
                             <div class="pricing-item active">
-                                <span class="pricing-popular">Más Popular</span>
-                                <div class="pricing-content">
-                                    <h4>Estándard</h4>
-                                    <p>Este Aviso Estándar se paga mensualmente, incluye todo lo que ves abajo</p>
-                                </div>
-                                <div class="pricing-feature">
-                                    <ul>
-                                        <li>Ubicación destacada del aviso</li>
-                                        <li>Mayor volumen de postulaciones</li>
-                                        <li>Ideal para perfiles específicos</li>
-                                        <li>Incluye logo corporativo</li>
-                                    </ul>
-                                    <a href="login-employer.html" class="theme-btn">Conocer Más <i class="far fa-arrow-right"></i></a>
-                                </div>
+                              <span class="pricing-popular">Más Popular</span>
+                              <div class="pricing-content">
+                                <h4>Estándar</h4>
+                                <p>Publicación destacada con alta visibilidad y mayor alcance de postulantes.</p>
+                              </div>
+                              <div class="pricing-feature">
+                                <ul>
+                                  <li>Posición preferente en el listado</li>
+                                  <li>Mayor volumen de postulaciones</li>
+                                  <li>Ideal para perfiles profesionales o técnicos</li>
+                                  <li>Logo corporativo visible en el aviso</li>
+                                </ul>
+                                <a href="login-employer.html" class="theme-btn">
+                                  Conocer Más <i class="far fa-arrow-right"></i>
+                                </a>
+                              </div>
                             </div>
-                        </div>
+                          </div>
+                          
                         <div class="col-md-6 col-lg-3">
                             <div class="pricing-item">
                                 <div class="pricing-content">
@@ -189,6 +213,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- TERMINO TIPO DE AVISOS -->
                 <br>
                 <div class="row mt-24">
                     <div class="col-12 text-center">
@@ -228,26 +253,8 @@
     <script src="assets/js/nice-select.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooterEmpSO.js"></script>
-    <script>
-        function togglePhoneForm() {
-            const form = document.getElementById('phoneForm');
-            form.style.display = form.style.display === 'none' ? 'block' : 'none';
-        }
+    <script src="assets/shared/we-call-you.js"></script>
 
-        function submitPhone() {
-            const phoneInput = document.getElementById('phoneInput');
-            const phoneValue = phoneInput.value;
-
-            if (!/^[9][0-9]{8}$/.test(phoneValue)) {
-                alert("Por favor, ingresa un número válido de 9 dígitos que comience con 9.");
-                return false;
-            }
-
-            alert("Número enviado: +56" + phoneValue);
-            // Aquí puedes enviar el número a tu backend si lo necesitas.
-            return false;
-        }
-    </script>
 
 
 </body>
