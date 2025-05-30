@@ -6551,6 +6551,8 @@ footer css
   position: relative;
   overflow: hidden;
   z-index: 1;
+  margin-top: 10px !important;
+  padding-top: 10px !important;
 }
 
 .footer-area::before{
@@ -6561,7 +6563,7 @@ footer css
   background: #3C65F5;
   left: 20%;
   top: -50px;
-  border-radius: 50%;
+  border-radius: 25%;
   opacity: .08;
 }
 
