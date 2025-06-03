@@ -36,11 +36,9 @@
             <span></span>
         </div>
     </div>
-    <!-- preloader end -->
 
-    <!-- header area -->
+    <!-- header -->
     <div id="header-placeholder"></div>
-    <!-- header area end -->
 
     <main class="main">
         <!-- breadcrumb -->
@@ -76,17 +74,11 @@
                             </div>
                             <div class="d-flex justify-content-between mb-4">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="remember" />
-                                    <label class="form-check-label" for="remember">
-                                        Recuérdame
-                                    </label>
+                                    <input class="form-check-input" type="checkbox" id="remember" />
+                                    <label class="form-check-label" for="remember">Recuérdame</label>
                                 </div>
                                 <a href="forgot-password.html" class="forgot-pass">¿Olvidaste tu contraseña?</a>
                             </div>
-
-                            <!-- Contenedor para mensajes -->
-                            <div id="message" style="margin-bottom: 1rem; color: red; font-weight: bold;"></div>
-
                             <div class="d-flex align-items-center">
                                 <button type="submit" class="theme-btn">
                                     <i class="far fa-sign-in"></i> Ingresar
@@ -105,16 +97,30 @@
                 </div>
             </div>
         </div>
-        <!-- login area end -->
     </main>
 
-    <!-- footer area -->
+    <!-- footer -->
     <div id="footer-placeholder"></div>
-    <!-- footer area end -->
 
     <!-- scroll-top -->
     <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
-    <!-- scroll-top end -->
+
+    <!-- Modal de mensajes -->
+    <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="feedbackModalLabel">Mensaje</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body" id="feedbackMessage"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- js -->
     <script src="assets/js/jquery-3.6.0.min.js"></script>
@@ -132,80 +138,7 @@
     <script src="assets/js/nice-select.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooterCan.js"></script>
-
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
-
-            const messageEl = document.getElementById('message');
-            messageEl.textContent = '';
-
-            const email = this.querySelector('input[type="email"]').value.trim();
-            const password = this.querySelector('input[type="password"]').value.trim();
-
-            if (!email || !password) {
-                messageEl.textContent = 'Por favor completa ambos campos.';
-                return;
-            }
-
-            try {
-                // Paso 1: Login
-                const loginResponse = await fetch('http://172.25.100.201:3000/v1/auth/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
-                });
-
-                if (loginResponse.status === 401) {
-                    messageEl.textContent = 'Usuario no existe o la contraseña es incorrecta.';
-                    return;
-                }
-
-                if (!loginResponse.ok) {
-                    const errorText = await loginResponse.text();
-                    messageEl.textContent = 'Error en el login: ' + errorText;
-                    return;
-                }
-
-                const loginData = await loginResponse.json();
-
-                if (!loginData || !loginData.token) {
-                    messageEl.textContent = 'No se recibió un token válido.';
-                    return;
-                }
-
-                localStorage.setItem('token', loginData.token);
-
-                // Decodificar token (extraer sub)
-                const base64Url = loginData.token.split('.')[1];
-                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                const payload = JSON.parse(atob(base64));
-                const userId = payload.sub;
-
-                // Paso 2: Verificar si el usuario ya está registrado
-                const userCheckResponse = await fetch(`http://172.25.100.201:3000/v1/postulante/${userId}`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${loginData.token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (userCheckResponse.status === 404) {
-                    window.location.href = 'candidate-form-register.html';
-                } else if (userCheckResponse.ok) {
-                    window.location.href = 'candidate-dashboard.html';
-                } else {
-                    const errorText = await userCheckResponse.text();
-                    messageEl.textContent = 'Error verificando usuario: ' + errorText;
-                }
-
-            } catch (error) {
-                console.error('Error en login:', error);
-                messageEl.textContent = 'No se pudo conectar con el servidor.';
-            }
-        });
-    </script>
+    <script src="assets/js/login.js"></script>
 
 </body>
 
