@@ -130,6 +130,42 @@
                     </div>
                 </div>
   
+        <div class="pricing-area py-120">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-7 mx-auto wow fadeInDown" data-wow-duration="1s" data-wow-delay=".25s">
+                        <div class="site-heading text-center">
+                            <span class="site-title-tagline">Tipos de Avisos</span>
+                            <h2 class="site-title">Escoge la oferta mas adecuada</h2>
+                            <p>Ofrecemos paquetes de precios estándar globales</p>
+                            <p>Para mayor información, contactar a nuestro WhatsApp</p>
+                            <a href="https://wa.me/56991836445" target="_blank" class="theme-btn whatsapp-btn">
+                                <span class="fab fa-whatsapp"></span> Contactar por WhatsApp
+                            </a>
+                        </div>
+                        <div class="site-heading text-center">
+                            <button onclick="togglePhoneForm()" class="theme-btn">
+                                <span class="fas fa-phone"></span> Te llamamos
+                            </button>
+                        
+                            <form id="phoneForm" onsubmit="return submitPhone()" class="mt-4" style="display: none;">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">+56</span>
+                                            </div>
+                                            <input type="tel" class="form-control" id="phoneInput" name="phone"
+                                                placeholder="9 1234 5678" required pattern="[9][0-9]{8}">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mt-3">
+                                        <button type="submit" class="theme-btn">
+                                            Enviar
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                         
                     </div>

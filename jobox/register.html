@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="assets/css/nice-select.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 
 <body>
@@ -38,17 +38,11 @@
             <span></span>
         </div>
     </div>
-    <!-- preloader end -->
 
-
-    <!-- header area -->
+    <!-- header -->
     <div id="header-placeholder"></div>
-    <!-- header area end -->
-
-
 
     <main class="main">
-
         <!-- breadcrumb -->
         <div class="site-breadcrumb">
             <div class="container">
@@ -61,8 +55,6 @@
                 <img class="hero-shape-4" src="assets/img/shape/07.svg" alt="">
             </div>
         </div>
-
-
 
         <!-- register area -->
         <div class="login-area py-120">
@@ -92,7 +84,6 @@
                                     Acepto los <a href="#">Términos de Servicio.</a>
                                 </label>
                             </div>
-                            <div id="mensaje" style="color: red; margin-bottom: 10px;"></div>
                             <div class="d-flex align-items-center">
                                 <button type="submit" class="theme-btn"><i class="far fa-paper-plane"></i> Registrarse</button>
                             </div>
@@ -109,24 +100,13 @@
                 </div>
             </div>
         </div>
-        <!-- register area end -->
-
-
     </main>
 
-
-
-    <!-- footer area -->
+    <!-- footer -->
     <div id="footer-placeholder"></div>
-    <!-- footer area end -->
-
-
-
 
     <!-- scroll-top -->
     <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
-    <!-- scroll-top end -->
-
 
     <!-- js -->
     <script src="assets/js/jquery-3.6.0.min.js"></script>
@@ -144,63 +124,86 @@
     <script src="assets/js/nice-select.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooterSO.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
-document.getElementById("registroForm").addEventListener("submit", async function(e) {
-    e.preventDefault(); // Evita recarga del form
+        document.getElementById("registroForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
 
-    const nombre = document.getElementById("nombre").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-    const agree = document.getElementById("agree").checked;
-    const mensaje = document.getElementById("mensaje");
+            const nombre = document.getElementById("nombre").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const agree = document.getElementById("agree").checked;
 
-    // Validación simple
-    if (!nombre || !email || !password) {
-        mensaje.textContent = "Por favor completa todos los campos.";
-        return;
-    }
+            if (!nombre || !email || !password) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Campos incompletos',
+                    text: 'Por favor completa todos los campos.'
+                });
+                return;
+            }
 
-    if (!agree) {
-        mensaje.textContent = "Debes aceptar los Términos de Servicio.";
-        return;
-    }
+            if (!agree) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Términos no aceptados',
+                    text: 'Debes aceptar los Términos de Servicio.'
+                });
+                return;
+            }
 
-    const datos = {
-        nombre_completo: nombre,
-        email: email,
-        password: password
-    };
+            const datos = {
+                nombre_completo: nombre,
+                email: email,
+                password: password
+            };
 
-    try {
-        const res = await fetch(" http://200.68.58.178/auth/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(datos)
+            try {
+                const res = await fetch("http://172.25.100.201:3000/v1/auth/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(datos)
+                });
+
+                if (res.status === 401) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Registro fallido',
+                        text: 'Ya existe una cuenta asociada a este correo.'
+                    });
+                } else if (res.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Registro exitoso!',
+                        text: 'Redirigiendo al login...',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    setTimeout(() => {
+                        window.location.href = "login.html";
+                    }, 2000);
+                } else {
+                    const error = await res.text();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error del servidor',
+                        text: 'Error en el registro: ' + error
+                    });
+                }
+
+            } catch (err) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Sin conexión',
+                    text: 'No se pudo conectar con el servidor.'
+                });
+                console.error(err);
+            }
         });
-
-        if (res.status === 401) {
-            mensaje.textContent = "Ya existe una cuenta asociada a este correo.";
-        } else if (res.ok) {
-            mensaje.style.color = "green";
-            mensaje.textContent = "¡Registro exitoso! Redirigiendo...";
-            setTimeout(() => {
-                window.location.href = "login.html";
-            }, 1500);
-        } else {
-            const error = await res.text();
-            mensaje.textContent = "Error en el registro: " + error;
-        }
-
-    } catch (err) {
-        mensaje.textContent = "Error de conexión al servidor.";
-        console.error(err);
-    }
-});
-</script>
-
-
+    </script>
 </body>
 
 </html>

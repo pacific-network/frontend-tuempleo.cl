@@ -6,10 +6,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-
-    <!-- title -->
     <title>Inicio</title>
 
     <!-- favicon -->
@@ -27,78 +23,27 @@
     <link rel="stylesheet" href="assets/css/style.css">
 
     <style>
-        #header-placeholder {
-            position: relative;
-            z-index: 2000; 
-        }
-        /* Solución mejorada para los select */
-        .search-form-wrapper {
-            position: relative;
-        }
-        
-        /* Contenedor del select */
-        .form-group-icon {
-            position: relative;
-            z-index: auto; /* Reset para evitar conflictos */
-        }
-        
-        /* Select estilizado (nice-select) */
-        .nice-select {
-            z-index: 1100;
-            position: relative;
-        }
-        
-        /* Lista desplegable */
-        .nice-select .list {
+        .nice-select.open .list {
             z-index: 9999 !important;
-            position: absolute !important;
-            width: 100% !important;
         }
 
-        .nice-select.open .list {
-            z-index: 1200 !important;;
+        .nice-select .list {
+            position: absolute;
+            width: 100%;
         }
-        
-        /* Footer - debe estar debajo */
-        footer {
-            position: relative;
-            z-index: 10;
+
+        .nice-select .option:hover {
+            background-color: #f0f0f0;
         }
-        
-        /* Contenedor principal */
-        .main {
-            overflow: visible;
+
+        .form-group-icon {
             position: relative;
             z-index: 1;
         }
-        
-        /* Hero section - ajuste para imágenes */
-        .hero-section {
+
+        .hero-content {
             position: relative;
-            z-index: 1;
-        }
-        
-        /* Imágenes del héroe */
-        .hero-img {
-            position: relative;
-            z-index: 1;
-        }
-        
-        /* Asegurar que los selects tengan espacio */
-        .select {
-            position: relative;
-        }
-        
-        /* Ajuste para el formulario de búsqueda */
-        .search-form {
-            position: relative;
-            z-index: 100;
-        }
-        
-        .hero-selection {
-            position: relative;
-            z-index: 1000;
-            overflow: visible;
+            z-index: 2;
         }
     </style>
 </head>
@@ -113,11 +58,9 @@
             <span></span>
         </div>
     </div>
-    <!-- preloader end -->
 
     <!-- header area -->
     <div id="header-placeholder"></div>
-    <!-- header area end -->
 
     <main class="main">
 
@@ -142,8 +85,7 @@
                                                 <div class="col-md-4 px-0">
                                                     <div class="form-group">
                                                         <div class="form-group-icon">
-                                                            <input type="text" class="form-control"
-                                                                placeholder="Escribe aquí...">
+                                                            <input type="text" class="form-control" placeholder="Escribe aquí...">
                                                             <i class="fe-search"></i>
                                                         </div>
                                                     </div>
@@ -151,7 +93,7 @@
                                                 <div class="col-md-3 px-0">
                                                     <div class="form-group">
                                                         <div class="form-group-icon">
-                                                            <select class="select">
+                                                            <select id="ubicacion-select" class="select">
                                                                 <option value="">Ubicación</option>
                                                                 <option value="1">Santiago</option>
                                                                 <option value="2">Melipilla</option>
@@ -168,7 +110,7 @@
                                                 <div class="col-md-3 px-0">
                                                     <div class="form-group">
                                                         <div class="form-group-icon">
-                                                            <select class="select">
+                                                            <select id="categoria-select" class="select">
                                                                 <option value="">Categoría</option>
                                                                 <option value="1">Informática</option>
                                                                 <option value="2">Administración</option>
@@ -184,8 +126,7 @@
                                                 </div>
                                                 <div class="col-md-2 px-1">
                                                     <div class="form-group">
-                                                        <button type="submit" class="theme-btn"><span
-                                                                class="fe-search"></span>Buscar</button>
+                                                        <button type="submit" class="theme-btn"><span class="fe-search"></span>Buscar</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -235,46 +176,31 @@
                 </div>
             </div>
         </div>
+
+        <!-- Partner area -->
         <div class="partner-area bg pt-30 pb-20">
             <div class="container">
                 <div class="partner-wrapper">
                     <div class="partner-slider owl-carousel owl-theme">
-                        <div class="partner-item">
-                            <img src="assets/img/partner/01.png" alt="thumb">
-                        </div>
-                        <div class="partner-item">
-                            <img src="assets/img/partner/02.png" alt="thumb">
-                        </div>
-                        <div class="partner-item">
-                            <img src="assets/img/partner/03.png" alt="thumb">
-                        </div>
-                        <div class="partner-item">
-                            <img src="assets/img/partner/04.png" alt="thumb">
-                        </div>
-                        <div class="partner-item">
-                            <img src="assets/img/partner/05.png" alt="thumb">
-                        </div>
-                        <div class="partner-item">
-                            <img src="assets/img/partner/06.png" alt="thumb">
-                        </div>
-                        <div class="partner-item">
-                            <img src="assets/img/partner/03.png" alt="thumb">
-                        </div>
+                        <div class="partner-item"><img src="assets/img/partner/01.png" alt="thumb"></div>
+                        <div class="partner-item"><img src="assets/img/partner/02.png" alt="thumb"></div>
+                        <div class="partner-item"><img src="assets/img/partner/03.png" alt="thumb"></div>
+                        <div class="partner-item"><img src="assets/img/partner/04.png" alt="thumb"></div>
+                        <div class="partner-item"><img src="assets/img/partner/05.png" alt="thumb"></div>
+                        <div class="partner-item"><img src="assets/img/partner/06.png" alt="thumb"></div>
                     </div>
                 </div>
             </div>
         </div>
+
     </main>
-    <br>
-    
+
     <!-- footer area -->
     <div id="footer-placeholder"></div>
-    <!-- footer area end -->
-    
+
     <!-- scroll-top -->
     <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
-    <!-- scroll-top end -->
-    
+
     <!-- js -->
     <script src="assets/js/jquery-3.6.0.min.js"></script>
     <script src="assets/js/modernizr.min.js"></script>
@@ -291,6 +217,15 @@
     <script src="assets/js/nice-select.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooter.js" defer></script>
+
+    <script>
+        $(document).ready(function () {
+            // Destruye niceSelect si ya estaba aplicado (previene errores en recarga parcial)
+            $('select.select').niceSelect('destroy');
+            // Vuelve a aplicar niceSelect
+            $('select.select').niceSelect();
+        });
+    </script>
 
 </body>
 
