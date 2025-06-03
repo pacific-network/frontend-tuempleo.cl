@@ -427,8 +427,8 @@
                                                 <div class="confirmacion-flotante" id="confirmacion-box">
                                                     <p style="text-align: center;">¿Estás seguro de que quieres actualizar la información?</p>
                                                     <div class="confirmacion-buttons">
-                                                        <button class="btn btn-success" id="btn-confirmar-actualizacion">Confirmar</button>
-                                                        <button class="btn btn-danger" id="btn-cancelar-actualizacion">Cancelar</button>
+                                                        <button type="button" class="btn btn-success" id="btn-confirmar-actualizacion">Confirmar</button>
+                                                        <button type="button" class="btn btn-danger" id="btn-cancelar-actualizacion">Cancelar</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -498,108 +498,187 @@
     <script src="assets/js/update-info.js"></script>
     <script src="assets/js/codigo-pais.js"></script>
     <script>
-// SOLUCIÓN DIRECTA PARA EL BOTÓN ESTÁTICO
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Iniciando solución para botón estático...');
-    
-    // 1. Obtener todos los elementos del botón estático
-    const staticButton = document.getElementById('btn-actualizar');
-    const confirmationBox = document.getElementById('confirmacion-box');
-    const confirmBtn = document.getElementById('btn-confirmar-actualizacion');
-    const cancelBtn = document.getElementById('btn-cancelar-actualizacion');
-    const loadingEl = document.getElementById('btn-loading-estatico');
-    const textEl = document.getElementById('btn-text-estatico');
-    
-    // 2. Verificar que todos los elementos existen
-    if (!staticButton) {
-        console.error('ERROR: No se encontró el botón principal (btn-actualizar)');
-        return;
-    }
-    
-    if (!confirmationBox) console.error('ERROR: No se encontró el cuadro de confirmación');
-    if (!confirmBtn) console.error('ERROR: No se encontró el botón de confirmar');
-    if (!cancelBtn) console.error('ERROR: No se encontró el botón de cancelar');
-    if (!loadingEl) console.warn('ADVERTENCIA: No se encontró el elemento de carga');
-    if (!textEl) console.warn('ADVERTENCIA: No se encontró el elemento de texto');
-    
-    // 3. Función para mostrar notificación
-    function showAlert(message) {
-        const alert = document.createElement('div');
-        alert.textContent = message;
-        alert.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #28a745;
-            color: white;
-            padding: 15px;
-            border-radius: 5px;
-            z-index: 9999;
-            animation: fadeIn 0.3s ease-out;
-        `;
-        document.body.appendChild(alert);
-        
-        setTimeout(() => {
-            alert.style.animation = 'fadeOut 0.3s ease-out';
-            setTimeout(() => alert.remove(), 300);
-        }, 3000);
-    }
-    
-    // 4. Evento para el botón principal
-    staticButton.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log('Botón estático clickeado');
-        
-        if (!confirmationBox) return;
-        
-        confirmationBox.style.display = 
-            confirmationBox.style.display === 'block' ? 'none' : 'block';
-    });
-    
-    // 5. Evento para el botón de confirmar
-    if (confirmBtn) {
-        confirmBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('Confirmar clickeado');
+        // Función para mostrar notificación
+        function showAlert(message, type = 'success') {
+            const alert = document.getElementById('custom-alert');
+            alert.textContent = message;
+            alert.className = `alert alert-${type}`;
+            alert.style.display = 'block';
             
-            if (confirmationBox) confirmationBox.style.display = 'none';
+            setTimeout(() => {
+                alert.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => {
+                    alert.style.display = 'none';
+                    alert.style.animation = 'fadeIn 0.3s ease-out';
+                }, 300);
+            }, 3000);
+        }
+
+        // Función para manejar la actualización
+        function handleUpdate(buttonId, textId, loadingId) {
+            const button = document.getElementById(buttonId);
+            const textElement = document.getElementById(textId);
+            const loadingElement = document.getElementById(loadingId);
             
-            // Mostrar estado de carga
-            if (loadingEl && textEl) {
-                textEl.style.display = 'none';
-                loadingEl.style.display = 'inline';
+            if (textElement && loadingElement) {
+                textElement.style.display = 'none';
+                loadingElement.style.display = 'inline';
             }
             
-            staticButton.disabled = true;
-            staticButton.classList.add('loading');
+            button.disabled = true;
+            button.classList.add('loading');
             
-            // Simular operación
+            // Simular operación de actualización
             setTimeout(() => {
-                if (loadingEl && textEl) {
-                    textEl.style.display = 'inline';
-                    loadingEl.style.display = 'none';
+                if (textElement && loadingElement) {
+                    textElement.style.display = 'inline';
+                    loadingElement.style.display = 'none';
                 }
-                staticButton.disabled = false;
-                staticButton.classList.remove('loading');
+                button.disabled = false;
+                button.classList.remove('loading');
                 showAlert('¡Actualización exitosa!');
             }, 2000);
+        }
+
+        // Configuración del botón estático
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementos del botón estático
+            const staticButton = document.getElementById('btn-actualizar');
+            const staticConfirmationBox = document.getElementById('confirmacion-box');
+            const staticConfirmBtn = document.getElementById('btn-confirmar-actualizacion');
+            const staticCancelBtn = document.getElementById('btn-cancelar-actualizacion');
+            
+            // Mostrar/ocultar confirmación al hacer clic en el botón estático
+            if (staticButton && staticConfirmationBox) {
+                staticButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Alternar la visualización del cuadro de confirmación
+                    staticConfirmationBox.style.display = 
+                        staticConfirmationBox.style.display === 'block' ? 'none' : 'block';
+                });
+            }
+            
+            // Confirmar actualización desde el botón estático
+            if (staticConfirmBtn) {
+                staticConfirmBtn.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                
+                    staticConfirmBtn.disabled = true;
+                    document.getElementById('btn-text-estatico').style.display = 'none';
+                    document.getElementById('btn-loading-estatico').style.display = 'inline';
+                
+                    try {
+                        await actualizarPostulante();
+                        showAlert('¡Actualización exitosa!');
+                        window.location.href = 'candidate-profile.html'; // Asegúrate que este path exista
+                    } catch (error) {
+                        showAlert('Error al actualizar: ' + error.message, 'danger');
+                    } finally {
+                        staticConfirmBtn.disabled = false;
+                        document.getElementById('btn-text-estatico').style.display = 'inline';
+                        document.getElementById('btn-loading-estatico').style.display = 'none';
+                    }
+                
+                    if (staticConfirmationBox) {
+                        staticConfirmationBox.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Cancelar actualización desde el botón estático
+            if (staticCancelBtn) {
+                staticCancelBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    if (staticConfirmationBox) {
+                        staticConfirmationBox.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Cerrar el cuadro de confirmación al hacer clic fuera de él
+            document.addEventListener('click', function(e) {
+                if (staticConfirmationBox && staticConfirmationBox.style.display === 'block') {
+                    const isClickInside = staticButton.contains(e.target) || 
+                                         staticConfirmationBox.contains(e.target);
+                    
+                    if (!isClickInside) {
+                        staticConfirmationBox.style.display = 'none';
+                    }
+                }
+            });
+            
+            // Configuración similar para el botón flotante (si es necesario)
+            const floatingButton = document.getElementById('btn-actualizar-flotante');
+            const floatingConfirmationBox = document.getElementById('confirmacion-box-flotante');
+            const floatingConfirmBtn = document.getElementById('btn-confirmar-actualizacion-flotante');
+            const floatingCancelBtn = document.getElementById('btn-cancelar-actualizacion-flotante');
+            
+            if (floatingButton && floatingConfirmationBox) {
+                floatingButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    floatingConfirmationBox.style.display = 
+                        floatingConfirmationBox.style.display === 'block' ? 'none' : 'block';
+                });
+            }
+            
+            if (floatingConfirmBtn) {
+                floatingConfirmBtn.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                
+                    floatingConfirmBtn.disabled = true;
+                    document.getElementById('btn-text-floating').style.display = 'none';
+                    document.getElementById('btn-loading-floating').style.display = 'inline';
+                
+                    try {
+                        await actualizarPostulante();
+                        showAlert('¡Actualización exitosa!');
+                        window.location.href = 'candidate-profile.html'; // o la ruta que corresponda
+                    } catch (error) {
+                        showAlert('Error al actualizar: ' + error.message, 'danger');
+                    } finally {
+                        floatingConfirmBtn.disabled = false;
+                        document.getElementById('btn-text-floating').style.display = 'inline';
+                        document.getElementById('btn-loading-floating').style.display = 'none';
+                    }
+                
+                    if (floatingConfirmationBox) {
+                        floatingConfirmationBox.style.display = 'none';
+                    }
+                });
+            }
+
+            
+            if (floatingCancelBtn) {
+                floatingCancelBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    if (floatingConfirmationBox) {
+                        floatingConfirmationBox.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Mostrar el botón flotante cuando se hace scroll
+            window.addEventListener('scroll', function() {
+                const floatingContainer = document.getElementById('floating-btn-container');
+                if (floatingContainer) {
+                    if (window.scrollY > 300) {
+                        floatingContainer.style.display = 'block';
+                    } else {
+                        floatingContainer.style.display = 'none';
+                    }
+                }
+            });
         });
-    }
-    
-    // 6. Evento para el botón de cancelar
-    if (cancelBtn) {
-        cancelBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('Cancelar clickeado');
-            if (confirmationBox) confirmationBox.style.display = 'none';
-        });
-    }
-    
-    console.log('Configuración del botón estático completada');
-});
-</script>
+    </script>
 </body>
 </html>

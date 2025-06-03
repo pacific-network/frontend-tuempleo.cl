@@ -561,7 +561,7 @@ async function agregarEducacion(educacionData = {}) {
     const nuevaEducacion = document.createElement('div');
     nuevaEducacion.className = 'educacion-entry';
     
-    const mostrarAnioFinalizacion = educacionData.estado === "Finalizado" || educacionData.estado === "Abandonado";
+    const mostrarAnioFinalizacion = educacionData.estado === "Graduado" || educacionData.estado === "Abandonado";
     
     nuevaEducacion.innerHTML = `
         <div class="row">
@@ -648,7 +648,7 @@ async function agregarEducacion(educacionData = {}) {
         const anioFinalizacionContainer = this.closest('.row').querySelector('.anio-finalizacion-container');
         const anioInput = anioFinalizacionContainer.querySelector('.anio-input');
         
-        if (this.value === "Finalizado" || this.value === "Abandonado") {
+        if (this.value === "Graduado" || this.value === "Abandonado") {
             anioFinalizacionContainer.style.display = 'block';
         } else {
             anioFinalizacionContainer.style.display = 'none';
