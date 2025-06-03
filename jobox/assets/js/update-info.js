@@ -94,6 +94,192 @@ const LISTA_ACTIVIDADES_EMPRESA = [
     "Transporte", "Turismo"
 ];
 
+const REGIONES_COMUNAS = {
+    "regiones": [
+        {
+            "region": "Región de Arica y Parinacota",
+            "comunas": ["Arica", "Camarones", "General Lagos", "Putre"].sort()
+        },
+        {
+            "region": "Región de Tarapacá",
+            "comunas": ["Alto Hospicio", "Camiña", "Colchane", "Huara", "Iquique", "Pica", "Pozo Almonte"].sort()
+        },
+        {
+            "region": "Región de Antofagasta",
+            "comunas": ["Antofagasta", "Calama", "María Elena", "Mejillones", "Ollagüe", "San Pedro de Atacama", "Sierra Gorda", "Taltal", "Tocopilla"].sort()
+        },
+        {
+            "region": "Región de Atacama",
+            "comunas": ["Alto del Carmen", "Caldera", "Chañaral", "Copiapó", "Diego de Almagro", "Freirina", "Huasco", "Tierra Amarilla", "Vallenar"].sort()
+        },
+        {
+            "region": "Región de Coquimbo",
+            "comunas": ["Andacollo", "Canela", "Combarbalá", "Coquimbo", "Illapel", "La Higuera", "La Serena", "Los Vilos", "Monte Patria", "Ovalle", "Paiguano", "Punitaqui", "Río Hurtado", "Salamanca", "Vicuña"].sort()
+        },
+        {
+            "region": "Región de Valparaíso",
+            "comunas": ["Algarrobo", "Calle Larga", "Cartagena", "Casablanca", "Catemu", "Concón", "El Quisco", "El Tabo", "Hijuelas", "Isla de Pascua", 
+                "Juan Fernández", "La Cruz", "La Ligua", "Limache", "Los Andes", "Nogales", "Olmué", "Panquehue", "Papudo", "Petorca", "Providencia", 
+                "Puchuncaví", "Putaendo", "Quillota", "Quilpué", "Quintero", "Rinconada", "San Antonio", "San Esteban", "San Felipe", "Santa María", 
+                "Santo Domingo", "Valparaíso", "Villa Alemana", "Viña del Mar", "Zapallar"].sort() 
+        },
+        {
+            "region": "Región del Libertador Gral. Bernardo O'Higgins",
+            "comunas": ["Chépica", "Chimbarongo", "Codegua", "Coinco", "Coltauco", "Doñihue", "Graneros", "La Estrella", "Las Cabras", 
+                "Litueche", "Lolol", "Machalí", "Malloa", "Marchihue", "Mostazal", "Nancagua", "Navidad", "Olivar", "Palmilla", 
+                "Paredones", "Peralillo", "Peumo", "Pichidegua", "Pichilemu", "Placilla", "Pumanque", "Quinta de Tilcoco", 
+                "Rancagua", "Rengo", "Requínoa", "San Fernando", "San Vicente", "Santa Cruz"].sort()
+        },
+        {
+            "region": "Región del Maule",
+            "comunas": ["Cauquenes", "Chanco", "Colbún", "Constitución", "Curepto", "Curicó", "Empedrado", "Hualañé", 
+                "Licantén", "Linares", "Longaví", "Maule", "Molina", "Parral", "Pelarco", "Pelluhue", "Pencahue", 
+                "Rauco", "Retiro", "Río Claro", "Romeral", "Sagrada Familia", "San Clemente", "San Javier", 
+                "San Rafael", "Talca", "Teno", "Vichuquén", "Villa Alegre", "Yerbas Buenas"].sort()
+        },
+        {
+            "region": "Región de Ñuble",
+            "comunas": ["Bulnes", "Chillán", "Chillán Viejo", "Cobquecura", "Coelemu", "Coihueco", "El Carmen", 
+                "Ninhue", "Ñiquén", "Pemuco", "Pinto", "Portezuelo", "Quillón", "Quirihue", "Ránquil", 
+                "San Carlos", "San Fabián", "San Ignacio", "San Nicolás", "Treguaco", "Yungay"].sort()
+        },
+        {
+            "region": "Región del Biobío",
+            "comunas": ["Alto Biobío", "Antuco", "Arauco", "Cabrero", "Cañete", "Chiguayante", "Concepción", 
+                "Contulmo", "Coronel", "Curanilahue", "Florida", "Hualpén", "Hualqui", "Laja", "Lebu", 
+                "Los Álamos", "Los Ángeles", "Lota", "Mulchén", "Nacimiento", "Negrete", "Penco", 
+                "Quilaco", "Quilleco", "San Pedro de la Paz", "San Rosendo", "Santa Bárbara", 
+                "Santa Juana", "Talcahuano", "Tirúa", "Tomé", "Tucapel", "Yumbel"].sort()
+        },
+        {
+            "region": "Región de la Araucanía",
+            "comunas": ["Angol", "Carahue", "Cholchol", "Collipulli", "Cunco", "Curacautín", "Curarrehue", 
+                "Ercilla", "Freire", "Galvarino", "Gorbea", "Lautaro", "Loncoche", "Lonquimay", 
+                "Los Sauces", "Lumaco", "Melipeuco", "Nueva Imperial", "Padre las Casas", 
+                "Perquenco", "Pitrufquén", "Purén", "Pucón", "Renaico", "Saavedra", 
+                "Temuco", "Teodoro Schmidt", "Toltén", "Traiguén", "Victoria", 
+                "Vilcún", "Villarrica"].sort()
+        },
+        {
+            "region": "Región de Los Ríos",
+            "comunas": ["Corral", "Futrono", "La Unión", "Lago Ranco", "Lanco", "Los Lagos", 
+                "Máfil", "Mariquina", "Paillaco", "Panguipulli", "Río Bueno", "Valdivia"].sort()
+        },
+        {
+            "region": "Región de Los Lagos",
+            "comunas": ["Ancud", "Calbuco", "Castro", "Chaitén", "Chonchi", "Cochamó", 
+                "Curaco de Vélez", "Dalcahue", "Fresia", "Frutillar", "Futaleufú", 
+                "Hualaihué", "Llanquihue", "Los Muermos", "Maullín", "Osorno", 
+                "Palena", "Puerto Montt", "Puerto Octay", "Puerto Varas", 
+                "Puqueldón", "Purranque", "Puyehue", "Queilén", "Quellón", 
+                "Quemchi", "Quinchao", "Río Negro", "San Juan de la Costa", "San Pablo"].sort()
+        },
+        {
+            "region": "Región de Aysén del General Carlos Ibáñez del Campo",
+            "comunas": ["Aysén", "Chile Chico", "Cisnes", "Coihaique", "Guaitecas", 
+                "Lago Verde", "O'Higgins", "Río Ibáñez", "Tortel"].sort()
+        },
+        {
+            "region": "Región de Magallanes y de la Antártica Chilena",
+            "comunas": ["Antártica", "Cabo de Hornos", "Laguna Blanca", "Natales", 
+                "Porvenir", "Primavera", "Punta Arenas", "Río Verde", "San Gregorio", 
+                "Timaukel", "Torres del Paine"].sort()
+        },
+        {
+            "region": "Región Metropolitana de Santiago",
+            "comunas": ["Alhué", "Buin", "Calera de Tango", "Cerrillos", "Cerro Navia", 
+                "Colina", "Conchalí", "Curacaví", "El Bosque", "El Monte", 
+                "Estación Central", "Huechuraba", "Independencia", "Isla de Maipo", 
+                "La Cisterna", "La Florida", "La Granja", "La Pintana", 
+                "La Reina", "Las Condes", "Lo Barnechea", "Lo Espejo", 
+                "Lo Prado", "Macul", "Maipú", "María Pinto", 
+                "Melipilla", "Ñuñoa", "Padre Hurtado", "Pedro Aguirre Cerda",
+                "Peñalolén", "Pirque", "Providencia", "Pudahuel",
+                "Puente Alto", "Quilicura", "Quinta Normal",
+                "Recoleta", "Renca", "San Bernardo",
+                "San Joaquín", "San José de Maipo",
+                "San Miguel", "San Ramón",
+                "Santiago Centro (Comuna)", 
+                "Vitacura"].sort()
+        }
+    ]    
+};
+
+function inicializarSelectsRegionComuna(regionSeleccionada = null, comunaSeleccionada = null) {
+    const regionSelect = document.getElementById('region');
+    const comunaSelect = document.getElementById('comuna');
+    
+    // Llenar región
+    regionSelect.innerHTML = '<option value="">Seleccione una región</option>';
+    REGIONES_COMUNAS.regiones.forEach(region => {
+        const option = new Option(region.region, region.region);
+        regionSelect.add(option);
+    });
+
+    // Establecer región seleccionada si existe
+    if (regionSeleccionada) {
+        const opcionRegion = [...regionSelect.options].find(
+            opt => opt.text === regionSeleccionada || opt.value === regionSeleccionada
+        );
+        
+        if (opcionRegion) {
+            regionSelect.value = opcionRegion.value;
+            
+            // Cargar comunas para la región seleccionada
+            const regionData = REGIONES_COMUNAS.regiones.find(r => r.region === regionSelect.value);
+            comunaSelect.innerHTML = '<option value="">Seleccione una comuna</option>';
+            
+            if (regionData?.comunas?.length) {
+                regionData.comunas.forEach(comuna => {
+                    const option = new Option(comuna, comuna);
+                    comunaSelect.add(option);
+                });
+                comunaSelect.disabled = false;
+                
+                // Establecer comuna seleccionada si existe
+                if (comunaSeleccionada) {
+                    const opcionComuna = [...comunaSelect.options].find(
+                        opt => opt.text === comunaSeleccionada || opt.value === comunaSeleccionada
+                    );
+                    if (opcionComuna) {
+                        comunaSelect.value = opcionComuna.value;
+                    }
+                }
+            }
+        }
+    } else {
+        comunaSelect.innerHTML = '<option value="">Seleccione una comuna</option>';
+        comunaSelect.disabled = true;
+    }
+    
+    // Actualizar NiceSelect si está disponible
+    if (typeof $.fn.niceSelect !== 'undefined') {
+        $(regionSelect).niceSelect('update');
+        $(comunaSelect).niceSelect('update');
+    }
+
+    // Manejar cambio de región
+    regionSelect.addEventListener('change', () => {
+        const selectedRegion = regionSelect.value;
+        const regionData = REGIONES_COMUNAS.regiones.find(r => r.region === selectedRegion);
+        
+        comunaSelect.innerHTML = '<option value="">Seleccione una comuna</option>';
+        comunaSelect.disabled = true;
+
+        if (regionData?.comunas?.length) {
+            regionData.comunas.forEach(comuna => {
+                const option = new Option(comuna, comuna);
+                comunaSelect.add(option);
+            });
+            comunaSelect.disabled = false;
+        }
+
+        if (typeof $.fn.niceSelect !== 'undefined') {
+            $(comunaSelect).niceSelect('update');
+        }
+    });
+}
+
 // Función optimizada para inicializar selects con valores
 function inicializarSelectConValor(selectElement, opciones, valor, textoDefault = '-- Selecciona --') {
     // Limpiar select
@@ -293,11 +479,13 @@ async function llenarFormulario(data) {
     }
     
     // Región y comuna
-    if (postulante.data?.datos_personales?.region) {
-        document.getElementById('region').value = postulante.data.datos_personales.region;
-    }
-    if (postulante.data?.datos_personales?.comuna) {
-        document.getElementById('comuna').value = postulante.data.datos_personales.comuna;
+    if (postulante.data?.datos_personales?.region || postulante.data?.datos_personales?.comuna) {
+        inicializarSelectsRegionComuna(
+            postulante.data.datos_personales.region,
+            postulante.data.datos_personales.comuna
+        );
+    } else {
+        inicializarSelectsRegionComuna();
     }
     
     // Educación
@@ -359,6 +547,8 @@ async function llenarFormulario(data) {
                 document.getElementById('twitter_url').value = red.url || '';
             } else if (red.red_social === 'LinkedIn') {
                 document.getElementById('linkedin_url').value = red.url || '';
+            } else if (red.red_social === 'Instagram') {
+                document.getElementById('instagram_url').value = red.url || '';
             }
         });
     }

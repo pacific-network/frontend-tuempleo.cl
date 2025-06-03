@@ -81,21 +81,25 @@
                             </div>
                             <div class="form-group">
                                 <label>Contraseña</label>
-                                <input type="password" class="form-control" placeholder="Tu Contraseña">
+                                <input type="password" class="form-control" placeholder="Tu Contraseña" required />
                             </div>
                             <div class="d-flex justify-content-between mb-4">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="remember">
+                                    <input class="form-check-input" type="checkbox" value="" id="remember" />
                                     <label class="form-check-label" for="remember">
                                         Recuérdame
                                     </label>
                                 </div>
                                 <a href="forgot-password.html" class="forgot-pass">¿Olvidaste tu contraseña?</a>
                             </div>
+
+                            <!-- Contenedor para mensajes -->
+                            <div id="message" style="margin-bottom: 1rem; color: red; font-weight: bold;"></div>
+
                             <div class="d-flex align-items-center">
-                                <a href="employer-dashboard.html" class="theme-btn">
+                                <button type="submit" class="theme-btn">
                                     <i class="far fa-sign-in"></i> Ingresar
-                                </a>
+                                </button>
                             </div>
                         </form>
                         <div class="login-footer">
@@ -104,17 +108,14 @@
                                 <a href="#" class="btn-fb"><i class="fab fa-linkedin"></i> Ingresa con Linkedin</a>
                                 <a href="#" class="btn-gl"><i class="fab fa-google"></i> Ingresa con Google</a>
                             </div>
-                            <p>¿Aún no tienes una cuenta? <a href="employer-register.html">Regístrate aquí</a></p>
+                            <p>¿Aún no tienes una cuenta? <a href="register-employer.html">Regístrate aquí</a></p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- login area end -->
-
-
     </main>
-
 
 
     <!-- footer area -->
@@ -145,6 +146,79 @@
     <script src="assets/js/nice-select.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooterEmpSO2.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const messageEl = document.getElementById('message');
+            messageEl.textContent = '';
+
+            const email = this.querySelector('input[type="email"]').value.trim();
+            const password = this.querySelector('input[type="password"]').value.trim();
+
+            if (!email || !password) {
+                messageEl.textContent = 'Por favor completa ambos campos.';
+                return;
+            }
+
+            try {
+                // Paso 1: Login
+                const loginResponse = await fetch('http://172.25.100.201:3000/v1/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                if (loginResponse.status === 401) {
+                    messageEl.textContent = 'Usuario no existe o la contraseña es incorrecta.';
+                    return;
+                }
+
+                if (!loginResponse.ok) {
+                    const errorText = await loginResponse.text();
+                    messageEl.textContent = 'Error en el login: ' + errorText;
+                    return;
+                }
+
+                const loginData = await loginResponse.json();
+
+                if (!loginData || !loginData.token) {
+                    messageEl.textContent = 'No se recibió un token válido.';
+                    return;
+                }
+
+                localStorage.setItem('token', loginData.token);
+
+                // Decodificar token (extraer sub)
+                const base64Url = loginData.token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const payload = JSON.parse(atob(base64));
+                const userId = payload.sub;
+
+                // Paso 2: Verificar si el usuario ya está registrado
+                const userCheckResponse = await fetch(`http://172.25.100.201:3000/v1/postulante/${userId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${loginData.token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (userCheckResponse.status === 404) {
+                    window.location.href = 'candidate-form-register.html';
+                } else if (userCheckResponse.ok) {
+                    window.location.href = 'candidate-dashboard.html';
+                } else {
+                    const errorText = await userCheckResponse.text();
+                    messageEl.textContent = 'Error verificando usuario: ' + errorText;
+                }
+
+            } catch (error) {
+                console.error('Error en login:', error);
+                messageEl.textContent = 'No se pudo conectar con el servidor.';
+            }
+        });
+    </script>
 
 </body>
 
