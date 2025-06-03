@@ -17,7 +17,7 @@ function showModalMessage(message, title = 'Mensaje') {
             }
 
             try {
-                const loginResponse = await fetch('http://172.25.100.201:3000/v1/auth/login', {
+                const loginResponse = await fetch('http://localhost:3000/v1/auth/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
@@ -48,7 +48,7 @@ function showModalMessage(message, title = 'Mensaje') {
                 const payload = JSON.parse(atob(base64));
                 const userId = payload.sub;
 
-                const userCheckResponse = await fetch(`http://172.25.100.201:3000/v1/postulante/${userId}`, {
+                const userCheckResponse = await fetch(`http://localhost:3000/v1/postulante/${userId}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${loginData.token}`,
