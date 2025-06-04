@@ -1,6 +1,6 @@
 async function cargarCodigosDePais() {
   try {
-    const response = await fetch('https://restcountries.com/v3.1/all');
+    const response = await fetch('https://restcountries.com/v3.1/all?fields=name,idd,flag,cca2,region');
     const data = await response.json();
 
     const select = document.getElementById('codigo_pais');
@@ -9,7 +9,7 @@ async function cargarCodigosDePais() {
     // Filtrar solo América y que tengan prefijo telefónico
     const paises = data
       .filter(p => p.region === 'Americas' && p.idd && p.idd.root)
-      .map(p => {
+      .flatMap(p => {
         const root = p.idd.root || '';
         const suffixes = p.idd.suffixes || [''];
         return suffixes.map(suffix => ({
@@ -18,8 +18,7 @@ async function cargarCodigosDePais() {
           bandera: p.flag,
           iso2: p.cca2
         }));
-      })
-      .flat();
+      });
 
     paises.sort((a, b) => a.nombre.localeCompare(b.nombre));
 

@@ -363,7 +363,6 @@ function getUserIdFromToken() {
 
 // Función para cargar los datos del postulante
 async function cargarDatosPostulante() {
-    console.log('Iniciando carga de datos del postulante...');
     
     if (!userId) {
         const error = 'No se pudo obtener el userId del token';
@@ -372,14 +371,12 @@ async function cargarDatosPostulante() {
     }
 
     try {
-        console.log('Realizando solicitud a la API...');
         const response = await fetch(`http://172.25.100.201:3000/v1/postulante/${userId}`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
         });
         
-        console.log('Respuesta recibida:', response);
         
         if (!response.ok) {
             const errorText = await response.text();
@@ -387,7 +384,6 @@ async function cargarDatosPostulante() {
         }
         
         const data = await response.json();
-        console.log('Datos recibidos:', data);
         
         await llenarFormulario(data);
         actualizarSidebar(data);
@@ -415,7 +411,6 @@ function actualizarSidebar(data) {
 
 // Función para llenar el formulario con los datos obtenidos
 async function llenarFormulario(data) {
-    console.log('Llenando formulario con datos:', data);
     const postulante = data;
     
     // Datos personales
@@ -431,9 +426,9 @@ async function llenarFormulario(data) {
     // Teléfono
     if (postulante.data?.datos_personales?.telefono) {
         const telefono = postulante.data.datos_personales.telefono;
-        document.getElementById('numero_telefono').value = telefono.substring(telefono.length - 8);
+        document.getElementById('numero_telefono').value = telefono.substring(telefono.length - 9);
         
-        const codigoPais = telefono.substring(0, telefono.length - 8);
+        const codigoPais = telefono.substring(0, telefono.length - 9);
         const selectCodigo = document.getElementById('codigo_pais');
         for (let i = 0; i < selectCodigo.options.length; i++) {
             if (selectCodigo.options[i].value === codigoPais) {
@@ -553,7 +548,6 @@ async function llenarFormulario(data) {
         });
     }
     
-    console.log('Formulario llenado correctamente');
 }
 
 async function agregarEducacion(educacionData = {}) {
@@ -925,7 +919,6 @@ function recolectarDatosFormulario() {
 async function actualizarPostulante() {
     try {
         const datosActualizados = recolectarDatosFormulario();
-        console.log('Datos a enviar:', datosActualizados);
         
         const response = await fetch(`http://172.25.100.201:3000/v1/postulante/update/${userId}`, {
             method: 'PATCH',
@@ -936,7 +929,6 @@ async function actualizarPostulante() {
             body: JSON.stringify(datosActualizados)
         });
         
-        console.log('Respuesta de actualización:', response);
         
         if (!response.ok) {
             const errorText = await response.text();
@@ -944,7 +936,6 @@ async function actualizarPostulante() {
         }
         
         const result = await response.json();
-        console.log('Resultado de actualización:', result);
         
         alert('Perfil actualizado correctamente');
         return result;
@@ -966,7 +957,6 @@ function ocultarConfirmacion() {
 
 // Inicialización cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM cargado, iniciando carga de datos...');
     
     // Verificar autenticación primero
     const token = localStorage.getItem('token');
@@ -978,7 +968,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Obtener userId del token
     userId = getUserIdFromToken();
-    console.log('UserID obtenido:', userId);
     
     if (!userId) {
         alert('Error al obtener información del usuario. Por favor, inicia sesión nuevamente.');

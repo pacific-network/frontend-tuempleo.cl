@@ -373,18 +373,7 @@
     <script src="assets/js/nice-select.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooterSI.js"></script>
-    <script>
-    document.getElementById('logoutButton').addEventListener('click', function (e) {
-            e.preventDefault();
-            const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
-            modal.show();
-        });
-
-        document.getElementById('confirmLogout').addEventListener('click', function () {
-            localStorage.removeItem('token');
-            window.location.href = 'index.html';
-        });
-    </script>
+    <script src="assets/js/logout-button.js" ></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
       const deleteModal = new bootstrap.Modal('#confirmDeleteModal');
