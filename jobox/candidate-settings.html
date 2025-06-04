@@ -25,126 +25,7 @@
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="assets/css/nice-select.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
-    <style>
-        /* Estilos para el botón de actualización */
-        #btn-actualizar {
-            position: relative;
-            transition: all 0.3s ease;
-            min-height: 50px;
-            opacity: 0.9;
-        }
-
-        #btn-actualizar:hover {
-            opacity: 1;
-            transform: translateY(-2px);
-        }
-
-        #btn-actualizar.loading {
-            opacity: 0.8;
-            cursor: not-allowed;
-        }
-
-        #btn-loading {
-            margin-left: 8px;
-        }
-
-        /* Contenedor de confirmación flotante */
-        .confirmacion-flotante {
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            z-index: 9999;
-            width: 280px;
-            margin-bottom: 15px;
-            display: none;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        .confirmacion-flotante:after {
-            content: '';
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -10px;
-            border-width: 10px;
-            border-style: solid;
-            border-color: white transparent transparent transparent;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateX(-50%) translateY(10px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
-        }
-
-        /* Estilos para el botón flotante */
-        .floating-btn-container {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 999;
-            transition: all 0.3s ease;
-        }
-        
-        .floating-btn-container .confirmacion-flotante {
-            bottom: calc(100% + 15px);
-            left: 50%;
-        }
-        
-        .floating-btn {
-            opacity: 0.9;
-            transition: all 0.3s ease;
-            min-height: 50px;
-        }
-        
-        .floating-btn:hover {
-            opacity: 1;
-            transform: translateY(-2px);
-        }
-
-        /* Contenedor relativo para los botones */
-        .btn-container {
-            position: relative;
-            display: inline-block;
-            overflow: visible !important;
-        }
-
-        /* Estilos para los botones de confirmación */
-        .confirmacion-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .confirmacion-buttons .btn {
-            flex: 1;
-        }
-
-        /* Estilos para la notificación */
-        #custom-alert {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-            min-width: 300px;
-            animation: fadeIn 0.3s ease-out;
-            display: none;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes fadeOut {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(-10px); }
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/button.css">
 </head>
 
 <body>
@@ -246,19 +127,17 @@
                                                         <input type="text" class="form-control" placeholder="Correo" id="email" readonly>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label>Número de Contacto</label>
-                                                        <div class="input-group">
-                                                            <select class="form-control" style="width: 100px;" id="codigo_pais">
-                                                                <option value="" disabled selected>+56</option>
-                                                                <option value="+56">+56 (CL)</option>
-                                                                <option value="+54">+54 (AR)</option>
-                                                                <option value="+55">+55 (BR)</option>
-                                                                <option value="+1">+1 (US)</option>
-                                                            </select>
-                                                            <input type="text" class="form-control" placeholder="Número de teléfono" id="numero_telefono">
-                                                        </div>
+                                                        <label>Código País</label>
+                                                        <select class="form-control" style="width: 200px;" id="codigo_pais">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label>Número de Teléfono</label>
+                                                        <input type="text" class="form-control col-md-4" placeholder="Número de teléfono" id="numero_telefono">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2">
@@ -282,7 +161,7 @@
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label>Fecha de Nacimiento</label>
-                                                        <input type="date" class="form-control" id="fecha_nacimiento">
+                                                        <input type="date" class="form-control" id="fecha_nacimiento" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -416,19 +295,20 @@
                                                 </div>
                                             </div>
                                             <!-- Botón principal de actualización con contenedor para el popup -->
-                                            <div class="btn-container mt-4">
+                                            <div class="btn-container mt-4" style="position: relative; display: inline-block;">
                                                 <button type="button" class="theme-btn" id="btn-actualizar">
                                                     <span id="btn-text-estatico">Actualizar información</span>
                                                     <span id="btn-loading-estatico" style="display: none;">
                                                         <i class="fas fa-spinner fa-spin"></i> Procesando...
                                                     </span>
-                                                </button>                                               
-                                                <!-- Popup de confirmación que sigue al botón -->
-                                                <div class="confirmacion-flotante" id="confirmacion-box">
-                                                    <p style="text-align: center;">¿Estás seguro de que quieres actualizar la información?</p>
-                                                    <div class="confirmacion-buttons">
-                                                        <button type="button" class="btn btn-success" id="btn-confirmar-actualizacion">Confirmar</button>
-                                                        <button type="button" class="btn btn-danger" id="btn-cancelar-actualizacion">Cancelar</button>
+                                                </button>
+                                                
+                                                <!-- Popup de confirmación -->
+                                                <div class="confirmacion-flotante" id="confirmacion-box" style="position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%); z-index: 1000; display: none;">
+                                                    <p style="text-align: center; margin-bottom: 15px;">¿Estás seguro de que quieres actualizar la información?</p>
+                                                    <div class="confirmacion-buttons" style="display: flex; justify-content: center; gap: 10px;">
+                                                        <button type="button" class="btn btn-success" id="btn-confirmar-actualizacion" style="padding: 8px 15px;">Confirmar</button>
+                                                        <button type="button" class="btn btn-danger" id="btn-cancelar-actualizacion" style="padding: 8px 15px;">Cancelar</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -458,7 +338,7 @@
             </span>
             <i class="far fa-user"></i>
         </button>
-        
+
         <div class="confirmacion-flotante" id="confirmacion-box-flotante">
             <p style="margin-bottom: 15px; text-align: center;">¿Estás seguro de que quieres actualizar la información?</p>
             <div class="confirmacion-buttons">
@@ -471,6 +351,17 @@
             </div>
         </div>
     </div>
+    <div aria-live="polite" aria-atomic="true" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
+        <div id="toast-actualizacion" class="toast align-items-center text-white bg-success border-0" role="alert">
+            <div class="d-flex">
+                <div class="toast-body">
+                  ¡Información actualizada con éxito!
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+            </div>
+        </div>
+    </div>
+
 
     <!-- scroll-top -->
     <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
@@ -481,6 +372,7 @@
 
     <!-- js -->
     <script src="assets/js/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/modernizr.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/imagesloaded.pkgd.min.js"></script>
@@ -495,190 +387,10 @@
     <script src="assets/js/nice-select.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooterSI.js"></script>
-    <script src="assets/js/update-info.js"></script>
-    <script src="assets/js/codigo-pais.js"></script>
-    <script>
-        // Función para mostrar notificación
-        function showAlert(message, type = 'success') {
-            const alert = document.getElementById('custom-alert');
-            alert.textContent = message;
-            alert.className = `alert alert-${type}`;
-            alert.style.display = 'block';
-            
-            setTimeout(() => {
-                alert.style.animation = 'fadeOut 0.3s ease-out';
-                setTimeout(() => {
-                    alert.style.display = 'none';
-                    alert.style.animation = 'fadeIn 0.3s ease-out';
-                }, 300);
-            }, 3000);
-        }
-
-        // Función para manejar la actualización
-        function handleUpdate(buttonId, textId, loadingId) {
-            const button = document.getElementById(buttonId);
-            const textElement = document.getElementById(textId);
-            const loadingElement = document.getElementById(loadingId);
-            
-            if (textElement && loadingElement) {
-                textElement.style.display = 'none';
-                loadingElement.style.display = 'inline';
-            }
-            
-            button.disabled = true;
-            button.classList.add('loading');
-            
-            // Simular operación de actualización
-            setTimeout(() => {
-                if (textElement && loadingElement) {
-                    textElement.style.display = 'inline';
-                    loadingElement.style.display = 'none';
-                }
-                button.disabled = false;
-                button.classList.remove('loading');
-                showAlert('¡Actualización exitosa!');
-            }, 2000);
-        }
-
-        // Configuración del botón estático
-        document.addEventListener('DOMContentLoaded', function() {
-            // Elementos del botón estático
-            const staticButton = document.getElementById('btn-actualizar');
-            const staticConfirmationBox = document.getElementById('confirmacion-box');
-            const staticConfirmBtn = document.getElementById('btn-confirmar-actualizacion');
-            const staticCancelBtn = document.getElementById('btn-cancelar-actualizacion');
-            
-            // Mostrar/ocultar confirmación al hacer clic en el botón estático
-            if (staticButton && staticConfirmationBox) {
-                staticButton.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    // Alternar la visualización del cuadro de confirmación
-                    staticConfirmationBox.style.display = 
-                        staticConfirmationBox.style.display === 'block' ? 'none' : 'block';
-                });
-            }
-            
-            // Confirmar actualización desde el botón estático
-            if (staticConfirmBtn) {
-                staticConfirmBtn.addEventListener('click', async function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                
-                    staticConfirmBtn.disabled = true;
-                    document.getElementById('btn-text-estatico').style.display = 'none';
-                    document.getElementById('btn-loading-estatico').style.display = 'inline';
-                
-                    try {
-                        await actualizarPostulante();
-                        showAlert('¡Actualización exitosa!');
-                        window.location.href = 'candidate-profile.html'; // Asegúrate que este path exista
-                    } catch (error) {
-                        showAlert('Error al actualizar: ' + error.message, 'danger');
-                    } finally {
-                        staticConfirmBtn.disabled = false;
-                        document.getElementById('btn-text-estatico').style.display = 'inline';
-                        document.getElementById('btn-loading-estatico').style.display = 'none';
-                    }
-                
-                    if (staticConfirmationBox) {
-                        staticConfirmationBox.style.display = 'none';
-                    }
-                });
-            }
-            
-            // Cancelar actualización desde el botón estático
-            if (staticCancelBtn) {
-                staticCancelBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    if (staticConfirmationBox) {
-                        staticConfirmationBox.style.display = 'none';
-                    }
-                });
-            }
-            
-            // Cerrar el cuadro de confirmación al hacer clic fuera de él
-            document.addEventListener('click', function(e) {
-                if (staticConfirmationBox && staticConfirmationBox.style.display === 'block') {
-                    const isClickInside = staticButton.contains(e.target) || 
-                                         staticConfirmationBox.contains(e.target);
-                    
-                    if (!isClickInside) {
-                        staticConfirmationBox.style.display = 'none';
-                    }
-                }
-            });
-            
-            // Configuración similar para el botón flotante (si es necesario)
-            const floatingButton = document.getElementById('btn-actualizar-flotante');
-            const floatingConfirmationBox = document.getElementById('confirmacion-box-flotante');
-            const floatingConfirmBtn = document.getElementById('btn-confirmar-actualizacion-flotante');
-            const floatingCancelBtn = document.getElementById('btn-cancelar-actualizacion-flotante');
-            
-            if (floatingButton && floatingConfirmationBox) {
-                floatingButton.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    floatingConfirmationBox.style.display = 
-                        floatingConfirmationBox.style.display === 'block' ? 'none' : 'block';
-                });
-            }
-            
-            if (floatingConfirmBtn) {
-                floatingConfirmBtn.addEventListener('click', async function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                
-                    floatingConfirmBtn.disabled = true;
-                    document.getElementById('btn-text-floating').style.display = 'none';
-                    document.getElementById('btn-loading-floating').style.display = 'inline';
-                
-                    try {
-                        await actualizarPostulante();
-                        showAlert('¡Actualización exitosa!');
-                        window.location.href = 'candidate-profile.html'; // o la ruta que corresponda
-                    } catch (error) {
-                        showAlert('Error al actualizar: ' + error.message, 'danger');
-                    } finally {
-                        floatingConfirmBtn.disabled = false;
-                        document.getElementById('btn-text-floating').style.display = 'inline';
-                        document.getElementById('btn-loading-floating').style.display = 'none';
-                    }
-                
-                    if (floatingConfirmationBox) {
-                        floatingConfirmationBox.style.display = 'none';
-                    }
-                });
-            }
-
-            
-            if (floatingCancelBtn) {
-                floatingCancelBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    if (floatingConfirmationBox) {
-                        floatingConfirmationBox.style.display = 'none';
-                    }
-                });
-            }
-            
-            // Mostrar el botón flotante cuando se hace scroll
-            window.addEventListener('scroll', function() {
-                const floatingContainer = document.getElementById('floating-btn-container');
-                if (floatingContainer) {
-                    if (window.scrollY > 300) {
-                        floatingContainer.style.display = 'block';
-                    } else {
-                        floatingContainer.style.display = 'none';
-                    }
-                }
-            });
-        });
+    <script src="assets/js/candidate-update-info/update-info.js"></script>
+    <script src="assets/js/form-register/codigo-pais.js"></script>
+    <script src="assets/js/candidate-update-info/update-info-button.js"></script>
+    <script src="assets/js/logout-button.js"></script>
     </script>
 </body>
 </html>
