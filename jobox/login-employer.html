@@ -55,11 +55,11 @@
                 <h1 class="breadcrumb-title">Ingreso Empresas</h1>
             </div>
             <div class="hero-shape">
-                <img class="hero-shape-1" src="assets/img/shape/03.svg" alt="">
-                <img class="hero-shape-2" src="assets/img/shape/05.svg" alt="">
-                <img class="hero-shape-3" src="assets/img/shape/06.svg" alt="">
-                <img class="hero-shape-4" src="assets/img/shape/07.svg" alt="">
-            </div>
+                <img class="hero-shape-1" src="./assets/img/shape/03.svg" alt="">
+                <img class="hero-shape-2" src="./assets/img/shape/05.svg" alt="">
+                <img class="hero-shape-3" src="./assets/img/shape/06.svg" alt="">
+                <img class="hero-shape-4" src="./assets/img/shape/07.svg" alt="">
+            </div>./
         </div>
 
 
@@ -114,7 +114,7 @@
                 </div>
             </div>
         </div>
-        <!-- login area end -->
+        <!-- login area end --> 
     </main>
 
 
@@ -131,94 +131,22 @@
 
 
     <!-- js -->
-    <script src="assets/js/jquery-3.6.0.min.js"></script>
-    <script src="assets/js/modernizr.min.js"></script>
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/imagesloaded.pkgd.min.js"></script>
-    <script src="assets/js/jquery.magnific-popup.min.js"></script>
-    <script src="assets/js/isotope.pkgd.min.js"></script>
-    <script src="assets/js/jquery.appear.min.js"></script>
-    <script src="assets/js/jquery.easing.min.js"></script>
-    <script src="assets/js/owl.carousel.min.js"></script>
-    <script src="assets/js/counter-up.js"></script>
-    <script src="assets/js/masonry.pkgd.min.js"></script>
-    <script src="assets/js/wow.min.js"></script>
-    <script src="assets/js/nice-select.min.js"></script>
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/header-footer/loadHeaderFooterEmpSO2.js"></script>
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
+    <script src="./assets/js/jquery-3.6.0.min.js"></script>
+    <script src="./assets/js/modernizr.min.js"></script>
+    <script src="./assets/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/js/imagesloaded.pkgd.min.js"></script>
+    <script src="./assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="./assets/js/isotope.pkgd.min.js"></script>
+    <script src="./assets/js/jquery.appear.min.js"></script>
+    <script src="./assets/js/jquery.easing.min.js"></script>
+    <script src="./assets/js/owl.carousel.min.js"></script>
+    <script src="./assets/js/counter-up.js"></script>
+    <script src="./assets/js/masonry.pkgd.min.js"></script>
+    <script src="./assets/js/wow.min.js"></script>
+    <script src="./assets/js/nice-select.min.js"></script>
+    <script src="./assets/js/main.js"></script>
+    <script src="./assets/js/header-footer/loadHeaderFooterEmpSO2.js"></script>
 
-            const messageEl = document.getElementById('message');
-            messageEl.textContent = '';
-
-            const email = this.querySelector('input[type="email"]').value.trim();
-            const password = this.querySelector('input[type="password"]').value.trim();
-
-            if (!email || !password) {
-                messageEl.textContent = 'Por favor completa ambos campos.';
-                return;
-            }
-
-            try {
-                // Paso 1: Login
-                const loginResponse = await fetch('http://172.25.100.201:3000/v1/auth/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
-                });
-
-                if (loginResponse.status === 401) {
-                    messageEl.textContent = 'Usuario no existe o la contraseña es incorrecta.';
-                    return;
-                }
-
-                if (!loginResponse.ok) {
-                    const errorText = await loginResponse.text();
-                    messageEl.textContent = 'Error en el login: ' + errorText;
-                    return;
-                }
-
-                const loginData = await loginResponse.json();
-
-                if (!loginData || !loginData.token) {
-                    messageEl.textContent = 'No se recibió un token válido.';
-                    return;
-                }
-
-                localStorage.setItem('token', loginData.token);
-
-                // Decodificar token (extraer sub)
-                const base64Url = loginData.token.split('.')[1];
-                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                const payload = JSON.parse(atob(base64));
-                const userId = payload.sub;
-
-                // Paso 2: Verificar si el usuario ya está registrado
-                const userCheckResponse = await fetch(`http://172.25.100.201:3000/v1/postulante/${userId}`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${loginData.token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (userCheckResponse.status === 404) {
-                    window.location.href = 'candidate-form-register.html';
-                } else if (userCheckResponse.ok) {
-                    window.location.href = 'candidate-dashboard.html';
-                } else {
-                    const errorText = await userCheckResponse.text();
-                    messageEl.textContent = 'Error verificando usuario: ' + errorText;
-                }
-
-            } catch (error) {
-                console.error('Error en login:', error);
-                messageEl.textContent = 'No se pudo conectar con el servidor.';
-            }
-        });
-    </script>
 
 </body>
 
