@@ -465,7 +465,6 @@ async function crearPostulanteYCV(userId, dataPostulante, token) {
     }
 }
 
-
 // Funciones para campos dinámicos
 function addFormacion() {
     const newEntry = document.querySelector('.formacion-entry').cloneNode(true);
