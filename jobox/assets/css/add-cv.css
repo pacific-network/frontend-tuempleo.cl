@@ -1,0 +1,46 @@
+#fileInput {
+            display: none;
+        }
+
+        #customFileButton {
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #customFileButton:hover {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        #filePreview {
+            margin-top: 10px;
+            font-weight: bold;
+            min-height: 24px;
+        }
+
+        #pdfPreview {
+            display: none;
+            width: 100%;
+            height: 100%;
+            margin-top: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+        }
+        #previewContainer {
+            border: 2px dashed #0d6efd;
+            border-radius: 10px;
+            padding: 7px;
+            background-color: #f8f9fa;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+        }
+        #uploadBox {
+            border: 2px dashed #0d6efd;
+            border-radius: 10px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            text-align: center;
+            min-height: 200px;
+            position: relative;
+        }
