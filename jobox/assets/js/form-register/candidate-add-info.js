@@ -48,18 +48,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
         try {
             const formData = prepareFormData();
-            const response = await submitFormData(userId, formData, token);
-            
-            if (response.ok) {
+            const response = await crearPostulanteYCV(userId, formData, token);
+
+            // Improved response handling
+            if (response && response.postulante && response.curriculum) {
                 alert('Datos guardados correctamente!');
                 window.location.href = 'login.html';
             } else {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Error al guardar los datos');
+                throw new Error('Respuesta inesperada del servidor');
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('Error al enviar los datos: ' + error.message);
+            let errorMessage = 'Error al enviar los datos';
+
+            if (error instanceof TypeError && error.message.includes('.json is not a function')) {
+                errorMessage += ': El servidor devolvió una respuesta no válida';
+            } else if (error.message) {
+                errorMessage += ': ' + error.message;
+            }
+
+            alert(errorMessage);
         }
     });
 
@@ -209,6 +217,19 @@ function formatRUT(rut) {
     return `${formatted}-${dv}`;
 }
 
+// Función para limpiar el RUT (asegurar formato correcto)
+function cleanRUT(rut) {
+    if (!rut) return '';
+    // Eliminar todos los caracteres no numéricos excepto K/k
+    let clean = rut.toString().replace(/[^0-9kK]/g, '').toUpperCase();
+    if (clean.length < 2) return '';
+    // Separar cuerpo y dígito verificador
+    const cuerpo = clean.slice(0, -1);
+    const dv = clean.slice(-1);
+    // Reconstruir en formato xxxxxxxx-x
+    return `${cuerpo}-${dv}`;
+}
+
 function validateDV(cuerpo, dv) {
     let suma = 0;
     let multiplo = 2;
@@ -222,6 +243,10 @@ function validateDV(cuerpo, dv) {
     let dvEsperado = resto === 11 ? '0' : resto === 10 ? 'K' : resto.toString();
 
     return dv.toUpperCase() === dvEsperado;
+}
+
+function validateRUTFormat(rut) {
+    return /^[0-9]+-[0-9kK]{1}$/.test(rut);
 }
 
 // Preparar datos del formulario para envío
@@ -295,7 +320,7 @@ function prepareFormData() {
     const herramientas = herramientasInput ? herramientasInput.split(' - ') : [];
 
     return {
-        rut: document.getElementById('rut').value,
+        rut: cleanRUT(document.getElementById('rut').value),
         nombre: document.getElementById('nombre').value,
         apellido: document.getElementById('apellido').value,
         email: document.getElementById('correo').value,
@@ -315,17 +340,131 @@ function prepareFormData() {
     };
 }
 
-// Enviar datos al servidor
-async function submitFormData(userId, data, token) {
-    return await fetch(`http://172.25.100.201:3000/v1/postulante/${userId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(data)
-    });
+// Función para transformar datos del postulante al formato esperado por curriculum
+function transformarDatosParaCV(dataPostulante) {
+  // Extraemos los datos desde la estructura de postulante
+  const datosPersonales = dataPostulante.datos_personales || {};
+  const experiencias = dataPostulante.experiencias || [];
+  const idiomas = dataPostulante.idiomas || [];
+  const preferencias = dataPostulante.preferencias || {};
+  const redes_sociales = dataPostulante.redes_sociales || [];
+
+  // Formatear experiencias para CV
+  const experienciaCV = experiencias.map(exp => ({
+    titulo: exp.cargo || '',
+    grado: exp.nivel_experiencia || '',
+    institucion: exp.empresa || '',
+    ano: exp.anno_inicio && exp.anno_termino ? `${exp.anno_inicio}-${exp.anno_termino}` : '',
+    descripcion: exp.descripcion || ''
+  }));
+
+  // Formatear educación para CV
+  const educacionCV = (datosPersonales.educacion || []).map(edu => ({
+    titulo: edu.titulo || '',
+    grado: edu.grado || '',
+    institucion: edu.institucion || '',
+    ano: "", // No viene año en la data postulante, puedes adaptar si tienes info
+    descripcion: "" // Tampoco hay descripción, puedes agregar si existe
+  }));
+
+  // Formatear idiomas para CV
+  const idiomasCV = idiomas.map(idioma => idioma.idioma || '');
+
+  // Formatear enlaces sociales para CV
+  const enlacesSocialesCV = {};
+  redes_sociales.forEach(red => {
+    const key = red.red_social.toLowerCase();
+    enlacesSocialesCV[key] = red.url || '';
+  });
+
+  // Construir el objeto final para el CV
+  return {
+    data: {
+      habilidades_clave: [], // No viene en postulante, dejar vacío o agregar si tienes
+      preferencias_laborales: {
+        categoria_empleo: preferencias.categoria_empleo || '',
+        tipo_empleo: preferencias.modalidad || '', // asumí modalidad como tipo empleo
+        nivel_empleo: '', // no está en postulante, dejar vacío
+        salario_actual: '', // no está, dejar vacío
+        salario_esperado: preferencias.salario_esperado || '',
+        edad: "", // No viene edad, podrías calcular con fecha nacimiento si quieres
+        experiencia: experiencias.length, // cantidad de experiencias
+        genero: datosPersonales.genero || '',
+        idiomas: idiomasCV,
+        fecha_nacimiento: datosPersonales.fecha_nacimiento || '',
+        estado_civil: datosPersonales.estado_civil || '',
+        descripcion: datosPersonales.descripcion_bio || ''
+      },
+      educacion: educacionCV,
+      experiencia: experienciaCV,
+      enlaces_sociales: enlacesSocialesCV
+    },
+    cv_file: "" // Si tienes ruta o archivo CV, agregar aquí, sino dejar vacío
+  };
 }
+
+// Enviar datos al servidor
+async function crearPostulanteYCV(userId, dataPostulante, token) {
+    const rut = dataPostulante.rut;
+
+    try {
+        // 1) Crear postulante
+        const postulanteResponse = await fetch(`http://172.25.100.201:3000/v1/postulante/${userId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(dataPostulante),
+        });
+
+        if (!postulanteResponse.ok) {
+            let errorData;
+            try {
+                errorData = await postulanteResponse.json();
+            } catch (e) {
+                throw new Error(`Error ${postulanteResponse.status}: ${postulanteResponse.statusText}`);
+            }
+            throw new Error(errorData.message || 'Error al crear postulante');
+        }
+
+        const postulanteData = await postulanteResponse.json();
+
+        // 2) Transformar data para CV
+        const dataParaCV = transformarDatosParaCV(dataPostulante.data);
+
+        // 3) Crear CV
+        const cvResponse = await fetch(`http://172.25.100.201:3000/v1/curriculum/${rut}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(dataParaCV),
+        });
+
+        if (!cvResponse.ok) {
+            let errorData;
+            try {
+                errorData = await cvResponse.json();
+            } catch (e) {
+                throw new Error(`Error ${cvResponse.status}: ${cvResponse.statusText}`);
+            }
+            throw new Error(errorData.message || 'Error al crear CV');
+        }
+
+        const cvData = await cvResponse.json();
+
+        return {
+            postulante: postulanteData,
+            curriculum: cvData
+        };
+    } catch (error) {
+        console.error('Error en crearPostulanteYCV:', error);
+        throw error; // Re-throw the error for the calling function to handle
+    }
+}
+
 
 // Funciones para campos dinámicos
 function addFormacion() {

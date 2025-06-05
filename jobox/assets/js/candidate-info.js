@@ -84,6 +84,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Error al cargar los datos del perfil. Por favor intenta nuevamente.');
             }
         }
+
+        function formatRUT(rut) {
+            if (!rut) return 'No especificado';
+
+            const cleanRut = rut.replace(/[^0-9kK]/g, '').toUpperCase();
+            if (cleanRut.length < 2) return rut;
+
+            const cuerpo = cleanRut.slice(0, -1);
+            const dv = cleanRut.slice(-1);
+
+            let formatted = '';
+            let count = 0;
+            for (let i = cuerpo.length -1; i >= 0; i-- ){
+                formatted = cuerpo[i] + formatted;
+                count++
+                if (count % 3 === 0 && i !== 0){
+                    formatted = '.' + formatted;
+                }
+            }
+
+            return `${formatted}-${dv}`;
+        }
         
         // Función para actualizar la UI con los datos del perfil
         function updateProfileUI(profileData) {
@@ -98,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Actualizar información básica
             document.getElementById('full-name').textContent = `${usuario.nombres} ${usuario.apellidos}`;
-            document.getElementById('rut').textContent = usuario.rut || 'No especificado';
+            document.getElementById('rut').textContent = formatRUT(usuario.rut);
             document.getElementById('email').textContent = usuario.email || 'No especificado';
             document.getElementById('birth-date').textContent = formatDate(datosPersonales?.fecha_nacimiento);
             document.getElementById('age').textContent = datosPersonales?.fecha_nacimiento ? 
