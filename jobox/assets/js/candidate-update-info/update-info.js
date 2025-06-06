@@ -997,21 +997,6 @@ document.addEventListener('DOMContentLoaded', () => {
         agregarIdioma();
     });
     
-    // Configurar botón de actualización
-    document.getElementById('btn-actualizar').addEventListener('click', mostrarConfirmacion);
-    
-    // Configurar botones de confirmación
-    document.getElementById('btn-confirmar-actualizacion').addEventListener('click', () => {
-        actualizarPostulante()
-            .then(() => {
-                ocultarConfirmacion();
-                window.location.href = 'candidate-profile';
-            })
-            .catch(() => {
-                ocultarConfirmacion();
-            });
-    });
-    
     document.getElementById('btn-cancelar-actualizacion').addEventListener('click', ocultarConfirmacion);
     
     // Configurar logout
