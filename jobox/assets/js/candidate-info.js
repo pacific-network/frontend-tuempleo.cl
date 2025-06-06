@@ -29,24 +29,30 @@ document.addEventListener('DOMContentLoaded', function() {
         // Función para formatear fecha
         function formatDate(dateString) {
             if (!dateString) return 'No especificado';
+            const [year, month, day] = dateString.split('-').map(Number);
+            const localDate = new Date(year, month - 1, day);
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            return new Date(dateString).toLocaleDateString('es-ES', options);
+            return localDate.toLocaleDateString('es-ES', options);
         }
+
         
         // Función para calcular edad
         function calculateAge(birthDate) {
             if (!birthDate) return 'No especificado';
+            const [year, month, day] = birthDate.split('-').map(Number);
+            const birth = new Date(year, month - 1, day);
+                
             const today = new Date();
-            const birth = new Date(birthDate);
             let age = today.getFullYear() - birth.getFullYear();
             const monthDiff = today.getMonth() - birth.getMonth();
-            
+                
             if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
                 age--;
             }
-            
+        
             return age;
         }
+
         
         // Función para formatear salario
         function formatSalary(salary) {
