@@ -25,56 +25,7 @@
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css" />
     <link rel="stylesheet" href="assets/css/nice-select.min.css" />
     <link rel="stylesheet" href="assets/css/style.css" />
-    <style>
-        #fileInput {
-            display: none;
-        }
-
-        #customFileButton {
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        #customFileButton:hover {
-            background-color: #0d6efd;
-            color: white;
-        }
-
-        #filePreview {
-            margin-top: 10px;
-            font-weight: bold;
-            min-height: 24px;
-        }
-
-        #pdfPreview {
-            display: none;
-            width: 100%;
-            height: 100%;
-            margin-top: 20px;
-            border: 1px solid #dee2e6;
-            border-radius: 0.25rem;
-        }
-        #previewContainer {
-            border: 2px dashed #0d6efd;
-            border-radius: 10px;
-            padding: 7px;
-            background-color: #f8f9fa;
-            text-align: center;
-            width: 100%;
-            height: 100%;
-        }
-        #uploadBox {
-            border: 2px dashed #0d6efd;
-            border-radius: 10px;
-            padding: 10px;
-            background-color: #f8f9fa;
-            text-align: center;
-            min-height: 200px;
-            position: relative;
-        }
-
-
-    </style>
+    <link rel="stylesheet" href="assets/css/add-cv.css" />
 
 </head>
 
@@ -119,8 +70,8 @@
                                     <button type="button" class="profile-img-btn"><i class="far fa-camera"></i></button>
                                     <input type="file" class="profile-img-file" />
                                 </div>
-                                <h4>Laura Packer</h4>
-                                <p>Full Stack Web Developer</p>
+                                <h4 id="userFullName">Cargando...</h4>
+                                <p id="userCategory">Cargando...</p>
                             </div>
                             <ul class="user-profile-sidebar-list">
                                 <li><a href="candidate-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a></li>
@@ -226,144 +177,8 @@
     <script src="assets/js/main.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooterSI.js"></script>
     <script src="assets/js/logout-button.js"></script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const uploadButton = document.getElementById("uploadBtn");
-            const fileInput = document.getElementById("fileInput");
-            const filePreview = document.getElementById("filePreview");
-            const customFileButton = document.getElementById("customFileButton");
-            const toastContainer = document.getElementById("toastContainer");
-
-            // Abre el selector de archivo cuando se clickea el botón personalizado
-            customFileButton.addEventListener("click", () => {
-                fileInput.click();
-            });
-
-            // Actualiza la vista cuando se selecciona archivo
-            fileInput.addEventListener("change", () => {
-                const file = fileInput.files[0];
-                const previewContainer = document.getElementById("previewContainer");
-                const miniPreview = document.getElementById("pdfMiniPreview");
-                const uploadInstructions = document.getElementById("uploadInstructions");
-            
-                if (file && file.type === "application/pdf") {
-                    uploadButton.disabled = false;
-            
-                    const fileURL = URL.createObjectURL(file);
-                    miniPreview.src = fileURL;
-            
-                    uploadInstructions.style.display = "none";     // Oculta texto inicial
-                    previewContainer.style.display = "block";      // Muestra el preview
-                } else {
-                    uploadButton.disabled = true;
-                    miniPreview.src = "";
-                    previewContainer.style.display = "none";
-                    uploadInstructions.style.display = "block";    // Muestra texto otra vez
-                    showToast("Por favor, selecciona un archivo PDF válido.", "warning");
-                }
-            });
-
-
-            // Función para mostrar toast
-            function showToast(message, type = "success") {
-                const toastId = "toast" + Date.now();
-                const toastHtml = `
-                    <div id="${toastId}" class="toast align-items-center text-bg-${type} border-0" role="alert" aria-live="assertive" aria-atomic="true">
-                      <div class="d-flex">
-                        <div class="toast-body">
-                          ${message}
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                      </div>
-                    </div>
-                `;
-                toastContainer.insertAdjacentHTML("beforeend", toastHtml);
-                const toastElement = document.getElementById(toastId);
-                const bsToast = new bootstrap.Toast(toastElement, { delay: 5000 });
-                bsToast.show();
-
-                // Remover toast del DOM cuando desaparezca
-                toastElement.addEventListener("hidden.bs.toast", () => {
-                    toastElement.remove();
-                });
-            }
-
-            function parseJwt(token) {
-                try {
-                    const base64Url = token.split('.')[1];
-                    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-                        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-                    }).join(''));
-                    return JSON.parse(jsonPayload);
-                } catch (e) {
-                    return null;
-                }
-            }
-
-            uploadButton.addEventListener("click", async function () {
-                const token = localStorage.getItem("token");
-                if (!token) {
-                    showToast("Token no encontrado. Por favor inicia sesión.", "danger");
-                    return;
-                }
-
-                const payload = parseJwt(token);
-                if (!payload || !payload.sub) {
-                    showToast("Token inválido, no se pudo obtener el id de usuario.", "danger");
-                    return;
-                }
-
-                const userId = payload.sub;
-                const file = fileInput.files[0];
-                if (!file) {
-                    showToast("Por favor selecciona un archivo PDF antes de subir.", "warning");
-                    return;
-                }
-
-                try {
-                    const response = await fetch(`http://172.25.100.201:3000/v1/postulante/${userId}`, {
-                        method: "GET",
-                        headers: {
-                            "Authorization": `Bearer ${token}`
-                        }
-                    });
-
-                    if (!response.ok) throw new Error("Error al obtener el RUT del usuario");
-
-                    const data = await response.json();
-                    const rut = data.usuario.rut;
-
-                    const formData = new FormData();
-                    formData.append("file", file);
-
-                    const uploadResponse = await fetch(`http://172.25.100.201:3000/v1/curriculum/upload/${rut}`, {
-                        method: "POST",
-                        headers: {
-                            "Authorization": `Bearer ${token}`
-                        },
-                        body: formData
-                    });
-
-                    if (!uploadResponse.ok) {
-                        const errorText = await uploadResponse.text();
-                        throw new Error(`Error al subir archivo: ${errorText}`);
-                    }
-
-                    showToast("¡CV subido correctamente!", "success");
-
-                    // Limpiar input y deshabilitar botón para evitar doble envío
-                    fileInput.value = "";
-                    uploadButton.disabled = true;
-                    filePreview.textContent = "";
-                } catch (error) {
-                    console.error(error);
-                    showToast("Ocurrió un error al subir el CV: " + error.message, "danger");
-                }
-            });
-        });
-    </script>
+    <script src="assets/js/cv-manager/upload-cv.js"></script>
+    <script src="assets/js/candidate-name-category.js"></script>
 
 </body>
 
