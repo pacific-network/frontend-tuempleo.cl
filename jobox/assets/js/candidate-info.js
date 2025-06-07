@@ -29,24 +29,30 @@ document.addEventListener('DOMContentLoaded', function() {
         // Función para formatear fecha
         function formatDate(dateString) {
             if (!dateString) return 'No especificado';
+            const [year, month, day] = dateString.split('-').map(Number);
+            const localDate = new Date(year, month - 1, day);
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            return new Date(dateString).toLocaleDateString('es-ES', options);
+            return localDate.toLocaleDateString('es-ES', options);
         }
+
         
         // Función para calcular edad
         function calculateAge(birthDate) {
             if (!birthDate) return 'No especificado';
+            const [year, month, day] = birthDate.split('-').map(Number);
+            const birth = new Date(year, month - 1, day);
+                
             const today = new Date();
-            const birth = new Date(birthDate);
             let age = today.getFullYear() - birth.getFullYear();
             const monthDiff = today.getMonth() - birth.getMonth();
-            
+                
             if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
                 age--;
             }
-            
+        
             return age;
         }
+
         
         // Función para formatear salario
         function formatSalary(salary) {
@@ -84,6 +90,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Error al cargar los datos del perfil. Por favor intenta nuevamente.');
             }
         }
+
+        function formatRUT(rut) {
+            if (!rut) return 'No especificado';
+
+            const cleanRut = rut.replace(/[^0-9kK]/g, '').toUpperCase();
+            if (cleanRut.length < 2) return rut;
+
+            const cuerpo = cleanRut.slice(0, -1);
+            const dv = cleanRut.slice(-1);
+
+            let formatted = '';
+            let count = 0;
+            for (let i = cuerpo.length -1; i >= 0; i-- ){
+                formatted = cuerpo[i] + formatted;
+                count++
+                if (count % 3 === 0 && i !== 0){
+                    formatted = '.' + formatted;
+                }
+            }
+
+            return `${formatted}-${dv}`;
+        }
         
         // Función para actualizar la UI con los datos del perfil
         function updateProfileUI(profileData) {
@@ -98,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Actualizar información básica
             document.getElementById('full-name').textContent = `${usuario.nombres} ${usuario.apellidos}`;
-            document.getElementById('rut').textContent = usuario.rut || 'No especificado';
+            document.getElementById('rut').textContent = formatRUT(usuario.rut);
             document.getElementById('email').textContent = usuario.email || 'No especificado';
             document.getElementById('birth-date').textContent = formatDate(datosPersonales?.fecha_nacimiento);
             document.getElementById('age').textContent = datosPersonales?.fecha_nacimiento ? 

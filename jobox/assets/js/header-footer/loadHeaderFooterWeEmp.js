@@ -11,7 +11,6 @@ window.addEventListener("DOMContentLoaded", () => {
     .then(html => {
       if (header) {
         header.innerHTML = html;
-        console.log("Header cargado:", header); // Verifica en consola
       }
     })
     .catch(err => console.error("Error al cargar el header:", err));
@@ -25,7 +24,6 @@ window.addEventListener("DOMContentLoaded", () => {
     .then(html => {
       if (footer) {
         footer.innerHTML = html;
-        console.log("Footer cargado:", footer); // Verifica en consola
       }
     })
     .catch(err => console.error("Error al cargar el footer:", err));

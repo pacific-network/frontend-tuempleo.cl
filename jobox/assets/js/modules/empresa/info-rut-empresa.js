@@ -38,6 +38,17 @@ document.getElementById('consultarRutBtn').addEventListener('click', async () =>
 
     } catch (error) {
         console.error(error);
-        alert("Error al consultar el RUT. Verifique que sea válido.");
-    }
-});
+        const errorElement = document.createElement('div');
+        errorElement.textContent = "Error al consultar el RUT. Verifique que sea válido.";
+        errorElement.style.color = 'red';
+        errorElement.style.marginTop = '5px';
+        errorElement.id = 'rutError';
+
+        const rutInputContainer = document.getElementById('rutInput').parentElement;
+        const existingError = document.getElementById('rutError');
+        if (existingError) {
+            existingError.remove();
+        }
+        rutInputContainer.appendChild(errorElement);
+        }
+    });
