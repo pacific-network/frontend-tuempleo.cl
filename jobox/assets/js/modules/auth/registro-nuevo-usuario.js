@@ -40,7 +40,7 @@ document.getElementById("registroForm").addEventListener("submit", async functio
             mensaje.style.color = "green";
             mensaje.textContent = "¡Registro exitoso! Redirigiendo...";
             setTimeout(() => {
-                window.location.href = "login.html";
+                window.location.href = "login-employer.html";
             }, 1500);
         } else {
             const error = await res.text();

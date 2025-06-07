@@ -15,7 +15,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
 
     try {
         // Paso 1: Login
-        const loginResponse = await fetch('http://172.25.100.201:3000/v1/auth/login-empleador', {
+        const loginResponse = await fetch('http://localhost:3000/v1/auth/login-empleador', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
