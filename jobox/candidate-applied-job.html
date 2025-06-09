@@ -140,13 +140,13 @@
                                 <div class="user-profile-card-header-right">
                                     <div class="user-profile-sort">
                                         <form action="#">
-                                            <div class="form-group">
+                                            <div class="form-control g-4">
                                                 <select class="select">
-                                                    <option value="1">Last 1 Month</option>
-                                                    <option value="2">Last 2 Months</option>
-                                                    <option value="3">Last 3 Months</option>
-                                                    <option value="4">Last 6 Months</option>
-                                                    <option value="5">Last 1 Year</option>
+                                                    <option value="1">Hace 1 día</option>
+                                                    <option value="2">Hace 2 días</option>
+                                                    <option value="3">Hace 1 semana</option>
+                                                    <option value="4">Hace 2 semanas</option>
+                                                    <option value="5">Hace 3 semanas</option>
                                                 </select>
                                             </div>
                                         </form>
@@ -375,27 +375,7 @@
     <script src="assets/js/header-footer/loadHeaderFooterSI.js"></script>
     <script src="assets/js/logout-button.js" ></script>
     <script src="assets/js/candidate-name-category.js"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const deleteModal = new bootstrap.Modal('#confirmDeleteModal');
-      let rowToDelete = null;
-    
-      // Configurar botones de eliminar
-      document.querySelectorAll('.btn-outline-danger').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          e.preventDefault();
-          rowToDelete = this.closest('tr');
-          deleteModal.show();
-        });
-      });
-
-      // Confirmar eliminación
-      document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
-        deleteModal.hide();
-        rowToDelete?.remove();
-      });
-    });
-    </script>
+    <script src="assets/js/delete-applied-job.js"></script>
 
 </body>
 
