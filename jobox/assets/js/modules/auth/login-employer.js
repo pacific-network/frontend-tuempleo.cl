@@ -1,4 +1,4 @@
-
+//assets/js/modules/auth/login-employer.js
 document.getElementById('loginForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
@@ -48,7 +48,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
         const userId = payload.sub;
 
         // Paso 2: Verificar si el usuario ya está registrado
-        const userCheckResponse = await fetch(`http://172.25.100.201:3000/v1/postulante/${userId}`, {
+        const userCheckResponse = await fetch(`http://localhost:3000/v1/empleador/${userId}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${loginData.token}`,
@@ -70,3 +70,19 @@ document.getElementById('loginForm').addEventListener('submit', async function (
         messageEl.textContent = 'No se pudo conectar con el servidor.';
     }
 });
+
+
+document.getElementById('togglePassword').addEventListener('click', function () {
+    const passwordInput = document.getElementById('password');
+    const icon = this.querySelector('i');
+
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      icon.classList.remove('fa-eye');
+      icon.classList.add('fa-eye-slash');
+    } else {
+      passwordInput.type = 'password';
+      icon.classList.remove('fa-eye-slash');
+      icon.classList.add('fa-eye');
+    }
+  });
