@@ -6032,7 +6032,7 @@ user profile css
 /* profile upload */
 .profile-upload {
   width: 100%;
-  height: 200px;
+  height: 280px;
   border: 2px dashed rgba(0, 0, 0, .1);
   border-radius: 10px;
   cursor: pointer;
