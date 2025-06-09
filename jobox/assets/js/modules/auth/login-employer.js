@@ -1,88 +1,110 @@
-//assets/js/modules/auth/login-employer.js
-document.getElementById('loginForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
-
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('loginForm');
     const messageEl = document.getElementById('message');
-    messageEl.textContent = '';
-
-    const email = this.querySelector('input[type="email"]').value.trim();
-    const password = this.querySelector('input[type="password"]').value.trim();
-
-    if (!email || !password) {
-        messageEl.textContent = 'Por favor completa ambos campos.';
-        return;
-    }
-
-    try {
-        // Paso 1: Login
-        const loginResponse = await fetch('http://localhost:3000/v1/auth/login-empleador', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-        });
-
-        if (loginResponse.status === 401) {
-            messageEl.textContent = 'Usuario no existe o la contraseña es incorrecta.';
-            return;
-        }
-
-        if (!loginResponse.ok) {
-            const errorText = await loginResponse.text();
-            messageEl.textContent = 'Error en el login: ' + errorText;
-            return;
-        }
-
-        const loginData = await loginResponse.json();
-
-        if (!loginData || !loginData.token) {
-            messageEl.textContent = 'No se recibió un token válido.';
-            return;
-        }
-
-        localStorage.setItem('token', loginData.token);
-
-        // Decodificar token (extraer sub)
-        const base64Url = loginData.token.split('.')[1];
+    const togglePasswordBtn = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+  
+    // Mostrar / ocultar contraseña
+    togglePasswordBtn.addEventListener('click', () => {
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        togglePasswordBtn.innerHTML = '<i class="far fa-eye-slash"></i>';
+      } else {
+        passwordInput.type = 'password';
+        togglePasswordBtn.innerHTML = '<i class="far fa-eye"></i>';
+      }
+    });
+  
+    // Función para decodificar JWT
+    function parseJwt(token) {
+      try {
+        const base64Url = token.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const payload = JSON.parse(atob(base64));
-        const userId = payload.sub;
-
-        // Paso 2: Verificar si el usuario ya está registrado
-        const userCheckResponse = await fetch(`http://localhost:3000/v1/empleador/${userId}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${loginData.token}`,
-                'Content-Type': 'application/json'
-            }
+        return JSON.parse(decodeURIComponent(escape(window.atob(base64))));
+      } catch (err) {
+        console.error('Error decodificando el token:', err);
+        return null;
+      }
+    }
+  
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      messageEl.textContent = '';
+  
+      const email = loginForm.querySelector('#email').value.trim();
+      const password = loginForm.querySelector('#password').value.trim();
+  
+      if (!email || !password) {
+        messageEl.textContent = 'Por favor, completa ambos campos.';
+        return;
+      }
+  
+      try {
+        const res = await fetch('http://localhost:3000/v1/auth/login-empleador', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
         });
-
-        if (userCheckResponse.status === 404) {
-            window.location.href = 'employer-form-register.html';
-        } else if (userCheckResponse.ok) {
-            window.location.href = 'employer-dashboard.html';
-        } else {
-            const errorText = await userCheckResponse.text();
-            messageEl.textContent = 'Error verificando usuario: ' + errorText;
+  
+        if (res.status === 401) {
+          messageEl.textContent = 'Usuario no existe o contraseña incorrecta.';
+          return;
         }
+  
+        if (!res.ok) {
+          const errorText = await res.text();
+          messageEl.textContent = `Error en login: ${errorText}`;
+          return;
+        }
+  
+        const data = await res.json();
+  
+        if (!data.token) {
+          messageEl.textContent = 'No se recibió un token válido.';
+          return;
+        }
+  
+        localStorage.setItem('token', data.token);
+  
+        const payload = parseJwt(data.token);
+        if (!payload || !payload.sub) {
+          messageEl.textContent = 'Token inválido.';
+          return;
+        }
+  
+        const userId = payload.sub;
+  
+        const userCheck = await fetch(`http://localhost:3000/v1/empleador/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${data.token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+  
+        if (!userCheck.ok) {
+          const errText = await userCheck.text();
+          messageEl.textContent = `Error verificando usuario: ${errText}`;
+          return;
+        }
+  
+        let employerData = null;
 
-    } catch (error) {
+const contentLength = userCheck.headers.get("content-length");
+if (contentLength && parseInt(contentLength) > 0) {
+  employerData = await userCheck.json();
+}
+
+if (!employerData || employerData.employer?.empresaId === 0) {
+  window.location.href = 'employer-form-register.html';
+} else {
+  window.location.href = 'employer-dashboard.html';
+}
+  
+      } catch (error) {
         console.error('Error en login:', error);
         messageEl.textContent = 'No se pudo conectar con el servidor.';
-    }
-});
-
-
-document.getElementById('togglePassword').addEventListener('click', function () {
-    const passwordInput = document.getElementById('password');
-    const icon = this.querySelector('i');
-
-    if (passwordInput.type === 'password') {
-      passwordInput.type = 'text';
-      icon.classList.remove('fa-eye');
-      icon.classList.add('fa-eye-slash');
-    } else {
-      passwordInput.type = 'password';
-      icon.classList.remove('fa-eye-slash');
-      icon.classList.add('fa-eye');
-    }
-  });
+      }
+    });
+})
+  
