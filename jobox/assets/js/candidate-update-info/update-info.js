@@ -919,7 +919,17 @@ function recolectarDatosFormulario() {
 async function actualizarPostulante() {
     try {
         const datosActualizados = recolectarDatosFormulario();
-        
+
+        // Mostrar popup de carga
+        Swal.fire({
+            title: 'Actualizando...',
+            text: 'Por favor espera un momento',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
         const response = await fetch(`http://172.25.100.201:3000/v1/postulante/update/${userId}`, {
             method: 'PATCH',
             headers: {
@@ -928,20 +938,42 @@ async function actualizarPostulante() {
             },
             body: JSON.stringify(datosActualizados)
         });
-        
-        
+
         if (!response.ok) {
             const errorText = await response.text();
             throw new Error(`Error HTTP: ${response.status} - ${errorText}`);
         }
-        
+
         const result = await response.json();
-        
-        alert('Perfil actualizado correctamente');
+
+        Swal.close();
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        await Swal.fire({
+            title: '¡Perfil actualizado!',
+            text: 'Los datos se guardaron correctamente.',
+            icon: 'success',
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: '#3085d6',
+            allowOutsideClick: false
+        });
+
         return result;
     } catch (error) {
         console.error('Error en actualizarPostulante:', error);
-        alert('Ocurrió un error al actualizar el perfil: ' + error.message);
+
+        Swal.close();
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        await Swal.fire({
+            title: 'Error al actualizar',
+            text: error.message,
+            icon: 'error',
+            confirmButtonText: 'Reintentar',
+            confirmButtonColor: '#d33',
+            allowOutsideClick: false
+        });
+
         throw error;
     }
 }
@@ -962,7 +994,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('token');
     if (!token) {
         alert('No estás autenticado. Redirigiendo a login...');
-        window.location.href = '/login.html';
+        window.location.href = '/jobox/login.html';
         return;
     }
 
@@ -971,7 +1003,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (!userId) {
         alert('Error al obtener información del usuario. Por favor, inicia sesión nuevamente.');
-        window.location.href = '/login.html';
+        window.location.href = '/jobox/login.html';
         return;
     }
 

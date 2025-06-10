@@ -17,7 +17,11 @@ function showModalMessage(message, title = 'Mensaje') {
             }
 
             try {
+<<<<<<< HEAD
                 const loginResponse = await fetch('http://localhost:3000/v1/auth/login', {
+=======
+                const loginResponse = await fetch('http://172.25.100.201:3000/v1/auth/login-postulante', {
+>>>>>>> 9fbb323ba6581844dcbb1548f49e2ab9d9bfa8a4
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
