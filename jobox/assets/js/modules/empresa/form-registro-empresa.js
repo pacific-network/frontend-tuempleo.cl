@@ -38,6 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     empresa_menor_tamano: false,
                     web_factuacion: "https://www.pruebacorp.cl",
                     pais: "Chile",
+                    region: formData.get("region_empresa"),
+                    comuna: formData.get("comuna_empresa"),
                     telefono: "+56 9 1234 5678",
                     descripcion: "Empresa dedicada a servicios de consultoría"
                 }
@@ -51,6 +53,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 telefono: `${formData.get("codigo_pais_empleador")}${formData.get("numero_telefono_empleador")}`,
                 cargo: formData.get("cargo_empleador"),
                 data: {
+                    pais: form.get("pais_empleador"),
+                    region: form.get("region_empleador"),
+                    comuna: form.get("comuna_empleador"),
+                    direccion: form.get("direccion_empleador"),
                     cargo: "Gerente de Ventas",
                     telefono: "+56987654321",
                     facebook: "https://facebook.com/gerente",
