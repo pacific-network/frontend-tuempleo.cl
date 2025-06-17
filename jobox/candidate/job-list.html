@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- meta tags -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <!-- title -->
+    <title>Lista de Trabajos</title>
+
+    <!-- favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/img/logo/favicon.png">
+
+    <!-- css -->
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/all-fontawesome.min.css">
+    <link rel="stylesheet" href="../assets/css/feather.min.css">
+    <link rel="stylesheet" href="../assets/css/flaticon.css">
+    <link rel="stylesheet" href="../assets/css/animate.min.css">
+    <link rel="stylesheet" href="../assets/css/magnific-popup.min.css">
+    <link rel="stylesheet" href="../assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="../assets/css/nice-select.min.css">
+    <link rel="stylesheet" href="../assets/css/jquery-ui.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+
+</head>
+
+<body>
+
+    <!-- preloader -->
+    <div class="preloader">
+        <div class="loader">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <!-- preloader end -->
+
+
+    <!-- header area -->
+    <div id="header-placeholder"></div>
+    <!-- header area end -->
+
+
+
+    <main class="main">
+
+        <!-- breadcrumb -->
+        <div class="site-breadcrumb pb-5">
+            <div class="container">
+                <h2 class="breadcrumb-title">Lista de Trabajos</h2>
+
+                <div class="job-list2 search-form mt-5 mb-3">
+                    <div class="col-lg-9 mx-auto">
+                        <div class="search-form-wrapper">
+                            <form action="#">
+                                <div class="row">
+                                    <div class="col-md-4 px-0">
+                                        <div class="form-group">
+                                            <div class="form-group-icon">
+                                                <input type="text" class="form-control"
+                                                    placeholder="Escribe aquí...">
+                                                <i class="fe-search"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 px-0">
+                                        <div class="form-group">
+                                            <div class="form-group-icon">
+                                                <select class="select">
+                                                    <option value="">Ubicación</option>
+                                                    <option value="1">Santiago</option>
+                                                    <option value="2">Melipilla</option>
+                                                    <option value="3">Puerto Montt</option>
+                                                    <option value="4">Concepción</option>
+                                                    <option value="5">Chillán</option>
+                                                    <option value="6">Atacama</option>
+                                                    <option value="7">Curicó</option>
+                                                </select>
+                                                <i class="fe-map-pin"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 px-0">
+                                        <div class="form-group">
+                                            <div class="form-group-icon">
+                                                <select class="select">
+                                                    <option value="">Categoría</option>
+                                                    <option value="1">Informática</option>
+                                                    <option value="2">Administración</option>
+                                                    <option value="3">Operaciones</option>
+                                                    <option value="4">Finanzas</option>
+                                                    <option value="5">Gerencia</option>
+                                                    <option value="6">Salud</option>
+                                                    <option value="7">Recursos Humanos</option>
+                                                </select>
+                                                <i class="fe-briefcase"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 px-1">
+                                        <div class="form-group">
+                                            <button type="submit" class="theme-btn w-100"><span
+                                                    class="fe-search"></span>Search</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-shape">
+                <img class="hero-shape-1" src="../assets/img/shape/03.svg" alt="">
+                <img class="hero-shape-2" src="../assets/img/shape/05.svg" alt="">
+                <img class="hero-shape-3" src="../assets/img/shape/06.svg" alt="">
+                <img class="hero-shape-4" src="../assets/img/shape/07.svg" alt="">
+            </div>
+        </div>
+
+
+
+
+        <!-- job list -->
+        <div class="job-list2 py-120">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-xl-3 mb-4">
+                        <div class="job-sidebar">
+                            <div class="job-sidebar-item">
+                                <h4 class="job-sidebar-title">Tipos de Trabajo</h4>
+                                <div class="job-type">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="job-type" type="checkbox" value="1"
+                                            id="job-type1">
+                                        <label class="form-check-label" for="job-type1">
+                                            Trabajo Full Time <span>(20)</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="job-type" type="checkbox" value="2"
+                                            id="job-type2">
+                                        <label class="form-check-label" for="job-type2">
+                                            Trabajo Part Time <span>(15)</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="job-type" type="checkbox" value="3"
+                                            id="job-type3">
+                                        <label class="form-check-label" for="job-type3">
+                                            Trabajo Remoto <span>(18)</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="job-type" type="checkbox" value="4"
+                                            id="job-type4">
+                                        <label class="form-check-label" for="job-type4">
+                                            Internado <span>(35)</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="job-type" type="checkbox" value="5"
+                                            id="job-type5">
+                                        <label class="form-check-label" for="job-type5">
+                                            Freelance <span>(49)</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="job-type" type="checkbox" value="6"
+                                            id="job-type6">
+                                        <label class="form-check-label" for="job-type6">
+                                            Temporal <span>(23)</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="job-sidebar-item">
+                                <h4 class="job-sidebar-title">Salario</h4>
+                                <div class="job-salary">
+                                    <div class="price-range-slider">
+                                        <div class="price-range-info">
+                                            <label for="priceRange1">Desde:</label>
+                                            <input type="text" class="priceRange" id="priceRange1" readonly>
+                                        </div>
+                                        <div id="price-range1" class="price-range slider"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="job-sidebar-item">
+                                <h4 class="job-sidebar-title">Nivel de Experiencia</h4>
+                                <div class="job-experience">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="experience" type="checkbox" value="1"
+                                            id="experience1">
+                                        <label class="form-check-label" for="experience1">
+                                            Expert <span>(20)</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="experience" type="checkbox" value="2"
+                                            id="experience2">
+                                        <label class="form-check-label" for="experience2">
+                                            Senior <span>(15)</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="experience" type="checkbox" value="3"
+                                            id="experience3">
+                                        <label class="form-check-label" for="experience3">
+                                            Junior <span>(18)</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="experience" type="checkbox" value="4"
+                                            id="experience4">
+                                        <label class="form-check-label" for="experience4">
+                                            Regular <span>(35)</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="experience" type="checkbox" value="5"
+                                            id="experience5">
+                                        <label class="form-check-label" for="experience5">
+                                            Fresher <span>(49)</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="job-sidebar-item">
+                                <h4 class="job-sidebar-title">Trabajos Publicados</h4>
+                                <div class="job-posted">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="job-posted" type="checkbox" value="1"
+                                            id="job-posted1">
+                                        <label class="form-check-label" for="job-posted1">
+                                            Todos <span>(20)</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="job-posted" type="checkbox" value="2"
+                                            id="job-posted2">
+                                        <label class="form-check-label" for="job-posted2">
+                                            Recientes <span>(15)</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="job-posted" type="checkbox" value="3"
+                                            id="job-posted3">
+                                        <label class="form-check-label" for="job-posted3">
+                                            Ultimas 24 horas <span>(18)</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="job-posted" type="checkbox" value="4"
+                                            id="job-posted4">
+                                        <label class="form-check-label" for="job-posted4">
+                                            Ultimos 7 días <span>(35)</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="job-posted" type="checkbox" value="5"
+                                            id="job-posted5">
+                                        <label class="form-check-label" for="job-posted5">
+                                            Ultimos 30 días <span>(49)</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-xl-9">
+                        <div class="col-md-12">
+                            <div class="job-sort">
+                                <h5>2,350 Results Found</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- Trabajo 1 -->
+                            <div class="col-lg-12">
+                                <div class="job-item" onclick="window.location.href='job-single-2-si.html'" style="cursor: pointer;">
+                                    <div class="job-img">
+                                        <img src="../assets/img/job/01.jpg" alt="">
+                                    </div>
+                                    <a href="job-single-2-si.html" class="job-bookmark"><i class="fe-bookmark"></i></a>
+                                    <div class="job-content">
+                                        <div class="job-top">
+                                            <div class="job-title">
+                                                <h5>Desarrollador de Aplicaciones</h5>
+                                                <span class="job-employer"><i class="far fa-building"></i> Vertice Call Center</span>
+                                            </div>
+                                        </div>
+                                        <ul class="job-info-list">
+                                            <li><i class="fe-briefcase"></i> Tecnologias, Sistemas y Telecomunicaciones</li>
+                                            <li><i class="fe-check-circle"></i> Full Time</li>
+                                            <li><i class="fe-clock"></i> Hace 2 días</li>
+                                            <li><i class="fe-dollar-sign"></i> Salario: 500.000 - 850.000</li>
+                                            <li><i class="fe-map-pin"></i> Región Metropolitana de Santiago</li>
+                                        </ul>
+                                        <div class="job-skill">
+                                            <a><span>Office 365</span></a>
+                                            <a><span>Adobe PDF</span></a>
+                                            <a><span>Windows 10</span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <!-- Trabajo 2 -->
+                            <div class="col-lg-12">
+                                <div class="job-item" onclick="window.location.href='gerente-marketing.html'" style="cursor: pointer;">
+                                    <a href="gerente-marketing.html" class="job-bookmark"><i class="fe-bookmark"></i></a>
+                                    <div class="job-img">
+                                        <img src="../assets/img/job/03.jpg" alt="">
+                                    </div>
+                                    <div class="job-content">
+                                        <div class="job-top">
+                                            <div class="job-title">
+                                                <h5>Gerente de Marketing</h5>
+                                                <span class="job-employer"><i class="far fa-building"></i> Pacific Network</span>
+                                            </div>
+                                        </div>
+                                        <ul class="job-info-list">
+                                            <li><i class="fe-briefcase"></i> Gerencia y Dirección General</li>
+                                            <li><i class="fe-check-circle"></i> Full Time</li>
+                                            <li><i class="fe-clock"></i> Hace 1 semana</li>
+                                            <li><i class="fe-dollar-sign"></i> Salario: 1.000.000 - 2.000.000</li>
+                                            <li><i class="fe-map-pin"></i> Región Metropolitana de Santiago</li>
+                                        </ul>
+                                        <div class="job-skill">
+                                            <a><span>Excel</span></a>
+                                            <a><span>Photoshop</span></a>
+                                            <a><span>Adobe Flash Player</span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <!-- Trabajo 3 -->
+                            <div class="col-lg-12">
+                                <div class="job-item" onclick="window.location.href='admin-rrhh.html'" style="cursor: pointer;">
+                                    <a href="admin-rrhh.html" class="job-bookmark"><i class="fe-bookmark"></i></a>
+                                    <div class="job-img">
+                                        <img src="../assets/img/job/04.jpg" alt="">
+                                    </div>
+                                    <div class="job-content">
+                                        <div class="job-top">
+                                            <div class="job-title">
+                                                <h5>Administrador de Recursos Humanos</h5>
+                                                <span class="job-employer"><i class="far fa-building"></i> Almacenes Paris</span>
+                                            </div>
+                                        </div>
+                                        <ul class="job-info-list">
+                                            <li><i class="fe-briefcase"></i> Administrador RRHH</li>
+                                            <li><i class="fe-check-circle"></i> Full Time</li>
+                                            <li><i class="fe-clock"></i> Hace 6 Horas</li>
+                                            <li><i class="fe-dollar-sign"></i> Salario: 855.000</li>
+                                            <li><i class="fe-map-pin"></i> Región Metropolitana de Santiago</li>
+                                        </ul>
+                                        <div class="job-skill">
+                                            <a><span>Excel</span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <!-- Trabajo 4 -->
+                            <div class="col-lg-12">
+                                <div class="job-item" onclick="window.location.href='creative-director.html'" style="cursor: pointer;">
+                                    <a href="creative-director.html" class="job-bookmark"><i class="fe-bookmark"></i></a>
+                                    <div class="job-img">
+                                        <img src="../assets/img/job/05.jpg" alt="">
+                                    </div>
+                                    <div class="job-content">
+                                        <div class="job-top">
+                                            <div class="job-title">
+                                                <h5>Creative Director</h5>
+                                                <span class="job-employer"><i class="far fa-building"></i> Rubic Corner</span>
+                                            </div>
+                                        </div>
+                                        <ul class="job-info-list">
+                                            <li><i class="fe-briefcase"></i> Development</li>
+                                            <li><i class="fe-check-circle"></i> Full Time</li>
+                                            <li><i class="fe-clock"></i> 2 Hour Ago</li>
+                                            <li><i class="fe-dollar-sign"></i> Salary: 35k - 45k</li>
+                                            <li><i class="fe-map-pin"></i> 25/B Milford, New York</li>
+                                        </ul>
+                                        <div class="job-skill">
+                                            <a><span>Figma</span></a>
+                                            <a><span>Photoshop</span></a>
+                                            <a><span>Adobe XD</span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <!-- Trabajo 5 -->
+                            <div class="col-lg-12">
+                                <div class="job-item" onclick="window.location.href='software-engineer.html'" style="cursor: pointer;">
+                                    <a href="software-engineer.html" class="job-bookmark"><i class="fe-bookmark"></i></a>
+                                    <div class="job-img">
+                                        <img src="../assets/img/job/06.jpg" alt="">
+                                    </div>
+                                    <div class="job-content">
+                                        <div class="job-top">
+                                            <div class="job-title">
+                                                <h5>Software Engineer</h5>
+                                                <span class="job-employer"><i class="far fa-building"></i> Mariana Cahaya</span>
+                                            </div>
+                                        </div>
+                                        <ul class="job-info-list">
+                                            <li><i class="fe-briefcase"></i> Development</li>
+                                            <li><i class="fe-check-circle"></i> Full Time</li>
+                                            <li><i class="fe-clock"></i> 2 Hour Ago</li>
+                                            <li><i class="fe-dollar-sign"></i> Salary: 35k - 45k</li>
+                                            <li><i class="fe-map-pin"></i> 25/B Milford, New York</li>
+                                        </ul>
+                                        <div class="job-skill">
+                                            <a><span>Java</span></a>
+                                            <a><span>Python</span></a>
+                                            <a><span>AWS</span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <!-- Trabajos 6 al 9 (similar estructura) -->
+                            <!-- ... -->
+                        </div>
+
+                        <!-- pagination -->
+                        <div class="pagination-area">
+                            <div aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true"><i class="far fa-angle-double-left"></i></span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true"><i
+                                                    class="far fa-angle-double-right"></i></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="pagination-showing"> 
+                                <p>Showing 1 - 6 of 24 Jobs</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- job list end -->
+
+
+    </main>
+
+
+
+    <!-- footer area -->
+    <div id="footer-placeholder"></div>
+    <!-- footer area end -->
+
+
+
+
+    <!-- scroll-top -->
+    <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
+    <!-- scroll-top end -->
+
+
+    <!-- js -->
+    <script src="../assets/js/jquery-3.6.0.min.js"></script>
+    <script src="../assets/js/modernizr.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/imagesloaded.pkgd.min.js"></script>
+    <script src="../assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="../assets/js/isotope.pkgd.min.js"></script>
+    <script src="../assets/js/jquery.appear.min.js"></script>
+    <script src="../assets/js/jquery.easing.min.js"></script>
+    <script src="../assets/js/owl.carousel.min.js"></script>
+    <script src="../assets/js/counter-up.js"></script>
+    <script src="../assets/js/masonry.pkgd.min.js"></script>
+    <script src="../assets/js/wow.min.js"></script>
+    <script src="../assets/js/nice-select.min.js"></script>
+    <script src="../assets/js/jquery-ui.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/header-footer/loadHeaderFooterSiApplied.js"></script>
+
+</body>
+
+</html>

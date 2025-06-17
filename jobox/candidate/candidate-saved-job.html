@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="../assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="../assets/css/nice-select.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
+
 </head>
 
 <body>
@@ -76,8 +77,8 @@
                                     <button type="button" class="profile-img-btn"><i class="far fa-camera"></i></button>
                                     <input type="file" class="profile-img-file">
                                 </div>
-                                <h4>Laura Packer</h4>
-                                <p>Full Stack Web Developer</p>
+                                <h4 id="userFullName">Cargando...</h4>
+                                <p id="userCategory">Cargando...</p>
                             </div>
                             <ul class="user-profile-sidebar-list">
                                 <li><a href="candidate-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a></li>
@@ -167,7 +168,7 @@
                                         <tr>
                                             <td>
                                                 <div class="profile-job-info">
-                                                    <img src="assets/img/job/02.jpg" alt="">
+                                                    <img src="../assets/img/job/02.jpg" alt="">
                                                     <div class="profile-job-content">
                                                         <h6><a href="#">Desarrollador Backend</a></h6>
                                                         <ul class="profile-job-list">
@@ -294,18 +295,8 @@
     <script src="../assets/js/nice-select.min.js"></script>
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/header-footer/loadHeaderFooterSI.js"></script>
-    <script>
-    document.getElementById('logoutButton').addEventListener('click', function (e) {
-            e.preventDefault();
-            const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
-            modal.show();
-        });
-
-        document.getElementById('confirmLogout').addEventListener('click', function () {
-            localStorage.removeItem('token');
-            window.location.href = 'index.html';
-        });
-    </script>
+    <script src="../assets/js/logout-button.js" ></script>
+    <script src="../assets/js/candidate-name-category.js"></script>
 
 </body>
 

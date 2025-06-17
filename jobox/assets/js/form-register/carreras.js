@@ -169,6 +169,7 @@ const opcionesCarreras = [
     { value: "Podología", text: "Podología" },
     { value: "Producción Audiovisual", text: "Producción Audiovisual" },
     { value: "Producción Musical", text: "Producción Musical" },
+    { value: "Programación y Análisis de Sistemas", text: "Programación y Análisis de Sistemas" },
     { value: "Psicología", text: "Psicología" },
     { value: "Psicopedagogía", text: "Psicopedagogía" },
     { value: "Publicidad", text: "Publicidad" },
