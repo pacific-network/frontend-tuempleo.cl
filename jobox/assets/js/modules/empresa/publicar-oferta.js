@@ -1,3 +1,5 @@
+let empleadorData = null; // Se guarda globalmente para uso en crearOferta()
+
 function getUserIdFromToken() {
   const token = localStorage.getItem('token');
   if (!token) return null;
@@ -77,7 +79,7 @@ function validarFormulario(data) {
     valido = false;
   }
   if (data.herramientas_basicas.length === 0) {
-    mostrarError(document.querySelector('#checkbox-container'), 'Seleccione al menos una herramienta');
+    mostrarError(document.querySelector('#checkbox-container'), 'Seleccione o escriba al menos una herramienta');
     valido = false;
   }
 
@@ -86,14 +88,13 @@ function validarFormulario(data) {
 
 async function crearOferta() {
   limpiarErrores();
-  const userId = getUserIdFromToken();
-  if (!userId) {
-    alert('Token inválido o expirado');
+
+  if (!empleadorData) {
+    alert('No se pudo cargar la información del empleador. Intenta recargar la página.');
     return;
   }
 
-  const info = await fetch(`http://localhost:3000/v1/empleador/basic-info/${userId}`);
-  const { empleador_id, empresa_id } = await info.json();
+  const { empleador_id, empresa_id } = empleadorData;
 
   const fechaHoy = new Date().toISOString().split('T')[0];
   const fechaCierre = new Date();
@@ -112,7 +113,19 @@ async function crearOferta() {
   const beneficios = document.querySelector('#beneficios').value.split('\n').filter(Boolean);
   const rentaDesde = document.querySelector('#salaryFrom').value.trim();
   const rentaHasta = document.querySelector('#salaryTo').value.trim();
-  const herramientas = Array.from(document.querySelectorAll('#checkbox-container input[type="checkbox"]:checked')).map(cb => cb.value);
+
+  const herramientasSeleccionadas = Array.from(
+    document.querySelectorAll('#checkbox-container input[type="checkbox"]:checked')
+  ).map(cb => cb.value);
+
+  const herramientasPersonalizadas = document
+    .getElementById('otras_herramientas')
+    ?.value
+    .split(',')
+    .map(str => str.trim())
+    .filter(Boolean) || [];
+
+  const herramientas = [...herramientasSeleccionadas, ...herramientasPersonalizadas];
 
   const data = {
     titulo,
@@ -170,8 +183,29 @@ async function crearOferta() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.querySelector('form');
+document.addEventListener('DOMContentLoaded', async () => {
+  const form = document.getElementById('formulario-publicar');
+  if (!form) {
+    console.error('Formulario no encontrado');
+    return;
+  }
+
+  const userId = getUserIdFromToken();
+  if (!userId) {
+    alert('Token inválido o expirado');
+    return;
+  }
+
+  try {
+    const res = await fetch(`http://localhost:3000/v1/empleador/basic-info/${userId}`);
+    if (!res.ok) throw new Error('No se pudo obtener info del empleador');
+    empleadorData = await res.json();
+    console.log('Info empleador cargada:', empleadorData);
+  } catch (e) {
+    console.error('Error cargando info de empleador:', e);
+    alert('No se pudo cargar la información del empleador');
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     crearOferta();

@@ -106,139 +106,145 @@
                                 <h4 class="user-profile-card-title">Publicar Trabajo</h4>
                                 <div class="profile-resume">
                                     <div class="profile-form">
-                                        <form action="#">
+                                        <form id="formulario-publicar">
                                             <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Título del Trabajo</label>
-                                                        <input type="text" class="form-control" placeholder="Ingrese el título del trabajo">
-                                                    </div>
+                                              <div class="col-md-6">
+                                                <div class="form-group">
+                                                  <label for="titulo">Título del Trabajo</label>
+                                                  <input type="text" id="titulo" name="titulo" class="form-control" placeholder="Ingrese el título del trabajo" />
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Área del Trabajo</label>
-                                                        <select class="form-control" name="area_cargo" id="area_cargo_select"></select>
-                                                    </div>
+                                              </div>
+                                              <div class="col-md-6">
+                                                <div class="form-group">
+                                                  <label for="area_cargo_select">Área del Trabajo</label>
+                                                  <select class="form-control" name="area_cargo" id="area_cargo_select"></select>
                                                 </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label>Años de Experiencia</label>
-                                                        <input type="text" class="form-control" placeholder="Ingresa Exp...">
-                                                    </div>
+                                              </div>
+                                              <div class="col-md-3">
+                                                <div class="form-group">
+                                                  <label for="anios_experiencia">Años de Experiencia</label>
+                                                  <input type="text" id="anios_experiencia" name="anios_experiencia" class="form-control" placeholder="Ingresa Exp..." />
                                                 </div>
-                                                <div class="col-md-5">
-                                                  <div class="form-group">
-                                                    <label>Región</label>
-                                                        <select id="region-select" class="form-control">
-                                                            <option value="">-- Seleccione una región --</option>
-                                                        </select>
+                                              </div>
+                                              <div class="col-md-5">
+                                                <div class="form-group">
+                                                  <label for="region-select">Región</label>
+                                                  <select id="region-select" name="region" class="form-control" data-region-seleccionada="">
+
+                                                    <option value="">-- Seleccione una región --</option>
+                                                  </select>
+                                                </div>
+                                              </div>
+                                              <div class="col-md-4">
+                                                <div class="form-group">
+                                                  <label for="educacion_requerida">Educación Requerida</label>
+                                                  <select id="educacion_requerida" name="educacion_requerida" class="form-control">
+                                                    <option value="">-- Selecciona Educación --</option>
+                                                    <option value="primario">Primario</option>
+                                                    <option value="secundario">Secundario</option>
+                                                    <option value="cft">CFT</option>
+                                                    <option value="tecnico">Técnico</option>
+                                                    <option value="superior">Superior</option>
+                                                    <option value="universitario">Universitario</option>
+                                                    <option value="otro">Otro</option>
+                                                  </select>
+                                                </div>
+                                              </div>
+                                              <div class="col-md-5">
+                                                <div class="form-group">
+                                                  <label for="tipo_contrato">Tipo de Contratación</label>
+                                                  <select id="tipo_contrato" name="tipo_contrato" class="form-control">
+                                                    <option value="">-- Seleccione tipo Contrato --</option>
+                                                    <option value="plazo_fijo">Plazo Fijo</option>
+                                                    <option value="Indefinido">Indefinido</option>
+                                                    <option value="Temporal">Temporal</option>
+                                                    <option value="otro_contrato">Otro tipo de Contrato</option>
+                                                    <option value="Reemplazo">Reemplazo</option>
+                                                    <option value="Práctica">Práctica</option>
+                                                  </select>
+                                                </div>
+                                              </div>
+                                              <div class="col-md-5">
+                                                <div class="form-group">
+                                                  <label for="modalidad">Modalidad</label>
+                                                  <select id="modalidad" name="modalidad" class="form-control">
+                                                    <option value="">-- Seleccione Modalidad --</option>
+                                                    <option value="1">Full Time</option>
+                                                    <option value="2">Part Time</option>
+                                                    <option value="3">Remoto</option>
+                                                    <option value="4">Freelancer</option>
+                                                    <option value="5">Temporal</option>
+                                                  </select>
+                                                </div>
+                                              </div>
+                                          
+                                              <div class="col-md-12">
+                                                <div class="form-group">
+                                                  <label for="descripcion">Descripción del puesto</label>
+                                                  <textarea id="descripcion" name="descripcion_puesto" class="form-control" rows="4" placeholder="Escribe una descripción del trabajo"></textarea>
+                                                </div>
+                                              </div>
+                                          
+                                              <div class="col-md-12">
+                                                <div class="form-group">
+                                                  <label for="responsabilidades">Responsabilidades (una por línea)</label>
+                                                  <textarea id="responsabilidades" name="responsabilidades" class="form-control" rows="3" placeholder="Ej: Desarrollar interfaces con React&#10;Crear APIs con Node.js"></textarea>
+                                                </div>
+                                              </div>
+                                          
+                                              <div class="col-md-12">
+                                                <div class="form-group">
+                                                  <label for="requisitos">Requisitos mínimos (uno por línea)</label>
+                                                  <textarea id="requisitos" name="requisitos_minimos" class="form-control" rows="3" placeholder="Ej: 3+ años de experiencia en desarrollo&#10;Conocimiento de metodologías ágiles"></textarea>
+                                                </div>
+                                              </div>
+                                          
+                                              <div class="col-md-12">
+                                                <div class="form-group">
+                                                  <label for="beneficios">Beneficios (uno por línea)</label>
+                                                  <textarea id="beneficios" name="beneficios" class="form-control" rows="3" placeholder="Ej: Modalidad híbrida&#10;Capacitaciones constantes"></textarea>
+                                                </div>
+                                              </div>
+                                          
+                                              <div class="col-md-4">
+                                                <div class="form-group border p-3 rounded shadow-sm">
+                                                  <label class="font-weight-bold d-block mb-2">Renta Salarial</label>
+                                                  <div class="mb-2">
+                                                    <label for="salaryFrom" class="small mb-1">Desde:</label>
+                                                    <input type="text" class="form-control form-control-sm" id="salaryFrom" name="renta_desde" placeholder="Ej: $900.000" />
                                                   </div>
+                                                  <div class="mb-2">
+                                                    <label for="salaryTo" class="small mb-1">Hasta:</label>
+                                                    <input type="text" class="form-control form-control-sm" id="salaryTo" name="renta_hasta" placeholder="Ej: $1.200.000" />
+                                                  </div>
+                                                  <small class="text-muted">De acuerdo al mercado</small>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label>Educación Requerida</label>
-                                                        <select class="form-control">
-                                                            <option value="">-- Selecciona Educación --</option>
-                                                            <option value="primario">Primario</option>
-                                                            <option value="secundario">Secundario</option>
-                                                            <option value="cft">CFT</option>
-                                                            <option value="tecnico">Técnico</option>
-                                                            <option value="superior">Superior</option>
-                                                            <option value="universitario">Universitario</option>
-                                                            <option value="otro">Otro</option>
-                                                        </select>
-                                                    </div>
+                                              </div>
+                                          
+                                              <div class="col-md-8">
+                                                <div class="form-group border p-3 rounded shadow-sm">
+                                                  <label>Herramientas básicas</label>
+                                                  <div id="checkbox-container" class="row">
+                                                    <!-- Checkboxes dinámicos aquí -->
+                                                  </div>
+                                                  <input
+                                                    type="text"
+                                                    id="otras_herramientas"
+                                                    name="otras_herramientas"
+                                                    class="form-control mt-2"
+                                                    placeholder="Escribe otras herramientas separadas por coma"
+                                                  />
                                                 </div>
-                                                <div class="col-md-5">
-                                                    <div class="form-group">
-                                                        <label>Tipo de Contratación</label>
-                                                        <select class="form-control">
-                                                            <option value="">-- Seleccione tipo Contrato --</option>
-                                                            <option value="plazo_fijo">Plazo Fijo</option>
-                                                            <option value="Indefinido">Indefinido</option>
-                                                            <option value="Temporal">Temporal</option>
-                                                            <option value="otro_contrato">Otro tipo de Contrato</option>
-                                                            <option value="Reemplazo">Reemplazo</option>
-                                                            <option value="Práctica">Práctica</option>
-                                                        </select> 
-                                                    </div>
+                                              </div>
+                                          
+                                              <div class="col-md-12">
+                                                <div class="form-group mt-3">
+                                                  <button type="submit" class="theme-btn"><span class="far fa-check-circle"></span> Publica Tu Empleo</button>
                                                 </div>
-                                                <div class="col-md-5">
-                                                    <div class="form-group">
-                                                        <label>Modalidad</label>
-                                                        <select class="form-control">
-                                                            <option value="">-- Seleccione Modalidad --</option>
-                                                            <option value="1">Full Time</option>
-                                                            <option value="2">Part Time</option>
-                                                            <option value="3">Remoto</option>
-                                                            <option value="4">Freelancer</option>
-                                                            <option value="5">Temporal</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <!-- Descripción del puesto -->
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label>Descripción del puesto</label>
-                                                        <textarea id="descripcion" class="form-control" rows="4" placeholder="Escribe una descripción del trabajo"></textarea>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Responsabilidades -->
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label>Responsabilidades (una por línea)</label>
-                                                        <textarea id="responsabilidades" class="form-control" rows="3" placeholder="Ej: Desarrollar interfaces con React&#10;Crear APIs con Node.js"></textarea>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Requisitos mínimos -->
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label>Requisitos mínimos (uno por línea)</label>
-                                                        <textarea id="requisitos" class="form-control" rows="3" placeholder="Ej: 3+ años de experiencia en desarrollo&#10;Conocimiento de metodologías ágiles"></textarea>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Beneficios -->
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label>Beneficios (uno por línea)</label>
-                                                        <textarea id="beneficios" class="form-control" rows="3" placeholder="Ej: Modalidad híbrida&#10;Capacitaciones constantes"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group border p-3 rounded shadow-sm">
-                                                        <label class="font-weight-bold d-block mb-2">Renta Salarial</label>
-
-                                                        <div class="mb-2">
-                                                            <label for="salaryFrom" class="small mb-1">Desde:</label>
-                                                            <input type="text" class="form-control form-control-sm" id="salaryFrom" placeholder="Ej: $900.000">
-                                                        </div>
-
-                                                        <div class="mb-2">
-                                                            <label for="salaryTo" class="small mb-1">Hasta:</label>
-                                                            <input type="text" class="form-control form-control-sm" id="salaryTo" placeholder="Ej: $1.200.000">
-                                                        </div>
-
-                                                        <small class="text-muted">De acuerdo al mercado</small>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <div class="form-group border p-3 rounded shadow-sm">
-                                                        <label>Herramientas básicas</label>
-                                                        <div id="checkbox-container" class="form-check">
-                                                          <!-- Los checkboxes se llenarán dinámicamente aquí -->
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group mt-3">
-                                                        <button type="submit" class="theme-btn"><span class="far fa-check-circle"></span> Publica Tu Empleo</button>
-                                                    </div>
-                                                </div>
+                                              </div>
                                             </div>
-                                        </form>
+                                          </form>
+                                          
                                     </div>
                                 </div>
                             </div>
@@ -277,6 +283,9 @@
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/header-footer/loadHeaderFooterEmp.js"></script>
     <script src="../assets/js/modules/empresa/publicar-oferta.js"></script>
+    <script src="../assets/js/form-register/area_cargo.js"></script>
+    <script src="../assets/js/modules/utils/dinamic-checkboxes.js"></script>
+    <script src="../assets/js/form-register/regiones.js"></script>
 
 
 </body>
