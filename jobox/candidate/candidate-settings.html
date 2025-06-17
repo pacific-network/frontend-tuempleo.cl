@@ -25,7 +25,8 @@
     <link rel="stylesheet" href="../assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="../assets/css/nice-select.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
-
+    <link rel="stylesheet" href="../assets/css/button.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -124,22 +125,20 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Correo</label>
-                                                        <input type="text" class="form-control" placeholder="Correo" id="email" readonly>
+                                                        <input type="text" class="form-control" placeholder="Correo" id="email" disabled>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label>Número de Contacto</label>
-                                                        <div class="input-group">
-                                                            <select class="form-control" style="width: 100px;" id="codigo_pais">
-                                                                <option value="" disabled selected>+56</option>
-                                                                <option value="+56">+56 (CL)</option>
-                                                                <option value="+54">+54 (AR)</option>
-                                                                <option value="+55">+55 (BR)</option>
-                                                                <option value="+1">+1 (US)</option>
-                                                            </select>
-                                                            <input type="text" class="form-control" placeholder="Número de teléfono" id="numero_telefono">
-                                                        </div>
+                                                        <label>Código País</label>
+                                                        <select class="form-control" style="width: 200px;" id="codigo_pais">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label>Número de Teléfono</label>
+                                                        <input type="text" class="form-control col-md-4" placeholder="Número de teléfono" id="numero_telefono">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2">
@@ -163,7 +162,7 @@
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label>Fecha de Nacimiento</label>
-                                                        <input type="date" class="form-control" id="fecha_nacimiento">
+                                                        <input type="date" class="form-control" id="fecha_nacimiento" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -254,16 +253,20 @@
                                                     </div>                                    
                                                 </div>
                                                 <h6 class="mb-3">Información de Contacto</h6>
-                                                <div class="col-md-5">
-                                                    <div class="form-group">
-                                                        <label>Región</label>
-                                                        <input type="text" class="form-control" id="region" name="region">
+                                                <div class="col-md-6">
+                                                    <div class="form-group mb-3">
+                                                        <label for="region" class="form-label">Región</label>
+                                                        <select class="form-control" id="region" required>
+                                                            <!-- Las opciones se llenarán con JavaScript -->
+                                                        </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label>Comuna</label>
-                                                        <input type="text" class="form-control" id="comuna" name="comuna" disabled>
+                                                <div class="col-md-6">
+                                                    <div class="form-group mb-3">
+                                                        <label for="comuna" class="form-label">Comuna</label>
+                                                        <select class="form-control" id="comuna" required disabled>
+                                                            <option value="">Primero seleccione una región</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <h6 class="mb-3">Redes Sociales</h6>
@@ -292,45 +295,25 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button type="button" class="theme-btn mt-4" id="btn-actualizar">
-                                                Actualizar información 
-                                                <i class="far fa-user"></i>
-                                            </button>
-
-                                            <div id="confirmacion-box" style="display: none; margin-top: 15px;">
-                                                <p>¿Estás seguro de que quieres actualizar la información?</p>
-                                                <button type="button" class="btn btn-success" id="btn-confirmar-actualizacion">
-                                                    <i class="fas fa-check"></i> Confirmar
+                                            <!-- Botón principal de actualización con contenedor para el popup -->
+                                            <div class="btn-container mt-4" style="position: relative; display: inline-block;">
+                                                <button type="button" class="theme-btn" id="btn-actualizar">
+                                                    <span id="btn-text-estatico">Actualizar información</span>
+                                                    <span id="btn-loading-estatico" style="display: none;">
+                                                        <i class="fas fa-spinner fa-spin"></i> Procesando...
+                                                    </span>
                                                 </button>
-                                                <button type="button" class="btn btn-danger" id="btn-cancelar-actualizacion">
-                                                    <i class="fas fa-times"></i> Cancelar
-                                                </button>
+                                                
+                                                <!-- Popup de confirmación -->
+                                                <div class="confirmacion-flotante" id="confirmacion-box" style="position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%); z-index: 1000; display: none;">
+                                                    <p style="text-align: center; margin-bottom: 15px;">¿Estás seguro de que quieres actualizar la información?</p>
+                                                    <div class="confirmacion-buttons" style="display: flex; justify-content: center; gap: 10px;">
+                                                        <button type="button" class="btn btn-success" id="btn-confirmar-actualizacion" style="padding: 8px 15px;">Confirmar</button>
+                                                        <button type="button" class="btn btn-danger" id="btn-cancelar-actualizacion" style="padding: 8px 15px;">Cancelar</button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="user-profile-card">
-                                    <h4 class="user-profile-card-title">Cambiar Contraseña</h4>
-                                    <div class="col-lg-12">
-                                        <div class="profile-form">
-                                            <form action="#">
-                                                <div class="form-group">
-                                                    <label>Contraseña Actual</label>
-                                                    <input type="password" class="form-control" placeholder="Contraseña Actual">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Nueva Contraseña</label>
-                                                    <input type="password" class="form-control" placeholder="Nueva Contraseña">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Confirmar Contraseña</label>
-                                                    <input type="password" class="form-control" placeholder="Confirmar Contraseña">
-                                                </div>
-                                                <button type="button" class="theme-btn mt-4">Cambiar Contraseña <i class="far fa-key"></i></button>
-                                            </form>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -347,16 +330,55 @@
     <div id="footer-placeholder"></div>
     <!-- footer area end -->
 
+    <!-- Botón flotante con su propio popup de confirmación -->
+    <div class="floating-btn-container" id="floating-btn-container" style="display: none;">
+        <button type="button" class="theme-btn floating-btn" id="btn-actualizar-flotante">
+            <span id="btn-text-floating">Actualizar información</span>
+            <span id="btn-loading-floating" style="display: none;">
+                <i class="fas fa-spinner fa-spin"></i> Procesando...
+            </span>
+            <i class="far fa-user"></i>
+        </button>
+
+        <div class="confirmacion-flotante" id="confirmacion-box-flotante">
+            <p style="margin-bottom: 15px; text-align: center;">¿Estás seguro de que quieres actualizar la información?</p>
+            <div class="confirmacion-buttons">
+                <button type="button" class="btn btn-success" id="btn-confirmar-actualizacion-flotante">
+                    <i class="fas fa-check"></i> Confirmar
+                </button>
+                <button type="button" class="btn btn-danger" id="btn-cancelar-actualizacion-flotante">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+    <div aria-live="polite" aria-atomic="true" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
+        <div id="toast-actualizacion" class="toast align-items-center text-white bg-success border-0" role="alert">
+            <div class="d-flex">
+                <div class="toast-body">
+                  ¡Información actualizada con éxito!
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+            </div>
+        </div>
+    </div>
+
+
     <!-- scroll-top -->
     <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
     <!-- scroll-top end -->
 
+    <!-- Div para notificaciones -->
+    <div id="custom-alert" class="alert alert-success"></div>
+
     <!-- js -->
     <script src="../assets/js/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/modernizr.min.js"></script>
     <script src="../assets/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/imagesloaded.pkgd.min.js"></script>
     <script src="../assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../assets/js/isotope.pkgd.min.js"></script>
     <script src="../assets/js/jquery.appear.min.js"></script>
     <script src="../assets/js/jquery.easing.min.js"></script>
@@ -367,20 +389,10 @@
     <script src="../assets/js/nice-select.min.js"></script>
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/header-footer/loadHeaderFooterSI.js"></script>
-    <script src="../assets/js/update-info.js"></script>
-    <script src="../assets/js/codigo-pais.js"></script>
-    <script src="../assets/js/region-comuna.js"></script>
-    <script>
-    document.getElementById('logoutButton').addEventListener('click', function (e) {
-            e.preventDefault();
-            const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
-            modal.show();
-        });
-
-        document.getElementById('confirmLogout').addEventListener('click', function () {
-            localStorage.removeItem('token');
-            window.location.href = 'index.html';
-        });
+    <script src="../assets/js/candidate-update-info/update-info.js"></script>
+    <script src="../assets/js/form-register/codigo-pais.js"></script>
+    <script src="../assets/js/candidate-update-info/update-info-button.js"></script>
+    <script src="../assets/js/logout-button.js"></script>
     </script>
 </body>
 </html>

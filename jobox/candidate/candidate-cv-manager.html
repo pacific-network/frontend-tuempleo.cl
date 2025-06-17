@@ -3,33 +3,33 @@
 
 <head>
     <!-- meta tags -->
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="keywords" content="">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
 
     <!-- title -->
     <title>Subir CV</title>
 
     <!-- favicon -->
-    <link rel="icon" type="image/x-icon" href="../assets/img/logo/favicon.png">
+    <link rel="icon" type="image/x-icon" href="../assets/img/logo/favicon.png" />
 
     <!-- css -->
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/css/all-fontawesome.min.css">
-    <link rel="stylesheet" href="../assets/css/feather.min.css">
-    <link rel="stylesheet" href="../assets/css/flaticon.css">
-    <link rel="stylesheet" href="../assets/css/animate.min.css">
-    <link rel="stylesheet" href="../assets/css/magnific-popup.min.css">
-    <link rel="stylesheet" href="../assets/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="../assets/css/nice-select.min.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../assets/css/all-fontawesome.min.css" />
+    <link rel="stylesheet" href="../assets/css/feather.min.css" />
+    <link rel="stylesheet" href="../assets/css/flaticon.css" />
+    <link rel="stylesheet" href="../assets/css/animate.min.css" />
+    <link rel="stylesheet" href="../assets/css/magnific-popup.min.css" />
+    <link rel="stylesheet" href="../assets/css/owl.carousel.min.css" />
+    <link rel="stylesheet" href="../assets/css/nice-select.min.css" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/add-cv.css" />
 
 </head>
 
 <body>
-
     <!-- preloader -->
     <div class="preloader">
         <div class="loader">
@@ -40,30 +40,23 @@
     </div>
     <!-- preloader end -->
 
-
     <!-- header area -->
     <div id="header-placeholder"></div>
     <!-- header area end -->
 
-
-
     <main class="main">
-
         <!-- breadcrumb -->
         <div class="site-breadcrumb">
             <div class="container">
                 <h2 class="breadcrumb-title">Subir Archivo CV</h2>
             </div>
             <div class="hero-shape">
-                <img class="hero-shape-1" src="../assets/img/shape/03.svg" alt="">
-                <img class="hero-shape-2" src="../assets/img/shape/05.svg" alt="">
-                <img class="hero-shape-3" src="../assets/img/shape/06.svg" alt="">
-                <img class="hero-shape-4" src="../assets/img/shape/07.svg" alt="">
+                <img class="hero-shape-1" src="../assets/img/shape/03.svg" alt="" />
+                <img class="hero-shape-2" src="../assets/img/shape/05.svg" alt="" />
+                <img class="hero-shape-3" src="../assets/img/shape/06.svg" alt="" />
+                <img class="hero-shape-4" src="../assets/img/shape/07.svg" alt="" />
             </div>
         </div>
-
-
-
 
         <!-- candidate-cv-manager -->
         <div class="user-profile py-120">
@@ -73,12 +66,12 @@
                         <div class="user-profile-sidebar">
                             <div class="user-profile-sidebar-top">
                                 <div class="user-profile-img">
-                                    <img src="../assets/img/candidate/01.jpg" alt="">
+                                    <img src="../assets/img/candidate/01.jpg" alt="" />
                                     <button type="button" class="profile-img-btn"><i class="far fa-camera"></i></button>
-                                    <input type="file" class="profile-img-file">
+                                    <input type="file" class="profile-img-file" />
                                 </div>
-                                <h4>Laura Packer</h4>
-                                <p>Full Stack Web Developer</p>
+                                <h4 id="userFullName">Cargando...</h4>
+                                <p id="userCategory">Cargando...</p>
                             </div>
                             <ul class="user-profile-sidebar-list">
                                 <li><a href="candidate-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a></li>
@@ -105,13 +98,14 @@
                             </div>
                         </div>
                         <div class="user-profile-sidebar">
-                            <div class="user-profile">      
+                            <div class="user-profile">
                                 <ul class="user-profile-sidebar-list">
                                     <li><a href="candidate-message.html"><i class="far fa-headset"></i>Soporte</a></li>
                                 </ul>
-                            </div> 
+                            </div>
                         </div>
                     </div>
+
                     <div class="col-lg-9">
                         <div class="user-profile-wrapper">
                             <div class="user-profile-card">
@@ -120,13 +114,27 @@
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <div class="profile-upload-wrapper">
-                                                <div class="profile-upload">
-                                                    <span><i class="far fa-cloud-arrow-up"></i> Subir documento aquí</span>
-                                                    <p>El tamaño del archivo a cargar es (máximo 5 Mb) y los tipos de archivos permitidos son
-                                                        (.doc, .docx, .pdf)</p>
-                                                    <button type="button" class="theme-btn theme-btn2 mt-3"><span class="far fa-upload"></span> Subir Archivo</button>
+                                                <div class="profile-upload mb-3" id="uploadBox">
+                                                    <div id="uploadInstructions">
+                                                        <span><i class="far fa-cloud-arrow-up"></i> Subir documento aquí</span>
+                                                        <p>
+                                                            El tamaño del archivo a cargar es (máximo 5 Mb) y los tipos de
+                                                            archivos permitidos son (.doc, .docx, .pdf)
+                                                        </p>
+                                                    </div>
+                                                    <div id="previewContainer" style="display: none;">
+                                                        <embed id="pdfMiniPreview" type="application/pdf"
+                                                            style="width: 100%; height: 100%; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,0.1);" />
+                                                    </div>
                                                 </div>
-                                                <input type="file" class="profile-file" multiple>
+                                                <input type="file" id="fileInput" accept="application/pdf" />
+                                                <button type="button" class="btn btn-outline-primary" id="customFileButton">
+                                                    <i class="far fa-file-pdf"></i> Seleccionar Archivo PDF
+                                                </button>
+                                                <div id="filePreview" class="mt-2"></div>
+                                                <button type="button" id="uploadBtn" class="btn btn-primary mt-3" disabled>
+                                                    <span class="far fa-upload"></span> Enviar Archivo
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -137,24 +145,19 @@
                 </div>
             </div>
         </div>
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1080">
+            <div id="toastContainer"></div>
+        </div>
         <!-- candidate-cv-manager end -->
-
-
     </main>
-
-
 
     <!-- footer area -->
     <div id="footer-placeholder"></div>
     <!-- footer area end -->
 
-
-
-
     <!-- scroll-top -->
     <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
     <!-- scroll-top end -->
-
 
     <!-- js -->
     <script src="../assets/js/jquery-3.6.0.min.js"></script>
@@ -172,18 +175,60 @@
     <script src="../assets/js/nice-select.min.js"></script>
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/header-footer/loadHeaderFooterSI.js"></script>
+    <script src="../assets/js/logout-button.js"></script>
+    <script src="../assets/js/cv-manager/upload-cv.js"></script>
+    <script src="../assets/js/candidate-name-category.js"></script>
     <script>
-    document.getElementById('logoutButton').addEventListener('click', function (e) {
-            e.preventDefault();
-            const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
-            modal.show();
+document.addEventListener("DOMContentLoaded", async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return console.warn("Token no encontrado en localStorage.");
+
+    const userId = parseJwt(token)?.sub;
+    if (!userId) return console.warn("No se pudo extraer el ID del usuario del token.");
+
+    try {
+        // 1. Obtener el rut del usuario
+        const rutResponse = await fetch(`http://172.25.100.201:3000/v1/postulante/${userId}`, {
+            headers: { Authorization: `Bearer ${token}` }
         });
 
-        document.getElementById('confirmLogout').addEventListener('click', function () {
-            localStorage.removeItem('token');
-            window.location.href = 'index.html';
-        });
-    </script>
+        if (!rutResponse.ok) throw new Error("Error al obtener RUT del usuario");
+        const rutData = await rutResponse.json();
+        const rut = rutData.usuario?.rut;
+        if (!rut) throw new Error("RUT no encontrado en la respuesta del servidor.");
+
+        // 2. Obtener el CV usando el rut
+        const cvResponse = await fetch(`http://172.25.100.201:3000/v1/curriculum/${rut}`);
+        if (!cvResponse.ok) throw new Error("Error al obtener CV del usuario");
+        const cvData = await cvResponse.json();
+
+        // 3. Mostrar previsualización si existe
+        const cvPath = cvData[0]?.cv_path;
+        if (cvPath) {
+            const pdfUrl = `http://172.25.100.201:3000${cvPath.replace("/var/www/html", "")}`;
+            document.getElementById("pdfMiniPreview").src = pdfUrl;
+            document.getElementById("previewContainer").style.display = "block";
+            document.getElementById("uploadInstructions").style.display = "none";
+        } else {
+            console.log("El usuario no tiene CV cargado.");
+        }
+    } catch (err) {
+        console.error("Error al cargar el CV:", err.message);
+    }
+});
+
+// Función para decodificar un JWT sin librerías externas
+function parseJwt(token) {
+    try {
+        const base64Payload = token.split('.')[1];
+        const payload = atob(base64Payload);
+        return JSON.parse(payload);
+    } catch (e) {
+        console.error("Error al decodificar el token JWT:", e);
+        return null;
+    }
+}
+</script>
 
 </body>
 
