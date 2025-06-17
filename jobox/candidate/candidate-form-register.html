@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- meta tags -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <title>Registro Candidato</title>
+
+    <link rel="icon" type="image/x-icon" href="../assets/img/logo/favicon.png">
+
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/all-fontawesome.min.css">
+    <link rel="stylesheet" href="../assets/css/feather.min.css">
+    <link rel="stylesheet" href="../assets/css/flaticon.css">
+    <link rel="stylesheet" href="../assets/css/animate.min.css">
+    <link rel="stylesheet" href="../assets/css/magnific-popup.min.css">
+    <link rel="stylesheet" href="../assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="../assets/css/nice-select.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        .required-field::after {
+            content: " *";
+            color: red;
+        }
+        .is-invalid {
+            border-color: #dc3545 !important;
+        }
+        .invalid-feedback {
+            color: #dc3545;
+            font-size: 0.875em;
+            display: none;
+            width: 100%;
+            margin-top: 0.25rem;
+        }
+        .is-invalid ~ .invalid-feedback {
+            display: block;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="preloader">
+        <div class="loader">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <div id="header-placeholder"></div>
+    <main class="main">
+        <div class="site-breadcrumb">
+            <div class="container">
+                <h2 class="breadcrumb-title">Ingresa tus Datos</h2>
+                <ul class="breadcrumb-menu">
+                    <li><a href="index.html">Registro</a></li>
+                    <li class="active">Ingresa tus Datos</li>
+                </ul>
+            </div>
+            <div class="hero-shape">
+                <img class="hero-shape-1" src="../assets/img/shape/03.svg" alt="">
+                <img class="hero-shape-2" src="../assets/img/shape/05.svg" alt="">
+                <img class="hero-shape-3" src="../assets/img/shape/06.svg" alt="">
+                <img class="hero-shape-4" src="../assets/img/shape/07.svg" alt="">
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="user-profile-wrapper">
+                <div class="user-profile-card">
+                    <h4 class="user-profile-card-title">Datos Personales</h4>
+                    <div class="profile-resume">
+                        <div class="profile-form">
+                            <form id="postulanteForm">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>RUT</label>
+                                        <input type="text" class="form-control" id="rut" placeholder="Ingrese tu RUT" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <input type="text" class="form-control" id="nombre" placeholder="Ingrese Nombre" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Apellido</label>
+                                        <input type="text" class="form-control" id="apellido" placeholder="Ingrese Apellido" required>
+                                    </div>
+                                </div>  
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Correo</label>
+                                        <input type="email" class="form-control" id="correo" placeholder="Correo del Registro (Defecto luego del login)" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Número de Contacto</label>
+                                        <div class="input-group">
+                                            <select class="form-control" style="width: 100px;" id="codigo_pais" required>
+                                                <option value="+56" selected>+56 (CL)</option>
+                                                <option value="+54">+54 (AR)</option>
+                                                <option value="+55">+55 (BR)</option>
+                                                <option value="+1">+1 (US)</option>
+                                            </select>
+                                            <input type="text" class="form-control" placeholder="Ej: 9 1234 5678" id="numero_telefono" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Género</label>
+                                        <select class="form-control" id="genero" required>
+                                            <option value="">Seleccionar género</option>
+                                            <option value="Masculino">Masculino</option>
+                                            <option value="Femenino">Femenino</option>
+                                            <option value="Otro">Otro</option>
+                                            <option value="Prefiero no decir">Prefiero no decir</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Fecha de nacimiento</label>
+                                        <input type="date" class="form-control" id="fecha_nacimiento" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Estado Civil</label>
+                                        <select class="form-control" id="estado_civil" required>
+                                            <option value="">Seleccione Estado</option>
+                                            <option value="Soltero/a">Soltero/a</option>
+                                            <option value="Casado/a">Casado/a</option>
+                                            <option value="Viudo/a">Viudo/a</option>
+                                            <option value="Divorciado/a">Divorciado/a</option>
+                                            <option value="Separado/a">Separado/a</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="region">Región</label>
+                                        <select id="region" class="form-control" required>
+                                          <!-- Agrega más regiones según sea necesario -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="comuna">Comuna</label>
+                                        <select id="comuna" class="form-control" required>
+                                          <!-- Agrega más comunas según sea necesario -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Nacionalidad</label>
+                                        <input type="text" class="form-control" id="nacionalidad" placeholder="Ingrese nacionalidad" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Descripción Biografica</label>
+                                        <textarea class="form-control" id="descripcion_bio" cols="30" rows="5" placeholder="Escriba una descripción" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <h4 class="col-md-5">Educación</h4>
+                            <br>
+                            <div id="formacion-container">
+                                <div class="row formacion-entry">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="todas_carreras_chile">Título</label>
+                                            <select type="text" class="form-control" name="titulo[]" id="todas_carreras_chile" required></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="instituciones_chile">Institución</label>
+                                            <select type="text" class="form-control" name="institucion[]" id="instituciones_chile" required></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="tipo_estudio">Tipo de Estudio</label>
+                                            <select class="form-control" name="tipo_estudio[]" required>
+                                                <option value="">-- Selecciona un tipo de estudio --</option>
+                                                <option value="Primario">Primario</option>
+                                                <option value="Secundario">Secundario</option>
+                                                <option value="CFT">CFT</option>
+                                                <option value="Tecnico">Técnico</option>
+                                                <option value="Superior">Superior</option>
+                                                <option value="Universitario">Universitario</option>
+                                                <option value="Postgrado">Postgrado</option>
+                                                <option value="Doctorado">Doctorado</option>
+                                                <option value="Otro">Otro</option>
+                                            </select>
+                                        </div>
+                                    </div>                                    
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Estado</label>
+                                            <select class="form-control" name="estado_estudio[]" onchange="toggleAnioFinalizacion(this)" required>
+                                                <option value="">Seleccione Estado</option>
+                                                <option value="En Curso">En Curso</option>
+                                                <option value="Graduado">Graduado</option>
+                                                <option value="Abandonado">Abandonado</option> 
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Año de Inicio</label>
+                                            <input type="text" class="form-control" name="anio_inicio[]" placeholder="Ingrese año inicio" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group anio-finalizacion-group" style="display: none;">
+                                            <label>Año de Finalización</label>
+                                            <input type="text" class="form-control" name="anio_finalizacion[]" placeholder="Ingrese año finalización">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 text-end mb-3">
+                                        <button type="button" class="btn btn-danger btn-sm remove-formacion-btn" onclick="removeFormacion(this)">
+                                          <span class="far fa-trash-alt"></span> Eliminar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-3">
+                                <div class="form-group">
+                                    <button type="button" class="theme-btn theme-btn2" id="addFormacionBtn">
+                                        <span class="far fa-plus"></span> Añadir más formación
+                                    </button>
+                                </div>
+                            </div>
+                            <h4 class="col-md-5">Experiencia</h4>
+                            <br>
+                            <div id="experiencia-container">
+                                <div class="row exp-entry">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Empresa</label>
+                                            <input type="text" class="form-control" name="empresa[]" placeholder="Ingrese nombre Empresa" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Cargo</label>
+                                            <input type="text" class="form-control" name="cargo[]" placeholder="Ingrese Cargo" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Actividad Empresa</label>
+                                            <select type="text" class="form-control" name="actividad_empresa[]" id="actividad_empresa_select" required></select>
+                                        </div>
+                                    </div>                                    
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="nivel_experiencia">Nivel de Experiencia</label>
+                                            <select class="form-control" name="nivel_experiencia[]" required>
+                                                <option value="">-- Selecciona un nivel --</option>
+                                                <option value="Practicante">Practicante</option>
+                                                <option value="Trainee">Trainee</option>
+                                                <option value="Junior">Junior</option>
+                                                <option value="Semi Senior">Semi Senior</option>
+                                                <option value="Senior">Senior</option>
+                                                <option value="Líder Técnico">Líder Técnico / Lead</option>
+                                                <option value="Manager">Manager</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Área del Cargo</label>
+                                            <select type="text" class="form-control" name="area_cargo[]" id="area_cargo_select" required></select>
+                                        </div>
+                                    </div>                                                                                                       
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Año Inicio</label>
+                                            <input type="text" class="form-control" name="anno_inicio[]" placeholder="Ingrese año inicio" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Año Término</label>
+                                            <input type="text" class="form-control" name="anno_termino[]" placeholder="Ingrese año término" required>
+                                        </div>
+                                    </div>                  
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Descripción del Cargo</label>
+                                            <textarea class="form-control" name="descripcion_cargo[]" cols="30" rows="5" placeholder="Escriba una descripción" required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 text-end mb-3">
+                                        <button type="button" class="btn btn-danger btn-sm remove-exp-btn" onclick="removeExperience(this)">
+                                            <span class="far fa-trash-alt"></span> Eliminar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-3">
+                                <div class="form-group">
+                                    <button type="button" class="theme-btn theme-btn2" id="addExpBtn">
+                                        <span class="far fa-plus"></span> Añadir más experiencia
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="idiomas-container">
+                                <div class="row idioma-entry">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Idioma</label>
+                                            <input type="text" class="form-control" name="idioma[]" placeholder="Ej: Español, Inglés, Alemán" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Nivel escrito</label>
+                                            <select class="form-control" name="nivel_escrito[]" required>
+                                                <option value="">Seleccione nivel</option>
+                                                <option value="Básico">Básico</option>
+                                                <option value="Intermedio">Intermedio</option>
+                                                <option value="Avanzado">Avanzado</option>
+                                                <option value="Experto">Experto</option>
+                                                <option value="Nativo">Nativo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Nivel oral</label>
+                                            <select class="form-control" name="nivel_oral[]" required>
+                                                <option value="">Seleccione nivel</option>
+                                                <option value="Básico">Básico</option>
+                                                <option value="Intermedio">Intermedio</option>
+                                                <option value="Avanzado">Avanzado</option>
+                                                <option value="Experto">Experto</option>
+                                                <option value="Nativo">Nativo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 text-end mb-3">
+                                        <button type="button" class="btn btn-danger btn-sm remove-idioma-btn" onclick="removeIdioma(this)">
+                                            <span class="far fa-trash-alt"></span> Eliminar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt-3">
+                                <div class="form-group">
+                                    <button type="button" class="theme-btn theme-btn2" id="addIdiomaBtn">
+                                        <span class="far fa-plus"></span> Añadir más idiomas
+                                    </button>
+                                </div>
+                            </div>
+                            <h4 class="col-md-5">Preferencias</h4>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Categoría</label>
+                                        <input type="text" class="form-control" id="categoria_empleo" placeholder="Ingrese Empleo Deseado" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Salario esperado</label>
+                                        <div style="position: relative;">
+                                            <span style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); font-weight: bold;">$</span>
+                                            <input type="text" class="form-control" placeholder="Ej: 800.000" id="salario_esperado"
+                                                   style="padding-left: 25px;" required>
+                                        </div>
+                                    </div>
+                                </div>                                                                                                          
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Modalidad</label>
+                                        <select class="form-control" id="modalidad" required>
+                                            <option value="">Seleccione una opción</option>
+                                            <option value="Presencial">Presencial</option>
+                                            <option value="Online">Online</option>
+                                            <option value="Híbrida">Híbrida</option>
+                                            <option value="Part-Time">Part-Time</option>
+                                            <option value="Full-Time">Full-Time</option>
+                                            <option value="Freelance">Freelance</option>
+                                            <option value="Remoto">Remoto</option>
+                                        </select>
+                                    </div>
+                                </div>                                    
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Herramientas</label>
+                                        <input type="text" class="form-control" id="herramientas" placeholder="Ingrese herramientas (Max 10 Herramientas). Ejemplo: Excel - Word - PowerBi">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <h6 class="mb-3">Enlaces sociales</h6>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>URL de Facebook</label>
+                                        <input type="url" class="form-control" id="facebook_url" placeholder="https://www.facebook.com/">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>URL de Twitter</label>
+                                        <input type="url" class="form-control" id="twitter_url" placeholder="https://www.twitter.com/">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>URL de Linkedin</label>
+                                        <input type="url" class="form-control" id="linkedin_url" placeholder="https://www.linkedin.com/" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>URL de Instagram</label>
+                                        <input type="url" class="form-control" id="instagram_url" placeholder="https://www.instagram.com/">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group mt-3">
+                                        <button type="submit" class="theme-btn"><span class="far fa-paper-plane"></span> Enviar tu currículum</button>
+                                    </div>
+                                </div>
+                              </div>
+                          </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
+
+    <script src="../assets/js/jquery-3.6.0.min.js"></script>
+    <script src="../assets/js/modernizr.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/imagesloaded.pkgd.min.js"></script>
+    <script src="../assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="../assets/js/isotope.pkgd.min.js"></script>
+    <script src="../assets/js/jquery.appear.min.js"></script>
+    <script src="../assets/js/jquery.easing.min.js"></script>
+    <script src="../assets/js/owl.carousel.min.js"></script>
+    <script src="../assets/js/counter-up.js"></script>
+    <script src="../assets/js/masonry.pkgd.min.js"></script>
+    <script src="../assets/js/wow.min.js"></script>
+    <script src="../assets/js/nice-select.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/form-register/region-comuna.js"></script>
+    <script src="../assets/js/form-register/codigo-pais.js"></script>
+    <script src="../assets/js/form-register/carreras.js"></script>
+    <script src="../assets/js/form-register/instituciones.js"></script>
+    <script src="../assets/js/header-footer/loadHeaderFooter.js"></script>
+    <script src="../assets/js/form-register/actividad-empresa.js"></script>
+    <script src="../assets/js/form-register/area_cargo.js"></script>
+    <script src="../assets/js/form-register/experiencia.js"></script>
+    <script src="../assets/js/form-register/formacion.js"></script>
+    <script src="../assets/js/form-register/form-experiencia.js"></script>
+    <script src="../assets/js/form-register/candidate-add-info.js"></script>
+    
+</body>
+
+</html>
