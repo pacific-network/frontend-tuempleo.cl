@@ -601,11 +601,11 @@ theme button
 .theme-btn {
   font-size: 16px;
   color: #ffffff;
-  padding: 10px 20px;
+  padding: 10px 30px;
   transition: all 0.5s;
   text-transform: capitalize;
   position: relative;
-  border-radius: 10px;
+  border-radius: 20px;
   font-weight: 500;
   cursor: pointer;
   text-align: center;
@@ -5164,12 +5164,13 @@ breadcrumb css
 .site-breadcrumb {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   text-align: center;
+  height: 100px;
   position: relative;
   background: #F2F6FD;
-  padding-top: 200px;
+  padding: 90px;
   padding-bottom: 120px;
   z-index: 1;
 }
@@ -5182,7 +5183,7 @@ breadcrumb css
   font-size: 45px;
   color: #0052b6;
   font-weight: 800;
-  margin-bottom: 10px;
+  margin-top: 50px;
   text-transform: capitalize;
 }
 

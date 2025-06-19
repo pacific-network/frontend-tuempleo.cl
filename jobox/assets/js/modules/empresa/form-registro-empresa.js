@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         try {
-            const response = await fetch("http://localhost:3000/v1/formularios/register-employer", {
+            const response = await fetch("http://172.25.100.201:3000/v1/formularios/register-employer", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

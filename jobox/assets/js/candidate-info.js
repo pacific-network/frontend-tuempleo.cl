@@ -190,16 +190,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     col1.innerHTML = `
                         <div class="profile-info-list">
                             <ul>
-                                <li>Titulo: <span>${educationData[i].titulo || 'No especificado'}</span></li>
-                                <li>Institución: <span>${educationData[i].institucion || 'No especificado'}</span></li>
-                                <li>Tipo Estudio: <span>${educationData[i].grado || 'No especificado'}</span></li>
-                                <li>Estado: <span>${educationData[i].estado || 'No especificado'}${educationData[i].anio_finalizacion ? ' - ' + educationData[i].anio_finalizacion : ''}</span></li>
+                                <li data-label="Título:"><span>${educationData[i].titulo || 'No especificado'}</span></li>
+                                <li data-label="Institución:"><span>${educationData[i].institucion || 'No especificado'}</span></li>
+                                <li data-label="Tipo Estudio:"><span>${educationData[i].grado || 'No especificado'}</span></li>
+                                <li data-label="Estado:"><span>${educationData[i].estado || 'No especificado'}${educationData[i].anio_finalizacion ? ' - ' + educationData[i].anio_finalizacion : ''}</span></li>
                             </ul>
                         </div>
                     `;
                     row.appendChild(col1);
                 }
-
+                
                 // Segunda columna
                 if (educationData[i + 1]) {
                     const col2 = document.createElement('div');
@@ -207,15 +207,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     col2.innerHTML = `
                         <div class="profile-info-list">
                             <ul>
-                                <li>Titulo: <span>${educationData[i + 1].titulo || 'No especificado'}</span></li>
-                                <li>Institución: <span>${educationData[i + 1].institucion || 'No especificado'}</span></li>
-                                <li>Tipo Estudio: <span>${educationData[i + 1].grado || 'No especificado'}</span></li>
-                                <li>Estado: <span>${educationData[i + 1].estado || 'No especificado'}${educationData[i + 1].anio_finalizacion ? ' - ' + educationData[i + 1].anio_finalizacion : ''}</span></li>
+                                <li data-label="Título:"><span>${educationData[i + 1].titulo || 'No especificado'}</span></li>
+                                <li data-label="Institución:"><span>${educationData[i + 1].institucion || 'No especificado'}</span></li>
+                                <li data-label="Tipo Estudio:"><span>${educationData[i + 1].grado || 'No especificado'}</span></li>
+                                <li data-label="Estado:"><span>${educationData[i + 1].estado || 'No especificado'}${educationData[i + 1].anio_finalizacion ? ' - ' + educationData[i + 1].anio_finalizacion : ''}</span></li>
                             </ul>
                         </div>
                     `;
                     row.appendChild(col2);
                 }
+
 
                 rowGroup.appendChild(row);
 
@@ -250,14 +251,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="col-lg-12">
                         <div class="profile-info-list">
                             <ul>
-                                <li>Empresa: <span>${exp.empresa || 'No especificado'}</span></li>
-                                <li>Cargo: <span>${exp.cargo || 'No especificado'}</span></li>
-                                <li>Actividad Empresa: <span>${exp.actividad_empresa || 'No especificado'}</span></li>
-                                <li>Nivel Experiencia: <span>${exp.nivel_experiencia || 'No especificado'}</span></li>
-                                <li>Área del Cargo: <span>${exp.area_cargo || 'No especificado'}</span></li>
-                                <li>Mes - Año Inicio: <span>${exp.anno_inicio || 'No especificado'}</span></li>
-                                <li>Mes - Año Término: <span>${exp.anno_termino || 'Actualmente'}</span></li>
-                                <li>Descrición Cargo: <span>${exp.descripcion || 'No hay descripción disponible'}</span></li>
+                                <li data-label="Empresa:"><span>${exp.empresa || 'No especificado'}</span></li>
+                                <li data-label="Cargo:"><span>${exp.cargo || 'No especificado'}</span></li>
+                                <li data-label="Actividad Empresa:"><span>${exp.actividad_empresa || 'No especificado'}</span></li>
+                                <li data-label="Nivel Experiencia:"><span>${exp.nivel_experiencia || 'No especificado'}</span></li>
+                                <li data-label="Área del Cargo:"><span>${exp.area_cargo || 'No especificado'}</span></li>
+                                <li data-label="Mes - Año Inicio:"><span>${exp.anno_inicio || 'No especificado'}</span></li>
+                                <li data-label="Mes - Año Término:"><span>${exp.anno_termino || 'Actualmente'}</span></li>
+                                <li data-label="Descrición Cargo:"><span>${exp.descripcion || 'No hay descripción disponible'}</span></li>
                             </ul>
                         </div>
                     </div>

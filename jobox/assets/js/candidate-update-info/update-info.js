@@ -68,7 +68,7 @@ const LISTA_TITULOS = [
     "Ingeniería en Minería", "Museología", "Música", "Nanotecnología", "Negocios Internacionales", "Neuromarketing", 
     "Nutrición y Dietética", "Oceanografía", "Odontología", "Oftalmología", "Optometría", "Ortopedia", "Paleontología", 
     "Patrimonio Cultural", "Pedagogía", "Periodismo", "Pilotaje", "Podología", "Producción Audiovisual", 
-    "Producción Musical", "Psicología", "Psicopedagogía", "Publicidad", "Química", "Química y Farmacia", 
+    "Producción Musical", "Programación y Análisis de Sistemas","Psicología", "Psicopedagogía", "Publicidad", "Química", "Química y Farmacia", 
     "Radiología", "Realización Cinematográfica", "Recursos Humanos", "Recursos Naturales", "Relaciones Internacionales", 
     "Relaciones Públicas", "Robótica", "Seguridad Cibernética", "Seguridad Ocupacional", "Sociología", 
     "Ingeniería en Sonido", "Teatro", "Tecnología Médica", "Tecnología Musical", "Técnico Agrícola", 
@@ -718,7 +718,7 @@ async function agregarExperiencia(experienciaData = {}) {
             <div class="col-md-12">
                 <div class="form-group">
                     <label>Descripción</label>
-                    <textarea class="form-control descripcion-input" cols="30" rows="5" placeholder="Descripción">${experienciaData.descripcion || ''}</textarea>
+                    <textarea class="form-control descripcion-input" cols="30" rows="5" placeholder="Descripción" maxlength="1000">${experienciaData.descripcion || ''}</textarea>
                 </div>
             </div>
             <div class="col-md-12 text-end mb-3">
