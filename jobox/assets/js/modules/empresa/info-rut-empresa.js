@@ -7,9 +7,9 @@ document.getElementById('consultarRutBtn').addEventListener('click', async () =>
     }
 
     try {
-        const response = await fetch(`https://rut.simpleapi.cl/${rut}`, {
+        const response = await fetch(`https://cors-anywhere.herokuapp.com/https://rut.simpleapi.cl/${rut}`, {
             headers: {
-                'Authorization': '6097-R860-6391-9981-7515', // 👈 exactamente como lo pide
+                'Authorization': '6097-R860-6391-9981-7515',
                 'Accept': 'application/json'
             }
         });
@@ -36,6 +36,12 @@ document.getElementById('consultarRutBtn').addEventListener('click', async () =>
             actividadSelect.innerHTML = `<option selected>${data.giro}</option>`;
         }
 
+        // Elimina errores anteriores si existían
+        const existingError = document.getElementById('rutError');
+        if (existingError) {
+            existingError.remove();
+        }
+
     } catch (error) {
         console.error(error);
         const errorElement = document.createElement('div');
@@ -50,5 +56,5 @@ document.getElementById('consultarRutBtn').addEventListener('click', async () =>
             existingError.remove();
         }
         rutInputContainer.appendChild(errorElement);
-        }
-    });
+    }
+});

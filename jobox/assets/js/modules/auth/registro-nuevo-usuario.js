@@ -43,9 +43,30 @@ document.getElementById("registroForm").addEventListener("submit", async functio
                 window.location.href = "login-employer.html";
             }, 1500);
         } else {
-            const error = await res.text();
-            mensaje.textContent = "Error en el registro: " + error;
+            const error = await res.json();
+            mensaje.style.color = "red";
+        
+            // Función para traducir errores conocidos
+            const traducirMensaje = (msg) => {
+                if (msg.includes("password must be longer than or equal to 6 characters")) {
+                    return "La contraseña debe contener al menos 6 caracteres.";
+                }
+                // Puedes agregar más traducciones aquí si lo deseas
+                return msg;
+            };
+        
+            if (Array.isArray(error.message)) {
+                // Mostrar lista de errores traducidos
+                mensaje.innerHTML = `
+                    <strong>Se encontraron los siguientes errores:</strong>
+                    <ul>${error.message.map(msg => `<li>${traducirMensaje(msg)}</li>`).join('')}</ul>
+                `;
+            } else {
+                // Mostrar mensaje único traducido
+                mensaje.textContent = "Error en el registro: " + traducirMensaje(error.message);
+            }
         }
+        
 
     } catch (err) {
         mensaje.textContent = "Error de conexión al servidor.";
