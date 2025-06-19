@@ -105,22 +105,16 @@
     <!-- scroll-top -->
     <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
 
-    <!-- Modal de mensajes -->
-    <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="feedbackModalLabel">Mensaje</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body" id="feedbackMessage"></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Contenedor para notificaciones tipo popup -->
+    <div id="custom-alert" style="
+        display:none;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1055;
+        min-width: 250px;
+        cursor: pointer;
+    "></div>
 
     <!-- js -->
     <script src="assets/js/jquery-3.6.0.min.js"></script>

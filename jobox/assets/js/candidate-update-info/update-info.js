@@ -718,7 +718,7 @@ async function agregarExperiencia(experienciaData = {}) {
             <div class="col-md-12">
                 <div class="form-group">
                     <label>Descripción</label>
-                    <textarea class="form-control descripcion-input" cols="30" rows="5" placeholder="Descripción">${experienciaData.descripcion || ''}</textarea>
+                    <textarea class="form-control descripcion-input" cols="30" rows="5" placeholder="Descripción" maxlength="1000">${experienciaData.descripcion || ''}</textarea>
                 </div>
             </div>
             <div class="col-md-12 text-end mb-3">

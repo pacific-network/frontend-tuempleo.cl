@@ -114,6 +114,7 @@ async function crearOferta() {
   const rentaDesde = document.querySelector('#salaryFrom').value.trim();
   const rentaHasta = document.querySelector('#salaryTo').value.trim();
 
+  // ✅ Obtener herramientas
   const herramientasSeleccionadas = Array.from(
     document.querySelectorAll('#checkbox-container input[type="checkbox"]:checked')
   ).map(cb => cb.value);
@@ -126,6 +127,12 @@ async function crearOferta() {
     .filter(Boolean) || [];
 
   const herramientas = [...herramientasSeleccionadas, ...herramientasPersonalizadas];
+
+  // ✅ Obtener preguntas personalizadas
+  const preguntasInputs = document.querySelectorAll('#preguntas-container input[name^="pregunta_"]');
+  const preguntas_personalizadas = Array.from(preguntasInputs)
+    .map(input => input.value.trim())
+    .filter(p => p.length > 0);
 
   const data = {
     titulo,
@@ -144,9 +151,11 @@ async function crearOferta() {
       hasta: rentaHasta,
       de_acuerdo_al_mercado: true
     },
-    herramientas_basicas: herramientas
+    herramientas_basicas: herramientas,
+    preguntas_personalizadas // ✅ se incluye en el objeto final
   };
 
+  // Validación del formulario
   if (!validarFormulario(data)) return;
 
   const payload = {
@@ -182,6 +191,7 @@ async function crearOferta() {
     alert('Error al conectar con el servidor');
   }
 }
+
 
 document.addEventListener('DOMContentLoaded', async () => {
   const form = document.getElementById('formulario-publicar');
