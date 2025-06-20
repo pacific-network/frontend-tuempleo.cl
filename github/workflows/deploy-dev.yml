@@ -1,0 +1,23 @@
+name: Despliegue a dev 
+
+on:
+  push:
+    branches:
+      - dev  # Se activa al hacer push/merge a dev
+
+jobs:
+  actualizar-servidor:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Hacer git pull en el servidor remoto
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          port: ${{ secrets.SERVER_PORT }}
+          key: ${{ secrets.SSH_NEW_SERVER }}
+          script: |
+            cd /www/wwwroot/frontend-tuempleo.cl
+            git reset --hard origin/dev  # Opcional: fuerza que se actualice limpio
+            git pull origin dev
