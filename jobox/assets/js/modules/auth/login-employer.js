@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
   
       try {
-        const res = await fetch('http://172.25.100.201:3000/v1/auth/login-empleador', {
+        const res = await fetch('http://localhost:3000/v1/auth/login-empleador', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password })
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
         const userId = payload.sub;
   
-        const userCheck = await fetch(`http://172.25.100.201:3000/v1/empleador/${userId}`, {
+        const userCheck = await fetch(`http://localhost:3000/v1/empleador/${userId}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${data.token}`,
