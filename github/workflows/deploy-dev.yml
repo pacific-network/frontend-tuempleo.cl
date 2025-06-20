@@ -16,7 +16,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           port: ${{ secrets.SERVER_PORT }}
-          key: ${{ secrets.SSH_NEW_SERVER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /www/wwwroot/frontend-tuempleo.cl
             git reset --hard origin/dev  # Opcional: fuerza que se actualice limpio
