@@ -13,7 +13,7 @@
     <title>Precios</title>
 
     <!-- favicon -->
-    <link rel="icon" type="image/x-icon" href="../assets/img/logo/favicon.png">
+    <link rel="icon" type="image/x-icon" href="assets/img/logo/favicon.png">
 
     <!-- css -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -25,27 +25,7 @@
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="assets/css/nice-select.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
-    <style>
-        .coming-soon-banner {
-            display: block;
-            width: 100%;
-            background-color: #414df0; /* o tu color de marca */
-            color: white;
-            padding: 18px;
-            font-size: 20px;
-            font-weight: bold;
-            border-radius: 8px;
-            text-align: center;
-            margin-top: 40px;
-            transition: background 0.3s ease;
-        }
-
-        .coming-soon-banner:hover {
-            background-color: #2a32a5;
-            color: white;
-            text-decoration: none;
-        }
-    </style>
+   
 
 </head>
 
@@ -74,10 +54,10 @@
                 <h1 class="breadcrumb-title">Nuestros Productos</h1>
             </div>
             <div class="hero-shape">
-                <img class="hero-shape-1" src="assets/img/shape/03.svg" alt="">
-                <img class="hero-shape-2" src="assets/img/shape/05.svg" alt="">
-                <img class="hero-shape-3" src="assets/img/shape/06.svg" alt="">
-                <img class="hero-shape-4" src="assets/img/shape/07.svg" alt="">
+                <img class="hero-shape-1" src="../assets/img/shape/03.svg" alt="">
+                <img class="hero-shape-2" src="../assets/img/shape/05.svg" alt="">
+                <img class="hero-shape-3" src="../assets/img/shape/06.svg" alt="">
+                <img class="hero-shape-4" src="../assets/img/shape/07.svg" alt="">
             </div>
         </div>
 
@@ -132,45 +112,6 @@
   
         <div class="pricing-area py-120">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-7 mx-auto wow fadeInDown" data-wow-duration="1s" data-wow-delay=".25s">
-                        <div class="site-heading text-center">
-                            <span class="site-title-tagline">Tipos de Avisos</span>
-                            <h2 class="site-title">Escoge la oferta mas adecuada</h2>
-                            <p>Ofrecemos paquetes de precios estándar globales</p>
-                            <p>Para mayor información, contactar a nuestro WhatsApp</p>
-                            <a href="https://wa.me/56991836445" target="_blank" class="theme-btn whatsapp-btn">
-                                <span class="fab fa-whatsapp"></span> Contactar por WhatsApp
-                            </a>
-                        </div>
-                        <div class="site-heading text-center">
-                            <button onclick="togglePhoneForm()" class="theme-btn">
-                                <span class="fas fa-phone"></span> Te llamamos
-                            </button>
-                        
-                            <form id="phoneForm" onsubmit="return submitPhone()" class="mt-4" style="display: none;">
-                                <div class="row justify-content-center">
-                                    <div class="col-md-6 col-lg-4">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">+56</span>
-                                            </div>
-                                            <input type="tel" class="form-control" id="phoneInput" name="phone"
-                                                placeholder="9 1234 5678" required pattern="[9][0-9]{8}">
-                                        </div>
-                                    </div>
-                                    <div class="col-12 mt-3">
-                                        <button type="submit" class="theme-btn">
-                                            Enviar
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        
-                    </div>
-                </div>
-
                 <!-- Inicio Tipos de avisos -->
                 <div class="pricing-wrapper mt-4 ">
                     <div class="row">
@@ -185,7 +126,7 @@
                                   <li>Visibilidad en el listado general</li>
                                   <li>Ideal para búsquedas estándar</li>
                                 </ul>
-                                <a href="login-employer.html" class="theme-btn">
+                                <a href="../jobox/empresas/login-employer.html" class="theme-btn">
                                   Conocer Más <i class="far fa-arrow-right"></i>
                                 </a>
                               </div>
@@ -203,7 +144,7 @@
                                   <li>Perfecto para cualquier tipo de búsqueda</li>
                                   <li>Ubicación estándar en el listado</li>
                                 </ul>
-                                <a href="login-employer.html" class="theme-btn">
+                                <a href="../jobox/empresas/login-employer.html" class="theme-btn">
                                   Conocer Más <i class="far fa-arrow-right"></i>
                                 </a>
                               </div>
@@ -224,7 +165,7 @@
                                   <li>Ideal para perfiles profesionales o técnicos</li>
                                   <li>Logo corporativo visible en el aviso</li>
                                 </ul>
-                                <a href="login-employer.html" class="theme-btn">
+                                <a href="../jobox/empresas/login-employer.html" class="theme-btn">
                                   Conocer Más <i class="far fa-arrow-right"></i>
                                 </a>
                               </div>
@@ -243,7 +184,7 @@
                                         <li>Mayor volumen de postulaciones</li>
                                         <li>Ubicación destacada del aviso</li>
                                     </ul>
-                                    <a href="login-employer.html" class="theme-btn">Conocer Más <i class="far fa-arrow-right"></i></a>
+                                    <a href="../jobox/empresas/login-employer.html" class="theme-btn">Conocer Más <i class="far fa-arrow-right"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -253,8 +194,7 @@
                 <br>
                 <div class="row mt-24">
                     <div class="col-12 text-center">
-                        <span class="site-title-tagline">Tipos de Planes</span>
-                        <a href="coming-soon.hmtl" class="theme-btn coming-soon-banner"><span class="fe-clock"></span>Coming Soon</a>
+                        <a href="../jobox/empresas/employer-register.html" class="theme-btn coming-soon-banner"><span class="fa-regular fa-building"></span>Ir a Portal Empresas</a>
                     </div>
                 </div>
             </div>
