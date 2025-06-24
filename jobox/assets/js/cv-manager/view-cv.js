@@ -25,10 +25,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         const cvPath = cvData[0]?.cv_path;
         if (cvPath) {
             const pdfUrl = `http://172.25.100.201:3000${cvPath.replace("/var/www/html", "")}`;
+
+            // Cargar automáticamente el PDF
             document.getElementById("pdfMiniPreview").src = pdfUrl;
             document.getElementById("previewContainer").style.display = "block";
             document.getElementById("uploadInstructions").style.display = "none";
-        } else {
+
+            // Mostrar botón para recargar/ver PDF manualmente
+            const verBtn = document.getElementById("verPdfBtn");
+            verBtn.style.display = "inline-block";
+            verBtn.addEventListener("click", () => {
+                document.getElementById("pdfMiniPreview").src = pdfUrl;
+            });
+        }else {
             console.log("El usuario no tiene CV cargado.");
         }
     } catch (err) {
