@@ -1,4 +1,4 @@
-
+//assest/js/modules/auth/registro-nuevo-usuario.js
 document.getElementById("registroForm").addEventListener("submit", async function(e) {
     e.preventDefault(); // Evita recarga del form
 
