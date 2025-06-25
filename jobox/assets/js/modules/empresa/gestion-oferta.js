@@ -6,10 +6,10 @@ if (!userId) {
   console.error('Token no válido');
 } else {
   try {
-    const empleadorRes = await fetch(`http://localhost:3000/v1/empleador/basic-info/${userId}`);
+    const empleadorRes = await fetch(`${BASE_URL_API}/empleador/basic-info/${userId}`);
     const { empleador_id } = await empleadorRes.json();
 
-    const ofertasRes = await fetch(`http://localhost:3000/v1/ofertas/empleador/${empleador_id}?page=1&take=10&order=DESC`);
+    const ofertasRes = await fetch(`${BASE_URL_API}/ofertas/empleador/${empleador_id}?page=1&take=10&order=DESC`);
     const { data: ofertas } = await ofertasRes.json();
 
     const tbody = document.getElementById('ofertas-body');
@@ -58,3 +58,36 @@ if (!userId) {
     console.error('Error cargando ofertas:', error);
   }
 }
+
+// Activar eliminación después de renderizar
+document.querySelectorAll('.btn-delete').forEach(btn => {
+  btn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const id = btn.dataset.id;
+
+    const confirmDelete = confirm('¿Estás seguro de eliminar esta oferta?');
+    if (!confirmDelete) return;
+
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${BASE_URL_API}/ofertas/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (res.ok) {
+        alert('Oferta eliminada con éxito');
+        btn.closest('tr').remove(); // elimina la fila del DOM
+      } else {
+        const err = await res.text();
+        alert(`Error al eliminar: ${err}`);
+      }
+    } catch (err) {
+      console.error('Error al eliminar la oferta:', err);
+      alert('Error inesperado al eliminar.');
+    }
+  });
+});

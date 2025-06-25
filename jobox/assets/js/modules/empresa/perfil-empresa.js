@@ -17,7 +17,8 @@ function getUserIdFromToken() {
     if (!userId) return console.error('No se pudo obtener userId');
   
     try {
-      const response = await fetch(`http://localhost:3000/v1/empleador/${userId}`);
+      console.log('BASE_URL_API:', BASE_URL_API);
+const response = await fetch(`${BASE_URL_API}/empleador/${userId}`);
       const data = await response.json();
   
       const empresa = data.empresa || {};
