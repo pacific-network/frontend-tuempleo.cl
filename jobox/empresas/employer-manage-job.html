@@ -218,39 +218,10 @@
     <script src="../assets/js/nice-select.min.js"></script>
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/header-footer/loadHeaderFooterEmp.js"></script>
+    <script src="../assets/js/config/config.js"></script>
     <script type="module" src="../assets/js/modules/empresa/gestion-oferta.js"></script>
-    <!-- <script>
-        document.querySelectorAll(".profile-job-content h6 a").forEach(link => {
-            const text = link.textContent.trim();
-            if (text.length > 28) {
-                link.classList.add("h6-overflow");
-            }
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-          let trToDelete = null;
-        
-          // Escucha todos los botones de eliminar
-          document.querySelectorAll('.btn-delete').forEach(button => {
-            button.addEventListener('click', function (e) {
-              e.preventDefault();
-              trToDelete = this.closest('tr');
-              const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
-              modal.show();
-            });
-          });
-      
-          // Cuando confirman eliminar
-          document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
-            if (trToDelete) {
-              trToDelete.remove();
-              trToDelete = null;
-            }
-            bootstrap.Modal.getInstance(document.getElementById('deleteConfirmModal')).hide();
-          });
-        });
-    </script> -->
+    <script  src="../assets/js/modules/ofertas/eliminar-oferta.js"></script>
+
 </body>
 
 </html>

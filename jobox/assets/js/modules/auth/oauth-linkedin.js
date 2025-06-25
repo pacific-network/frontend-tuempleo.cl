@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
       linkedinBtn.addEventListener('click', (e) => {
         e.preventDefault();
         // Redirige al backend para iniciar OAuth con LinkedIn
-        window.location.href = 'https://tuempleo.cl/api/v1/auth/linkedin';
+        window.location.href = `${BASE_API_URL}/auth/linkedin`;
       });
     }
   
