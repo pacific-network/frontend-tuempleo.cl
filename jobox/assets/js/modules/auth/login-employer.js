@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      const res = await fetch(`${BASE_API_URL}/auth/login-empleador`, {
+      const res = await fetch(`${BASE_URL_API}/auth/login-empleador`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const userId = payload.sub;
 
-      const userCheck = await fetch(`${BASE_API_URL}/empleador/${userId}`, {
+      const userCheck = await fetch(`${BASE_URL_API}/empleador/${userId}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${data.token}`,
