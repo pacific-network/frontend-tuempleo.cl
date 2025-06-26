@@ -41,7 +41,7 @@ document.getElementById("registroForm").addEventListener("submit", async functio
     };
 
     try {
-        const res = await fetch(`${BASE_URL_API}/v1/auth/register`, {
+        const res = await fetch(`${BASE_URL_API}/auth/register`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

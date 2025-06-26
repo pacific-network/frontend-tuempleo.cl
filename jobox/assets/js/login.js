@@ -40,7 +40,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
     }
 
     try {
-        const loginResponse = await fetch(`${BASE_URL_API}/v1/auth/login-postulante`, {
+        const loginResponse = await fetch(`${BASE_URL_API}/auth/login-postulante`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
@@ -72,7 +72,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
         const payload = JSON.parse(atob(base64));
         const userId = payload.sub;
 
-        const userCheckResponse = await fetch(`${BASE_URL_API}/v1/postulante/${userId}`, {
+        const userCheckResponse = await fetch(`${BASE_URL_API}/postulante/${userId}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${loginData.token}`,

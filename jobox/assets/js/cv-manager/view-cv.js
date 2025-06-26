@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (!rut) throw new Error("RUT no encontrado en la respuesta del servidor.");
 
         // 2. Obtener el CV usando el rut
-        const cvResponse = await fetch(`${BASE_URL_API}/v1/curriculum/${rut}`);
+        const cvResponse = await fetch(`${BASE_URL_API}/curriculum/${rut}`);
         if (!cvResponse.ok) throw new Error("Error al obtener CV del usuario");
         const cvData = await cvResponse.json();
 
