@@ -188,7 +188,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
         // 1. Obtener el rut del usuario
-        const rutResponse = await fetch(`http://172.25.100.201:3000/v1/postulante/${userId}`, {
+        const rutResponse = await fetch(`{http://172.25.100.201:3000}/v1/postulante/${userId}`, {
             headers: { Authorization: `Bearer ${token}` }
         });
 

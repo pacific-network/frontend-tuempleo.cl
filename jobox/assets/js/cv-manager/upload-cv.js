@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 try {
-                    const response = await fetch(`http://172.25.100.201:3000/v1/postulante/${userId}`, {
+                    const response = await fetch(`${BASE_URL_API}/v1/postulante/${userId}`, {
                         method: "GET",
                         headers: {
                             "Authorization": `Bearer ${token}`
@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     const formData = new FormData();
                     formData.append("file", file);
 
-                    const uploadResponse = await fetch(`http://172.25.100.201:3000/v1/curriculum/upload/${rut}`, {
+                    const uploadResponse = await fetch(`${BASE_URL_API}/v1/curriculum/upload/${rut}`, {
                         method: "POST",
                         headers: {
                             "Authorization": `Bearer ${token}`
