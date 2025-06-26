@@ -59,7 +59,7 @@
                 <img class="hero-shape-2" src="../assets/img/shape/05.svg" alt="">
                 <img class="hero-shape-3" src="../assets/img/shape/06.svg" alt="">
                 <img class="hero-shape-4" src="../assets/img/shape/07.svg" alt="">
-            </div>./
+            </div>
         </div>
 
 
@@ -96,7 +96,7 @@
                                         Recuérdame
                                     </label>
                                 </div>
-                                <a href="forgot-password.html" class="forgot-pass">¿Olvidaste tu contraseña?</a>
+                                <a href="../forgot-password.html" class="forgot-pass">¿Olvidaste tu contraseña?</a>
                             </div>
                         
                             <div id="message" style="margin-bottom: 1rem; color: red; font-weight: bold;"></div>
@@ -111,10 +111,15 @@
                         <div class="login-footer">
                             <div class="login-divider"><span>O</span></div>
                             <div class="social-login">
-                                <a href="#" class="btn-fb"><i class="fab fa-linkedin"></i> Ingresa con Linkedin</a>
-                                <a href="#" class="btn-gl"><i class="fab fa-google"></i> Ingresa con Google</a>
+                                <a href="#" class="btn-fb" id="linkedinLoginBtn">
+                                    <i class="fab fa-linkedin"></i> Ingresa con Linkedin
+                                </a>
+                                <a href="#" class="btn-gl" id="googleLoginBtn"><i class="fab fa-google">
+
+                                </i> Ingresa con Google
+                            </a>
                             </div>
-                            <p>¿Aún no tienes una cuenta? <a href="register-employer.html">Regístrate aquí</a></p>
+                            <p>¿Aún no tienes una cuenta? <a href="../empresas/employer-register.html">Regístrate aquí</a></p>
                         </div>
                     </div>
                 </div>
@@ -151,8 +156,13 @@
     <script src="../assets/js/wow.min.js"></script>
     <script src="../assets/js/nice-select.min.js"></script>
     <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/config/config.js"></script>
     <script src="../assets/js/header-footer/loadHeaderFooterEmpSO2.js"></script>
+
     <script src="../assets/js/modules/auth/login-employer.js"></script>
+    <script src="../assets/js/modules/auth/oauth-linkedin.js"></script>
+    <script src="../assets/js/modules/auth/oauth-google.js"></script>
+    
 
 </body>
 

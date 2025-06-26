@@ -5019,7 +5019,7 @@ pricing css
 
 .pricing-item.active{
   background: #3C65F5;
-  margin-top: -40px;
+  margin-top: -0px;
 }
 
 .pricing-item.active .pricing-content h4{

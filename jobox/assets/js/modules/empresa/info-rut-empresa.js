@@ -1,54 +1,104 @@
-document.getElementById('consultarRutBtn').addEventListener('click', async () => {
-    const rut = document.getElementById('rutInput').value.trim();
+
+  // ✅ Función para validar formato y dígito verificador del RUT
+  function validarRut(rut) {
+    rut = rut.replace(/\./g, '').replace('-', '');
+    if (rut.length < 8) return false;
+
+    const cuerpo = rut.slice(0, -1);
+    const dv = rut.slice(-1).toUpperCase();
+
+    let suma = 0;
+    let multiplo = 2;
+
+    for (let i = cuerpo.length - 1; i >= 0; i--) {
+      suma += parseInt(cuerpo[i]) * multiplo;
+      multiplo = multiplo < 7 ? multiplo + 1 : 2;
+    }
+
+    const dvEsperado = 11 - (suma % 11);
+    const dvCalculado = dvEsperado === 11 ? '0' : dvEsperado === 10 ? 'K' : dvEsperado.toString();
+
+    return dv === dvCalculado;
+  }
+
+  document.getElementById('consultarRutBtn').addEventListener('click', async () => {
+    let rut = document.getElementById('rutInput').value.trim().toUpperCase().replace(/\./g, '');
 
     if (!rut) {
-        alert("Por favor, ingrese un RUT.");
-        return;
+      alert("Por favor, ingrese un RUT.");
+      return;
+    }
+
+    if (!validarRut(rut)) {
+      alert("RUT inválido. Verifique el dígito verificador.");
+      return;
     }
 
     try {
-        const response = await fetch(`https://rut.simpleapi.cl/${rut}`, {
-            headers: {
-                'Authorization': '6097-R860-6391-9981-7515', // 👈 exactamente como lo pide
-                'Accept': 'application/json'
-            }
-        });
+      const response = await fetch(`${BASE_URL_API}/sii/situacion-tributaria/${rut}`);
 
-        if (!response.ok) throw new Error("No se pudo obtener la información del RUT.");
+      if (!response.ok) throw new Error("No se pudo obtener la información del RUT.");
 
-        const data = await response.json();
+      const data = await response.json();
 
-        // Llenar campos del formulario si existen datos
-        document.querySelector('input[placeholder="Ingrese la Razón Social"]').value = data.razonSocial || '';
-        document.querySelector('input[name="nombre_empresa"]').value = data.nombreFantasia !== "Sin datos" ? data.nombreFantasia : '';
-        document.querySelector('input[placeholder="Ingrese Correo"]').value = data.correo || '';
-        document.querySelector('input[placeholder="Ingrese dirección"]').value = data.domicilios?.[0]?.direccion || '';
-        document.querySelector('#comuna').innerHTML = `<option selected>${data.domicilios?.[0]?.comuna || 'Sin datos'}</option>`;
-        document.querySelector('#region').innerHTML = `<option selected>${data.domicilios?.[0]?.ciudad || 'Sin datos'}</option>`;
+      document.querySelector('input[placeholder="Ingrese la Razón Social"]').value = data.razon_social || '';
+      document.getElementById('nombre_empresa').value = data.razon_social || '';
 
-        if (data.fechaInicioActividades) {
-            const year = new Date(data.fechaInicioActividades).getFullYear();
-            document.querySelector('input[placeholder="Ingrese Año"]').value = year;
-        }
+      document.querySelector('input[placeholder="Ingrese Correo"]').value = '';
 
-        if (data.giro) {
-            const actividadSelect = document.getElementById('actividad_empresa_select');
-            actividadSelect.innerHTML = `<option selected>${data.giro}</option>`;
-        }
+      const actividad = data.actividades?.[0]; // ✅ Tomamos la primera actividad
+if (actividad) {
+  const categoriaTexto = actividad.categoria === 1
+    ? 'Primera Categoría'
+    : actividad.categoria === 2
+    ? 'Segunda Categoría'
+    : `Categoría ${actividad.categoria}`;
+
+  document.getElementById('categoria').value = categoriaTexto;
+}
+
+    
+document.getElementById('actividad_empresa').value = data.actividades?.[0]?.glosa || '';
+
+document.getElementById('anio_inicio_actividades').value = data.fecha_inicio_actividades ? new Date(data.fecha_inicio_actividades).getFullYear() : '';
+
+
+
+      const domicilio = data.domicilios?.[0];
+      if (domicilio) {
+        document.querySelector('input[placeholder="Ingrese dirección"]').value = domicilio.direccion || '';
+        document.querySelector('#comuna').innerHTML = `<option selected>${domicilio.comuna || 'Sin datos'}</option>`;
+        document.querySelector('#region').innerHTML = `<option selected>${domicilio.ciudad || 'Sin datos'}</option>`;
+      } else {
+        document.querySelector('input[placeholder="Ingrese dirección"]').value = '';
+        document.querySelector('#comuna').innerHTML = `<option selected>Sin datos</option>`;
+        document.querySelector('#region').innerHTML = `<option selected>Sin datos</option>`;
+      }
+
+      if (data.fecha_inicio_actividades) {
+        const year = new Date(data.fecha_inicio_actividades).getFullYear();
+        document.querySelector('input[placeholder="Ingrese Año"]').value = data.fecha_inicio_actividades ? year : '';
+      }
+
+      if (data.actividades?.length > 0) {
+        const giro = data.actividades[0].glosa || 'Sin datos';
+        const actividadSelect = document.getElementById('actividad_empresa_select');
+        actividadSelect.innerHTML = `<option selected>${giro}</option>`;
+      }
+
+      const existingError = document.getElementById('rutError');
+      if (existingError) existingError.remove();
 
     } catch (error) {
-        console.error(error);
-        const errorElement = document.createElement('div');
-        errorElement.textContent = "Error al consultar el RUT. Verifique que sea válido.";
-        errorElement.style.color = 'red';
-        errorElement.style.marginTop = '5px';
-        errorElement.id = 'rutError';
+      console.error(error);
 
-        const rutInputContainer = document.getElementById('rutInput').parentElement;
-        const existingError = document.getElementById('rutError');
-        if (existingError) {
-            existingError.remove();
-        }
-        rutInputContainer.appendChild(errorElement);
-        }
-    });
+      const rutInputContainer = document.getElementById('rutInput').parentElement;
+
+      const existingError = document.getElementById('rutError');
+      if (existingError) existingError.remove();
+
+
+
+      rutInputContainer.appendChild(errorElement);
+    }
+  });

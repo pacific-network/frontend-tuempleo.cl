@@ -141,7 +141,29 @@
                                         <h4 class="user-profile-card-title">Visitas al Perfil</h4>
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <div id="chart"></div>
+                                                <div>
+                                                    <!-- hacer 3 pestanas navegables -->
+                                                     <!-- Pestañas -->
+<ul class="nav nav-tabs" id="visitasTabs">
+    <li class="nav-item">
+      <a class="nav-link active" href="#" data-tab="hoy">Candidatos Sugeridos</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#" data-tab="semana">Historial de ofertas</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#" data-tab="mes">Pendiente</a>
+    </li>
+  </ul>
+  
+  <!-- Contenido -->
+  <div class="tab-content mt-3">
+    <div class="tab-pane active" id="tab-hoy">Candidatos sugeridos: <strong></strong></div>
+    <div class="tab-pane d-none" id="tab-semana">Historial ofertas <strong>48</strong></div>
+    <div class="tab-pane d-none" id="tab-mes">Pendientes<strong>211</strong></div>
+  </div>
+  
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
