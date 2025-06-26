@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!payload || !payload.sub) return;
 
     const userId = payload.sub;
-    const apiUrl = `http://172.25.100.201:3000/v1/postulante/${userId}`;
+    const apiUrl = `${BASE_URL_API}/v1/postulante/${userId}`;
 
     fetch(apiUrl, {
         method: "GET",
