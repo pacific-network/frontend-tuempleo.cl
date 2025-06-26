@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // URL del endpoint
-        const apiUrl = `${BASE_URL_API}/v1/postulante/${userId}`;
+        const apiUrl = `${BASE_URL_API}/postulante/${userId}`;
         
         // Función para formatear fecha
         function formatDate(dateString) {
