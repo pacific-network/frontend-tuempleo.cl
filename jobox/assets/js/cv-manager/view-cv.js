@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
         // 1. Obtener el rut del usuario
-        const rutResponse = await fetch(`${BASE_URL_API}/v1/postulante/${userId}`, {
+        const rutResponse = await fetch(`${BASE_URL_API}/postulante/${userId}`, {
             headers: { Authorization: `Bearer ${token}` }
         });
 

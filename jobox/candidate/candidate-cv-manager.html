@@ -74,25 +74,34 @@
                                 <p id="userCategory">Cargando...</p>
                             </div>
                             <ul class="user-profile-sidebar-list">
-                                <li><a href="candidate-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a></li>
+                                <li><a href="candidate-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a>
+                                </li>
                                 <li><a href="candidate-profile.html"><i class="far fa-user-tie"></i> Mi Perfil</a></li>
-                                <li><a href="candidate-applied-job.html"><i class="far fa-briefcase"></i> Trabajos Postulados</a></li>
-                                <li><a class="active" href="candidate-cv-manager.html"><i class="far fa-file-zipper"></i> Archivo CV</a></li>
-                                <li><a href="candidate-saved-job.html"><i class="far fa-bookmark"></i> Trabajos Guardados</a></li>
+                                <li><a href="candidate-applied-job.html"><i class="far fa-briefcase"></i> Trabajos
+                                        Postulados</a></li>
+                                <li><a class="active" href="candidate-cv-manager.html"><i
+                                            class="far fa-file-zipper"></i> Archivo CV</a></li>
+                                <li><a href="candidate-saved-job.html"><i class="far fa-bookmark"></i> Trabajos
+                                        Guardados</a></li>
                                 <li><a href="candidate-settings.html"><i class="far fa-cog"></i> Editar Perfil</a></li>
                                 <li><a href="#" id="logoutButton"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
                             </ul>
                         </div>
-                        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel"
+                            aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="logoutModalLabel">¿Seguro que quieres cerrar sesión?</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                        <h5 class="modal-title" id="logoutModalLabel">¿Seguro que quieres cerrar sesión?
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Cerrar"></button>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                        <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar Sesión</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar
+                                            Sesión</button>
                                     </div>
                                 </div>
                             </div>
@@ -116,9 +125,11 @@
                                             <div class="profile-upload-wrapper">
                                                 <div class="profile-upload mb-3" id="uploadBox">
                                                     <div id="uploadInstructions">
-                                                        <span><i class="far fa-cloud-arrow-up"></i> Subir documento aquí</span>
+                                                        <span><i class="far fa-cloud-arrow-up"></i> Subir documento
+                                                            aquí</span>
                                                         <p>
-                                                            El tamaño del archivo a cargar es (máximo 5 Mb) y los tipos de
+                                                            El tamaño del archivo a cargar es (máximo 5 Mb) y los tipos
+                                                            de
                                                             archivos permitidos son (.doc, .docx, .pdf)
                                                         </p>
                                                     </div>
@@ -128,11 +139,13 @@
                                                     </div>
                                                 </div>
                                                 <input type="file" id="fileInput" accept="application/pdf" />
-                                                <button type="button" class="btn btn-outline-primary" id="customFileButton">
+                                                <button type="button" class="btn btn-outline-primary"
+                                                    id="customFileButton">
                                                     <i class="far fa-file-pdf"></i> Seleccionar Archivo PDF
                                                 </button>
                                                 <div id="filePreview" class="mt-2"></div>
-                                                <button type="button" id="uploadBtn" class="btn btn-primary mt-3" disabled>
+                                                <button type="button" id="uploadBtn" class="btn btn-primary mt-3"
+                                                    disabled>
                                                     <span class="far fa-upload"></span> Enviar Archivo
                                                 </button>
                                             </div>
@@ -179,56 +192,56 @@
     <script src="../assets/js/cv-manager/upload-cv.js"></script>
     <script src="../assets/js/candidate-name-category.js"></script>
     <script>
-document.addEventListener("DOMContentLoaded", async () => {
-    const token = localStorage.getItem("token");
-    if (!token) return console.warn("Token no encontrado en localStorage.");
+        document.addEventListener("DOMContentLoaded", async () => {
+            const token = localStorage.getItem("token");
+            if (!token) return console.warn("Token no encontrado en localStorage.");
 
-    const userId = parseJwt(token)?.sub;
-    if (!userId) return console.warn("No se pudo extraer el ID del usuario del token.");
+            const userId = parseJwt(token)?.sub;
+            if (!userId) return console.warn("No se pudo extraer el ID del usuario del token.");
 
-    try {
-        // 1. Obtener el rut del usuario
-        const rutResponse = await fetch(`{http://172.25.100.201:3000}/v1/postulante/${userId}`, {
-            headers: { Authorization: `Bearer ${token}` }
+            try {
+                // 1. Obtener el rut del usuario
+                const rutResponse = await fetch(`{http://172.25.100.201:3000}/postulante/${userId}`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+
+                if (!rutResponse.ok) throw new Error("Error al obtener RUT del usuario");
+                const rutData = await rutResponse.json();
+                const rut = rutData.usuario?.rut;
+                if (!rut) throw new Error("RUT no encontrado en la respuesta del servidor.");
+
+                // 2. Obtener el CV usando el rut
+                const cvResponse = await fetch(`http://172.25.100.201:3000/curriculum/${rut}`);
+                if (!cvResponse.ok) throw new Error("Error al obtener CV del usuario");
+                const cvData = await cvResponse.json();
+
+                // 3. Mostrar previsualización si existe
+                const cvPath = cvData[0]?.cv_path;
+                if (cvPath) {
+                    const pdfUrl = `http://172.25.100.201:3000${cvPath.replace("/var/www/html", "")}`;
+                    document.getElementById("pdfMiniPreview").src = pdfUrl;
+                    document.getElementById("previewContainer").style.display = "block";
+                    document.getElementById("uploadInstructions").style.display = "none";
+                } else {
+                    console.log("El usuario no tiene CV cargado.");
+                }
+            } catch (err) {
+                console.error("Error al cargar el CV:", err.message);
+            }
         });
 
-        if (!rutResponse.ok) throw new Error("Error al obtener RUT del usuario");
-        const rutData = await rutResponse.json();
-        const rut = rutData.usuario?.rut;
-        if (!rut) throw new Error("RUT no encontrado en la respuesta del servidor.");
-
-        // 2. Obtener el CV usando el rut
-        const cvResponse = await fetch(`http://172.25.100.201:3000/v1/curriculum/${rut}`);
-        if (!cvResponse.ok) throw new Error("Error al obtener CV del usuario");
-        const cvData = await cvResponse.json();
-
-        // 3. Mostrar previsualización si existe
-        const cvPath = cvData[0]?.cv_path;
-        if (cvPath) {
-            const pdfUrl = `http://172.25.100.201:3000${cvPath.replace("/var/www/html", "")}`;
-            document.getElementById("pdfMiniPreview").src = pdfUrl;
-            document.getElementById("previewContainer").style.display = "block";
-            document.getElementById("uploadInstructions").style.display = "none";
-        } else {
-            console.log("El usuario no tiene CV cargado.");
+        // Función para decodificar un JWT sin librerías externas
+        function parseJwt(token) {
+            try {
+                const base64Payload = token.split('.')[1];
+                const payload = atob(base64Payload);
+                return JSON.parse(payload);
+            } catch (e) {
+                console.error("Error al decodificar el token JWT:", e);
+                return null;
+            }
         }
-    } catch (err) {
-        console.error("Error al cargar el CV:", err.message);
-    }
-});
-
-// Función para decodificar un JWT sin librerías externas
-function parseJwt(token) {
-    try {
-        const base64Payload = token.split('.')[1];
-        const payload = atob(base64Payload);
-        return JSON.parse(payload);
-    } catch (e) {
-        console.error("Error al decodificar el token JWT:", e);
-        return null;
-    }
-}
-</script>
+    </script>
 
 </body>
 
