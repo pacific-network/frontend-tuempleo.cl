@@ -409,7 +409,7 @@ async function crearPostulanteYCV(userId, dataPostulante, token) {
 
     try {
         // 1) Crear postulante
-        const postulanteResponse = await fetch(`http://172.25.100.201:3000/v1/postulante/${userId}`, {
+        const postulanteResponse = await fetch(`${BASE_URL_API}/v1/postulante/${userId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -434,7 +434,7 @@ async function crearPostulanteYCV(userId, dataPostulante, token) {
         const dataParaCV = transformarDatosParaCV(dataPostulante.data);
 
         // 3) Crear CV
-        const cvResponse = await fetch(`http://172.25.100.201:3000/v1/curriculum/${rut}`, {
+        const cvResponse = await fetch(`${BASE_URL_API}/v1/curriculum/${rut}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

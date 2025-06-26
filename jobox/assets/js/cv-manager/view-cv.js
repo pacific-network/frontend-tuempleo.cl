@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
         // 1. Obtener el rut del usuario
-        const rutResponse = await fetch(`http://172.25.100.201:3000/v1/postulante/${userId}`, {
+        const rutResponse = await fetch(`${BASE_URL_API}/v1/postulante/${userId}`, {
             headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -17,18 +17,27 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (!rut) throw new Error("RUT no encontrado en la respuesta del servidor.");
 
         // 2. Obtener el CV usando el rut
-        const cvResponse = await fetch(`http://172.25.100.201:3000/v1/curriculum/${rut}`);
+        const cvResponse = await fetch(`${BASE_URL_API}/v1/curriculum/${rut}`);
         if (!cvResponse.ok) throw new Error("Error al obtener CV del usuario");
         const cvData = await cvResponse.json();
 
         // 3. Mostrar previsualización si existe
         const cvPath = cvData[0]?.cv_path;
         if (cvPath) {
-            const pdfUrl = `http://172.25.100.201:3000${cvPath.replace("/var/www/html", "")}`;
+            const pdfUrl = `${BASE_URL_API}${cvPath.replace("/var/www/html", "")}`;
+
+            // Cargar automáticamente el PDF
             document.getElementById("pdfMiniPreview").src = pdfUrl;
             document.getElementById("previewContainer").style.display = "block";
             document.getElementById("uploadInstructions").style.display = "none";
-        } else {
+
+            // Mostrar botón para recargar/ver PDF manualmente
+            const verBtn = document.getElementById("verPdfBtn");
+            verBtn.style.display = "inline-block";
+            verBtn.addEventListener("click", () => {
+                document.getElementById("pdfMiniPreview").src = pdfUrl;
+            });
+        }else {
             console.log("El usuario no tiene CV cargado.");
         }
     } catch (err) {
