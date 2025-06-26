@@ -63,7 +63,7 @@
                                         <label for="rutInput">RUT</label>
                                         <div class="input-group">
                                             <input type="text" id="rutInput" name="rutInput" class="form-control"
-                                                placeholder="Ingrese el RUT de la Empresa" pattern="^\d{7,8}-[kK\d]$"
+                                                placeholder="Ingrese el RUT de la Empresa" pattern="[0-9]{7,8}-[0-9kK]"
                                                 title="El formato debe ser XXXXXXXX-X">
                                             <button class="btn btn-primary" type="button"
                                                 id="consultarRutBtn">Consultar</button>
@@ -207,8 +207,8 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="cargo_empleador">Pais</label>
-                                            <input type="text" id="cargo_empleador" name="cargo_empleador"
-                                                class="form-control" placeholder="Ingrese su Pais">
+                                            <input type="text" id="pais_empleador" name="pais_empleador" ...
+                                                class="form-control" placeholder="Ingrese su País">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -235,8 +235,8 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="cargo_empleador">Direccion</label>
-                                            <input type="text" id="cargo_empleador" name="cargo_empleador"
-                                                class="form-control" placeholder="Ingrese su Direccion">
+                                            <input type="text" id="direccion_empleador" name="direccion_empleador" ...
+                                                class="form-control" placeholder="Ingrese su Dirección">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -263,7 +263,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="cargo_empleador">Cargo</label>
-                                            <input type="text" id="cargo_empleador" name="cargo_empleador"
+                                            <input type="text" id="cargo_empleador" name="cargo_empleador" ...
                                                 class="form-control" placeholder="Ingrese su Cargo">
                                         </div>
                                     </div>
@@ -332,8 +332,7 @@
     <script src="../assets/js/nice-select.min.js"></script>
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/config/config.js"></script>
-    <script src="../assets/js/carreras.js"></script>
-    <script src="../assets/js/instituciones.js"></script>
+    <script src="../assets/js/modules/auth/me.js"></script>
     <script src="../assets/js/header-footer/loadHeaderFooter.js"></script>
     <script src="../assets/js/actividad-empresa.js"></script>
     <script src="../assets/js/area_cargo.js"></script>
