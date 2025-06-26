@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="../assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="../assets/css/nice-select.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
-./
+    ./
 </head>
 
 <>
@@ -62,77 +62,80 @@
                                     <div class="form-group">
                                         <label for="rutInput">RUT</label>
                                         <div class="input-group">
-                                            <input type="text" id="rutInput" name="rutInput" class="form-control" placeholder="Ingrese el RUT de la Empresa" pattern="^\d{7,8}-[kK\d]$" title="El formato debe ser XXXXXXXX-X">
-                                            <button class="btn btn-primary" type="button" id="consultarRutBtn">Consultar</button>
+                                            <input type="text" id="rutInput" name="rutInput" class="form-control"
+                                                placeholder="Ingrese el RUT de la Empresa" pattern="^\d{7,8}-[kK\d]$"
+                                                title="El formato debe ser XXXXXXXX-X">
+                                            <button class="btn btn-primary" type="button"
+                                                id="consultarRutBtn">Consultar</button>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="razon_social">Razón Social</label>
-                                        <input type="text" id="razon_social" name="razon_social" class="form-control" placeholder="Ingrese la Razón Social">
+                                        <input type="text" id="razon_social" name="razon_social" class="form-control"
+                                            placeholder="Ingrese la Razón Social">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="nombre_empresa">Nombre de la Empresa</label>
-                                        <input type="text" id="nombre_empresa" name="nombre_empresa" class="form-control" placeholder="Ingrese el Nombre de la Empresa">
+                                        <input type="text" id="nombre_empresa" name="nombre_empresa"
+                                            class="form-control" placeholder="Ingrese el Nombre de la Empresa">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="categoria">Categoría</label>
-                                        <select class="form-control" id="categoria" name="categoria">
-                                            <option value="">Seleccione una categoria</option>
-                                            <option value="1">Primera</option>
-                                            <option value="2">Segunda</option>
-                                        </select>
+                                        <input class="form-control" id="categoria" name="categoria">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="correo_empresa">Correo Empresa</label>
-                                        <input type="email" id="correo_empresa" name="correo_empresa" class="form-control" placeholder="Ingrese Correo">
+                                        <input type="email" id="correo_empresa" name="correo_empresa"
+                                            class="form-control" placeholder="Ingrese Correo">
                                     </div>
                                 </div>
-                                <div class="col-md-3">                                    
+                                <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="actividad_empresa_select">Actividad Empresa</label>
-                                        <select class="form-control" name="actividad_empresa" id="actividad_empresa_select">
-                                            <!-- Opciones dinámicas -->
-                                        </select>
+                                        <label for="actividad_empresa">Actividad Empresa</label>
+                                        <input class="form-control" name="actividad_empresa" id="actividad_empresa">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="pais">País</label>
-                                        <input type="text" id="pais" name="pais" class="form-control" placeholder="Ingrese País">
+                                        <input type="text" id="pais" name="pais" class="form-control"
+                                            placeholder="Ingrese País" value="Chile">
+
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="region_empresa">Región</label>
+                                        <select id="region_empresa" name="region_empresa" class="form-control">
+                                            <option value="">Seleccione una región</option>
+                                            <!-- Opciones dinámicas -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="comuna_empresa">Comuna</label>
+                                        <select id="comuna_empresa" name="comuna_empresa" class="form-control" disabled>
+                                            <option value="">Seleccione una comuna</option>
+                                            <!-- Opciones dinámicas -->
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="direccion">Dirección</label>
-                                        <input type="text" id="direccion" name="direccion" class="form-control" placeholder="Ingrese dirección">
+                                        <input type="text" id="direccion" name="direccion" class="form-control"
+                                            placeholder="Ingrese dirección">
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                      <label for="region_empresa">Región</label>
-                                      <select id="region_empresa" name="region_empresa" class="form-control">
-                                        <option value="">Seleccione una región</option>
-                                        <!-- Opciones dinámicas -->
-                                      </select>
-                                    </div>
-                                  </div>
-                                  <div class="col-md-4">
-                                    <div class="form-group">
-                                      <label for="comuna_empresa">Comuna</label>
-                                      <select id="comuna_empresa" name="comuna_empresa" class="form-control" disabled>
-                                        <option value="">Seleccione una comuna</option>
-                                        <!-- Opciones dinámicas -->
-                                      </select>
-                                    </div>
-                                  </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="tamano_equipo">Tamaño Equipo</label>
@@ -148,143 +151,164 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="anio_inicio_actividades">Año Inicio Actividades</label>
-                                        <input type="number" id="anio_inicio_actividades" name="anio_inicio_actividades" class="form-control" placeholder="Ingrese Año">
+                                        <input type="number" id="anio_inicio_actividades" name="anio_inicio_actividades"
+                                            class="form-control" placeholder="Ingrese Año">
                                     </div>
                                 </div>
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label>Fono Empresa</label>
                                         <div class="input-group">
-                                            <select class="form-control" style="width: 100px;" id="codigo_pais_empresa" name="codigo_pais_empresa">
+                                            <select class="form-control" style="width: 100px;" id="codigo_pais_empresa"
+                                                name="codigo_pais_empresa">
                                                 <option disabled selected></option>
                                                 <!-- Opciones de código país -->
                                             </select>
-                                            <input type="text" class="form-control" placeholder="Ej: 9 1234 5678" id="numero_telefono_empresa" name="numero_telefono_empresa">
+                                            <input type="text" class="form-control" placeholder="Ej: 9 1234 5678"
+                                                id="numero_telefono_empresa" name="numero_telefono_empresa">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="descripcion_empresa">Descripción de Empresa</label>
-                                        <textarea class="form-control" id="descripcion_empresa" name="descripcion_empresa" cols="30" rows="5" placeholder="Escriba una breve descripción de la empresa"></textarea>
+                                        <textarea class="form-control" id="descripcion_empresa"
+                                            name="descripcion_empresa" cols="30" rows="5"
+                                            placeholder="Escriba una breve descripción de la empresa"></textarea>
                                     </div>
                                 </div>
+
                                 <!-- INICIO FORMULARIO EMPLEADOR -->
-                                <!-- TERMINO FORMULARIO EMPRESA -->
-                        
+
                                 <div class="row mt-4">
                                     <h6 class="mb-3">Datos Usuario Empresa</h6>
                                     <div class="form-group col-md-4">
                                         <label for="rut_empleador">RUT</label>
                                         <div class="input-group">
-                                            <input type="text" id="rut_empleador" name="rut_empleador" class="form-control" placeholder="Ingresa tu RUT (ej:18275903-2)" pattern="^\d{7,8}-[kK\d]$" title="El formato debe ser XXXXXXXX-X">
+                                            <input type="text" id="rut_empleador" name="rut_empleador"
+                                                class="form-control" placeholder="Ingresa tu RUT (ej:18275903-2)"
+                                                pattern="^\d{7,8}-[kK\d]$" title="El formato debe ser XXXXXXXX-X">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="nombre_empleador">Nombre</label>
-                                            <input type="text" id="nombre_empleador" name="nombre_empleador" class="form-control" placeholder="Ingrese Nombre">
+                                            <input type="text" id="nombre_empleador" name="nombre_empleador"
+                                                class="form-control" placeholder="Ingrese Nombre">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="apellido_empleador">Apellido</label>
-                                            <input type="text" id="apellido_empleador" name="apellido_empleador" class="form-control" placeholder="Ingrese Apellido">
+                                            <input type="text" id="apellido_empleador" name="apellido_empleador"
+                                                class="form-control" placeholder="Ingrese Apellido">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="cargo_empleador">Pais</label>
-                                            <input type="text" id="cargo_empleador" name="cargo_empleador" class="form-control" placeholder="Ingrese su Pais">
+                                            <input type="text" id="cargo_empleador" name="cargo_empleador"
+                                                class="form-control" placeholder="Ingrese su Pais">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                          <label for="region_empleador">Región</label>
-                                          <select id="region_empleador" name="region_empleador" class="form-control">
-                                            <option value="">Seleccione una región</option>
-                                            <!-- Opciones dinámicas -->
-                                          </select>
+                                            <label for="region_empleador">Región</label>
+                                            <select id="region_empleador" name="region_empleador" class="form-control">
+                                                <option value="">Seleccione una región</option>
+                                                <!-- Opciones dinámicas -->
+                                            </select>
                                         </div>
-                                      </div>
-                                      <div class="col-md-4">
+                                    </div>
+                                    <div class="col-md-4">
                                         <div class="form-group">
-                                          <label for="comuna_empleador">Comuna</label>
-                                          <select id="comuna_empleador" name="comuna_empleador" class="form-control" disabled>
-                                            <option value="">Seleccione una comuna</option>
-                                            <!-- Opciones dinámicas -->
-                                          </select>
+                                            <label for="comuna_empleador">Comuna</label>
+                                            <select id="comuna_empleador" name="comuna_empleador" class="form-control"
+                                                disabled>
+                                                <option value="">Seleccione una comuna</option>
+                                                <!-- Opciones dinámicas -->
+                                            </select>
                                         </div>
-                                      </div>
-                                      
-                                    
+                                    </div>
+
+
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="cargo_empleador">Direccion</label>
-                                            <input type="text" id="cargo_empleador" name="cargo_empleador" class="form-control" placeholder="Ingrese su Direccion">
+                                            <input type="text" id="cargo_empleador" name="cargo_empleador"
+                                                class="form-control" placeholder="Ingrese su Direccion">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="correo_empleador">Correo</label>
-                                            <input type="email" id="correo_empleador" name="correo_empleador" class="form-control" placeholder="Ingrese su Correo">
+                                            <input type="email" id="correo_empleador" name="correo_empleador"
+                                                class="form-control" placeholder="Ingrese su Correo">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Fono Empleador</label>
                                             <div class="input-group">
-                                                <select class="form-control" style="width: 100px;" id="codigo_pais_empleador" name="codigo_pais_empleador">
+                                                <select class="form-control" style="width: 100px;"
+                                                    id="codigo_pais_empleador" name="codigo_pais_empleador">
                                                     <option disabled selected></option>
                                                     <!-- Opciones código país -->
                                                 </select>
-                                                <input type="text" class="form-control" placeholder="Ej: 9 1234 5678" id="numero_telefono_empleador" name="numero_telefono_empleador">
+                                                <input type="text" class="form-control" placeholder="Ej: 9 1234 5678"
+                                                    id="numero_telefono_empleador" name="numero_telefono_empleador">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="cargo_empleador">Cargo</label>
-                                            <input type="text" id="cargo_empleador" name="cargo_empleador" class="form-control" placeholder="Ingrese su Cargo">
+                                            <input type="text" id="cargo_empleador" name="cargo_empleador"
+                                                class="form-control" placeholder="Ingrese su Cargo">
                                         </div>
                                     </div>
                                 </div>
-                        
+
                                 <div class="row mt-4">
                                     <h6 class="mb-3">Enlaces sociales</h6>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="facebook">URL de Facebook</label>
-                                            <input type="url" id="facebook" name="facebook" class="form-control" placeholder="https://www.facebook.com/">
+                                            <input type="url" id="facebook" name="facebook" class="form-control"
+                                                placeholder="https://www.facebook.com/">
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="twitter">URL de Twitter</label>
-                                            <input type="url" id="twitter" name="twitter" class="form-control" placeholder="https://www.twitter.com/">
+                                            <input type="url" id="twitter" name="twitter" class="form-control"
+                                                placeholder="https://www.twitter.com/">
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="linkedin">URL de Linkedin</label>
-                                            <input type="url" id="linkedin" name="linkedin" class="form-control" placeholder="https://www.linkedin.com/">
+                                            <input type="url" id="linkedin" name="linkedin" class="form-control"
+                                                placeholder="https://www.linkedin.com/">
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="instagram">URL de Instagram</label>
-                                            <input type="url" id="instagram" name="instagram" class="form-control" placeholder="https://www.instagram.com/">
+                                            <input type="url" id="instagram" name="instagram" class="form-control"
+                                                placeholder="https://www.instagram.com/">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group mt-3">
-                                            <button type="submit" class="theme-btn"><span class="far fa-paper-plane"></span> Enviar Datos</button>
+                                            <button type="submit" class="theme-btn"><span
+                                                    class="far fa-paper-plane"></span> Enviar Datos</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </form>
-                        
+
                     </div>
                 </div>
             </div>
@@ -307,6 +331,7 @@
     <script src="../assets/js/wow.min.js"></script>
     <script src="../assets/js/nice-select.min.js"></script>
     <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/config/config.js"></script>
     <script src="../assets/js/carreras.js"></script>
     <script src="../assets/js/instituciones.js"></script>
     <script src="../assets/js/header-footer/loadHeaderFooter.js"></script>
@@ -314,7 +339,8 @@
     <script src="../assets/js/area_cargo.js"></script>
     <script src="../https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../assets/js/modules/empresa/form-registro-empresa.js"></script>
-    <script src="../assets/js/modules/empresa/info-rut-empresa.js"></script> 
-    <script src="../assets/js/modules/empresa/funciones.js"></script> 
-</body>
-</html> 
+    <script src="../assets/js/modules/empresa/info-rut-empresa.js"></script>
+    <script src="../assets/js/modules/empresa/funciones.js"></script>
+    </body>
+
+</html>
