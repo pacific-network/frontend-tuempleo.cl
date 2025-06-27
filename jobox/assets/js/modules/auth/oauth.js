@@ -6,14 +6,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (googleBtn) {
       googleBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        window.location.href = 'https://tuempleo.cl/api/v1/auth/google';
+        window.location.href = 'https://tuempleo.cl/api/auth/google';
       });
     }
   
     if (linkedinBtn) {
       linkedinBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        window.location.href = 'https://tuempleo.cl/api/v1/auth/linkedin';
+        window.location.href = 'https://tuempleo.cl/api/auth/linkedin';
       });
     }
   

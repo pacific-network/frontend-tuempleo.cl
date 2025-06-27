@@ -371,7 +371,7 @@ async function cargarDatosPostulante() {
     }
 
     try {
-        const response = await fetch(`${BASE_URL_API}/v1/postulante/${userId}`, {
+        const response = await fetch(`${BASE_URL_API}/postulante/${userId}`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -930,7 +930,7 @@ async function actualizarPostulante() {
             }
         });
 
-        const response = await fetch(`${BASE_URL_API}/v1/postulante/update/${userId}`, {
+        const response = await fetch(`${BASE_URL_API}/postulante/update/${userId}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
