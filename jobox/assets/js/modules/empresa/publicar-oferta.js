@@ -170,7 +170,7 @@ async function crearOferta() {
   };
 
   try {
-    const response = await fetch('http://localhost:3000/v1/ofertas', {
+    const response = await fetch('http://localhost:3000/ofertas', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   try {
-    const res = await fetch(`http://localhost:3000/v1/empleador/basic-info/${userId}`);
+    const res = await fetch(`http://localhost:3000/empleador/basic-info/${userId}`);
     if (!res.ok) throw new Error('No se pudo obtener info del empleador');
     empleadorData = await res.json();
     console.log('Info empleador cargada:', empleadorData);
