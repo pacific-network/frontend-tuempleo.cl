@@ -75,6 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (response.ok) {
                 alert("✅ Datos enviados correctamente.");
+                window.location.href = 'empresa/employer-dashboard.html'; 
             } else {
                 const error = await response.json();
                 console.error("❌ Error al enviar datos:", error);
@@ -86,3 +87,32 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+document.getElementById('businessForm').addEventListener('submit', async function (e) {
+    e.preventDefault(); // evitar envío tradicional
+  
+    // Aquí podrías validar o preparar tu payload
+    const formData = new FormData(this);
+  
+    try {
+      const response = await fetch('/api/tu-endpoint', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      if (response.ok) {
+        const alertBox = document.getElementById('custom-alert');
+        alertBox.classList.remove('d-none');
+  
+        setTimeout(() => {
+          window.location.href = 'empresa/employer-dashboard.html';
+        }, 2000);
+      } else {
+        alert('❌ Error al enviar datos');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('❌ Error de red o del servidor');
+    }
+  });
+  

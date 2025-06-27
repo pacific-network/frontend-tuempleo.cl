@@ -5735,7 +5735,9 @@ user profile css
 
 .profile-info-list li span {
   float: right;
-  font-weight: normal;
+  font-weight: 300;
+  font-size: 15px;
+  color: #3C65F5;
 }
 
 .profile-skill a{
