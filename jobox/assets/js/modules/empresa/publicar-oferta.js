@@ -170,7 +170,7 @@ async function crearOferta() {
   };
 
   try {
-    const response = await fetch('http://localhost:3000/ofertas', {
+    const response = await fetch(`${BASE_URL_API}/ofertas`,{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -181,6 +181,7 @@ async function crearOferta() {
 
     if (response.ok) {
       alert('Oferta publicada con éxito');
+      window.location.href = 'empresa/employer-manage-job.html';
     } else {
       const err = await response.json();
       console.error(err);
@@ -207,7 +208,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   try {
-    const res = await fetch(`http://localhost:3000/empleador/basic-info/${userId}`);
+    const res = await fetch(`${BASE_URL_API}/empleador/basic-info/${userId}`);
     if (!res.ok) throw new Error('No se pudo obtener info del empleador');
     empleadorData = await res.json();
     console.log('Info empleador cargada:', empleadorData);
