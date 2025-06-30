@@ -44,7 +44,6 @@
     <!-- header area end -->
 
 
-
     <main class="main">
         <div class="user-profile py-120">
             <div class="container">
@@ -53,11 +52,11 @@
                         <div class="user-profile-sidebar">
                             <div class="user-profile-sidebar-top">
                                 <div class="user-profile-img">
-                                    <img src="assets/img/job/verticecc.jpeg" alt="">
-                                    <input type="file" class="profile-img-file">
+                                    <img id="empresa-logo" src="" alt="Logo Empresa" />
+                                    <input type="file" class="profile-img-file" />
                                 </div>
-                                <h4>Vertice Call Center</h4>
-                                <p>Call Center</p>
+                                <h4 id="empresa-nombre">Cargando...</h4>
+                                <p id="empresa-rubro">Cargando...</p>
                             </div>
                             <!-- Botón Actualizar -->
                             <div class="form-group mt-3">
@@ -65,6 +64,7 @@
                                     data-bs-target="#confirmModal">
                                     <span class="far fa-check-circle"></span> Actualizar Información
                                 </button>
+
                             </div>
 
                             <!-- Botón Volver -->
@@ -88,8 +88,9 @@
                                             Se actualizará la información. ¿Deseas continuar?
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Cancelar</button>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Cancelar
+                                            </button>
                                             <button type="button" class="btn btn-primary"
                                                 id="confirmarBtn">Confirmar</button>
                                         </div>
@@ -98,6 +99,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="col-lg-9">
                         <div class="user-profile-wrapper">
                             <div class="user-profile-card">
@@ -108,57 +110,66 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>Título del Trabajo</label>
-                                                        <input type="text" class="form-control"
-                                                            placeholder="Desarrallor de Aplicaciones">
+                                                        <label for="titulo-trabajo">Título del Trabajo</label>
+                                                        <input type="text" id="titulo-trabajo" class="form-control"
+                                                            placeholder="Desarrollador de Aplicaciones" />
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>Área del Trabajo</label>
+                                                        <label for="area_cargo_select">Área del Trabajo</label>
                                                         <select class="form-control" name="area_cargo"
-                                                            id="area_cargo_select"
-                                                            data-area-seleccionada="Tecnologías, Sistemas y Telecomunicaciones"></select>
+                                                            id="area_cargo_select">
+                                                            <option value="">-- Seleccione Área --</option>
+                                                            <option value="Tecnologías, Sistemas y Telecomunicaciones">
+                                                                Tecnologías, Sistemas y Telecomunicaciones
+                                                            </option>
+                                                            <option value="Abastecimiento y Logistica">Abastecimiento y
+                                                                Logística</option>
+                                                            <!-- Más opciones según corresponda -->
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group">
-                                                        <label>Años de Experiencia</label>
-                                                        <input type="text" class="form-control" placeholder="3">
+                                                        <label for="anios-experiencia">Años de Experiencia</label>
+                                                        <input type="text" id="anios-experiencia" class="form-control"
+                                                            placeholder="3" />
                                                     </div>
                                                 </div>
                                                 <div class="col-md-5">
                                                     <div class="form-group">
-                                                        <label>Región</label>
-                                                        <select id="region-select" class="form-control"
-                                                            data-region-seleccionada="7">
+                                                        <label for="region-select">Región</label>
+                                                        <select id="region-select" class="form-control">
                                                             <option value="">-- Seleccione una región --</option>
+                                                            <option value="1">Región Metropolitana de Santiago</option>
+                                                            <option value="2">Valparaíso</option>
+                                                            <!-- Más regiones según corresponda -->
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label>Educación Requerida</label>
-                                                        <select class="form-control">
+                                                        <label for="educacion-requerida">Educación Requerida</label>
+                                                        <select id="educacion-requerida" class="form-control">
                                                             <option value="">-- Selecciona Educación --</option>
                                                             <option value="primario">Primario</option>
                                                             <option value="secundario">Secundario</option>
                                                             <option value="cft">CFT</option>
                                                             <option value="tecnico">Técnico</option>
                                                             <option value="superior">Superior</option>
-                                                            <option value="universitario" selected>Universitario
-                                                            </option>
+                                                            <option value="universitario">Universitario</option>
                                                             <option value="otro">Otro</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-5">
                                                     <div class="form-group">
-                                                        <label>Tipo de Contratación</label>
-                                                        <select class="form-control">
+                                                        <label for="tipo-contrato">Tipo de Contratación</label>
+                                                        <select id="tipo-contrato" class="form-control">
                                                             <option value="">-- Seleccione tipo Contrato --</option>
                                                             <option value="plazo_fijo">Plazo Fijo</option>
-                                                            <option value="Indefinido" selected>Indefinido</option>
+                                                            <option value="Indefinido">Indefinido</option>
                                                             <option value="Temporal">Temporal</option>
                                                             <option value="otro_contrato">Otro tipo de Contrato</option>
                                                             <option value="Reemplazo">Reemplazo</option>
@@ -168,10 +179,10 @@
                                                 </div>
                                                 <div class="col-md-5">
                                                     <div class="form-group">
-                                                        <label>Modalidad</label>
-                                                        <select class="form-control">
+                                                        <label for="modalidad">Modalidad</label>
+                                                        <select id="modalidad" class="form-control">
                                                             <option value="">-- Seleccione Modalidad --</option>
-                                                            <option value="1" selected>Full Time</option>
+                                                            <option value="1">Full Time</option>
                                                             <option value="2">Part Time</option>
                                                             <option value="3">Remoto</option>
                                                             <option value="4">Freelancer</option>
@@ -179,50 +190,45 @@
                                                         </select>
                                                     </div>
                                                 </div>
+
                                                 <!-- Descripción del puesto -->
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label>Descripción del puesto</label>
+                                                        <label for="descripcion">Descripción del puesto</label>
                                                         <textarea id="descripcion" class="form-control" rows="4"
-                                                            placeholder="En Vertice CC, estamos en búsqueda de un Desarrollador Full Stack para colaborar con un cliente del sector bancario en el desarrollo de productos digitales."></textarea>
+                                                            placeholder="Descripción del puesto..."></textarea>
                                                     </div>
                                                 </div>
 
                                                 <!-- Responsabilidades -->
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label>Responsabilidades (una por línea)</label>
+                                                        <label for="responsabilidades">Responsabilidades (una por
+                                                            línea)</label>
                                                         <textarea id="responsabilidades" class="form-control" rows="3"
-                                                            placeholder="Crear interfaces de usuario responsivas con React
-Desarrollar lógica server-side con Node.js y NestJS
-Diseñar y gestionar bases de datos SQL y NoSQL
-Implementar soluciones en la nube con AWS
-Automatizar procesos CI/CD"></textarea>
+                                                            placeholder="Responsabilidad 1&#10;Responsabilidad 2"></textarea>
                                                     </div>
                                                 </div>
 
                                                 <!-- Requisitos mínimos -->
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label>Requisitos mínimos (uno por línea)</label>
+                                                        <label for="requisitos">Requisitos mínimos (uno por
+                                                            línea)</label>
                                                         <textarea id="requisitos" class="form-control" rows="3"
-                                                            placeholder="3+ años de experiencia en desarrollo Full Stack
-Dominio de JavaScript/TypeScript
-Experiencia con bases de datos relacionales
-Conocimiento de metodologías ágiles"></textarea>
+                                                            placeholder="Requisito 1&#10;Requisito 2"></textarea>
                                                     </div>
                                                 </div>
 
                                                 <!-- Beneficios -->
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label>Beneficios (uno por línea)</label>
+                                                        <label for="beneficios">Beneficios (uno por línea)</label>
                                                         <textarea id="beneficios" class="form-control" rows="3"
-                                                            placeholder="Modalidad híbrida
-Seguro complementario de salud
-Capacitaciones constantes"></textarea>
+                                                            placeholder="Beneficio 1&#10;Beneficio 2"></textarea>
                                                     </div>
                                                 </div>
+
                                                 <div class="col-md-4">
                                                     <div class="form-group border p-3 rounded shadow-sm">
                                                         <label class="font-weight-bold d-block mb-2">Renta
@@ -231,18 +237,19 @@ Capacitaciones constantes"></textarea>
                                                         <div class="mb-2">
                                                             <label for="salaryFrom" class="small mb-1">Desde:</label>
                                                             <input type="text" class="form-control form-control-sm"
-                                                                id="salaryFrom" placeholder="$500.000">
+                                                                id="salaryFrom" placeholder="$500.000" />
                                                         </div>
 
                                                         <div class="mb-2">
                                                             <label for="salaryTo" class="small mb-1">Hasta:</label>
                                                             <input type="text" class="form-control form-control-sm"
-                                                                id="salaryTo" placeholder="$850.000">
+                                                                id="salaryTo" placeholder="$850.000" />
                                                         </div>
 
                                                         <small class="text-muted">De acuerdo al mercado</small>
                                                     </div>
                                                 </div>
+
                                                 <div class="col-md-8">
                                                     <div class="form-group border p-3 rounded shadow-sm">
                                                         <label>Herramientas básicas</label>
@@ -260,8 +267,8 @@ Capacitaciones constantes"></textarea>
                     </div>
                 </div>
             </div>
-        </div>
     </main>
+
 
 
 
@@ -281,7 +288,7 @@ Capacitaciones constantes"></textarea>
     <script src="../assets/js/jquery-3.6.0.min.js"></script>
     <script src="../assets/js/modernizr.min.js"></script>
     <script src="../assets/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/imagesloaded.pkgd.min.js"></script>
+    <script src="../assets/js/imagesloaded.pkgd.min.js"></script>b
     <script src="../assets/js/jquery.magnific-popup.min.js"></script>
     <script src="../assets/js/isotope.pkgd.min.js"></script>
     <script src="../assets/js/jquery.appear.min.js"></script>
@@ -292,9 +299,11 @@ Capacitaciones constantes"></textarea>
     <script src="../assets/js/wow.min.js"></script>
     <script src="../assets/js/nice-select.min.js"></script>
     <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/config/config.js"></script>
     <script src="../assets/js/header-footer/loadHeaderFooterEmp.js"></script>
-    <script src="../assets/js/regiones.js"></script>
-    <script src="../assets/js/area_cargo.js"></script>
+    <script src="../assets/js/modules/ofertas/get-oferta-inputs.js"></script>
+    <script src="../assets/js/modules/ofertas/editar-oferta.js"></script>
+
     <!-- <script>
         const select = document.getElementById("region-select");
         
