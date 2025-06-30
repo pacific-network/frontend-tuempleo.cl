@@ -11,7 +11,7 @@
     <!-- title -->
     <title>Editar Trabajo</title>
 
-    <link rel="icon" type="image/x-icon" href="../assets/img/logo/favicon.png">
+    <link rel="icon" type="image/x-icon" href="assets/img/logo/favicon.png">
 
     <!-- css -->
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
@@ -53,7 +53,7 @@
                         <div class="user-profile-sidebar">
                             <div class="user-profile-sidebar-top">
                                 <div class="user-profile-img">
-                                    <img src="../assets/img/job/verticecc.jpeg" alt="">
+                                    <img src="assets/img/job/verticecc.jpeg" alt="">
                                     <input type="file" class="profile-img-file">
                                 </div>
                                 <h4>Vertice Call Center</h4>
@@ -292,12 +292,92 @@ Capacitaciones constantes"></textarea>
     <script src="../assets/js/wow.min.js"></script>
     <script src="../assets/js/nice-select.min.js"></script>
     <script src="../assets/js/main.js"></script>
-    "
-    "
-    "
-    "
+    <script src="../assets/js/header-footer/loadHeaderFooterEmp.js"></script>
+    <script src="../assets/js/regiones.js"></script>
+    <script src="../assets/js/area_cargo.js"></script>
+    <!-- <script>
+        const select = document.getElementById("region-select");
+        
+        regionesDeChile.forEach(region => {
+          const option = document.createElement("option");
+          option.value = region.numero;
+          option.textContent = region.nombre;
+          select.appendChild(option);
+        });
+    </script>
+    <script>
+    const herramientasBasicas = [
+        "Office 365",
+        "Office 2016",
+        "Windows 10",
+        "Adobe PDF",
+        "Zoom",
+        "Teams",
+        "Windows 11",
+        "Google Drive",
+        "One Drive"
+    ];
+
+    const herramientasSeleccionadas = [
+        "Office 365",
+        "Windows 10",
+        "Adobe PDF"
+    ];
+
+    const container = document.getElementById("checkbox-container");
+
+    for (let i = 0; i < herramientasBasicas.length; i += 3) {
+        const row = document.createElement("div");
+        row.className = "row";
+        row.style.marginBottom = "15px"; 
+        
+        for (let j = i; j < i + 3 && j < herramientasBasicas.length; j++) {
+            const col = document.createElement("div");
+            col.className = "col-md-4";
+            col.style.paddingLeft = "25px";
+            col.style.paddingRight = "25px";
+            
+            const divFormCheck = document.createElement("div");
+            divFormCheck.className = "form-check";
+            divFormCheck.style.padding = "10px 0";
+            
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.className = "form-check-input";
+            checkbox.id = `herramienta-${j}`;
+            checkbox.name = "herramientas";
+            checkbox.value = herramientasBasicas[j];
+            checkbox.style.marginRight = "20px";
+            checkbox.style.transform = "scale(1)";
+            checkbox.style.marginTop = "5px";
+
+            // ✅ Marcar por defecto si está en la lista
+            if (herramientasSeleccionadas.includes(herramientasBasicas[j])) {
+                checkbox.checked = true;
+            }
+            
+            const label = document.createElement("label");
+            label.className = "form-check-label";
+            label.htmlFor = checkbox.id;
+            label.textContent = herramientasBasicas[j];
+            label.style.fontSize = "16px";
+            
+            divFormCheck.appendChild(checkbox);
+            divFormCheck.appendChild(label);
+            col.appendChild(divFormCheck);
+            row.appendChild(col);
+        }
+
+        container.appendChild(row);
+    }
+</script> -->
+    <!-- <script>
+  document.getElementById("confirmarBtn").addEventListener("click", function () {
+    window.location.href = "employer-manage-job.html";
+  });
+</script> -->
+
 
 </body>
-
 
 </html>

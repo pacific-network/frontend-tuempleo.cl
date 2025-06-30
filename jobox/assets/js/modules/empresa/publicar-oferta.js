@@ -181,7 +181,7 @@ async function crearOferta() {
 
     if (response.ok) {
       alert('Oferta publicada con éxito');
-      window.location.href = 'empresa/employer-manage-job.html';
+      window.location.href = 'employer-manage-job.html';
     } else {
       const err = await response.json();
       console.error(err);
