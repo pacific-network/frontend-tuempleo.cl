@@ -54,23 +54,41 @@ if (!userId) {
       tbody.appendChild(row);
     });
 
+    // Luego de renderizar todas las filas, activamos los botones con modal
+    activarBotonesEliminar();
+
   } catch (error) {
     console.error('Error cargando ofertas:', error);
   }
 }
 
-// Activar eliminación después de renderizar
-document.querySelectorAll('.btn-delete').forEach(btn => {
-  btn.addEventListener('click', async (e) => {
-    e.preventDefault();
-    const id = btn.dataset.id;
+// ---------------------------
+// ✅ Lógica del modal de eliminación
+// ---------------------------
 
-    const confirmDelete = confirm('¿Estás seguro de eliminar esta oferta?');
-    if (!confirmDelete) return;
+function activarBotonesEliminar() {
+  const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+  const confirmBtn = document.getElementById('confirmDeleteBtn');
+
+  let idOfertaAEliminar = null;
+  let filaAEliminar = null;
+
+  // Delegamos a cada botón
+  document.querySelectorAll('.btn-delete').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      idOfertaAEliminar = btn.dataset.id;
+      filaAEliminar = btn.closest('tr');
+      deleteModal.show();
+    });
+  });
+
+  confirmBtn.addEventListener('click', async () => {
+    if (!idOfertaAEliminar) return;
 
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`${BASE_URL_API}/ofertas/${id}`, {
+      const res = await fetch(`${BASE_URL_API}/ofertas/${idOfertaAEliminar}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -79,8 +97,8 @@ document.querySelectorAll('.btn-delete').forEach(btn => {
       });
 
       if (res.ok) {
-        alert('Oferta eliminada con éxito');
-        btn.closest('tr').remove(); // elimina la fila del DOM
+        deleteModal.hide();
+        filaAEliminar?.remove();
       } else {
         const err = await res.text();
         alert(`Error al eliminar: ${err}`);
@@ -88,6 +106,9 @@ document.querySelectorAll('.btn-delete').forEach(btn => {
     } catch (err) {
       console.error('Error al eliminar la oferta:', err);
       alert('Error inesperado al eliminar.');
+    } finally {
+      idOfertaAEliminar = null;
+      filaAEliminar = null;
     }
   });
-});
+}
