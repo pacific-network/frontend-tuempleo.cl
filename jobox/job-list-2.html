@@ -26,6 +26,11 @@
     <link rel="stylesheet" href="assets/css/nice-select.min.css">
     <link rel="stylesheet" href="assets/css/jquery-ui.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .col-lg-9 {
+            width: 100%;
+        }
+    </style>
 
 </head>
 
@@ -68,23 +73,16 @@
                                         <div class="form-group">
                                             <div class="form-group-icon">
                                                 <input type="text" class="form-control"
-                                                    placeholder="Escribe aquí...">
+                                                    placeholder="Buscar empleo por puesto o palabra clave">
                                                 <i class="fe-search"></i>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 px-0">
+                                    <div class="col-md-4 px-0">
                                         <div class="form-group">
                                             <div class="form-group-icon">
-                                                <select class="select">
-                                                    <option value="">Ubicación</option>
-                                                    <option value="1">Santiago</option>
-                                                    <option value="2">Melipilla</option>
-                                                    <option value="3">Puerto Montt</option>
-                                                    <option value="4">Concepción</option>
-                                                    <option value="5">Chillán</option>
-                                                    <option value="6">Atacama</option>
-                                                    <option value="7">Curicó</option>
+                                                <select type="text" class="form-control" id="region-select" data-region-seleccionada="0">
+                                                  <option value="">Ubicación</option>
                                                 </select>
                                                 <i class="fe-map-pin"></i>
                                             </div>
@@ -93,24 +91,47 @@
                                     <div class="col-md-3 px-0">
                                         <div class="form-group">
                                             <div class="form-group-icon">
-                                                <select class="select">
+                                                <select type="text" class="form-control">
                                                     <option value="">Categoría</option>
-                                                    <option value="1">Informática</option>
-                                                    <option value="2">Administración</option>
-                                                    <option value="3">Operaciones</option>
-                                                    <option value="4">Finanzas</option>
-                                                    <option value="5">Gerencia</option>
-                                                    <option value="6">Salud</option>
+                                                    <option value="1">Informática / Tecnología</option>
+                                                    <option value="2">Administración / Oficina</option>
+                                                    <option value="3">Operaciones / Logística</option>
+                                                    <option value="4">Finanzas / Contabilidad</option>
+                                                    <option value="5">Gerencia / Dirección</option>
+                                                    <option value="6">Salud / Medicina</option>
                                                     <option value="7">Recursos Humanos</option>
+                                                    <option value="8">Ventas / Comercial</option>
+                                                    <option value="9">Atención al Cliente</option>
+                                                    <option value="10">Educación / Docencia</option>
+                                                    <option value="11">Construcción</option>
+                                                    <option value="12">Electricidad / Electrónica</option>
+                                                    <option value="13">Mecánica / Automotriz</option>
+                                                    <option value="14">Transporte / Choferes</option>
+                                                    <option value="15">Gastronomía / Cocina</option>
+                                                    <option value="16">Panadería / Pastelería</option>
+                                                    <option value="17">Aseo / Limpieza</option>
+                                                    <option value="18">Seguridad / Guardia</option>
+                                                    <option value="19">Agricultura / Ganadería</option>
+                                                    <option value="20">Minería</option>
+                                                    <option value="21">Turismo / Hotelería</option>
+                                                    <option value="22">Periodismo / Comunicación</option>
+                                                    <option value="23">Diseño / Creatividad</option>
+                                                    <option value="24">Legal / Jurídico</option>
+                                                    <option value="25">Manufactura / Producción</option>
+                                                    <option value="26">Servicios Generales</option>
+                                                    <option value="27">Cuidado de Personas / Niñera</option>
+                                                    <option value="28">Veterinaria / Mascotas</option>
+                                                    <option value="29">Soldadura / Metalurgia</option>
+                                                    <option value="30">Gasfitería / Plomería</option>
                                                 </select>
                                                 <i class="fe-briefcase"></i>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 px-1">
+                                    <div class="col-md-1 px-1">
                                         <div class="form-group">
                                             <button type="submit" class="theme-btn w-100"><span
-                                                    class="fe-search"></span>Search</button>
+                                                    class="fe-search"></span>Buscar</button>
                                         </div>
                                     </div>
                                 </div>
@@ -137,48 +158,55 @@
                     <div class="col-lg-4 col-xl-3 mb-4">
                         <div class="job-sidebar">
                             <div class="job-sidebar-item">
-                                <h4 class="job-sidebar-title">Tipos de Trabajo</h4>
+                                <h4 class="job-sidebar-title">Modalidad</h4>
                                 <div class="job-type">
                                     <div class="form-check">
                                         <input class="form-check-input" name="job-type" type="checkbox" value="1"
                                             id="job-type1">
                                         <label class="form-check-label" for="job-type1">
-                                            Trabajo Full Time <span>(20)</span>
+                                            Prescencial <span>(20)</span>
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" name="job-type" type="checkbox" value="2"
                                             id="job-type2">
                                         <label class="form-check-label" for="job-type2">
-                                            Trabajo Part Time <span>(15)</span>
+                                            Online <span>(15)</span>
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" name="job-type" type="checkbox" value="3"
                                             id="job-type3">
                                         <label class="form-check-label" for="job-type3">
-                                            Trabajo Remoto <span>(18)</span>
+                                            Híbrido <span>(18)</span>
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" name="job-type" type="checkbox" value="4"
                                             id="job-type4">
                                         <label class="form-check-label" for="job-type4">
-                                            Internado <span>(35)</span>
+                                            Part-Time <span>(35)</span>
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" name="job-type" type="checkbox" value="5"
                                             id="job-type5">
                                         <label class="form-check-label" for="job-type5">
-                                            Freelance <span>(49)</span>
+                                            Full-time <span>(49)</span>
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" name="job-type" type="checkbox" value="6"
                                             id="job-type6">
                                         <label class="form-check-label" for="job-type6">
-                                            Temporal <span>(23)</span>
+                                            Freelance <span>(23)</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="job-type" type="checkbox" value="7"
+                                            id="job-type7">
+                                        <label class="form-check-label" for="job-type6">
+                                            Remoto <span>(23)</span>
                                         </label>
                                     </div>
                                 </div>
@@ -202,35 +230,49 @@
                                         <input class="form-check-input" name="experience" type="checkbox" value="1"
                                             id="experience1">
                                         <label class="form-check-label" for="experience1">
-                                            Expert <span>(20)</span>
+                                            Manager <span>(20)</span>
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" name="experience" type="checkbox" value="2"
+                                            id="experience1">
+                                        <label class="form-check-label" for="experience1">
+                                            Lider Técnico / Lead <span>(20)</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="experience" type="checkbox" value="3"
                                             id="experience2">
                                         <label class="form-check-label" for="experience2">
                                             Senior <span>(15)</span>
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" name="experience" type="checkbox" value="3"
+                                        <input class="form-check-input" name="experience" type="checkbox" value="4"
+                                            id="experience2">
+                                        <label class="form-check-label" for="experience2">
+                                            Semi Senior <span>(15)</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="experience" type="checkbox" value="5"
                                             id="experience3">
                                         <label class="form-check-label" for="experience3">
                                             Junior <span>(18)</span>
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" name="experience" type="checkbox" value="4"
+                                        <input class="form-check-input" name="experience" type="checkbox" value="6"
                                             id="experience4">
                                         <label class="form-check-label" for="experience4">
-                                            Regular <span>(35)</span>
+                                            Trainee <span>(35)</span>
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" name="experience" type="checkbox" value="5"
+                                        <input class="form-check-input" name="experience" type="checkbox" value="7"
                                             id="experience5">
                                         <label class="form-check-label" for="experience5">
-                                            Fresher <span>(49)</span>
+                                            Practicante <span>(49)</span>
                                         </label>
                                     </div>
                                 </div>
@@ -273,6 +315,13 @@
                                             Ultimos 30 días <span>(49)</span>
                                         </label>
                                     </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="job-posted" type="checkbox" value="6"
+                                            id="job-posted5">
+                                        <label class="form-check-label" for="job-posted5">
+                                            Ultimos 60 días <span>(12)</span>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -302,6 +351,7 @@
                                             <li><i class="fe-briefcase"></i> Tecnologias, Sistemas y Telecomunicaciones</li>
                                             <li><i class="fe-check-circle"></i> Full Time</li>
                                             <li><i class="fe-clock"></i> Hace 2 días</li>
+                                            <li><i class="fas fa-timer"></i> Exp: 30-07-2025 </li>
                                             <li><i class="fe-dollar-sign"></i> Salario: 500.000 - 850.000</li>
                                             <li><i class="fe-map-pin"></i> Región Metropolitana de Santiago</li>
                                         </ul>
@@ -332,6 +382,7 @@
                                             <li><i class="fe-briefcase"></i> Gerencia y Dirección General</li>
                                             <li><i class="fe-check-circle"></i> Full Time</li>
                                             <li><i class="fe-clock"></i> Hace 1 semana</li>
+                                            <li><i class="fas fa-timer"></i> Exp: 12-07-2025 </li>
                                             <li><i class="fe-dollar-sign"></i> Salario: 1.000.000 - 2.000.000</li>
                                             <li><i class="fe-map-pin"></i> Región Metropolitana de Santiago</li>
                                         </ul>
@@ -502,6 +553,7 @@
     <script src="assets/js/main.js"></script>
     <script src="assets/js/config/config.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooter.js"></script>
+    <script src="assets/js/form-register/regiones.js"></script>
 
 </body>
 

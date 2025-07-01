@@ -69,7 +69,7 @@
             <div class="hero-single">
                 <div class="container">
                     <div class="row align-items-center">
-                        <div class="col-lg-7 col-xl-6">
+                        <div class="col-lg-12 col-xl-6">
                             <div class="hero-content">
                                 <h6 class="hero-sub-title">Tenemos más de 1.000 trabajos activos</h6>
                                 <h1 class="hero-title">
@@ -80,13 +80,14 @@
                                     Tu talento está buscando el lugar perfecto para brillar... y ese lugar también te está buscando a ti.
                                 </p>
                                 <div class="search-form">
-                                    <div class="search-form-wrapper">
+                                    <div class="search-form-wrapper w-100">
                                         <form action="job-list-2.html">
                                             <div class="row">
                                                 <div class="col-md-4 px-0">
                                                     <div class="form-group">
                                                         <div class="form-group-icon">
-                                                            <input type="text" class="form-control" placeholder="Escribe aquí...">
+                                                            <input type="text" class="form-control"
+                                                                placeholder="Buscar empleo...">
                                                             <i class="fe-search"></i>
                                                         </div>
                                                     </div>
@@ -94,15 +95,8 @@
                                                 <div class="col-md-3 px-0">
                                                     <div class="form-group">
                                                         <div class="form-group-icon">
-                                                            <select id="ubicacion-select" class="select">
-                                                                <option value="">Ubicación</option>
-                                                                <option value="1">Santiago</option>
-                                                                <option value="2">Melipilla</option>
-                                                                <option value="3">Puerto Montt</option>
-                                                                <option value="4">Concepción</option>
-                                                                <option value="5">Chillán</option>
-                                                                <option value="6">Atacama</option>
-                                                                <option value="7">Curicó</option>
+                                                            <select type="text" class="form-control" id="region-select" data-region-seleccionada="0">
+                                                              <option value="">Ubicación</option>
                                                             </select>
                                                             <i class="fe-map-pin"></i>
                                                         </div>
@@ -111,15 +105,38 @@
                                                 <div class="col-md-3 px-0">
                                                     <div class="form-group">
                                                         <div class="form-group-icon">
-                                                            <select id="categoria-select" class="select">
+                                                            <select type="text" class="form-control">
                                                                 <option value="">Categoría</option>
-                                                                <option value="1">Informática</option>
-                                                                <option value="2">Administración</option>
-                                                                <option value="3">Operaciones</option>
-                                                                <option value="4">Finanzas</option>
-                                                                <option value="5">Gerencia</option>
-                                                                <option value="6">Salud</option>
+                                                                <option value="1">Informática / Tecnología</option>
+                                                                <option value="2">Administración / Oficina</option>
+                                                                <option value="3">Operaciones / Logística</option>
+                                                                <option value="4">Finanzas / Contabilidad</option>
+                                                                <option value="5">Gerencia / Dirección</option>
+                                                                <option value="6">Salud / Medicina</option>
                                                                 <option value="7">Recursos Humanos</option>
+                                                                <option value="8">Ventas / Comercial</option>
+                                                                <option value="9">Atención al Cliente</option>
+                                                                <option value="10">Educación / Docencia</option>
+                                                                <option value="11">Construcción</option>
+                                                                <option value="12">Electricidad / Electrónica</option>
+                                                                <option value="13">Mecánica / Automotriz</option>
+                                                                <option value="14">Transporte / Choferes</option>
+                                                                <option value="15">Gastronomía / Cocina</option>
+                                                                <option value="16">Panadería / Pastelería</option>
+                                                                <option value="17">Aseo / Limpieza</option>
+                                                                <option value="18">Seguridad / Guardia</option>
+                                                                <option value="19">Agricultura / Ganadería</option>
+                                                                <option value="20">Minería</option>
+                                                                <option value="21">Turismo / Hotelería</option>
+                                                                <option value="22">Periodismo / Comunicación</option>
+                                                                <option value="23">Diseño / Creatividad</option>
+                                                                <option value="24">Legal / Jurídico</option>
+                                                                <option value="25">Manufactura / Producción</option>
+                                                                <option value="26">Servicios Generales</option>
+                                                                <option value="27">Cuidado de Personas / Niñera</option>
+                                                                <option value="28">Veterinaria / Mascotas</option>
+                                                                <option value="29">Soldadura / Metalurgia</option>
+                                                                <option value="30">Gasfitería / Plomería</option>
                                                             </select>
                                                             <i class="fe-briefcase"></i>
                                                         </div>
@@ -219,6 +236,7 @@
     <script src="assets/js/nice-select.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooter.js" defer></script>
+    <script src="assets/js/form-register/regiones.js"></script>
 
     <script>
         $(document).ready(function () {
