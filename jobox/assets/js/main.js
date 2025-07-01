@@ -289,16 +289,27 @@ Version         : 1.2
 
     // price slider
     $(function () {
-        if($(".price-range").length){
+        if ($(".price-range").length) {
+            const maxVal = 3000000;
+        
             $(".price-range").slider({
                 step: 500,
                 range: true,
-                min: 120000,
-                max: 3000000,
+                min: 100000,
+                max: maxVal,
                 values: [500000, 750000],
-                slide: function (event, ui) { $(".priceRange").val("$" + ui.values[0].toLocaleString() + " - $" + ui.values[1].toLocaleString()); }
+                slide: function (event, ui) {
+                    const minText = "$" + ui.values[0].toLocaleString();
+                    const maxText = "$" + ui.values[1].toLocaleString() + (ui.values[1] === maxVal ? "+" : "");
+                    $(".priceRange").val(minText + " - " + maxText);
+                }
             });
-            $(".priceRange").val("$" + $(".price-range").slider("values", 0).toLocaleString() + " - $" + $(".price-range").slider("values", 1).toLocaleString());
+        
+            const initialMin = $(".price-range").slider("values", 0);
+            const initialMax = $(".price-range").slider("values", 1);
+            const minText = "$" + initialMin.toLocaleString();
+            const maxText = "$" + initialMax.toLocaleString() + (initialMax === maxVal ? "+" : "");
+            $(".priceRange").val(minText + " - " + maxText);
         }
     });
 
@@ -321,13 +332,3 @@ Version         : 1.2
 
 
 })(jQuery);
-
-
-
-
-
-
-
-
-
-

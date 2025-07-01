@@ -55,6 +55,12 @@
                 <div class="user-profile-card">
                     <h4 class="user-profile-card-title">Datos de Empresa</h4>
                     <div class="profile-form">
+                        <div id="custom-alert" class="alert alert-success fixed-top m-3 rounded shadow d-none"
+                            role="alert">
+                            ✅ Datos enviados correctamente. Redirigiendo al panel...
+                            <div class="spinner-border spinner-border-sm text-light ms-2" role="status"></div>
+                        </div>
+
                         <!-- INICIO FORMULARIO EMPRESA -->
                         <form id="businessForm" action="#">
                             <div class="row">
@@ -307,7 +313,22 @@
                                     </div>
                                 </div>
                             </div>
+
                         </form>
+                        <!-- Overlay difuminado -->
+                        <div id="rut-overlay"
+                            class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-none"
+                            style="z-index: 1040;"></div>
+
+                        <!-- Modal rectangular centrado -->
+                        <div id="rut-loading-toast"
+                            class="position-fixed top-50 start-50 translate-middle bg-white border shadow rounded p-4 text-center d-none"
+                            style="z-index: 1050; min-width: 300px;">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <strong class="me-2">🔎 Consultando RUT...</strong>
+                                <div class="spinner-border text-primary spinner-border-sm" role="status"></div>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
@@ -340,6 +361,7 @@
     <script src="../assets/js/modules/empresa/form-registro-empresa.js"></script>
     <script src="../assets/js/modules/empresa/info-rut-empresa.js"></script>
     <script src="../assets/js/modules/empresa/funciones.js"></script>
+    <script src="../assets/js/shared/custom-alert.js"></script>
     </body>
 
 </html>

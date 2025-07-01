@@ -25,6 +25,50 @@
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="assets/css/nice-select.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .equal-height {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.equal-height > [class*="col-"] {
+  display: flex;
+}
+
+.dashboard-widget {
+  flex: 1;
+  width: 100%;
+}
+.tab-btn {
+    color: #777;
+    transition: all 0.2s ease;
+  }
+
+  .tab-btn.active {
+    color: #3C65F5;
+    border-bottom: 2px solid #3C65F5;
+  }
+.user-profile-tabs {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 2rem; /* o el espacio que prefieras */
+}
+.user-profile-tabs span {
+  margin: 0 0.5rem;
+  color: #888;
+}
+</style>
+<style>
+        .fade-text {
+    transition: opacity 0.3s ease;
+    opacity: 1;
+}
+.fade-out {
+    opacity: 0;
+}
+
+    </style>
 
 </head>
 
@@ -57,7 +101,6 @@
             <div class="hero-shape">
                 <img class="hero-shape-1" src="assets/img/shape/03.svg" alt="">
                 <img class="hero-shape-2" src="assets/img/shape/05.svg" alt="">
-                <img class="hero-shape-3" src="assets/img/shape/06.svg" alt="">
                 <img class="hero-shape-4" src="assets/img/shape/07.svg" alt="">
             </div>
         </div>
@@ -83,6 +126,7 @@
                             <ul class="user-profile-sidebar-list">
                                 <li><a class="active" href="candidate-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a></li>
                                 <li><a href="candidate-profile.html"><i class="far fa-user-tie"></i> Mi Perfil</a></li>
+                                <li><a href="job-list.html"><i class="far fa-briefcase-arrow-right"></i> Buscar Trabajo</a></li>
                                 <li><a href="candidate-applied-job.html"><i class="far fa-briefcase"></i> Trabajos Postulados</a></li>
                                 <li><a href="candidate-cv-manager.html"><i class="far fa-file-zipper"></i> Archivo CV</a></li>
                                 <li><a href="candidate-saved-job.html"><i class="far fa-bookmark"></i> Trabajos Guardados</a></li>
@@ -105,6 +149,26 @@
                             </div>
                         </div>
                         <div class="user-profile-sidebar">
+                            <h6>Informa a las empresas tu disponibilidad</h6>
+                            <br>
+
+                            <!-- Estado 1 -->
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="user-profile fade-text mb-0" id="estadoDisponibilidad1">Escucho propuestas de empleo</div>
+                                <a onclick="toggleDisponibilidad('1')" style="cursor: pointer;">
+                                    <i id="toggleIcon1" class="fas fa-toggle-on fa-2x" style="color: #3C65F5;"></i>
+                                </a>
+                            </div>
+                        
+                            <!-- Estado 2 -->
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="user-profile fade-text mb-0" id="estadoDisponibilidad2">Puedo empezar de inmediato</div>
+                                <a onclick="toggleDisponibilidad('2')" style="cursor: pointer;">
+                                    <i id="toggleIcon2" class="fas fa-toggle-on fa-2x" style="color: #3C65F5;"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="user-profile-sidebar">
                             <div class="user-profile">      
                                 <ul class="user-profile-sidebar-list">
                                     <li><a href="candidate-message.html"><i class="far fa-headset"></i>Soporte</a></li>
@@ -114,11 +178,11 @@
                     </div>
                     <div class="col-lg-9">
                         <div class="user-profile-wrapper">
-                            <div class="row">
+                            <div class="row equal-height">
                                 <div class="col-md-6 col-lg-4">
                                     <div class="dashboard-widget dashboard-widget-color-1">
                                         <div class="dashboard-widget-info">
-                                            <h1>620</h1>
+                                            <h1>0</h1>
                                             <span>Trabajos Postulados Mensual</span>
                                         </div>
                                         <div class="dashboard-widget-icon">
@@ -130,7 +194,7 @@
                                     <div class="dashboard-widget dashboard-widget-color-2">
                                         <div class="dashboard-widget-info">
                                             <h1 id="views-total"></h1>
-                                            <span>Visitas al Perfil Totales</span>
+                                            <span>Visitas Totales al Perfil</span>
                                         </div>
                                         <div class="dashboard-widget-icon">
                                             <i class="fal fa-eye"></i>
@@ -140,7 +204,7 @@
                                 <div class="col-md-6 col-lg-4">
                                     <div class="dashboard-widget dashboard-widget-color-3">
                                         <div class="dashboard-widget-info">
-                                            <h1>150</h1>
+                                            <h1>0</h1>
                                             <span>Recomendaciones Generales</span>
                                         </div>
                                         <div class="dashboard-widget-icon">
@@ -150,12 +214,171 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-lg-8">
+                                <!--<div class="col-lg-8">
                                     <div class="user-profile-card">
                                         <h4 class="user-profile-card-title">Tus Visitas al Perfil</h4>
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div id="chart"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>-->
+                                <div class="col-lg-8">
+                                    <div class="user-profile-card">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <h4 class="user-profile-card-title tab-btn active" data-tab="recomendaciones" style="cursor:pointer; flex: 1; text-align: left;">
+                                                Recomendaciones
+                                            </h4>
+                                            <i class="fas fa-slash-forward" style="font-size: 1.5rem; color: #888; margin: 0 1rem; line-height: 1; vertical-align: middle; width: 24px; text-align: center; display: inline-flex; justify-content: center; align-items: center;"></i>
+                                            <h4 class="user-profile-card-title tab-btn" data-tab="ultimos" style="cursor:pointer; flex: 1; text-align: right;">
+                                                Últimos Avisos
+                                            </h4>
+                                        </div>
+                                    
+                                      <!-- Contenedor del contenido dinámico -->
+                                        <div id="tab-content">
+                                        <!-- Por defecto: recomendaciones -->
+                                            <div id="tab-recomendaciones" class="tab-section">
+                                                <div class="col-lg-12" style="border-bottom: 1px solid #ccc; padding-bottom: 1rem; margin-bottom: 1rem;">
+                                                    <div class="job-item">
+                                                        <a href="#" class="job-bookmark"><i class="fe-bookmark"></i></a>
+                                                        <div class="job-top">
+                                                            <div class="job-img">
+                                                                <img src="assets/img/job/01.jpg" alt="">
+                                                            </div>
+                                                            <div class="job-title">
+                                                                <h5><a href="#">Application Developer</a></h5>
+                                                                <a href="#" class="job-employer"><i class="far fa-building"></i> Circle Pixel</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="job-content">
+                                                            <ul class="job-info-list">
+                                                                <li><i class="fe-briefcase"></i> Development</li>
+                                                                <li><i class="fe-check-circle"></i> Full Time</li>
+                                                                <li><i class="fe-clock"></i> 2 Hour Ago</li>
+                                                                <li><i class="fe-map-pin"></i> 25/B Milford Road, New York</li>
+                                                            </ul>
+                                                            <div class="job-skill">
+                                                                <a href="#">Figma</a>
+                                                                <a href="#">Photoshop</a>
+                                                                <a href="#">Adobe XD</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="job-bottom">
+                                                            <div class="job-salary">
+                                                                <span class="job-salary-amount">$150 - $180</span>
+                                                                <span class="job-salary-type">/Hour</span>
+                                                            </div>
+                                                            <a href="#" class="theme-btn">View Details</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12" style="border-bottom: 1px solid #ccc; padding-bottom: 1rem; margin-bottom: 1rem;">
+                                                    <div class="job-item">
+                                                        <a href="#" class="job-bookmark"><i class="fe-bookmark"></i></a>
+                                                        <div class="job-top">
+                                                            <div class="job-img">
+                                                                <img src="assets/img/job/03.jpg" alt="">
+                                                            </div>
+                                                            <div class="job-title">
+                                                                <h5><a href="#">Marketing Manager</a></h5>
+                                                                <a href="#" class="job-employer"><i class="far fa-building"></i> Azutine Growths</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="job-content">
+                                                            <ul class="job-info-list">
+                                                                <li><i class="fe-briefcase"></i> Marketing</li>
+                                                                <li><i class="fe-check-circle"></i> Freelance</li>
+                                                                <li><i class="fe-clock"></i> 2 Hour Ago</li>
+                                                                <li><i class="fe-map-pin"></i> 25/B Milford Road, New York</li>
+                                                            </ul>
+                                                            <div class="job-skill">
+                                                                <a href="#">Figma</a>
+                                                                <a href="#">Photoshop</a>
+                                                                <a href="#">Adobe XD</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="job-bottom">
+                                                            <div class="job-salary">
+                                                                <span class="job-salary-amount">$150 - $180</span>
+                                                                <span class="job-salary-type">/Hour</span>
+                                                            </div>
+                                                            <a href="#" class="theme-btn">View Details</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                      
+                                            <div id="tab-ultimos" class="tab-section d-none">
+                                                <div class="col-lg-12" style="border-bottom: 1px solid #ccc; padding-bottom: 1rem; margin-bottom: 1rem;">
+                                                    <div class="job-item">
+                                                        <a href="#" class="job-bookmark"><i class="fe-bookmark"></i></a>
+                                                        <div class="job-top">
+                                                            <div class="job-img">
+                                                                <img src="assets/img/job/03.jpg" alt="">
+                                                            </div>
+                                                            <div class="job-title">
+                                                                <h5><a href="#">Marketing Manager</a></h5>
+                                                                <a href="#" class="job-employer"><i class="far fa-building"></i> Azutine Growths</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="job-content">
+                                                            <ul class="job-info-list">
+                                                                <li><i class="fe-briefcase"></i> Marketing</li>
+                                                                <li><i class="fe-check-circle"></i> Freelance</li>
+                                                                <li><i class="fe-clock"></i> 2 Hour Ago</li>
+                                                                <li><i class="fe-map-pin"></i> 25/B Milford Road, New York</li>
+                                                            </ul>
+                                                            <div class="job-skill">
+                                                                <a href="#">Figma</a>
+                                                                <a href="#">Photoshop</a>
+                                                                <a href="#">Adobe XD</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="job-bottom">
+                                                            <div class="job-salary">
+                                                                <span class="job-salary-amount">$150 - $180</span>
+                                                                <span class="job-salary-type">/Hour</span>
+                                                            </div>
+                                                            <a href="#" class="theme-btn">View Details</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12" style="border-bottom: 1px solid #ccc; padding-bottom: 1rem; margin-bottom: 1rem;">
+                                                    <div class="job-item">
+                                                        <a href="#" class="job-bookmark"><i class="fe-bookmark"></i></a>
+                                                        <div class="job-top">
+                                                            <div class="job-img">
+                                                                <img src="assets/img/job/01.jpg" alt="">
+                                                            </div>
+                                                            <div class="job-title">
+                                                                <h5><a href="#">Application Developer</a></h5>
+                                                                <a href="#" class="job-employer"><i class="far fa-building"></i> Circle Pixel</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="job-content">
+                                                            <ul class="job-info-list">
+                                                                <li><i class="fe-briefcase"></i> Development</li>
+                                                                <li><i class="fe-check-circle"></i> Full Time</li>
+                                                                <li><i class="fe-clock"></i> 2 Hour Ago</li>
+                                                                <li><i class="fe-map-pin"></i> 25/B Milford Road, New York</li>
+                                                            </ul>
+                                                            <div class="job-skill">
+                                                                <a href="#">Figma</a>
+                                                                <a href="#">Photoshop</a>
+                                                                <a href="#">Adobe XD</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="job-bottom">
+                                                            <div class="job-salary">
+                                                                <span class="job-salary-amount">$150 - $180</span>
+                                                                <span class="job-salary-type">/Hour</span>
+                                                            </div>
+                                                            <a href="#" class="theme-btn">View Details</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -202,142 +425,147 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="user-profile-card">
-                                        <h4 class="user-profile-card-title">Jobs Applied Recently</h4>
-                                        <div class="user-profile-job">
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="job-item">
-                                                        <a href="#" class="job-bookmark"><i class="fe-bookmark"></i></a>
-                                                        <div class="job-top">
-                                                            <div class="job-img">
-                                                                <img src="assets/img/job/01.jpg" alt="">
+                                        <h4 class="user-profile-card-title" data-bs-toggle="collapse" href="#jobsAppliedCollapse" role="button" aria-expanded="false" aria-controls="jobsAppliedCollapse" style="cursor: pointer;">
+                                          Trabajos Postulados
+                                          <i class="fas fa-chevron-down ms-2"></i>
+                                        </h4>
+                                        <div class="collapse" id="jobsAppliedCollapse">
+                                            <div class="user-profile-job mt-3">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="job-item">
+                                                            <a href="#" class="job-bookmark"><i class="fe-bookmark"></i></a>
+                                                            <div class="job-top">
+                                                                <div class="job-img">
+                                                                    <img src="assets/img/job/01.jpg" alt="">
+                                                                </div>
+                                                                <div class="job-title">
+                                                                    <h5><a href="#">Application Developer</a></h5>
+                                                                    <a href="#" class="job-employer"><i class="far fa-building"></i> Circle Pixel</a>
+                                                                </div>
                                                             </div>
-                                                            <div class="job-title">
-                                                                <h5><a href="#">Application Developer</a></h5>
-                                                                <a href="#" class="job-employer"><i class="far fa-building"></i> Circle Pixel</a>
+                                                            <div class="job-content">
+                                                                <ul class="job-info-list">
+                                                                    <li><i class="fe-briefcase"></i> Development</li>
+                                                                    <li><i class="fe-check-circle"></i> Full Time</li>
+                                                                    <li><i class="fe-clock"></i> 2 Hour Ago</li>
+                                                                    <li><i class="fe-map-pin"></i> 25/B Milford Road, New York</li>
+                                                                </ul>
+                                                                <div class="job-skill">
+                                                                    <a href="#">Figma</a>
+                                                                    <a href="#">Photoshop</a>
+                                                                    <a href="#">Adobe XD</a>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="job-content">
-                                                            <ul class="job-info-list">
-                                                                <li><i class="fe-briefcase"></i> Development</li>
-                                                                <li><i class="fe-check-circle"></i> Full Time</li>
-                                                                <li><i class="fe-clock"></i> 2 Hour Ago</li>
-                                                                <li><i class="fe-map-pin"></i> 25/B Milford Road, New York</li>
-                                                            </ul>
-                                                            <div class="job-skill">
-                                                                <a href="#">Figma</a>
-                                                                <a href="#">Photoshop</a>
-                                                                <a href="#">Adobe XD</a>
+                                                            <div class="job-bottom">
+                                                                <div class="job-salary">
+                                                                    <span class="job-salary-amount">$150 - $180</span> <span
+                                                                        class="job-salary-type">/Hour</span>
+                                                                </div>
+                                                                <a href="#" class="theme-btn">View Details</a>
                                                             </div>
-                                                        </div>
-                                                        <div class="job-bottom">
-                                                            <div class="job-salary">
-                                                                <span class="job-salary-amount">$150 - $180</span> <span
-                                                                    class="job-salary-type">/Hour</span>
-                                                            </div>
-                                                            <a href="#" class="theme-btn">View Details</a>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="job-item">
-                                                        <a href="#" class="job-bookmark"><i class="fe-bookmark"></i></a>
-                                                        <div class="job-top">
-                                                            <div class="job-img">
-                                                                <img src="assets/img/job/03.jpg" alt="">
+                                                    <div class="col-lg-12">
+                                                        <div class="job-item">
+                                                            <a href="#" class="job-bookmark"><i class="fe-bookmark"></i></a>
+                                                            <div class="job-top">
+                                                                <div class="job-img">
+                                                                    <img src="assets/img/job/03.jpg" alt="">
+                                                                </div>
+                                                                <div class="job-title">
+                                                                    <h5><a href="#">Marketing Manager</a></h5>
+                                                                    <a href="#" class="job-employer"><i class="far fa-building"></i> Azutine Growths</a>
+                                                                </div>
                                                             </div>
-                                                            <div class="job-title">
-                                                                <h5><a href="#">Marketing Manager</a></h5>
-                                                                <a href="#" class="job-employer"><i class="far fa-building"></i> Azutine Growths</a>
+                                                            <div class="job-content">
+                                                                <ul class="job-info-list">
+                                                                    <li><i class="fe-briefcase"></i> Marketing</li>
+                                                                    <li><i class="fe-check-circle"></i> Freelance</li>
+                                                                    <li><i class="fe-clock"></i> 2 Hour Ago</li>
+                                                                    <li><i class="fe-map-pin"></i> 25/B Milford Road, New York</li>
+                                                                </ul>
+                                                                <div class="job-skill">
+                                                                    <a href="#">Figma</a>
+                                                                    <a href="#">Photoshop</a>
+                                                                    <a href="#">Adobe XD</a>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="job-content">
-                                                            <ul class="job-info-list">
-                                                                <li><i class="fe-briefcase"></i> Marketing</li>
-                                                                <li><i class="fe-check-circle"></i> Freelance</li>
-                                                                <li><i class="fe-clock"></i> 2 Hour Ago</li>
-                                                                <li><i class="fe-map-pin"></i> 25/B Milford Road, New York</li>
-                                                            </ul>
-                                                            <div class="job-skill">
-                                                                <a href="#">Figma</a>
-                                                                <a href="#">Photoshop</a>
-                                                                <a href="#">Adobe XD</a>
+                                                            <div class="job-bottom">
+                                                                <div class="job-salary">
+                                                                    <span class="job-salary-amount">$150 - $180</span> <span
+                                                                        class="job-salary-type">/Hour</span>
+                                                                </div>
+                                                                <a href="#" class="theme-btn">View Details</a>
                                                             </div>
-                                                        </div>
-                                                        <div class="job-bottom">
-                                                            <div class="job-salary">
-                                                                <span class="job-salary-amount">$150 - $180</span> <span
-                                                                    class="job-salary-type">/Hour</span>
-                                                            </div>
-                                                            <a href="#" class="theme-btn">View Details</a>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="job-item">
-                                                        <a href="#" class="job-bookmark"><i class="fe-bookmark"></i></a>
-                                                        <div class="job-top">
-                                                            <div class="job-img">
-                                                                <img src="assets/img/job/04.jpg" alt="">
+                                                    <div class="col-lg-12">
+                                                        <div class="job-item">
+                                                            <a href="#" class="job-bookmark"><i class="fe-bookmark"></i></a>
+                                                            <div class="job-top">
+                                                                <div class="job-img">
+                                                                    <img src="assets/img/job/04.jpg" alt="">
+                                                                </div>
+                                                                <div class="job-title">
+                                                                    <h5><a href="#">Product Designer</a></h5>
+                                                                    <a href="#" class="job-employer"><i class="far fa-building"></i> Larana Inc</a>
+                                                                </div>
                                                             </div>
-                                                            <div class="job-title">
-                                                                <h5><a href="#">Product Designer</a></h5>
-                                                                <a href="#" class="job-employer"><i class="far fa-building"></i> Larana Inc</a>
+                                                            <div class="job-content">
+                                                                <ul class="job-info-list">
+                                                                    <li><i class="fe-briefcase"></i> Design</li>
+                                                                    <li><i class="fe-check-circle"></i> Internship</li>
+                                                                    <li><i class="fe-clock"></i> 2 Hour Ago</li>
+                                                                    <li><i class="fe-map-pin"></i> 25/B Milford Road, New York</li>
+                                                                </ul>
+                                                                <div class="job-skill">
+                                                                    <a href="#">Figma</a>
+                                                                    <a href="#">Photoshop</a>
+                                                                    <a href="#">Adobe XD</a>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="job-content">
-                                                            <ul class="job-info-list">
-                                                                <li><i class="fe-briefcase"></i> Design</li>
-                                                                <li><i class="fe-check-circle"></i> Internship</li>
-                                                                <li><i class="fe-clock"></i> 2 Hour Ago</li>
-                                                                <li><i class="fe-map-pin"></i> 25/B Milford Road, New York</li>
-                                                            </ul>
-                                                            <div class="job-skill">
-                                                                <a href="#">Figma</a>
-                                                                <a href="#">Photoshop</a>
-                                                                <a href="#">Adobe XD</a>
+                                                            <div class="job-bottom">
+                                                                <div class="job-salary">
+                                                                    <span class="job-salary-amount">$150 - $180</span> <span
+                                                                        class="job-salary-type">/Hour</span>
+                                                                </div>
+                                                                <a href="#" class="theme-btn">View Details</a>
                                                             </div>
-                                                        </div>
-                                                        <div class="job-bottom">
-                                                            <div class="job-salary">
-                                                                <span class="job-salary-amount">$150 - $180</span> <span
-                                                                    class="job-salary-type">/Hour</span>
-                                                            </div>
-                                                            <a href="#" class="theme-btn">View Details</a>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="job-item">
-                                                        <a href="#" class="job-bookmark"><i class="fe-bookmark"></i></a>
-                                                        <div class="job-top">
-                                                            <div class="job-img">
-                                                                <img src="assets/img/job/05.jpg" alt="">
+                                                    <div class="col-lg-12">
+                                                        <div class="job-item">
+                                                            <a href="#" class="job-bookmark"><i class="fe-bookmark"></i></a>
+                                                            <div class="job-top">
+                                                                <div class="job-img">
+                                                                    <img src="assets/img/job/05.jpg" alt="">
+                                                                </div>
+                                                                <div class="job-title">
+                                                                    <h5><a href="#">Creative Director</a></h5>
+                                                                    <a href="#" class="job-employer"><i class="far fa-building"></i> Rubic Corner</a>
+                                                                </div>
                                                             </div>
-                                                            <div class="job-title">
-                                                                <h5><a href="#">Creative Director</a></h5>
-                                                                <a href="#" class="job-employer"><i class="far fa-building"></i> Rubic Corner</a>
+                                                            <div class="job-content">
+                                                                <ul class="job-info-list">
+                                                                    <li><i class="fe-briefcase"></i> Design</li>
+                                                                    <li><i class="fe-check-circle"></i> Full Time</li>
+                                                                    <li><i class="fe-clock"></i> 2 Hour Ago</li>
+                                                                    <li><i class="fe-map-pin"></i> 25/B Milford Road, New York</li>
+                                                                </ul>
+                                                                <div class="job-skill">
+                                                                    <a href="#">Figma</a>
+                                                                    <a href="#">Photoshop</a>
+                                                                    <a href="#">Adobe XD</a>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="job-content">
-                                                            <ul class="job-info-list">
-                                                                <li><i class="fe-briefcase"></i> Design</li>
-                                                                <li><i class="fe-check-circle"></i> Full Time</li>
-                                                                <li><i class="fe-clock"></i> 2 Hour Ago</li>
-                                                                <li><i class="fe-map-pin"></i> 25/B Milford Road, New York</li>
-                                                            </ul>
-                                                            <div class="job-skill">
-                                                                <a href="#">Figma</a>
-                                                                <a href="#">Photoshop</a>
-                                                                <a href="#">Adobe XD</a>
+                                                            <div class="job-bottom">
+                                                                <div class="job-salary">
+                                                                    <span class="job-salary-amount">$150 - $180</span> <span
+                                                                        class="job-salary-type">/Hour</span>
+                                                                </div>
+                                                                <a href="#" class="theme-btn">View Details</a>
                                                             </div>
-                                                        </div>
-                                                        <div class="job-bottom">
-                                                            <div class="job-salary">
-                                                                <span class="job-salary-amount">$150 - $180</span> <span
-                                                                    class="job-salary-type">/Hour</span>
-                                                            </div>
-                                                            <a href="#" class="theme-btn">View Details</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -386,6 +614,50 @@
     <script src="assets/js/header-footer/loadHeaderFooterSI.js"></script>
     <script src="assets/js/logout-button.js" ></script>
     <script src="assets/js/candidate-name-category.js"></script>
+    <script>
+// Lógica para manejar los tabs
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.dataset.tab;
+
+      // Activar botón
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Cambiar contenido
+      document.querySelectorAll('.tab-section').forEach(sec => sec.classList.add('d-none'));
+      document.getElementById('tab-' + tab).classList.remove('d-none');
+    });
+  });
+</script>
+<script>
+function toggleDisponibilidad(id) {
+    const icon = document.getElementById("toggleIcon" + id);
+    const texto = document.getElementById("estadoDisponibilidad" + id);
+
+    const estaActivo = icon.classList.contains("fa-toggle-on");
+
+    texto.classList.add("fade-out");
+
+    setTimeout(() => {
+        if (estaActivo) {
+            icon.classList.remove("fa-toggle-on");
+            icon.classList.add("fa-toggle-off");
+            texto.innerText = id === "1" 
+                ? "No estoy disponible actualmente" 
+                : "Necesito unos días para comenzar";
+        } else {
+            icon.classList.remove("fa-toggle-off");
+            icon.classList.add("fa-toggle-on");
+            texto.innerText = id === "1" 
+                ? "Escucho propuestas de empleo" 
+                : "Puedo empezar de inmediato";
+        }
+        texto.classList.remove("fade-out");
+    }, 200);
+}
+</script>
+
 
 
 </body>

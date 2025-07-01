@@ -248,16 +248,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 const expElement = document.createElement('div');
                 expElement.className = 'row g-12';
                 expElement.innerHTML = `
-                    <div class="col-lg-12">
+                    <div class="col-lg-6">
                         <div class="profile-info-list">
                             <ul>
                                 <li data-label="Empresa:"><span>${exp.empresa || 'No especificado'}</span></li>
                                 <li data-label="Cargo:"><span>${exp.cargo || 'No especificado'}</span></li>
                                 <li data-label="Actividad Empresa:"><span>${exp.actividad_empresa || 'No especificado'}</span></li>
                                 <li data-label="Nivel Experiencia:"><span>${exp.nivel_experiencia || 'No especificado'}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="profile-info-list">
+                            <ul>
                                 <li data-label="Área del Cargo:"><span>${exp.area_cargo || 'No especificado'}</span></li>
                                 <li data-label="Mes - Año Inicio:"><span>${exp.anno_inicio || 'No especificado'}</span></li>
                                 <li data-label="Mes - Año Término:"><span>${exp.anno_termino || 'Actualmente'}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="profile-info-list">
+                            <ul>
                                 <li data-label="Descrición Cargo:"><span>${exp.descripcion || 'No hay descripción disponible'}</span></li>
                             </ul>
                         </div>
