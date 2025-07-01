@@ -695,7 +695,9 @@ scroll-top css
   }
 }
 
-
+#password-requirements {
+            display: none;
+        }
 
 
 /* ===================
@@ -1137,7 +1139,7 @@ hero css
 }
 
 .hero-single {
-  padding-top: 220px;
+  padding-top: 150px;
   padding-bottom: 150px;
   background: #F2F6FD;
   display: flex;
@@ -5737,7 +5739,7 @@ user profile css
   float: right;
   font-weight: 300;
   font-size: 15px;
-  color: #3C65F5;
+  
 }
 
 .profile-skill a{
@@ -6583,7 +6585,7 @@ footer css
 }
 
 .footer-widget-box {
-  margin-bottom: 15px;
+  margin-bottom: 1px;
 }
 
 .footer-widget {
