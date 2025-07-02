@@ -111,257 +111,86 @@
         <div class="user-profile py-120">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-3">
+                    <aside class="col-lg-3">
                         <div class="user-profile-sidebar">
-                            <div class="user-profile-sidebar-top">
-                                <div class="user-profile-img">
-                                    <img src="assets/img/job/04.jpg" alt="">
-                                    <button type="button" class="profile-img-btn"><i class="far fa-camera"></i></button>
-                                    <input type="file" class="profile-img-file">
+                            <div class="user-profile-sidebar-top text-center">
+                                <div class="user-profile-img position-relative">
+                                    <img src="assets/img/job/04.jpg" alt="Foto de perfil de Vertice Call Center"
+                                        class="img-fluid rounded-circle">
+                                    <button type="button" class="profile-img-btn" aria-label="Cambiar foto de perfil">
+                                        <i class="far fa-camera"></i>
+                                    </button>
+                                    <input type="file" class="profile-img-file"
+                                        aria-label="Seleccionar archivo de imagen">
                                 </div>
                                 <h4>Vertice Call Center</h4>
                                 <p>Call Center</p>
                             </div>
-                            <ul class="user-profile-sidebar-list">
-                                <li><a href="../employer-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a>
-                                </li>
-                                <li><a href="employer-profile.html"><i class="far fa-user-tie"></i> Perfil de
-                                        Empresa</a></li>
-                                <li><a href="../employer-post-job.html"><i class="far fa-paper-plane"></i> Publicar un
-                                        Trabajo</a></li>
-                                <li><a class="active" href="../employer-manage-job.html"><i
-                                            class="far fa-briefcase"></i>
-                                        Gestionar Avisos</a></li>
-                                <li><a href="../employer-transaction.html"><i class="far fa-coins"></i> Transacción</a>
-                                </li>
-                                <li><a href="../employer-settings.html"><i class="far fa-cog"></i> Configuración</a>
-                                </li>
-                                <li><a href="../index.html"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
-                            </ul>
+
+                            <nav aria-label="Menú principal del perfil">
+                                <ul class="user-profile-sidebar-list list-unstyled">
+                                    <li><a href="../employer-dashboard.html"><i class="far fa-gauge-high"></i>
+                                            Dashboard</a></li>
+                                    <li><a href="employer-profile.html"><i class="far fa-user-tie"></i> Perfil de
+                                            Empresa</a></li>
+                                    <li><a href="../employer-post-job.html"><i class="far fa-paper-plane"></i> Publicar
+                                            un Trabajo</a></li>
+                                    <li><a class="active" href="../employer-manage-job.html"><i
+                                                class="far fa-briefcase"></i> Gestionar Avisos</a></li>
+                                    <li><a href="../employer-transaction.html"><i class="far fa-coins"></i>
+                                            Transacción</a></li>
+                                    <li><a href="../employer-settings.html"><i class="far fa-cog"></i> Configuración</a>
+                                    </li>
+                                    <li><a href="../index.html"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
+                                </ul>
+                            </nav>
                         </div>
-                        <div class="user-profile-sidebar">
-                            <div class="user-profile">
-                                <ul class="user-profile-sidebar-list">
-                                    <li><a href="../employer-message.html"><i class="far fa-headset"></i>Soporte</a>
+
+                        <div class="user-profile-sidebar mt-4">
+                            <nav aria-label="Soporte">
+                                <ul class="user-profile-sidebar-list list-unstyled">
+                                    <li><a href="../employer-message.html"><i class="far fa-headset"></i> Soporte</a>
                                     </li>
                                 </ul>
-                            </div>
+                            </nav>
                         </div>
-                    </div>
-                    <div class="col-lg-9">
-                        <div class="user-profile-card">
-                            <div class="user-profile-card-header">
+                    </aside>
+
+                    <main class="col-lg-9">
+                        <section class="user-profile-card">
+                            <header class="user-profile-card-header mb-4">
                                 <h4 class="user-profile-card-title">Todos los Candidatos</h4>
-                            </div>
+                            </header>
                             <div class="user-profile-candidate">
                                 <div class="row" id="candidates-container">
-                                    <div class="col-md-6 col-lg-6">
-                                        <div class="candidate-item">
-                                            <div class="candidate-bio">
-                                                <div class="candidate-img">
-                                                    <img src="assets/img/candidate/01.jpg" alt="thumb">
-                                                </div>
-                                                <div class="candidate-bio-content">
-                                                    <h5><a>Benjamin Perez</a></h5>
-                                                    <span>Programador</span>
-                                                    <div class="candidate-bio-rate">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="candidate-content">
-                                                <p><i class="far fa-location-dot"></i> Quilicura - Región Metropolitana
-                                                    de Santiago</p>
-                                                <div class="candidate-skill">
-                                                    <a href="#">JavaScript</a>
-                                                    <a href="#">HTML5</a>
-                                                    <a href="#">CSS</a>
-                                                    <a href="#">ExpressJS</a>
-                                                    <a href="#">NodeJS</a>
-                                                </div>
-                                                <div class="candidate-bottom">
-                                                    <div class="candidate-salary">
-                                                        $ 1.500.000 <span>Mensual</span>
-                                                    </div>
-                                                    <div class="profile-btns">
-                                                        <a href="employer-view-candidate.html"
-                                                            class="btn btn-outline-secondary btn-sm"><i
-                                                                class="far fa-eye"></i></a>
-                                                        <a href="#" class="btn btn-outline-secondary btn-sm"><i
-                                                                class="far fa-check"></i></a>
-                                                        <a href="#" class="btn btn-outline-danger btn-sm delete-btn"
-                                                            data-candidate="Benjamin Perez"><i
-                                                                class="far fa-trash-can"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-6">
-                                        <div class="candidate-item">
-                                            <div class="candidate-bio">
-                                                <div class="candidate-img">
-                                                    <img src="assets/img/candidate/02.jpg" alt="thumb">
-                                                </div>
-                                                <div class="candidate-bio-content">
-                                                    <h5><a>Paulo Ramirez</a></h5>
-                                                    <span>Programador</span>
-                                                    <div class="candidate-bio-rate">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="candidate-content">
-                                                <p><i class="far fa-location-dot"></i> Maipú - Región Metropolitana de
-                                                    Santiago</p>
-                                                <div class="candidate-skill">
-                                                    <a href="#">Python</a>
-                                                    <a href="#">JavaScript</a>
-                                                    <a href="#">HTML5</a>
-                                                    <a href="#">CSS</a>
-                                                    <a href="#">TypeScript</a>
-                                                </div>
-                                                <div class="candidate-bottom">
-                                                    <div class="candidate-salary">
-                                                        $ 1.500.000 <span>Mensual</span>
-                                                    </div>
-                                                    <div class="profile-btns">
-                                                        <a href="#" class="btn btn-outline-secondary btn-sm"><i
-                                                                class="far fa-eye"></i></a>
-                                                        <a href="#" class="btn btn-outline-secondary btn-sm"><i
-                                                                class="far fa-check"></i></a>
-                                                        <a href="#" class="btn btn-outline-danger btn-sm"><i
-                                                                class="far fa-trash-can"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-6">
-                                        <div class="candidate-item">
-                                            <div class="candidate-bio">
-                                                <div class="candidate-img">
-                                                    <img src="assets/img/candidate/03.jpg" alt="thumb"
-                                                        class="secure-img" data-real-src="assets/img/candidate/03.jpg">
-                                                </div>
-                                                <div class="candidate-bio-content">
-                                                    <h5><a class="secure-text" data-real-text="Marie Choate">••••••
-                                                            ••••••</a></h5>
-                                                    <span class="secure-text"
-                                                        data-real-text="Administrador de Recursos Humanos">••••••••
-                                                        ••••• ••••••• ••••••••</span>
-                                                    <div class="candidate-bio-rate"></div>
-                                                </div>
-                                            </div>
-                                            <div class="candidate-content">
-                                                <p><i class="far fa-location-dot"></i> <span class="secure-text"
-                                                        data-real-text="Providencia - Región Metropolitana de Santiago">••••••••••
-                                                        - ••••••• ••••••••••••</span></p>
-                                                <div class="candidate-skill">
-                                                    <a href="#">Excel</a>
-                                                    <a href="#">Adobe XD</a>
-                                                    <a href="#">Digital</a>
-                                                </div>
-                                                <div class="candidate-bottom">
-                                                    <div class="candidate-salary">
-                                                        <span class="secure-text"
-                                                            data-real-text="$800.000">•••••••</span>
-                                                        <span>Mensual</span>
-                                                    </div>
-                                                    <div class="profile-btns">
-                                                        <a href="employer-view-candidate.html"
-                                                            class="btn btn-outline-secondary btn-sm"><i
-                                                                class="far fa-eye"></i></a>
-                                                        <a href="#" class="btn btn-outline-secondary btn-sm"><i
-                                                                class="far fa-check"></i></a>
-                                                        <a href="#" class="btn btn-outline-danger btn-sm delete-btn"
-                                                            data-candidate="Marie Choate"><i
-                                                                class="far fa-trash-can"></i></a>
-                                                        <button
-                                                            class="btn btn-outline-primary btn-sm toggle-secure-btn">
-                                                            <i class="fas fa-eye"></i> Mostrar
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-6">
-                                        <div class="candidate-item">
-                                            <div class="candidate-bio">
-                                                <div class="candidate-img">
-                                                    <img src="../assets/img/candidate/03.jpg" alt="thumb"
-                                                        class="secure-img" data-real-src="assets/img/candidate/03.jpg">
-                                                </div>
-                                                <div class="candidate-bio-content">
-                                                    <h5><a class="secure-text" data-real-text="Marie Choate">••••••
-                                                            ••••••</a></h5>
-                                                    <span class="secure-text"
-                                                        data-real-text="Administrador de Recursos Humanos">••••••••
-                                                        ••••• ••••••• ••••••••</span>
-                                                    <div class="candidate-bio-rate"></div>
-                                                </div>
-                                            </div>
-                                            <div class="candidate-content">
-                                                <p><i class="far fa-location-dot"></i> <span class="secure-text"
-                                                        data-real-text="Providencia - Región Metropolitana de Santiago">••••••••••
-                                                        - ••••••• ••••••••••••</span></p>
-                                                <div class="candidate-skill">
-                                                    <a href="#">Excel</a>
-                                                    <a href="#">Adobe XD</a>
-                                                    <a href="#">Digital</a>
-                                                </div>
-                                                <div class="candidate-bottom">
-                                                    <div class="candidate-salary">
-                                                        <span class="secure-text"
-                                                            data-real-text="$800.000">•••••••</span>
-                                                        <span>Mensual</span>
-                                                    </div>
-                                                    <div class="profile-btns">
-                                                        <a href="employer-view-candidate.html"
-                                                            class="btn btn-outline-secondary btn-sm"><i
-                                                                class="far fa-eye"></i></a>
-                                                        <a href="#" class="btn btn-outline-secondary btn-sm"><i
-                                                                class="far fa-check"></i></a>
-                                                        <a href="#" class="btn btn-outline-danger btn-sm delete-btn"
-                                                            data-candidate="Marie Choate"><i
-                                                                class="far fa-trash-can"></i></a>
-                                                        <button
-                                                            class="btn btn-outline-primary btn-sm toggle-secure-btn">
-                                                            <i class="fas fa-eye"></i> Mostrar
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- pagination -->
-                                <div class="pagination-area">
-                                    <div aria-label="Page navigation example">
-                                        <ul class="pagination">
-                                            <li class="page-item">
-                                                <a class="page-link" href="#" aria-label="Previous">
-                                                    <span aria-hidden="true"><i
-                                                            class="far fa-angle-double-left"></i></span>
-                                                </a>
-                                            </li>
-                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="#" aria-label="Next">
-                                                    <span aria-hidden="true"><i
-                                                            class="far fa-angle-double-right"></i></span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <!-- Aquí se insertan dinámicamente los candidatos -->
                                 </div>
                             </div>
-                        </div>
-                    </div>
+
+                            <nav class="pagination-area" aria-label="Paginación de candidatos">
+                                <ul class="pagination">
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Anterior">
+                                            <span aria-hidden="true"><i class="far fa-angle-double-left"></i></span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Siguiente">
+                                            <span aria-hidden="true"><i class="far fa-angle-double-right"></i></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </section>
+                    </main>
                 </div>
             </div>
         </div>
+
+
         <!-- employer-all-candidate end -->
 
         <!-- Modal de confirmación -->
@@ -414,8 +243,10 @@
     <script src="../assets/js/masonry.pkgd.min.js"></script>
     <script src="../assets/js/wow.min.js"></script>
     <script src="../assets/js/nice-select.min.js"></script>
+    <script src="../assets/js/config/config.js"></script>
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/header-footer/loadHeaderFooterEmp.js"></script>
+    <script src="../assets/js/modules/postulaciones/vista-postulantes.js"></script>
     <!-- <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Variables para almacenar el candidato a eliminar y su elemento padre
