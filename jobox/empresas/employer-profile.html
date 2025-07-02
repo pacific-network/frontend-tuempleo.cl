@@ -85,35 +85,45 @@
                                 <p></p>
                             </div>
                             <ul class="user-profile-sidebar-list">
-                                <li><a href="employer-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a></li>
-                                <li><a class="active" href="employer-profile.html"><i class="far fa-user-tie"></i> Perfil de Empresa</a></li>
-                                <li><a href="employer-post-job.html"><i class="far fa-paper-plane"></i> Publicar un Trabajo</a></li>
-                                <li><a href="employer-manage-job.html"><i class="far fa-briefcase"></i> Gestionar Avisos</a></li>
-                                <li><a href="employer-transaction.html"><i class="far fa-coins"></i> Transacción</a></li>
+                                <li><a href="employer-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a>
+                                </li>
+                                <li><a class="active" href="employer-profile.html"><i class="far fa-user-tie"></i>
+                                        Perfil de Empresa</a></li>
+                                <li><a href="employer-post-job.html"><i class="far fa-paper-plane"></i> Publicar un
+                                        Trabajo</a></li>
+                                <li><a href="employer-manage-job.html"><i class="far fa-briefcase"></i> Gestionar
+                                        Avisos</a></li>
+                                <li><a href="employer-transaction.html"><i class="far fa-coins"></i> Transacción</a>
+                                </li>
                                 <li><a href="employer-settings.html"><i class="far fa-cog"></i> Configuración</a></li>
                                 <li><a href="#" id="logoutButton"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
                             </ul>
                         </div>
-                        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel"
+                            aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="logoutModalLabel">¿Seguro que quieres cerrar sesión?</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                        <h5 class="modal-title" id="logoutModalLabel">¿Seguro que quieres cerrar sesión?
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Cerrar"></button>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                        <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar Sesión</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar
+                                            Sesión</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="user-profile-sidebar">
-                            <div class="user-profile">      
+                            <div class="user-profile">
                                 <ul class="user-profile-sidebar-list">
                                     <li><a href="employer-message.html"><i class="far fa-headset"></i> Soporte</a></li>
                                 </ul>
-                            </div> 
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-9">
@@ -143,7 +153,7 @@
                                             </ul>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -153,7 +163,7 @@
                                 <div class="col-lg-12">
                                     <div class="profile-bio">
                                         <p>
-                                
+
                                         </p>
                                     </div>
                                 </div>
@@ -166,9 +176,9 @@
                                     <div class="col-lg-6">
                                         <div class="profile-info-list">
                                             <ul>
-                                                <li>Datos Usuario: <span>  </span></li>
+                                                <li>Datos Usuario: <span> </span></li>
                                                 <li>Correo Usuario: <span></span></li>
-                                                <li>Región: <span>  </span></li>
+                                                <li>Región: <span> </span></li>
                                                 <li>Comuna: <span></span></li>
                                             </ul>
                                         </div>
@@ -248,7 +258,7 @@
             modal.show();
         });
 
-        document.getElementById('confirmLogout').addEventListener('click', function (){
+        document.getElementById('confirmLogout').addEventListener('click', function () {
             localStorage.removeItem('token');
             window.location.href = 'index.html';
         });
