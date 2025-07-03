@@ -32,15 +32,21 @@
             display: inline-block;
             max-width: 27ch;
         }
+
         .profile-job-list li {
-          max-width: 27ch;            /* 25 caracteres como máximo por línea */
-          white-space: normal;        /* Permite el salto de línea */
-          word-wrap: break-word;      /* Corta las palabras largas si es necesario */
-          overflow-wrap: break-word;  /* Asegura compatibilidad en todos los navegadores */
+            max-width: 27ch;
+            /* 25 caracteres como máximo por línea */
+            white-space: normal;
+            /* Permite el salto de línea */
+            word-wrap: break-word;
+            /* Corta las palabras largas si es necesario */
+            overflow-wrap: break-word;
+            /* Asegura compatibilidad en todos los navegadores */
         }
     </style>
 
 </head>
+
 <body>
     <!-- preloader -->
     <div class="preloader">
@@ -87,21 +93,26 @@
                                 <p>Call Center</p>
                             </div>
                             <ul class="user-profile-sidebar-list">
-                                <li><a href="employer-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a></li>
-                                <li><a href="employer-profile.html"><i class="far fa-user-tie"></i> Perfil de Empresa</a></li>
-                                <li><a href="employer-post-job.html"><i class="far fa-paper-plane"></i> Publicar un Trabajo</a></li>
-                                <li><a class="active" href="employer-manage-job.html"><i class="far fa-briefcase"></i> Gestionar Avisos</a></li>
-                                <li><a href="employer-transaction.html"><i class="far fa-coins"></i> Transacción</a></li>
+                                <li><a href="employer-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a>
+                                </li>
+                                <li><a href="employer-profile.html"><i class="far fa-user-tie"></i> Perfil de
+                                        Empresa</a></li>
+                                <li><a href="employer-post-job.html"><i class="far fa-paper-plane"></i> Publicar un
+                                        Trabajo</a></li>
+                                <li><a class="active" href="employer-manage-job.html"><i class="far fa-briefcase"></i>
+                                        Gestionar Avisos</a></li>
+                                <li><a href="employer-transaction.html"><i class="far fa-coins"></i> Transacción</a>
+                                </li>
                                 <li><a href="employer-settings.html"><i class="far fa-cog"></i> Configuración</a></li>
-                                <li><a href="index.html"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
+                                <li><a href="#" id="logoutButton"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
                             </ul>
                         </div>
                         <div class="user-profile-sidebar">
-                            <div class="user-profile">      
+                            <div class="user-profile">
                                 <ul class="user-profile-sidebar-list">
                                     <li><a href="employer-message.html"><i class="far fa-headset"></i>Soporte</a></li>
                                 </ul>
-                            </div> 
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-9">
@@ -130,43 +141,45 @@
                             </div>
                             <div class="table-responsive profile-applied-job">
                                 <table class="table text-nowrap">
-                                  <thead>
-                                    <tr>
-                                      <th>Título de Trabajo</th>
-                                      <th>Postulantes</th>
-                                      <th>Expiración</th>
-                                      <th>Estado</th>
-                                      <th>Acción</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody id="ofertas-body">
-                                    <!-- Las filas de ofertas se agregarán dinámicamente aquí -->
-                                  </tbody>
+                                    <thead>
+                                        <tr>
+                                            <th>Título de Trabajo</th>
+                                            <th>Postulantes</th>
+                                            <th>Expiración</th>
+                                            <th>Estado</th>
+                                            <th>Acción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ofertas-body">
+                                        <!-- Las filas de ofertas se agregarán dinámicamente aquí -->
+                                    </tbody>
                                 </table>
-                              
+
                                 <!-- pagination -->
                                 <div class="pagination-area">
-                                  <div aria-label="Page navigation example">
-                                    <ul class="pagination">
-                                      <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                          <span aria-hidden="true"><i class="far fa-angle-double-left"></i></span>
-                                        </a>
-                                      </li>
-                                      <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                      <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                      <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                      <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                          <span aria-hidden="true"><i class="far fa-angle-double-right"></i></span>
-                                        </a>
-                                      </li>
-                                    </ul>
-                                  </div>
+                                    <div aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <li class="page-item">
+                                                <a class="page-link" href="#" aria-label="Previous">
+                                                    <span aria-hidden="true"><i
+                                                            class="far fa-angle-double-left"></i></span>
+                                                </a>
+                                            </li>
+                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#" aria-label="Next">
+                                                    <span aria-hidden="true"><i
+                                                            class="far fa-angle-double-right"></i></span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
-                              </div>
-                              
-                        </div> 
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -176,7 +189,8 @@
     </main>
 
     <!-- Modal de Confirmación -->
-    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmLabel" aria-hidden="true">
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -184,11 +198,29 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
-                  ¿Estás seguro que deseas eliminar este aviso?
+                    ¿Estás seguro que deseas eliminar este aviso?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">¿Cerrar sesión?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas cerrar sesión?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar Sesión</button>
                 </div>
             </div>
         </div>
@@ -220,7 +252,8 @@
     <script src="../assets/js/header-footer/loadHeaderFooterEmp.js"></script>
     <script src="../assets/js/config/config.js"></script>
     <script type="module" src="../assets/js/modules/empresa/gestion-oferta.js"></script>
-    <script  src="../assets/js/modules/ofertas/eliminar-oferta.js"></script>
+    <script src="../assets/js/modules/ofertas/eliminar-oferta.js"></script>
+    <script src="../assets/js/logout-button.js"></script>
 
 </body>
 
