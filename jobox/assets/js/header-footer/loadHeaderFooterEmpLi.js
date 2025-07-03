@@ -3,7 +3,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const footer = document.getElementById("footer-placeholder");
 
   // Cargar header
-  fetch("headers/header-employer-li.html")
+  fetch("../headers/header-employer-li.html")
     .then(res => {
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       return res.text();
@@ -16,7 +16,7 @@ window.addEventListener("DOMContentLoaded", () => {
     .catch(err => console.error("Error al cargar el header:", err));
 
   // Cargar footer
-  fetch("footer.html")
+  fetch("../dfooter.html")
     .then(res => {
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       return res.text();
