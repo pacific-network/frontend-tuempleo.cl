@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="assets/css/nice-select.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/stars.css">
 
 </head>
 
@@ -156,7 +157,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-8">
+                    <div class="col-lg-6-5">
                         <div class="user-profile-card">
                             <div class="job-single-content">
                                 <h4 class="mb-4">Desarrollador de Aplicaciones</h4>
@@ -215,6 +216,30 @@
                                         <a href="#"><i class="fab fa-linkedin-in"></i></a>
                                         <a href="#"><i class="fab fa-whatsapp"></i></a>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2-5">
+                        <div class="user-profile-card">
+                            <div class="job-single">
+                                <div class="job-single-list">
+                                    <h5>Calificación de la empresa</h5>
+                                    <div class="company-rating d-flex align-items-center gap-2">
+                                        <div class="stars" data-score="4.7"></div>
+                                        <span class="rating-number">4.7 / 5</span>
+                                    </div>
+
+                                    <p class="mt-2 text-muted">Basado en 50 opiniones</p>
+
+                                    <!-- aqui va el orden de las calificaciones en estrellas -->
+                                    <ul id="rating-breakdown" class="list-unstyled mt-3 mb-4"></ul>
+
+                                    <br>
+                                    <h6>¿Cuál es tu opinión sobre esta empresa?</h6>
+                                    <br>
+                                    <button class="theme-btn theme-btn2" onclick="window.location.href='calification.html'">
+                                        <span class="fe-star"></span> Calificar Empresa
                                 </div>
                             </div>
                         </div>
@@ -365,6 +390,7 @@
     <script src="assets/js/main.js"></script>
     <script src="assets/js/config/config.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooter.js"></script>
+    <script src="assets/js/calification.js"></script>
     <script>
         document.querySelectorAll('.job-item').forEach(item => {
             item.addEventListener('click', function(e) {
