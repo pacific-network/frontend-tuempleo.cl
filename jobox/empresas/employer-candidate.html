@@ -16,20 +16,20 @@
     <link rel="icon" type="image/x-icon" href="assets/img/logo/favicon.png">
 
     <!-- css -->
-    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./assets/css/all-fontawesome.min.css">
-    <link rel="stylesheet" href="./assets/css/feather.min.css">
-    <link rel="stylesheet" href="./assets/css/flaticon.css">
-    <link rel="stylesheet" href="./assets/css/animate.min.css">
-    <link rel="stylesheet" href="./assets/css/magnific-popup.min.css">
-    <link rel="stylesheet" href="./assets/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="./assets/css/nice-select.min.css">
-    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/all-fontawesome.min.css">
+    <link rel="stylesheet" href="../assets/css/feather.min.css">
+    <link rel="stylesheet" href="../assets/css/flaticon.css">
+    <link rel="stylesheet" href="../assets/css/animate.min.css">
+    <link rel="stylesheet" href="../assets/css/magnific-popup.min.css">
+    <link rel="stylesheet" href="../assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="../assets/css/nice-select.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <style>
         /* Estilos para ocultar datos */
         .secure-text {
             color: transparent;
-            text-shadow: 0 0 8px rgba(0,0,0,0.5);
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
             user-select: none;
         }
 
@@ -111,16 +111,10 @@
         <div class="user-profile py-120">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-3">
+                    <aside class="col-lg-3">
                         <div class="user-profile-sidebar">
                             <div class="user-profile-sidebar-top">
-                                <div class="user-profile-img">
-                                    <img src="assets/img/job/04.jpg" alt="">
-                                    <button type="button" class="profile-img-btn"><i class="far fa-camera"></i></button>
-                                    <input type="file" class="profile-img-file">
-                                </div>
-                                <h4>Vertice Call Center</h4>
-                                <p>Call Center</p>
+
                             </div>
                             <ul class="user-profile-sidebar-list">
                                 <li><a href="employer-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a></li>
@@ -139,12 +133,13 @@
                                 </ul>
                             </div> 
                         </div>
-                    </div>
-                    <div class="col-lg-9">
-                        <div class="user-profile-card">
-                            <div class="user-profile-card-header">
+                    </aside>
+
+                    <main class="col-lg-9">
+                        <section class="user-profile-card">
+                            <header class="user-profile-card-header mb-4">
                                 <h4 class="user-profile-card-title">Todos los Candidatos</h4>
-                            </div>
+                            </header>
                             <div class="user-profile-candidate">
                                 <div class="row" id="candidates-container">
                                     <div class="col-md-6 col-lg-6">
@@ -314,6 +309,8 @@
                 </div>
             </div>
         </div>
+
+
         <!-- employer-all-candidate end -->
 
         <!-- Modal de confirmación -->
@@ -387,69 +384,69 @@
             button.addEventListener('click', function(e) {
                 e.preventDefault();
 
-                // Obtener el nombre del candidato desde el atributo data
-                const candidateName = this.getAttribute('data-candidate');
+                    // Obtener el nombre del candidato desde el atributo data
+                    const candidateName = this.getAttribute('data-candidate');
 
-                // Guardar referencia al candidato y al elemento padre
-                candidateToDelete = candidateName;
-                candidateElement = this.closest('.col-md-6.col-lg-6');
+                    // Guardar referencia al candidato y al elemento padre
+                    candidateToDelete = candidateName;
+                    candidateElement = this.closest('.col-md-6.col-lg-6');
 
-                // Mostrar el nombre en el modal
-                candidateNameSpan.textContent = candidateName;
+                    // Mostrar el nombre en el modal
+                    candidateNameSpan.textContent = candidateName;
 
-                // Mostrar el modal
-                confirmDeleteModal.show();
+                    // Mostrar el modal
+                    confirmDeleteModal.show();
+                });
+            });
+
+            // Configurar el botón de confirmar eliminación
+            confirmDeleteBtn.addEventListener('click', function () {
+                if (candidateElement) {
+                    // Eliminar el elemento del DOM
+                    candidateElement.remove();
+
+                    // Aquí podrías agregar código para eliminar el candidato de tu base de datos
+                    // mediante una llamada AJAX si es necesario
+
+                    // Cerrar el modal
+                    confirmDeleteModal.hide();
+                }
             });
         });
-
-        // Configurar el botón de confirmar eliminación
-        confirmDeleteBtn.addEventListener('click', function() {
-            if (candidateElement) {
-                // Eliminar el elemento del DOM
-                candidateElement.remove();
-
-                // Aquí podrías agregar código para eliminar el candidato de tu base de datos
-                // mediante una llamada AJAX si es necesario
-
-                // Cerrar el modal
-                confirmDeleteModal.hide();
-            }
-        });
-    });
     </script>
     <script>
-    document.querySelectorAll('.toggle-secure-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const candidateItem = this.closest('.candidate-item');
-            const isRevealed = candidateItem.classList.contains('show-data');
+        document.querySelectorAll('.toggle-secure-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const candidateItem = this.closest('.candidate-item');
+                const isRevealed = candidateItem.classList.contains('show-data');
 
-            if (!isRevealed) {
-                // Mostrar datos
-                candidateItem.classList.add('show-data');
-                candidateItem.querySelectorAll('.secure-text').forEach(el => {
-                    el.textContent = el.getAttribute('data-real-text');
-                });
-                const img = candidateItem.querySelector('.secure-img');
-                if (img) {
-                    img.src = img.getAttribute('data-real-src');
+                if (!isRevealed) {
+                    // Mostrar datos
+                    candidateItem.classList.add('show-data');
+                    candidateItem.querySelectorAll('.secure-text').forEach(el => {
+                        el.textContent = el.getAttribute('data-real-text');
+                    });
+                    const img = candidateItem.querySelector('.secure-img');
+                    if (img) {
+                        img.src = img.getAttribute('data-real-src');
+                    }
+                    this.innerHTML = '<i class="fas fa-eye-slash"></i> Ocultar';
+                    this.classList.remove('btn-outline-primary');
+                    this.classList.add('btn-outline-secondary');
+                } else {
+                    // Ocultar datos
+                    candidateItem.classList.remove('show-data');
+                    candidateItem.querySelectorAll('.secure-text').forEach(el => {
+                        const original = el.getAttribute('data-real-text');
+                        el.textContent = original.replace(/[^\s]/g, '•');
+                    });
+                    this.innerHTML = '<i class="fas fa-eye"></i> Mostrar';
+                    this.classList.remove('btn-outline-secondary');
+                    this.classList.add('btn-outline-primary');
                 }
-                this.innerHTML = '<i class="fas fa-eye-slash"></i> Ocultar';
-                this.classList.remove('btn-outline-primary');
-                this.classList.add('btn-outline-secondary');
-            } else {
-                // Ocultar datos
-                candidateItem.classList.remove('show-data');
-                candidateItem.querySelectorAll('.secure-text').forEach(el => {
-                    const original = el.getAttribute('data-real-text');
-                    el.textContent = original.replace(/[^\s]/g, '•');
-                });
-                this.innerHTML = '<i class="fas fa-eye"></i> Mostrar';
-                this.classList.remove('btn-outline-secondary');
-                this.classList.add('btn-outline-primary');
-            }
+            });
         });
-    });
-    </script>
+    </script> -->
 </body>
 
 </html>

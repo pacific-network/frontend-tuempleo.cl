@@ -10,10 +10,10 @@
     <meta name="keywords" content="">
 
     <!-- title -->
-    <title>Registro Empresa</title>
+    <title>Registro Empleador</title>
 
     <!-- favicon -->
-    <link rel="icon" type="image/x-icon" href="assets/img/logo/favicon.png">
+    <link rel="icon" type="image/x-icon" href="../assets/img/logo/favicon.png">
 
     <!-- css -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -39,9 +39,12 @@
     </div>
     <!-- preloader end -->
 
+
     <!-- header area -->
     <div id="header-placeholder"></div>
     <!-- header area end -->
+
+
 
     <main class="main">
 
@@ -51,12 +54,14 @@
                 <h1 class="breadcrumb-title">Crear Cuenta Empresa</h1>
             </div>
             <div class="hero-shape">
-                <img class="hero-shape-1" src="assets/img/shape/03.svg" alt="">
-                <img class="hero-shape-2" src="assets/img/shape/05.svg" alt="">
-                <img class="hero-shape-3" src="assets/img/shape/06.svg" alt="">
-                <img class="hero-shape-4" src="assets/img/shape/07.svg" alt="">
+                <img class="hero-shape-1" src="../assets/img/shape/03.svg" alt="">
+                <img class="hero-shape-2" src="../assets/img/shape/05.svg" alt="">
+                <img class="hero-shape-3" src="../assets/img/shape/06.svg" alt="">
+                <img class="hero-shape-4" src="../assets/img/shape/07.svg" alt="">
             </div>
         </div>
+
+
 
         <!-- register area -->
         <div class="login-area py-120">
@@ -69,8 +74,8 @@
                         </div>
                         <form id="registroForm">
                             <div class="form-group">
-                                <label>Nombre Empresa</label>
-                                <input type="text" class="form-control" id="nombre" placeholder="Nombre de la Empresa">
+                                <label>Nombre Completo</label>
+                                <input type="text" id="nombre" class="form-control" placeholder="Tu Nombre">
                             </div>
                             <div class="form-group">
                                 <label>Correo Electrónico</label>
@@ -80,18 +85,18 @@
                                 <label>Contraseña</label>
                                 <input type="password" class="form-control" id="password" placeholder="Tu Contraseña">
                             </div>
+
                             <div class="form-check form-group">
-                                <input class="form-check-input" type="checkbox" value="" id="agree">
+                                <input class="form-check-input" type="checkbox" id="agree">
                                 <label class="form-check-label" for="agree">
                                    Acepto los <a href="#">Términos de Servicio.</a>
                                 </label>
                             </div>
+                            <div id="mensaje" style="color: red; margin-bottom: 10px;"></div>
                             <div class="d-flex align-items-center">
-                                <button type="submit" class="theme-btn">
-                                    <i class="far fa-paper-plane"></i> Registrarse
-                                </button>
+                                <button type="submit" class="theme-btn"><i class="far fa-paper-plane"></i>
+                                    Registrarse</button>
                             </div>
-                            <div id="mensaje" style="margin-top: 10px; color: red;"></div>
                         </form>
                         <div class="login-footer">
                             <div class="login-divider"><span>O</span></div>
@@ -107,15 +112,24 @@
         </div>
         <!-- register area end -->
 
+        <div id="custom-alert" class="alert alert-success text-center" role="alert" style="display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+        z-index: 9999; min-width: 300px;">
+        </div>
     </main>
+
+
 
     <!-- footer area -->
     <div id="footer-placeholder"></div>
     <!-- footer area end -->
 
+
+
+
     <!-- scroll-top -->
     <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
     <!-- scroll-top end -->
+
 
     <!-- js -->
     <script src="assets/js/jquery-3.6.0.min.js"></script>
