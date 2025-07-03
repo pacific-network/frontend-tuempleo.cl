@@ -10,9 +10,7 @@
     <meta name="keywords" content="">
 
     <!-- title -->
-
     <title>Registro Empleador</title>
-
 
     <!-- favicon -->
     <link rel="icon" type="image/x-icon" href="../assets/img/logo/favicon.png">
@@ -27,8 +25,6 @@
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="assets/css/nice-select.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/register-button.css">
-
 </head>
 
 <body>
@@ -55,7 +51,7 @@
         <!-- breadcrumb -->
         <div class="site-breadcrumb">
             <div class="container">
-                <h1 class="breadcrumb-title">Crear Cuenta Candidato</h1>
+                <h1 class="breadcrumb-title">Crear Cuenta Empresa</h1>
             </div>
             <div class="hero-shape">
                 <img class="hero-shape-1" src="../assets/img/shape/03.svg" alt="">
@@ -74,7 +70,7 @@
                     <div class="login-form">
                         <div class="login-header">
                             <img src="assets/img/logo/logo.png" alt="">
-                            <p style="color: #3C65F5">Crea tu cuenta en Tuempleo</p>
+                            <p>Crea tu cuenta de Empresa en Tuempleo</p>
                         </div>
                         <form id="registroForm">
                             <div class="form-group">
@@ -83,17 +79,17 @@
                             </div>
                             <div class="form-group">
                                 <label>Correo Electrónico</label>
-                                <input type="email" id="email" class="form-control" placeholder="Tu Correo">
+                                <input type="email" class="form-control" id="email" placeholder="Correo Electrónico">
                             </div>
                             <div class="form-group">
                                 <label>Contraseña</label>
-                                <input type="password" id="password" class="form-control" placeholder="Tu Contraseña">
+                                <input type="password" class="form-control" id="password" placeholder="Tu Contraseña">
                             </div>
 
                             <div class="form-check form-group">
                                 <input class="form-check-input" type="checkbox" id="agree">
                                 <label class="form-check-label" for="agree">
-                                    Acepto los <a href="terms.html">Términos de Servicio.</a>
+                                   Acepto los <a href="#">Términos de Servicio.</a>
                                 </label>
                             </div>
                             <div id="mensaje" style="color: red; margin-bottom: 10px;"></div>
@@ -108,7 +104,7 @@
                                 <a href="#" class="btn-fb"><i class="fab fa-facebook"></i> Registrarse con Facebook</a>
                                 <a href="#" class="btn-gl"><i class="fab fa-google"></i> Registrarse con Google</a>
                             </div>
-                            <p>¿Tienes una cuenta? <a href="login.html">Ingresar.</a></p>
+                            <p>¿Tienes una cuenta? <a href="login-employer.html">Ingresar aquí.</a></p>
                         </div>
                     </div>
                 </div>
@@ -136,8 +132,8 @@
 
 
     <!-- js -->
-    <script src="../assets/js/jquery-3.6.0.min.js"></script>
-    <script src="../assets/js/modernizr.min.js"></script>
+    <script src="assets/js/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/modernizr.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/imagesloaded.pkgd.min.js"></script>
     <script src="assets/js/jquery.magnific-popup.min.js"></script>
@@ -150,10 +146,9 @@
     <script src="assets/js/wow.min.js"></script>
     <script src="assets/js/nice-select.min.js"></script>
     <script src="assets/js/main.js"></script>
-    <script src="assets/js/config/config.js"></script>
-    <script src="assets/js/header-footer/loadHeaderFooterSO.js"></script>
-    <script src="assets/js/register-button.js"></script>
-
+    <script src="assets/js/header-footer/loadHeaderFooterEmpSO3.js"></script>
+    <script src="assets/js/modules/auth/registro-nuevo-usuario.js"></script> <!-- Aquí se incluye tu script personalizado -->
+    <script src="assets/js/modules/auth/form-registro-empresa.js"></script> <!-- Nuevo script para manejar el registro -->
 
 </body>
 
