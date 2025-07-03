@@ -26,21 +26,29 @@
     <link rel="stylesheet" href="assets/css/nice-select.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
-.star-rating {
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-    font-size: 1.8rem;
-    cursor: pointer;
-}
-.star-rating .fa-star {
-    color: #ccc;
-    transition: color 0.2s;
-}
-.star-rating .fa-star.checked {
-    color: #f4c150;
-}
-</style>
+        .star-rating {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+        .star-rating .fa-star {
+            color: #ccc;
+            transition: color 0.2s;
+        }
+        .star-rating .fa-star.checked {
+            color: #f4c150;
+        }
+        .anonymous-box {
+            background: #f0fff4;
+            border: 1px solid #a3e635;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+        }
+    </style>
 
 
 </head>
@@ -71,13 +79,21 @@
             </div>
         </div>
         <div class="container d-flex justify-content-center align-items-center flex-column py-5">
+
             <div class="w-100 mb-3">
                 <a href="job-single-2-si.html">
                     <i class="theme-btn theme-btn1"><span class="fe-arrow-left"></span>Volver</i>
                 </a>
             </div>
-            <h3 class="mb-4 text-center">¿Has trabajado en esta empresa?</h3>
 
+            <!-- Mensaje de anonimato -->
+            <div class="anonymous-box text-center p-3 mb-4">
+                <i class="fas fa-user-secret fa-2x mb-2 text-success"></i>
+                <p class="mb-0 text-muted"><strong>Tu opinión es completamente anónima.</strong><br>Solo buscamos mejorar la experiencia laboral.</p>
+            </div>
+        
+            <h3 class="mb-4 text-center">¿Has trabajado en esta empresa?</h3>
+        
             <!-- Paso 1: Selección -->
             <form id="seleccionTipoForm" class="mb-4 text-center">
                 <div class="form-check form-check-inline">
@@ -96,53 +112,64 @@
         
             <!-- Formulario: trabajó o trabaja -->
             <form id="formTrabajador" style="display: none; max-width: 600px; width: 100%;">
-                <h5 class="mb-3 text-center">Evalúa tu experiencia laboral</h5>
-            
-                <div class="mb-3">
-                    <label>Ambiente laboral</label>
-                    <div class="star-rating" data-name="ambiente"></div>
-                </div>
-                <div class="mb-3">
-                    <label>Beneficios y compensaciones</label>
-                    <div class="star-rating" data-name="beneficios"></div>
-                </div>
-                <div class="mb-3">
-                    <label>Cultura organizacional</label>
-                    <div class="star-rating" data-name="cultura"></div>
-                </div>
-                <div class="mb-3">
-                    <label for="comentario1">Comentario adicional</label>
-                    <textarea class="form-control" id="comentario1" rows="3"></textarea>
-                </div>
-                <div class="text-center">
-                    <button type="submit" class="btn btn-success">Enviar evaluación</button>
+                <div class="card shadow-sm p-4 mb-4 rounded-4 border-0">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-briefcase fa-2x text-primary mb-2"></i>
+                        <h5 class="mb-0">Evalúa tu experiencia laboral</h5>
+                    </div>
+                
+                    <div class="mb-3">
+                        <label class="form-label">Ambiente laboral</label>
+                        <div class="star-rating" data-name="ambiente"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Beneficios y compensaciones</label>
+                        <div class="star-rating" data-name="beneficios"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Cultura organizacional</label>
+                        <div class="star-rating" data-name="cultura"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="comentario1" class="form-label">Comentario adicional</label>
+                        <textarea class="form-control" id="comentario1" rows="3" placeholder="Cuéntanos más sobre tu experiencia..."></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success px-4">Enviar evaluación</button>
+                    </div>
                 </div>
             </form>
-        
+            
             <!-- Formulario: no trabajó -->
             <form id="formNoTrabajador" style="display: none; max-width: 600px; width: 100%;">
-                <h5 class="mb-3 text-center">Evalúa tu proceso de postulación</h5>
-            
-                <div class="mb-3">
-                    <label>Claridad en la oferta</label>
-                    <div class="star-rating" data-name="claridad"></div>
-                </div>
-                <div class="mb-3">
-                    <label>Experiencia en la entrevista</label>
-                    <div class="star-rating" data-name="entrevista"></div>
-                </div>
-                <div class="mb-3">
-                    <label>Tiempo de respuesta</label>
-                    <div class="star-rating" data-name="tiempo"></div>
-                </div>
-                <div class="mb-3">
-                    <label for="comentario2">Comentario adicional</label>
-                    <textarea class="form-control" id="comentario2" rows="3"></textarea>
-                </div>
-                <div class="text-center">
-                    <button type="submit" class="btn btn-success">Enviar evaluación</button>
+                <div class="card shadow-sm p-4 mb-4 rounded-4 border-0">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-user-check fa-2x text-warning mb-2"></i>
+                        <h5 class="mb-0">Evalúa tu proceso de postulación</h5>
+                    </div>
+                
+                    <div class="mb-3">
+                        <label class="form-label">Claridad en la oferta</label>
+                        <div class="star-rating" data-name="claridad"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Experiencia en la entrevista</label>
+                        <div class="star-rating" data-name="entrevista"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tiempo de respuesta</label>
+                        <div class="star-rating" data-name="tiempo"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="comentario2" class="form-label">Comentario adicional</label>
+                        <textarea class="form-control" id="comentario2" rows="3" placeholder="¿Cómo fue tu experiencia de postulación?"></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success px-4">Enviar evaluación</button>
+                    </div>
                 </div>
             </form>
+
         </div>
     </main>
 
