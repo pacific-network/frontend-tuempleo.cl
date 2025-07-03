@@ -33,7 +33,8 @@ if (!userId) {
           </div>
         </td>
         <td>
-          <a href="employer-candidate.html" class="btn btn-outline-primary btn-sm rounded-pill d-inline-flex align-items-center position-relative px-2 py-1">
+          <a href="employer-candidate.html?id=${oferta.id}" class="btn btn-outline-primary btn-sm rounded-pill d-inline-flex align-items-center position-relative px-2 py-1">
+
             <i class="far fa-users me-1 fs-6"></i>
             <span class="fs-6">Postulantes</span>
             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" style="font-size: 0.6em; padding: 0.25em 0.4em;">

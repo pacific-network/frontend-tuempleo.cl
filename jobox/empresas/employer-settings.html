@@ -15,7 +15,9 @@
     <!-- favicon -->
     <link rel="icon" type="image/x-icon" href="assets/img/logo/favicon.png">
 
-    <!-- css -->../
+
+    <!-- css -->
+
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/all-fontawesome.min.css">
     <link rel="stylesheet" href="../assets/css/feather.min.css">
@@ -56,15 +58,15 @@
                 <ul class="breadcrumb-menu">
                     <li><a href="index.html">Empresa</a></li>
                     <li class="active">Configuración</li>
-                </ul>../
-            </div>../
+
+                </ul>
+            </div>
             <div class="hero-shape">../
+
                 <img class="hero-shape-1" src="../assets/img/shape/03.svg" alt="">
                 <img class="hero-shape-2" src="../assets/img/shape/05.svg" alt="">
                 <img class="hero-shape-3" src="../assets/img/shape/06.svg" alt="">
                 <img class="hero-shape-4" src="../assets/img/shape/07.svg" alt="">
-            </div>../
-        </div>
 
 
 
@@ -76,13 +78,7 @@
                     <div class="col-lg-3">
                         <div class="user-profile-sidebar">
                             <div class="user-profile-sidebar-top">
-                                <div class="user-profile-img">
-                                    <img src="assets/img/job/04.jpg" alt="">
-                                    <button type="button" class="profile-img-btn"><i class="far fa-camera"></i></button>
-                                    <input type="file" class="profile-img-file">
-                                </div>
-                                <h4>Pacific Network</h4>
-                                <p>Telecomunicaciones</p>
+
                             </div>
                             <ul class="user-profile-sidebar-list">
                                 <li><a href="employer-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a>
@@ -97,7 +93,9 @@
                                 </li>
                                 <li><a class="active" href="employer-settings.html"><i class="far fa-cog"></i>
                                         Configuración</a></li>
-                                <li><a href="index.html"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
+
+                                <li><a href="#" id="logoutButton"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
+
                             </ul>
                         </div>
                         <div class="user-profile-sidebar">
@@ -359,6 +357,23 @@
             </div>
         </div>
         <!-- employer-settings end -->
+        <div class="modal fade" id="logoutModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">¿Cerrar sesión?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro de que deseas cerrar sesión?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar Sesión</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
     </main>
@@ -389,8 +404,13 @@
     <script src="../assets/js/wow.min.js"></script>
     <script src="../assets/js/nice-select.min.js"></script>
     <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/config/config.js"></script>
     <script src="../assets/js/header-footer/loadHeaderFooterEmp.js"></script>
     <script src="../assets/js/actividad-empresa.js"></script>
+    <script src="../assets/js/logout-button.js"></script>
+    <script src="../assets/js/modules/empresa/dinamic-sidebar.js"></script>
+
+
     <script>
         async function cargarCodigosDePais() {
             try {

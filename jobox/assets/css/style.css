@@ -5733,13 +5733,17 @@ user profile css
   margin: 12px 0;
   font-weight: 500;
   color: #05264E;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
 }
 
 .profile-info-list li span {
   float: right;
   font-weight: 300;
-  font-size: 15px;
-  
+  font-size: 16px;
+  text-align: right;
 }
 
 .profile-skill a{
