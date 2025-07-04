@@ -25,6 +25,35 @@
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css" />
     <link rel="stylesheet" href="assets/css/nice-select.min.css" />
     <link rel="stylesheet" href="assets/css/style.css" />
+
+    <style>
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input.form-control {
+            padding-right: 2.75rem; /* espacio para el ícono */
+            height: 45px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            top: 0;
+            right: 0.75rem;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #6c757d;
+            font-size: 1.1rem;
+            padding: 0;
+            z-index: 10;
+        }
+        
+    </style>
 </head>
 
 <body>
@@ -68,9 +97,12 @@
                                 <label>Correo Electrónico</label>
                                 <input type="email" class="form-control" placeholder="Tu Correo" required />
                             </div>
-                            <div class="form-group">
+                            <div class="form-group password-wrapper">
                                 <label>Contraseña</label>
-                                <input type="password" class="form-control" placeholder="Tu Contraseña" required />
+                                <input type="password" id="password" class="form-control" placeholder="Tu Contraseña" required />
+                                <button type="button" class="password-toggle" id="togglePassword">
+                                    <i class="far fa-eye"></i>
+                                </button>
                             </div>
                             <div class="d-flex justify-content-between mb-4">
                                 <div class="form-check">
