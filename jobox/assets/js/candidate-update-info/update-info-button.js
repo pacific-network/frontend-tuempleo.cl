@@ -65,15 +65,22 @@
                 staticConfirmBtn.addEventListener('click', async function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                
+
+                    // Validaciones
+                    const telefonoOk = validarNumeroTelefono();
+                    const contactoOk = validarContacto();
+                    const adicionalesOk = validarCamposAdicionales();
+
+                    if (!telefonoOk || !contactoOk || !adicionalesOk) return;
+
                     staticConfirmBtn.disabled = true;
                     document.getElementById('btn-text-estatico').style.display = 'none';
                     document.getElementById('btn-loading-estatico').style.display = 'inline';
-                
+
                     try {
                         await actualizarPostulante();
                         showAlert('¡Actualización exitosa!');
-                        window.location.href = 'candidate-profile.html'; // Asegúrate que este path exista
+                        window.location.href = 'candidate-profile.html';
                     } catch (error) {
                         showAlert('Error al actualizar: ' + error.message, 'danger');
                     } finally {
@@ -132,15 +139,22 @@
                 floatingConfirmBtn.addEventListener('click', async function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                
+
+                    // Validaciones
+                    const telefonoOk = validarNumeroTelefono();
+                    const contactoOk = validarContacto();
+                    const adicionalesOk = validarCamposAdicionales();
+
+                    if (!telefonoOk || !contactoOk || !adicionalesOk) return;
+
                     floatingConfirmBtn.disabled = true;
                     document.getElementById('btn-text-floating').style.display = 'none';
                     document.getElementById('btn-loading-floating').style.display = 'inline';
-                
+
                     try {
                         await actualizarPostulante();
                         showAlert('¡Actualización exitosa!');
-                        window.location.href = 'candidate-profile.html'; // o la ruta que corresponda
+                        window.location.href = 'candidate-profile.html';
                     } catch (error) {
                         showAlert('Error al actualizar: ' + error.message, 'danger');
                     } finally {

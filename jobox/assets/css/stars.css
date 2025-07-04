@@ -1,0 +1,49 @@
+.company-rating .stars {
+    font-size: 1.4rem;
+    color: #f4c150;
+    display: inline-block;
+}
+
+.company-rating .stars .fa-star {
+    color: #ccc;
+}
+
+.company-rating .stars .fa-star.filled {
+    color: #f4c150;
+}
+
+#rating-breakdown li {
+        font-size: 15px;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+}
+
+.star-row {
+    color: #f4c150;
+    min-width: 110px;
+}
+
+.star-row i {
+    margin-right: 2px;
+}
+
+.star-count {
+    color: #444;
+    font-weight: 500;
+}
+    
+@media (min-width: 992px) {
+    .col-lg-2-5 {
+        flex: 0 0 auto;
+        width: 20%; /* 2.5 de 12 columnas = 2.5/12 * 100 */
+    }
+}
+
+@media (min-width: 992px) {
+    .col-lg-6-5 {
+        flex: 0 0 auto;
+        width: 55%; /* 2.5 de 12 columnas = 2.5/12 * 100 */
+    }
+}
