@@ -15,11 +15,21 @@ if (!userId) {
     const tbody = document.getElementById('ofertas-body');
     tbody.innerHTML = ''; // limpia el contenido anterior
 
-    ofertas.forEach(oferta => {
+    for (const oferta of ofertas) {
       const row = document.createElement('tr');
       const fecha = new Date(oferta.fecha_cierre).toLocaleDateString('es-CL', {
         year: 'numeric', month: 'short', day: 'numeric'
       });
+
+      // 🔄 Obtener total de postulantes
+      let totalPostulantes = 0;
+      try {
+        const resPostulantes = await fetch(`${BASE_URL_API}/postulaciones/oferta/${oferta.id}`);
+        const listaPostulantes = await resPostulantes.json();
+        totalPostulantes = Array.isArray(listaPostulantes) ? listaPostulantes.length : 0;
+      } catch (err) {
+        console.warn(`❗ No se pudo obtener postulantes para oferta ${oferta.id}:`, err);
+      }
 
       row.innerHTML = `
         <td>
@@ -34,18 +44,21 @@ if (!userId) {
         </td>
         <td>
           <a href="employer-candidate.html?id=${oferta.id}" class="btn btn-outline-primary btn-sm rounded-pill d-inline-flex align-items-center position-relative px-2 py-1">
-
             <i class="far fa-users me-1 fs-6"></i>
             <span class="fs-6">Postulantes</span>
             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" style="font-size: 0.6em; padding: 0.25em 0.4em;">
-              0
+              ${totalPostulantes}
               <span class="visually-hidden">postulantes</span>
             </span>
             <i class="far fa-chevron-right ms-1 fs-6"></i>
           </a>
         </td>
         <td>${fecha}</td>
-        <td><span class="badge ${oferta.es_activa ? 'badge-success' : 'badge-secondary'}">${oferta.es_activa ? 'Activo' : 'Inactivo'}</span></td>
+        <td>
+          <span class="badge ${oferta.es_activa ? 'badge-success' : 'badge-secondary'}">
+            ${oferta.es_activa ? 'Activo' : 'Inactivo'}
+          </span>
+        </td>
         <td>
           <a href="employer-view-job.html?id=${oferta.id}" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
           <a href="employer-edit-job.html?id=${oferta.id}" class="btn btn-outline-secondary btn-sm"><i class="far fa-pen"></i></a>
@@ -53,13 +66,13 @@ if (!userId) {
         </td>
       `;
       tbody.appendChild(row);
-    });
+    }
 
-    // Luego de renderizar todas las filas, activamos los botones con modal
+    // Activar lógica de botones de eliminar
     activarBotonesEliminar();
 
   } catch (error) {
-    console.error('Error cargando ofertas:', error);
+    console.error('❌ Error cargando ofertas:', error);
   }
 }
 
@@ -74,7 +87,6 @@ function activarBotonesEliminar() {
   let idOfertaAEliminar = null;
   let filaAEliminar = null;
 
-  // Delegamos a cada botón
   document.querySelectorAll('.btn-delete').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
@@ -105,7 +117,7 @@ function activarBotonesEliminar() {
         alert(`Error al eliminar: ${err}`);
       }
     } catch (err) {
-      console.error('Error al eliminar la oferta:', err);
+      console.error('❌ Error al eliminar la oferta:', err);
       alert('Error inesperado al eliminar.');
     } finally {
       idOfertaAEliminar = null;
