@@ -16,7 +16,7 @@ window.addEventListener("DOMContentLoaded", () => {
     .catch(err => console.error("Error al cargar el header:", err));
 
   // Cargar footer
-  fetch("../dfooter.html")
+  fetch("../footer.html")
     .then(res => {
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       return res.text();

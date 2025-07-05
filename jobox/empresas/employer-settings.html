@@ -114,207 +114,196 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>RUT Empresa</label>
-                                                        <input type="text" class="form-control" value="12.345.678-9"
+                                                        <input id="rut_empresa" type="text" class="form-control"
                                                             disabled>
                                                     </div>
                                                 </div>
+
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Razón Social</label>
-                                                        <input type="text" class="form-control" value="Pacific Network"
+                                                        <input id="razon_social" type="text" class="form-control"
                                                             disabled>
                                                     </div>
                                                 </div>
+
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Nombre Empresa</label>
-                                                        <input type="text" class="form-control" value="Pacific Network"
+                                                        <input id="nombre_fantasia" type="text" class="form-control"
                                                             placeholder="Nombre Empresa">
                                                     </div>
                                                 </div>
+
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Categoría</label>
-                                                        <select class="select">
-                                                            <option value="">Seleccione una categoria</option>
-                                                            <option selected value="1">Primera</option>
+                                                        <select class="select" id="categoria_empresa">
+                                                            <option value="">Seleccione una categoría</option>
+                                                            <option value="1">Primera</option>
                                                             <option value="2">Segunda</option>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Correo Empresa</label>
-                                                        <input type="text" class="form-control"
-                                                            value="jjorquera@pacificnetwork.cl"
-                                                            placeholder="Ingrese Correo" readonly>
-                                                    </div>
-                                                </div>
+
+
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Actividad Empresa</label>
-                                                        <input type="text" class="form-control"
-                                                            placeholder="Telecomunicaciones">
+                                                        <input id="actividad_empresa" type="text" class="form-control"
+                                                            placeholder="Actividad Económica">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+
+                                                <!-- <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Fono Empresa</label>
-                                                        <div class="input-group">
-                                                            <select class="form-control" style="width: 100px;"
-                                                                id="codigo_pais">
-                                                                <option disabled selected></option>
-                                                            </select>
-                                                            <input type="text" class="form-control"
-                                                                placeholder="9 9183 6445" id="numero_telefono">
-                                                        </div>
+                                                        <input id="telefono_empresa" type="text" class="form-control"
+                                                            placeholder="+56 9 1234 5678">
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label>Tamaño Equipo</label>
-                                                        <select class="select">
-                                                            <option value="">Seleccione Tamaño de equipo</option>
-                                                            <option value="1">MicroEmpresa </option>
-                                                            <option value="2" selected>Pequeña Empresa</option>
-                                                            <option value="3">Mediana Empresa</option>
-                                                            <option value="4">Gran Empresa</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                                </div> -->
+
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label>Año Inicio Actividades</label>
-                                                        <input type="text" class="form-control" value="2020" disabled>
+                                                        <input id="empresa_inicio_actividades" type="text"
+                                                            class="form-control" disabled>
                                                     </div>
                                                 </div>
-                                                <h6 class="mb-3">Sobre la Empresa</h6>
+
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label>Descripción</label>
-                                                        <textarea class="form-control" cols="30" rows="5"
-                                                            placeholder="Write Description">Somos una empresa de Telecomunicaciones. En nuestro equipo, contamos con gente dedicada exclusivamente a ayudarte. Nuestros expertos están disponibles para resolver cualquier duda, problema o consulta que puedas tener. Nos apasiona brindar un excelente servicio al cliente y estamos comprometidos en asegurarnos de que recibas la asistencia que necesitas de manera rápida y eficiente. Tu satisfacción es nuestra prioridad y estamos aquí para ayudarte en todo momento.</textarea>
+                                                        <textarea id="descripcion_empresa" class="form-control"
+                                                            cols="30" rows="5"
+                                                            placeholder="Escribe una descripción..."></textarea>
                                                     </div>
                                                 </div>
+
                                                 <h6 class="mb-3">Información de Contacto Empresa</h6>
+
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>País</label>
-                                                        <select class="select">
+                                                        <select class="select" id="empresa_pais">
                                                             <option value="">Elija un País</option>
-                                                            <option value="1" selected>Chile</option>
-                                                            <option value="2">Argentina</option>
-                                                            <option value="3">Perú</option>
-                                                            <option value="4">Brasil</option>
-                                                            <option value="5">Colombia</option>
+                                                            <option value="Chile">Chile</option>
+                                                            <option value="Argentina">Argentina</option>
+                                                            <option value="Perú">Perú</option>
+                                                            <option value="Brasil">Brasil</option>
+                                                            <option value="Colombia">Colombia</option>
                                                         </select>
                                                     </div>
                                                 </div>
+
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Región</label>
-                                                        <input type="text" class="form-control"
-                                                            value="Metropolitana de Santiago" placeholder="Ciudad">
+                                                        <input id="empresa_region" type="text" class="form-control"
+                                                            placeholder="Ciudad">
                                                     </div>
                                                 </div>
+
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Comuna</label>
-                                                        <input type="text" class="form-control" value="Huechuraba"
+                                                        <input id="empresa_comuna" type="text" class="form-control"
                                                             placeholder="Comuna">
                                                     </div>
                                                 </div>
+
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Dirección</label>
-                                                        <input type="text" class="form-control"
-                                                            value="Av. del Valle Sur 662" placeholder="Dirección">
+                                                        <input id="empresa_direccion" type="text" class="form-control"
+                                                            placeholder="Dirección">
                                                     </div>
                                                 </div>
+
                                                 <h6 class="mb-3">Datos Usuario Empresa</h6>
+
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Nombre</label>
-                                                        <input type="text" class="form-control" value="Jose Luis">
+                                                        <input id="nombre_usuario" type="text" class="form-control">
                                                     </div>
                                                 </div>
+
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Apellido</label>
-                                                        <input type="text" class="form-control" value="Jorquera">
+                                                        <input id="usuario_apellido" type="text" class="form-control">
                                                     </div>
                                                 </div>
+
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Correo</label>
-                                                        <input type="text" class="form-control"
-                                                            value="jjorquera@pacificnetwork.cl">
+                                                        <input id="usuario_correo" type="text" class="form-control"
+                                                            readonly>
                                                     </div>
                                                 </div>
+
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Número de Contacto</label>
-                                                        <div class="input-group">
-                                                            <select class="form-control" style="width: 100px;"
-                                                                id="codigo_pais_1">
-                                                                <option disabled selected></option>
-                                                            </select>
-                                                            <input type="text" class="form-control"
-                                                                placeholder="9 9329 7091" id="numero_telefono">
-                                                        </div>
+                                                        <input id="usuario_telefono" type="text" class="form-control"
+                                                            placeholder="9 9329 7091">
                                                     </div>
                                                 </div>
+
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Cargo</label>
-                                                        <input type="text" class="form-control"
+                                                        <input id="usuario_cargo" type="text" class="form-control"
                                                             placeholder="CEO de Empresa">
                                                     </div>
                                                 </div>
+
                                                 <h6 class="mb-3">Redes Sociales</h6>
+
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Facebook URL</label>
-                                                        <input type="text" class="form-control"
-                                                            value="https://www.facebook.com/"
+                                                        <input id="empresa_facebook" type="text" class="form-control"
                                                             placeholder="https://www.facebook.com/">
                                                     </div>
                                                 </div>
+
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Twitter URL</label>
-                                                        <input type="text" class="form-control"
-                                                            value="https://www.twitter.com/"
+                                                        <input id="empresa_twitter" type="text" class="form-control"
                                                             placeholder="https://www.twitter.com/">
                                                     </div>
                                                 </div>
+
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Linkedin URL</label>
-                                                        <input type="text" class="form-control"
-                                                            value="https://www.linkedin.com/"
+                                                        <input id="empresa_linkedin" type="text" class="form-control"
                                                             placeholder="https://www.linkedin.com/">
                                                     </div>
                                                 </div>
+
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Pinterest URL</label>
-                                                        <input type="text" class="form-control"
-                                                            value="https://www.pinterest.com/"
+                                                        <input id="empresa_pinterest" type="text" class="form-control"
                                                             placeholder="https://www.pinterest.com/">
                                                     </div>
                                                 </div>
+
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Whatsapp URL</label>
-                                                        <input type="text" class="form-control"
-                                                            value="https://www.whatsapp.com"
+                                                        <input id="empresa_whatsapp" type="text" class="form-control"
                                                             placeholder="https://www.whatsapp.com/">
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <button type="button" class="theme-btn mt-4">Update Profile Info <i
-                                                    class="far fa-user"></i></button>
+
+                                                <button type="button" class="theme-btn mt-4">Update Profile Info <i
+                                                        class="far fa-user"></i></button>
                                         </form>
                                     </div>
                                 </div>
@@ -405,8 +394,9 @@
     <script src="../assets/js/actividad-empresa.js"></script>
     <script src="../assets/js/logout-button.js"></script>
     <script src="../assets/js/modules/empresa/dinamic-sidebar.js"></script>
+    <script src="../assets/js/modules/usuario-empleador/get-empresa-id.js"></script>
 
-    <script>
+    <!-- <script>
         async function cargarCodigosDePais() {
             try {
                 const response = await fetch('https://restcountries.com/v3.1/all');
@@ -499,7 +489,7 @@
         }
 
         cargarCodigosDePais();
-    </script>
+    </script> -->
 
 </body>
 
