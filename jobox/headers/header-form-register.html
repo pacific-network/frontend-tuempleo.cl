@@ -1,0 +1,33 @@
+<!-- CSS para fijar el botón abajo a la izquierda -->
+<style>
+    .btn-volver-fixed {
+        position: fixed;
+        left: 20px;
+        z-index: 9999;
+    }
+</style>
+
+<!-- Header con logo a la izquierda -->
+<header class="header">
+    <div class="main-navigation">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container d-flex justify-content-start align-items-center">
+                <!-- Logo arriba a la izquierda -->
+                <a class="navbar-brand" href="index.html">
+                    <img src="./assets/img/logo/logo.png" alt="logo">
+                </a>
+                <a href="login.html" class="theme-btn theme-btn1 btn-volver-fixed">
+                    <span class="fe-arrow-left"></span> Volver
+                </a>
+
+                <!-- Botón hamburguesa (móvil) -->
+                <div class="mobile-menu-right ms-auto d-lg-none">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#main_nav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
