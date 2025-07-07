@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
         googleBtn.addEventListener('click', (e) => {
             e.preventDefault();
             // Redirige al backend para iniciar OAuth con Google
-            window.location.href = `${BASE_API_URL}/auth/google`;
+            window.location.href = `${BASE_URL_API}/auth/google`;
         });
     }
 
