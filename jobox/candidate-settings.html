@@ -27,6 +27,27 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/button.css">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <style>
+        .required-field::after {
+            content: " *";
+            color: red;
+        }
+        .is-invalid {
+            border-color: #dc3545 !important;
+        }
+        .invalid-feedback {
+            color: #dc3545;
+            font-size: 0.875em;
+            display: none;
+            width: 100%;
+            margin-top: 0.25rem;
+        }
+        .is-invalid ~ .invalid-feedback {
+            display: block;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -119,27 +140,36 @@
                                                 <h4 class="mb-3">Información básica</h4>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>Nombre Completo</label>
-                                                        <input type="text" class="form-control" placeholder="Nombre Completo" id="nombre-completo">
+                                                        <label class="required-field">Nombre Completo</label>
+                                                        <input type="text" class="form-control" placeholder="Nombre Completo" id="nombre-completo" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>Correo</label>
+                                                        <label class="required-field">Correo</label>
                                                         <input type="text" class="form-control" placeholder="Correo" id="email" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label>Código País</label>
-                                                        <select class="form-control" style="width: 200px;" id="codigo_pais">
+                                                        <label class="required-field">Código País</label>
+                                                        <select class="form-control" id="codigo_pais" required>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group">
-                                                        <label>Número de Teléfono</label>
-                                                        <input type="text" class="form-control col-md-4" placeholder="Número de teléfono" id="numero_telefono">
+                                                        <label class="required-field">Número de Teléfono</label>
+                                                        <input 
+                                                            type="tel" 
+                                                            class="form-control" 
+                                                            placeholder="Número de teléfono" 
+                                                            id="numero_telefono" 
+                                                            name="numero_telefono" 
+                                                            required>
+                                                        <small id="telefono-error" class="form-text text-danger" style="display: none;">
+                                                            Este campo no puede estar vacío.
+                                                        </small>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2">
@@ -150,7 +180,7 @@
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label>Género</label>
+                                                        <label class="required-field">Género</label>
                                                         <select class="form-control" name="genero" id="genero">
                                                             <option value="">Elija un género</option>
                                                             <option value="Masculino">Masculino</option>
@@ -158,17 +188,20 @@
                                                             <option value="Otro">Otro</option>
                                                             <option value="Prefiero no decir">Prefiero no decir</option>
                                                         </select>
+                                                        <small id="genero-error" class="form-text text-danger" style="display: none;">
+                                                            Debes seleccionar un género.
+                                                        </small>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group">
-                                                        <label>Fecha de Nacimiento</label>
+                                                        <label class="required-field">Fecha de Nacimiento</label>
                                                         <input type="date" class="form-control" id="fecha_nacimiento" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label>Estado Civil</label>
+                                                        <label class="required-field">Estado Civil</label>
                                                         <select class="form-control" name="estado_civil" id="estado_civil">
                                                             <option value="">Seleccione Estado</option>
                                                             <option value="Soltero/a">Soltero/a</option>
@@ -177,21 +210,30 @@
                                                             <option value="Divorciado/a">Divorciado/a</option>
                                                             <option value="Separado/a">Separado/a</option>
                                                         </select>
+                                                        <small id="estado-civil-error" class="form-text text-danger" style="display: none;">
+                                                            Debes seleccionar un estado civil.
+                                                        </small>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label>Descripción Biográfica</label>
+                                                            <label class="required-field">Descripción Biográfica</label>
                                                             <textarea class="form-control" cols="30" rows="5" placeholder="Descripción biográfica" id="descripcion_bio" maxlength="1000"></textarea>
+                                                            <small id="descripcion-error" class="form-text text-danger" style="display: none;">
+                                                                La descripción biográfica no puede estar vacía.
+                                                            </small>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <hr size="3px" color="black"/>
-                                                <h4 class="mb-3">Educación</h4>
+                                                <h4 class="mb-3 required-field">Educación</h4>
                                                 <div class="educacion-container" id="educacion-container">
                                                     <!-- Las entradas de educación se agregarán dinámicamente aquí -->
                                                 </div>
+                                                <small id="educacion-error" class="form-text text-danger" style="display: none;">
+                                                    Debes añadir al menos una entrada de educación.
+                                                </small>
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <button type="button" class="theme-btn theme-btn2" id="agregar-educacion">
@@ -227,19 +269,25 @@
                                                 <div class="row">
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label>Categoría</label>
+                                                            <label class="required-field">Categoría</label>
                                                             <input type="text" class="form-control" placeholder="Categoría de empleo" id="categoria_empleo">
+                                                            <small id="categoria-error" class="form-text text-danger" style="display: none;">
+                                                                Debes ingresar una categoría de empleo.
+                                                            </small>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label>Salario esperado</label>
+                                                            <label class="required-field">Salario esperado</label>
                                                             <input type="text" class="form-control" placeholder="Salario esperado" id="salario_esperado">
+                                                            <small id="salario-error" class="form-text text-danger" style="display: none;">
+                                                                Debes ingresar un salario esperado.
+                                                            </small>
                                                         </div>
                                                     </div>                                                                                                          
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label>Modalidad</label>
+                                                            <label class="required-field">Modalidad</label>
                                                             <select class="form-control" name="modalidad" id="modalidad">
                                                                 <option value="">Seleccione una opción</option>
                                                                 <option value="Presencial">Presencial</option>
@@ -250,24 +298,33 @@
                                                                 <option value="Freelance">Freelance</option>
                                                                 <option value="Remoto">Remoto</option>
                                                             </select>
+                                                            <small id="modalidad-error" class="form-text text-danger" style="display: none;">
+                                                                Debes seleccionar una modalidad.
+                                                            </small>
                                                         </div>
                                                     </div>                                    
                                                 </div>
                                                 <h6 class="mb-3">Información de Contacto</h6>
                                                 <div class="col-md-6">
                                                     <div class="form-group mb-3">
-                                                        <label for="region" class="form-label">Región</label>
+                                                        <label for="region" class="form-label required-field">Región</label>
                                                         <select class="form-control" id="region" required>
                                                             <!-- Las opciones se llenarán con JavaScript -->
                                                         </select>
+                                                        <small id="region-error" class="form-text text-danger" style="display: none;">
+                                                            Debes seleccionar una región.
+                                                        </small>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group mb-3">
-                                                        <label for="comuna" class="form-label">Comuna</label>
+                                                        <label for="comuna" class="form-label required-field">Comuna</label>
                                                         <select class="form-control" id="comuna" required disabled>
                                                             <option value="">Primero seleccione una región</option>
                                                         </select>
+                                                        <small id="comuna-error" class="form-text text-danger" style="display: none;">
+                                                            Debes seleccionar una comuna.
+                                                        </small>
                                                     </div>
                                                 </div>
                                                 <h6 class="mb-3">Redes Sociales</h6>
@@ -395,6 +452,10 @@
     <script src="assets/js/form-register/codigo-pais.js"></script>
     <script src="assets/js/candidate-update-info/update-info-button.js"></script>
     <script src="assets/js/logout-button.js"></script>
-    </script>
+    <script src="assets/js/candidate-update-info/validate-info.js"></script>
+
+
+
+
 </body>
 </html>
