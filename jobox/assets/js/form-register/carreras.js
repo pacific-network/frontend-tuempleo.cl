@@ -2,6 +2,7 @@
 
 const opcionesCarreras = [
     { value: "-- Selecciona una carrera --", text: "-- Selecciona una carrera --" },
+    { value: "Otra", text: "Otra" },
     { value: "Administración Pública", text: "Administración Pública" },
     { value: "Administración Turística", text: "Administración Turística" },
     { value: "Agroindustria", text: "Agroindustria" },
@@ -216,8 +217,7 @@ const opcionesCarreras = [
     { value: "Turismo", text: "Turismo" },
     { value: "Urbanismo", text: "Urbanismo" },
     { value: "Viticultura", text: "Viticultura" },
-    { value: "Zoología", text: "Zoología" },
-    { value: "Otra", text: "Otra" }
+    { value: "Zoología", text: "Zoología" }
 ];
 
 document.addEventListener("DOMContentLoaded", function () {

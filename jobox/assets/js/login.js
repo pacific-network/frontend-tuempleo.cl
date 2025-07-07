@@ -17,8 +17,26 @@ function showAlert(message, type = 'success') {
     }, 3000);
 }
 
-// Permitir cerrar el alert con click
 document.addEventListener('DOMContentLoaded', () => {
+
+    const togglePasswordButton = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+
+    if (togglePasswordButton && passwordInput) {
+        const icon = togglePasswordButton.querySelector('i');
+
+        togglePasswordButton.addEventListener('click', () => {
+            const isHidden = passwordInput.type === 'password';
+            passwordInput.type = isHidden ? 'text' : 'password';
+
+            if (icon) {
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+            }
+        });
+    }
+
+
     const alert = document.getElementById('custom-alert');
     if (alert) {
         alert.addEventListener('click', () => {

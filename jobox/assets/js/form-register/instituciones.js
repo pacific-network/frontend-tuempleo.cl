@@ -2,6 +2,7 @@
 
 const opcionesInstituciones = [
     { value: "-- Selecciona una institución --", text: "-- Selecciona una institución --", group: "" },
+    { value: "Otra", text: "Otra", group: "🌍 Otras" },
     
     // Universidades
     { value: "Pontificia Universidad Católica de Chile", text: "Pontificia Universidad Católica de Chile", group: "🏛️ Universidades" },
@@ -74,8 +75,7 @@ const opcionesInstituciones = [
     // Instituciones Extranjeras
     { value: "UNEFA (Venezuela)", text: "UNEFA (Venezuela)", group: "🌍 Internacionales en Chile" },
     { value: "Universidad de Barcelona (España)", text: "Universidad de Barcelona (España)", group: "🌍 Internacionales en Chile" },
-    { value: "UNAM (México)", text: "UNAM (México)", group: "🌍 Internacionales en Chile" },
-    { value: "Otra", text: "Otra", group: "🌍 Otras" }
+    { value: "UNAM (México)", text: "UNAM (México)", group: "🌍 Internacionales en Chile" }
 ];
 
 // Cargar dinámicamente en el select con grupos
