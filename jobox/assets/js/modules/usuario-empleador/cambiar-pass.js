@@ -6,6 +6,32 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
   
+    // Función para mostrar toast (debe existir en tu HTML y CSS)
+    function showToast(message, type = 'success') {
+      const toastEl = document.getElementById('liveToast');
+      const toastTitle = document.getElementById('toastTitle');
+      const toastBody = document.getElementById('toastBody');
+  
+      toastBody.textContent = message;
+  
+      if (type === 'success') {
+        toastTitle.textContent = '✅ Éxito';
+        toastEl.classList.remove('bg-danger', 'bg-warning');
+        toastEl.classList.add('bg-success');
+      } else if (type === 'error') {
+        toastTitle.textContent = '❌ Error';
+        toastEl.classList.remove('bg-success', 'bg-warning');
+        toastEl.classList.add('bg-danger');
+      } else {
+        toastTitle.textContent = '⚠️ Aviso';
+        toastEl.classList.remove('bg-success', 'bg-danger');
+        toastEl.classList.add('bg-warning');
+      }
+  
+      const toast = new bootstrap.Toast(toastEl);
+      toast.show();
+    }
+  
     // Función para alternar visibilidad de contraseña
     function setupTogglePassword(buttonId, inputId) {
       const toggleBtn = document.getElementById(buttonId);
@@ -37,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
       updateRequirement('req-char', val.length >= 8);
       updateRequirement('req-upper', /[A-Z]/.test(val));
       updateRequirement('req-lower', /[a-z]/.test(val));
-      updateRequirement('req-alnum', /\d/.test(val)); // Solo números aquí, letras ya validadas
+      updateRequirement('req-alnum', /\d/.test(val));
     });
   
     function updateRequirement(id, isValid) {
@@ -58,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', async () => {
       const token = localStorage.getItem('token');
       if (!token) {
-        alert('⚠️ No estás autenticado');
+        showToast('No estás autenticado', 'error');
         return;
       }
   
@@ -67,12 +93,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const confirmPassword = document.getElementById('confirm_password')?.value.trim();
   
       if (!oldPassword || !newPassword || !confirmPassword) {
-        alert('⚠️ Todos los campos son obligatorios');
+        showToast('Todos los campos son obligatorios', 'warning');
         return;
       }
   
       if (newPassword !== confirmPassword) {
-        alert('❌ Las contraseñas no coinciden');
+        showToast('Las contraseñas no coinciden', 'error');
         return;
       }
   
@@ -83,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
         /\d/.test(newPassword);
   
       if (!isValidPassword) {
-        alert('⚠️ La nueva contraseña no cumple con los requisitos mínimos.');
+        showToast('La nueva contraseña no cumple con los requisitos mínimos.', 'warning');
         return;
       }
   
@@ -102,11 +128,11 @@ document.addEventListener('DOMContentLoaded', () => {
   
         if (!res.ok) {
           const errorText = await res.text();
-          alert('❌ Error al cambiar la contraseña: ' + errorText);
+          showToast('Error al cambiar la contraseña: ' + errorText, 'error');
           return;
         }
   
-        alert('✅ Contraseña actualizada correctamente');
+        showToast('Contraseña actualizada correctamente', 'success');
   
         // Limpiar campos
         ['old_password', 'new_password', 'confirm_password'].forEach(id => {
@@ -114,8 +140,8 @@ document.addEventListener('DOMContentLoaded', () => {
           if (el) el.value = '';
         });
       } catch (error) {
-        console.error('❌ Error al conectar con el servidor:', error);
-        alert('Error al cambiar la contraseña');
+        console.error('Error al conectar con el servidor:', error);
+        showToast('Error al cambiar la contraseña', 'error');
       }
     });
   });

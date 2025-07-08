@@ -1,19 +1,31 @@
-function getUserIdFromToken() {
-    const token = localStorage.getItem('token');
-    if (!token) return null;
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.sub || null;
-    } catch (e) {
-      console.error('Error al decodificar el token:', e);
-      return null;
+function showToast(message, type = 'success') {
+    const toastEl = document.getElementById('liveToast');
+    const toastTitle = document.getElementById('toastTitle');
+    const toastBody = document.getElementById('toastBody');
+  
+    toastBody.textContent = message;
+  
+    if (type === 'success') {
+      toastTitle.textContent = '✅ Éxito';
+      toastEl.classList.remove('bg-danger');
+      toastEl.classList.add('bg-success');
+    } else if (type === 'error') {
+      toastTitle.textContent = '❌ Error';
+      toastEl.classList.remove('bg-success');
+      toastEl.classList.add('bg-danger');
+    } else {
+      toastTitle.textContent = '⚠️ Aviso';
+      toastEl.classList.remove('bg-success', 'bg-danger');
     }
+  
+    const toast = new bootstrap.Toast(toastEl);
+    toast.show();
   }
   
   async function actualizarUsuarioYEmpleador() {
     const token = localStorage.getItem('token');
     if (!token) {
-      alert('No estás autenticado');
+      showToast('No estás autenticado', 'error');
       return;
     }
   
@@ -50,7 +62,7 @@ function getUserIdFromToken() {
   
       if (!userRes.ok) {
         const errorText = await userRes.text();
-        alert('❌ Error actualizando datos de usuario: ' + errorText);
+        showToast('Error actualizando datos de usuario: ' + errorText, 'error');
         return;
       }
   
@@ -83,19 +95,18 @@ function getUserIdFromToken() {
   
       if (!empleadorRes.ok) {
         const errorText = await empleadorRes.text();
-        alert('⚠️ Usuario actualizado, pero error en datos de empleador: ' + errorText);
+        showToast('Usuario actualizado, pero error en datos de empleador: ' + errorText, 'error');
         return;
       }
   
-      alert('✅ Usuario y datos de empleador actualizados correctamente');
+      showToast('Usuario y datos de empleador actualizados correctamente', 'success');
   
     } catch (error) {
       console.error('Error general:', error);
-      alert('Error al conectar con el servidor');
+      showToast('Error al conectar con el servidor', 'error');
     }
   }
   
-  // Evento al botón
   document.addEventListener('DOMContentLoaded', () => {
     const btn = document.getElementById('actualizarEmpleadorBtn');
     if (btn) {
