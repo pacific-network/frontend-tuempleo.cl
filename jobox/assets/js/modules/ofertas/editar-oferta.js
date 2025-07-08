@@ -1,4 +1,28 @@
 document.getElementById('confirmarBtn').addEventListener('click', async () => {
+
+  function showToast(message, type = 'success') {
+    const toastEl = document.getElementById('liveToast');
+    const toastTitle = document.getElementById('toastTitle');
+    const toastBody = document.getElementById('toastBody');
+  
+    toastBody.textContent = message;
+  
+    toastEl.classList.remove('bg-success', 'bg-danger', 'bg-warning');
+    if (type === 'success') {
+      toastTitle.textContent = '✅ Éxito';
+      toastEl.classList.add('bg-success');
+    } else if (type === 'error') {
+      toastTitle.textContent = '❌ Error';
+      toastEl.classList.add('bg-danger');
+    } else {
+      toastTitle.textContent = '⚠️ Aviso';
+      toastEl.classList.add('bg-warning');
+    }
+  
+    const toast = new bootstrap.Toast(toastEl);
+    toast.show();
+  }
+
   const params = new URLSearchParams(window.location.search);
   const ofertaId = params.get('id');
   
@@ -80,15 +104,15 @@ document.getElementById('confirmarBtn').addEventListener('click', async () => {
 
     if (!res.ok) {
       const err = await res.text();
-      alert(`Error al actualizar: ${err}`);
+      showToast(`Error al actualizar: ${err}`);
       return;
     }
 
-    alert('Oferta actualizada correctamente');
+    showToast('Oferta actualizada correctamente');
     location.href = 'employer-manage-job.html'; // redirección opcional
 
   } catch (err) {
     console.error('Error al actualizar oferta:', err);
-    alert('Error inesperado al actualizar');
+    showToast('Error inesperado al actualizar');
   }
 });

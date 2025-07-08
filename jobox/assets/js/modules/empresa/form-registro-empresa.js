@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (response.ok) {
         showToast("Datos enviados correctamente.", "success");
         setTimeout(() => {
-          window.location.href = "empresa/employer-dashboard.html";
+          window.location.href = "employer-dashboard.html";
         }, 1500);
       } else {
         const error = await response.json();
