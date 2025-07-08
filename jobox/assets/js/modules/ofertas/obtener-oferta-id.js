@@ -1,3 +1,16 @@
+// Función para convertir tipo de contrato a texto amigable
+function formatoContrato(tipo) {
+  const mapping = {
+    plazo_fijo: 'Plazo Fijo',
+    indefinido: 'Indefinido',
+    temporal: 'Temporal',
+    otro_tipo_de_contrato: 'Otro tipo de contrato',
+    reemplazo: 'Reemplazo',
+    practica: 'Práctica',
+  };
+  return mapping[tipo] || tipo || 'No especificado';
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   const params = new URLSearchParams(window.location.search);
   const ofertaId = params.get('id');
@@ -35,7 +48,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelector('p.experiencia').textContent = data.anios_experiencia ? `${data.anios_experiencia} años` : 'No especificado';
     document.querySelector('p.region').textContent = data.region || 'No disponible';
     document.querySelector('p.educacion').textContent = data.educacion_requerida || 'No especificado';
-    document.querySelector('p.contrato').textContent = data.tipo_contrato || 'No especificado';
+
+    // Aquí usamos la función para mostrar contrato formateado
+    document.querySelector('p.contrato').textContent = formatoContrato(data.tipo_contrato);
+
     document.querySelector('p.modalidad').textContent = data.modalidad || 'No especificado';
 
     // Renta salarial
