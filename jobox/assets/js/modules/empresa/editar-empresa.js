@@ -40,7 +40,7 @@
       region,
       comuna,
       domicilios,
-      actividades_economicas
+  
     };
 
     try {
