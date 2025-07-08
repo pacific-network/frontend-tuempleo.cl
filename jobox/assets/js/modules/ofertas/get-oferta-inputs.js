@@ -23,11 +23,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('empresa-logo').src = 'assets/img/job/default-logo.png'; // Imagen por defecto
     }
 
+    // Poner titulo directamente desde oferta.titulo
+    document.getElementById('titulo-trabajo').value = oferta.titulo || '';
+
     // Parsear data que viene en JSON string
     const data = typeof oferta.data === 'string' ? JSON.parse(oferta.data) : oferta.data;
 
-    // Rellenar inputs del formulario
-    document.getElementById('titulo-trabajo').value = data.titulo || '';
+    // Rellenar inputs del formulario con el resto de campos
     document.getElementById('area_cargo_select').value = data.area_trabajo || '';
     document.getElementById('anios-experiencia').value = data.anios_experiencia || '';
     document.getElementById('region-select').value = data.region || '';
@@ -47,7 +49,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('salaryTo').value = data.renta_salarial.hasta || '';
     }
 
-    // Herramientas básicas (checkboxes)
+    // Herramientas básicas (checkboxes) — AHORA EDITABLES
     const cont = document.getElementById('checkbox-container');
     cont.innerHTML = '';
     if (data.herramientas_basicas && data.herramientas_basicas.length) {
@@ -56,7 +58,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const div = document.createElement('div');
         div.classList.add('form-check');
         div.innerHTML = `
-          <input class="form-check-input" type="checkbox" id="${id}" checked disabled>
+          <input class="form-check-input" type="checkbox" id="${id}" checked>
           <label class="form-check-label" for="${id}">${herr}</label>
         `;
         cont.appendChild(div);
