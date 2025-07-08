@@ -78,7 +78,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Fecha Postulación</h6>
-                                            <p>12-05-2025</p>
+                                            <p class="fecha-publicacion">12-05-2025</p>
                                         </div>
                                     </li>
                                     <li>
@@ -87,7 +87,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Fecha Expiración</h6>
-                                            <p>12-06-2025</p>
+                                            <p class="fecha-cierre">12-06-2025</p>
                                         </div>
                                     </li>
                                     <li>
@@ -96,7 +96,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Área</h6>
-                                            <p>Tecnologias, Sistemas y Telecomunicaciones</p>
+                                            <p class="area-trabajo">Tecnologias, Sistemas y Telecomunicaciones</p>
                                         </div>
                                     </li>
                                     <li>
@@ -105,7 +105,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Experiencia</h6>
-                                            <p>3 Años</p>
+                                            <p class="experiencia">3 Años</p>
                                         </div>
                                     </li>
                                     <li>
@@ -114,7 +114,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Ubicación</h6>
-                                            <p>Metropolitana de Santiago</p>
+                                            <p class="ubicacion">Metropolitana de Santiago</p>
                                         </div>
                                     </li>
                                     <li>
@@ -123,7 +123,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Educación Requerida</h6>
-                                            <p>Superior - Universitario</p>
+                                            <p class="educacion">Superior - Universitario</p>
                                         </div>
                                     </li>
                                     <li>
@@ -132,7 +132,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Tipo Contratación</h6>
-                                            <p>Indefinido</p>
+                                            <p class="tipo-contrato">Indefinido</p>
                                         </div>
                                     </li>
                                     <li>
@@ -141,7 +141,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Modalidad</h6>
-                                            <p>Full Time</p>
+                                            <p class="modalidad">Full Time</p>
                                         </div>
                                     </li>
                                     <li>
@@ -150,7 +150,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Renta Salarial</h6>
-                                            <p>$500.000 - $850.000</p>
+                                            <p class="renta">$500.000 - $850.000</p>
                                         </div>
                                     </li>
                                 </ul>
@@ -165,13 +165,13 @@
                                 <!-- Descripción del puesto -->
                                 <div class="mb-4">
                                     <h5 class="mb-3">Descripción del puesto</h5>
-                                    <p>En Vertice CC, estamos en búsqueda de un Desarrollador Full Stack para colaborar con un cliente del sector bancario en el desarrollo de productos digitales.</p>
+                                    <p class="descripcion-puesto">En Vertice CC, estamos en búsqueda de un Desarrollador Full Stack para colaborar con un cliente del sector bancario en el desarrollo de productos digitales.</p>
                                 </div>
                             
                                 <!-- Responsabilidades -->
                                 <div class="mb-4">
                                     <h5 class="mb-3">Responsabilidades</h5>
-                                    <ul class="ps-4">
+                                    <ul class="ps-4 responsabilidades-list">
                                         <li class="mb-2">Crear interfaces de usuario responsivas con React</li>
                                         <li class="mb-2">Desarrollar lógica server-side con Node.js y NestJS</li>
                                         <li class="mb-2">Diseñar y gestionar bases de datos SQL y NoSQL</li>
@@ -183,7 +183,7 @@
                                 <!-- Requisitos mínimos -->
                                 <div class="mb-4">
                                     <h5 class="mb-3">Requisitos mínimos</h5>
-                                    <ul class="ps-4">
+                                    <ul class="ps-4 requisitos-list">
                                         <li class="mb-2">3+ años de experiencia en desarrollo Full Stack</li>
                                         <li class="mb-2">Dominio de JavaScript/TypeScript</li>
                                         <li class="mb-2">Experiencia con bases de datos relacionales</li>
@@ -194,7 +194,7 @@
                                 <!-- Beneficios -->
                                 <div class="mb-4">
                                     <h5 class="mb-3">Beneficios</h5>
-                                    <ul class="ps-4">
+                                    <ul class="ps-4 beneficios-list">
                                         <li class="mb-2">Modalidad híbrida</li>
                                         <li class="mb-2">Seguro complementario de salud</li>
                                         <li>Capacitaciones constantes</li>
@@ -202,7 +202,7 @@
                                 </div>
                                 <div class="mb-4">
                                     <h5 class="mb-3">Herramientas Básicas</h5>
-                                    <ul class="ps-4">
+                                    <ul class="ps-4 herramientas-list">
                                         <li class="mb-2">Office 365</li>
                                         <li class="mb-2">Adobe PDF</li>
                                         <li class="mb-2">Windows 10</li>
@@ -435,6 +435,100 @@
             item.style.cursor = 'pointer';
         });
     </script>
+    <script>
+        
+  document.addEventListener('DOMContentLoaded', async () => {
+    const idOferta = getIdOfertaFromURL();
+
+    if (!idOferta) {
+      alert('No se encontró la oferta');
+      return;
+    }
+
+    try {
+      const response = await fetch(`https://tuempleo.cl/api/v1/ofertas/${idOferta}`);
+      const oferta = await response.json();
+      const data = JSON.parse(oferta.data);
+
+      // Título y empresa
+      document.querySelector('h4.mb-4').textContent = oferta.titulo;
+      document.querySelector('.job-single-employer-info h5 a').textContent = oferta.empresa.nombre_fantasia;
+      document.querySelector('.job-single-employer-info p').textContent =
+        oferta.empresa.data.actividades_economicas[0] || '';
+
+      // Fechas
+      document.querySelector('p.fecha-publicacion').textContent = formatFecha(oferta.fecha_publicacion);
+      document.querySelector('p.fecha-cierre').textContent = formatFecha(oferta.fecha_cierre);
+
+      // Info general
+      document.querySelector('p.area-trabajo').textContent = data.area_trabajo;
+      document.querySelector('p.experiencia').textContent = data.anios_experiencia + ' años';
+      document.querySelector('p.ubicacion').textContent = oferta.empleador?.data?.region || 'Sin datos';
+      document.querySelector('p.educacion').textContent = formatEducacion(data.educacion_requerida);
+      document.querySelector('p.tipo-contrato').textContent = data.tipo_contrato;
+      document.querySelector('p.modalidad').textContent = formatModalidad(data.modalidad);
+
+      // Renta
+      document.querySelector('p.renta').textContent = 
+        data.renta_salarial?.desde && data.renta_salarial?.hasta
+        ? `$${formatNum(data.renta_salarial.desde)} - $${formatNum(data.renta_salarial.hasta)}`
+        : 'De acuerdo al mercado';
+
+      // Descripción
+      document.querySelector('p.descripcion-puesto').textContent = data.descripcion_puesto;
+
+      // Listas dinámicas
+      renderLista(data.responsabilidades, '.responsabilidades-list');
+      renderLista(data.requisitos_minimos, '.requisitos-list');
+      renderLista(data.beneficios, '.beneficios-list');
+      renderLista(data.herramientas_basicas, '.herramientas-list');
+
+    } catch (error) {
+      console.error('Error cargando la oferta:', error);
+    }
+  });
+
+  function renderLista(arr, selector) {
+    const ul = document.querySelector(selector);
+    if (!ul || !Array.isArray(arr)) return;
+    ul.innerHTML = '';
+    arr.forEach(texto => {
+      const li = document.createElement('li');
+      li.textContent = texto;
+      li.classList.add('mb-2');
+      ul.appendChild(li);
+    });
+  }
+
+  function formatFecha(fechaStr) {
+    const d = new Date(fechaStr);
+    return d.toLocaleDateString('es-CL');
+  }
+
+  function formatNum(num) {
+    return parseInt(num).toLocaleString('es-CL');
+  }
+
+  function formatEducacion(value) {
+    const mapa = {
+      superior: 'Superior - Universitario',
+      media: 'Educación Media',
+      basica: 'Educación Básica'
+    };
+    return mapa[value] || value;
+  }
+
+  function formatModalidad(val) {
+    const mapa = {
+      '1': 'Full Time',
+      '2': 'Part Time',
+      '3': 'Freelance',
+    };
+    return mapa[val] || 'No especificado';
+  }
+</script>
+
+
 
 
 </body>
