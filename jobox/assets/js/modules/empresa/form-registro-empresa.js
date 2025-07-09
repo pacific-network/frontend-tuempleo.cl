@@ -1,91 +1,115 @@
+function showToast(message, type = 'success') {
+  const toastEl = document.getElementById('liveToast');
+  const toastTitle = document.getElementById('toastTitle');
+  const toastBody = document.getElementById('toastBody');
+
+  toastBody.textContent = message;
+
+  if (type === 'success') {
+    toastTitle.textContent = '✅ Éxito';
+    toastEl.classList.remove('bg-danger', 'bg-warning');
+    toastEl.classList.add('bg-success');
+  } else if (type === 'error') {
+    toastTitle.textContent = '❌ Error';
+    toastEl.classList.remove('bg-success', 'bg-warning');
+    toastEl.classList.add('bg-danger');
+  } else {
+    toastTitle.textContent = '⚠️ Aviso';
+    toastEl.classList.remove('bg-success', 'bg-danger');
+    toastEl.classList.add('bg-warning');
+  }
+
+  const toast = new bootstrap.Toast(toastEl);
+  toast.show();
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("businessForm");
-  
-    // Extraer user_id desde token JWT
-    function obtenerUserIdDelToken() {
-      const token = localStorage.getItem("token");
-      if (!token) return null;
-  
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        return payload.sub; // user_id está en "sub"
-      } catch (error) {
-        console.error("Error al decodificar el token:", error);
-        return null;
-      }
+  const form = document.getElementById("businessForm");
+
+  function obtenerUserIdDelToken() {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.sub; // user_id está en "sub"
+    } catch (error) {
+      console.error("Error al decodificar el token:", error);
+      return null;
     }
-  
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-  
-      const formData = new FormData(form);
-      const codigoPaisFijo = "+56";
-  
-      const payload = {
-        business: {
-          rut: formData.get("rutInput"),
-          razon_social: formData.get("razon_social"),
-          nombre_fantasia: formData.get("nombre_empresa"),
-          plan_id: 1,
-          data: {
-            actividades_economicas: [formData.get("actividad_empresa")],
-            condicion_fiscal: "Regular",
-            domicilios: [formData.get("direccion")],
-            inicio_actividades: true,
-            fecha_inicio_actividades: `${formData.get("anio_inicio_actividades")}-01-01T00:00:00.000Z`,
-            empresa_menor_tamano: formData.get("tamano_equipo") === "1",
-            web_factuacion: formData.get("correo_empresa"),
-            pais: formData.get("pais"),
-            region: formData.get("region_empresa"),
-            comuna: formData.get("comuna_empresa"),
-            telefono: codigoPaisFijo + (formData.get("numero_telefono_empresa") || ""),
-            descripcion: formData.get("descripcion_empresa"),
-          },
+  }
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(form);
+    const codigoPaisFijo = "+56";
+
+    const payload = {
+      business: {
+        rut: formData.get("rutInput"),
+        razon_social: formData.get("razon_social"),
+        nombre_fantasia: formData.get("nombre_empresa"),
+        plan_id: 1,
+        data: {
+          actividades_economicas: [formData.get("actividad_empresa")],
+          condicion_fiscal: "Regular",
+          domicilios: [formData.get("direccion")],
+          inicio_actividades: true,
+          fecha_inicio_actividades: `${formData.get("anio_inicio_actividades")}-01-01T00:00:00.000Z`,
+          empresa_menor_tamano: formData.get("tamano_equipo") === "1",
+          web_factuacion: formData.get("correo_empresa"),
+          pais: formData.get("pais"),
+          region: formData.get("region_empresa"),
+          comuna: formData.get("comuna_empresa"),
+          telefono: codigoPaisFijo + (formData.get("numero_telefono_empresa") || ""),
+          descripcion: formData.get("descripcion_empresa"),
         },
-        employer: {
-          rut: formData.get("rut_empleador"),
-          userId: obtenerUserIdDelToken(),
-          nombre: formData.get("nombre_empleador"),
-          apellido: formData.get("apellido_empleador"),
-          correo: formData.get("correo_empleador"),
-          telefono: codigoPaisFijo + (formData.get("numero_telefono_empleador") || ""),
+      },
+      employer: {
+        rut: formData.get("rut_empleador"),
+        userId: obtenerUserIdDelToken(),
+        nombre: formData.get("nombre_empleador"),
+        apellido: formData.get("apellido_empleador"),
+        correo: formData.get("correo_empleador"),
+        telefono: codigoPaisFijo + (formData.get("numero_telefono_empleador") || ""),
+        cargo: formData.get("cargo_empleador"),
+        data: {
+          pais: formData.get("pais_empleador"),
+          region: formData.get("region_empleador"),
+          comuna: formData.get("comuna_empleador"),
+          direccion: formData.get("direccion_empleador"),
           cargo: formData.get("cargo_empleador"),
-          data: {
-            pais: formData.get("pais_empleador"),
-            region: formData.get("region_empleador"),
-            comuna: formData.get("comuna_empleador"),
-            direccion: formData.get("direccion_empleador"),
-            cargo: formData.get("cargo_empleador"),
-            telefono: codigoPaisFijo + (formData.get("numero_telefono_empleador") || ""),
-            facebook: formData.get("facebook"),
-            instagram: formData.get("instagram"),
-            linkedin: formData.get("linkedin"),
-            twitter: formData.get("twitter"),
-          },
+          telefono: codigoPaisFijo + (formData.get("numero_telefono_empleador") || ""),
+          facebook: formData.get("facebook"),
+          instagram: formData.get("instagram"),
+          linkedin: formData.get("linkedin"),
+          twitter: formData.get("twitter"),
         },
-      };
-  
-      try {
-        const response = await fetch(`${BASE_URL_API}/formularios/register-employer`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        });
-  
-        if (response.ok) {
-          alert("✅ Datos enviados correctamente.");
-          window.location.href = "empresa/employer-dashboard.html";
-        } else {
-          const error = await response.json();
-          console.error("❌ Error al enviar datos:", error);
-          alert("Hubo un error al enviar los datos.");
-        }
-      } catch (error) {
-        console.error("❌ Error de red:", error);
-        alert("Hubo un problema de conexión.");
+      },
+    };
+
+    try {
+      const response = await fetch(`${BASE_URL_API}/formularios/register-employer`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        showToast("Datos enviados correctamente.", "success");
+        setTimeout(() => {
+          window.location.href = "employer-dashboard.html";
+        }, 1500);
+      } else {
+        const error = await response.json();
+        console.error("❌ Error al enviar datos:", error);
+        showToast("Hubo un error al enviar los datos.", "error");
       }
-    });
+    } catch (error) {
+      console.error("❌ Error de red:", error);
+      showToast("Hubo un problema de conexión.", "error");
+    }
   });
-  
+});
