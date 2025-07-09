@@ -13,25 +13,17 @@ document.getElementById('confirmarBtn').addEventListener('click', async () => {
     return;
   }
 
-  // Obtener valores del formulario con selectores más específicos
+  // Obtener valores del formulario
   const titulo = document.getElementById('titulo-trabajo').value.trim();
-
   const area_trabajo = document.getElementById('area_cargo_select').value;
-  const anios_experiencia = document.querySelector('input[placeholder="3"]').value.trim();
+  const anios_experiencia = document.getElementById('anios-experiencia').value.trim();
   const region = document.getElementById('region-select').value;
-  
-  // Para selects con opciones, tomar el valor del select en sí, no solo la opción seleccionada
-  const educacion_requerida = document.querySelector('select[aria-label="Educación Requerida"]')?.value
-    || document.querySelector('select').value; // fallback si no tiene aria-label
-
-  const tipo_contrato = document.querySelector('select[aria-label="Tipo de Contratación"]')?.value
-    || document.querySelectorAll('select')[1].value;
-
-  const modalidad = document.querySelector('select[aria-label="Modalidad"]')?.value
-    || document.querySelectorAll('select')[2].value;
-
+  const educacion_requerida = document.getElementById('educacion-requerida').value;
+  const tipo_contrato = document.getElementById('tipo-contrato').value;
+  const modalidad = document.getElementById('modalidad').value;
   const descripcion_puesto = document.getElementById('descripcion').value.trim();
 
+  // Textareas multilinea a array
   const responsabilidades = document.getElementById('responsabilidades').value
     .split('\n')
     .map(line => line.trim())
@@ -47,14 +39,25 @@ document.getElementById('confirmarBtn').addEventListener('click', async () => {
     .map(line => line.trim())
     .filter(line => line !== '');
 
+  // Renta salarial limpiando números
   const renta_salarial = {
     desde: document.getElementById('salaryFrom').value.replace(/[^\d]/g, ''),
     hasta: document.getElementById('salaryTo').value.replace(/[^\d]/g, ''),
-    de_acuerdo_al_mercado: true // puedes agregar lógica si quieres obtenerlo del formulario
+    de_acuerdo_al_mercado: true // si quieres agregar lógica para este campo, puedes
   };
 
-  const payload = {
-    titulo,
+  // Leer herramientas básicas seleccionadas (checkboxes)
+  const checkboxes = document.querySelectorAll('#checkbox-container input[type="checkbox"]');
+  const herramientas_basicas = [];
+  checkboxes.forEach(chk => {
+    if (chk.checked) {
+      const label = document.querySelector(`label[for="${chk.id}"]`);
+      if (label) herramientas_basicas.push(label.textContent.trim());
+    }
+  });
+
+  // Construir objeto data para enviar en el body
+  const data = {
     area_trabajo,
     anios_experiencia,
     region,
@@ -65,7 +68,13 @@ document.getElementById('confirmarBtn').addEventListener('click', async () => {
     responsabilidades,
     requisitos_minimos,
     beneficios,
-    renta_salarial
+    renta_salarial,
+    herramientas_basicas
+  };
+
+  const payload = {
+    titulo,
+    data: JSON.stringify(data)
   };
 
   try {

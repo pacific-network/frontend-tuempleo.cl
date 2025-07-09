@@ -1,9 +1,33 @@
+function showToast(message, type = 'success') {
+  const toastEl = document.getElementById('liveToast');
+  const toastTitle = document.getElementById('toastTitle');
+  const toastBody = document.getElementById('toastBody');
+
+  toastBody.textContent = message;
+
+  toastEl.classList.remove('bg-success', 'bg-danger', 'bg-warning');
+  if (type === 'success') {
+    toastTitle.textContent = '✅ Éxito';
+    toastEl.classList.add('bg-success');
+  } else if (type === 'error') {
+    toastTitle.textContent = '❌ Error';
+    toastEl.classList.add('bg-danger');
+  } else {
+    toastTitle.textContent = '⚠️ Aviso';
+    toastEl.classList.add('bg-warning');
+  }
+
+  const toast = new bootstrap.Toast(toastEl);
+  toast.show();
+}
+
 import { getUserIdFromToken } from '../utils/decode-jwt.js';
 
 const userId = getUserIdFromToken();
 
 if (!userId) {
   console.error('Token no válido');
+  showToast('Token no válido', 'error');
 } else {
   try {
     const empleadorRes = await fetch(`${BASE_URL_API}/empleador/basic-info/${userId}`);
@@ -21,7 +45,6 @@ if (!userId) {
         year: 'numeric', month: 'short', day: 'numeric'
       });
 
-      // 🔄 Obtener total de postulantes
       let totalPostulantes = 0;
       try {
         const resPostulantes = await fetch(`${BASE_URL_API}/postulaciones/oferta/${oferta.id}`);
@@ -68,17 +91,13 @@ if (!userId) {
       tbody.appendChild(row);
     }
 
-    // Activar lógica de botones de eliminar
     activarBotonesEliminar();
 
   } catch (error) {
     console.error('❌ Error cargando ofertas:', error);
+    showToast('Error cargando ofertas', 'error');
   }
 }
-
-// ---------------------------
-// ✅ Lógica del modal de eliminación
-// ---------------------------
 
 function activarBotonesEliminar() {
   const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
@@ -112,13 +131,14 @@ function activarBotonesEliminar() {
       if (res.ok) {
         deleteModal.hide();
         filaAEliminar?.remove();
+        showToast('Oferta eliminada correctamente', 'success');
       } else {
         const err = await res.text();
-        alert(`Error al eliminar: ${err}`);
+        showToast(`Error al eliminar: ${err}`, 'error');
       }
     } catch (err) {
       console.error('❌ Error al eliminar la oferta:', err);
-      alert('Error inesperado al eliminar.');
+      showToast('Error inesperado al eliminar.', 'error');
     } finally {
       idOfertaAEliminar = null;
       filaAEliminar = null;

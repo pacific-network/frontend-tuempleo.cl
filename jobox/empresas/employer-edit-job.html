@@ -267,6 +267,18 @@
                     </div>
                 </div>
             </div>
+            <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100; min-width: 300px;">
+                <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header" style="background-color: #3D6AF2; color: white;">
+                        <strong class="me-auto" id="toastTitle">Mensaje</strong>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"
+                            aria-label="Cerrar"></button>
+                    </div>
+                    <div class="toast-body" id="toastBody" style="background-color: #C2D7F2; color: #083359;">
+                        Texto de ejemplo
+                    </div>
+                </div>
+            </div>
     </main>
 
 
@@ -304,87 +316,7 @@
     <script src="../assets/js/modules/ofertas/get-oferta-inputs.js"></script>
     <script src="../assets/js/modules/ofertas/editar-oferta.js"></script>
 
-    <!-- <script>
-        const select = document.getElementById("region-select");
-        
-        regionesDeChile.forEach(region => {
-          const option = document.createElement("option");
-          option.value = region.numero;
-          option.textContent = region.nombre;
-          select.appendChild(option);
-        });
-    </script>
-    <script>
-    const herramientasBasicas = [
-        "Office 365",
-        "Office 2016",
-        "Windows 10",
-        "Adobe PDF",
-        "Zoom",
-        "Teams",
-        "Windows 11",
-        "Google Drive",
-        "One Drive"
-    ];
 
-    const herramientasSeleccionadas = [
-        "Office 365",
-        "Windows 10",
-        "Adobe PDF"
-    ];
-
-    const container = document.getElementById("checkbox-container");
-
-    for (let i = 0; i < herramientasBasicas.length; i += 3) {
-        const row = document.createElement("div");
-        row.className = "row";
-        row.style.marginBottom = "15px"; 
-        
-        for (let j = i; j < i + 3 && j < herramientasBasicas.length; j++) {
-            const col = document.createElement("div");
-            col.className = "col-md-4";
-            col.style.paddingLeft = "25px";
-            col.style.paddingRight = "25px";
-            
-            const divFormCheck = document.createElement("div");
-            divFormCheck.className = "form-check";
-            divFormCheck.style.padding = "10px 0";
-            
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.className = "form-check-input";
-            checkbox.id = `herramienta-${j}`;
-            checkbox.name = "herramientas";
-            checkbox.value = herramientasBasicas[j];
-            checkbox.style.marginRight = "20px";
-            checkbox.style.transform = "scale(1)";
-            checkbox.style.marginTop = "5px";
-
-            // ✅ Marcar por defecto si está en la lista
-            if (herramientasSeleccionadas.includes(herramientasBasicas[j])) {
-                checkbox.checked = true;
-            }
-            
-            const label = document.createElement("label");
-            label.className = "form-check-label";
-            label.htmlFor = checkbox.id;
-            label.textContent = herramientasBasicas[j];
-            label.style.fontSize = "16px";
-            
-            divFormCheck.appendChild(checkbox);
-            divFormCheck.appendChild(label);
-            col.appendChild(divFormCheck);
-            row.appendChild(col);
-        }
-
-        container.appendChild(row);
-    }
-</script> -->
-    <!-- <script>
-  document.getElementById("confirmarBtn").addEventListener("click", function () {
-    window.location.href = "employer-manage-job.html";
-  });
-</script> -->
 
 
 </body>
