@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Planes y Carrito - Tu Empleo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f7f9fc;
+            margin: 0;
+            padding: 40px 20px;
+            color: #05264E;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 700;
+            font-size: 2.5rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .pricing-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: #fff;
+            border-radius: 15px;
+            padding: 20px 22px;
+            margin-bottom: 20px;
+            border: 1.5px solid rgba(0, 0, 0, .08);
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-6px);
+            border-color: #3C65F5;
+            box-shadow: 0 8px 22px rgba(60, 101, 245, 0.2);
+        }
+
+        .pricing-card.selected {
+            border-color: #3C65F5;
+            box-shadow: 0 8px 25px rgba(60, 101, 245, 0.35);
+        }
+
+        .category-icon {
+            background: rgba(60, 101, 245, .1);
+            width: 56px;
+            height: 56px;
+            line-height: 56px;
+            text-align: center;
+            font-size: 32px;
+            color: #3C65F5;
+            border-radius: 15px;
+            transition: all .4s ease-in-out;
+            flex-shrink: 0;
+            user-select: none;
+        }
+
+        .pricing-card:hover .category-icon {
+            background: #3C65F5;
+            color: #fff;
+        }
+
+        .plan-info {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .pricing-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 0 0 6px 0;
+            color: #05264E;
+            transition: color 0.3s ease;
+            user-select: none;
+        }
+
+        .pricing-card:hover .pricing-title {
+            color: #3C65F5;
+        }
+
+        .pricing-price {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #05264E;
+            margin-bottom: 10px;
+            line-height: 1;
+            user-select: none;
+        }
+
+        .pricing-price sup {
+            font-size: 1.1rem;
+            font-weight: 700;
+            vertical-align: top;
+            margin-right: 3px;
+        }
+
+        .pricing-desc {
+            font-size: 0.95rem;
+            color: #757F95;
+            margin-bottom: 14px;
+            font-weight: 500;
+            user-select: none;
+        }
+
+        .pricing-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            color: #757F95;
+            font-weight: 500;
+            font-size: 0.9rem;
+            user-select: none;
+        }
+
+        .pricing-features li {
+            padding: 6px 0;
+            border-bottom: 1px solid #e0e4e8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-features li::before {
+            content: "✔";
+            color: #3C65F5;
+            font-weight: 700;
+            user-select: none;
+        }
+
+        .btn-add {
+            background-color: #3C65F5;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.3s ease;
+            flex-shrink: 0;
+            min-width: 120px;
+            height: 40px;
+            align-self: flex-start;
+        }
+
+        .btn-add:hover {
+            background-color: #05264E;
+        }
+
+        .cart-summary {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px 40px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #05264E;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            user-select: none;
+        }
+
+        .btn-checkout {
+            background-color: #e67e22;
+            border: none;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .btn-checkout:hover {
+            background-color: #d35400;
+        }
+
+        .empty-cart {
+            text-align: center;
+            font-size: 1.4rem;
+            color: #7f8c8d;
+            margin-top: 40px;
+            user-select: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Elige tu plan de publicación de ofertas</h1>
+
+    <div class="container">
+
+        <div id="pricingGrid" class="pricing-grid">
+            <!-- Planes dinámicos aparecerán aquí -->
+        </div>
+
+        <div id="cartSummary" class="cart-summary" style="display:none;">
+            <span>Total: $<strong id="cartTotal">0</strong></span>
+            <button id="btnCheckout" class="btn-checkout">Pagar Ahora</button>
+        </div>
+
+        <p id="emptyCartMsg" class="empty-cart">El carrito está vacío.</p>
+
+    </div>
+
+    <script>
+        const planes = [
+            {
+                id: 1,
+                icono: "📄",
+                nombre: "Publicación Básica",
+                precio: 15000,
+                descripcion: "Perfecto para pequeñas empresas o emprendedores.",
+                caracteristicas: [
+                    "Publica hasta 2 ofertas laborales",
+                    "Duración: 7 días",
+                    "Soporte básico por email"
+                ],
+            },
+            {
+                id: 2,
+                icono: "🛠️",
+                nombre: "Plan Estándar",
+                precio: 40000,
+                descripcion: "Ideal para empresas medianas con necesidades moderadas.",
+                caracteristicas: [
+                    "Publica hasta 5 ofertas laborales",
+                    "Duración: 30 días",
+                    "Soporte prioritario por email y chat",
+                    "Reportes básicos de postulantes"
+                ],
+            },
+            {
+                id: 3,
+                icono: "🚀",
+                nombre: "Plan Premium",
+                precio: 90000,
+                descripcion: "La solución completa para empresas con alto volumen.",
+                caracteristicas: [
+                    "Publica ofertas ilimitadas",
+                    "Duración: 60 días",
+                    "Soporte 24/7 por todos los canales",
+                    "Reportes avanzados y consultoría",
+                    "Destacado en resultados de búsqueda"
+                ],
+            }
+        ];
+
+        let carrito = [];
+
+        const pricingGrid = document.getElementById("pricingGrid");
+        const cartSummary = document.getElementById("cartSummary");
+        const cartTotalSpan = document.getElementById("cartTotal");
+        const btnCheckout = document.getElementById("btnCheckout");
+        const emptyCartMsg = document.getElementById("emptyCartMsg");
+
+        function renderPlanes() {
+            pricingGrid.innerHTML = planes.map(plan => `
+        <div class="pricing-card" data-id="${plan.id}">
+          <div class="category-icon" aria-label="${plan.nombre} icono">${plan.icono}</div>
+          <div class="plan-info">
+            <h3 class="pricing-title">${plan.nombre}</h3>
+            <div class="pricing-price"><sup>$</sup>${plan.precio.toLocaleString('es-CL')}</div>
+            <div class="pricing-desc">${plan.descripcion}</div>
+            <ul class="pricing-features">
+              ${plan.caracteristicas.map(c => `<li>${c}</li>`).join('')}
+            </ul>
+          </div>
+          <button class="btn-add" data-id="${plan.id}">Agregar al carrito</button>
+        </div>
+      `).join('');
+        }
+
+        function renderCarrito() {
+            if (carrito.length === 0) {
+                cartSummary.style.display = "none";
+                emptyCartMsg.style.display = "block";
+                return;
+            }
+            cartSummary.style.display = "flex";
+            emptyCartMsg.style.display = "none";
+
+            const total = carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
+            cartTotalSpan.textContent = total.toLocaleString('es-CL');
+        }
+
+        function agregarAlCarrito(id) {
+            const plan = planes.find(p => p.id === id);
+            if (!plan) return;
+
+            const index = carrito.findIndex(p => p.id === id);
+            if (index === -1) {
+                carrito.push({ ...plan, cantidad: 1 });
+            } else {
+                carrito[index].cantidad++;
+            }
+            renderCarrito();
+            alert(`Se agregó "${plan.nombre}" al carrito.`);
+        }
+
+        pricingGrid.addEventListener("click", e => {
+            if (e.target.classList.contains("btn-add")) {
+                const id = parseInt(e.target.dataset.id);
+                agregarAlCarrito(id);
+            }
+        });
+
+        btnCheckout.addEventListener("click", () => {
+            alert("Aquí se iniciaría el proceso de pago.");
+            carrito = [];
+            renderCarrito();
+        });
+
+        renderPlanes();
+        renderCarrito();
+    </script>
+
+</body>
+
+</html>

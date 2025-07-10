@@ -7211,7 +7211,7 @@ home 5
 
 /* Cuerpo del toast */
 .custom-toast-body {
-  background-color: #C2D7F2; /* mismo fondo que toast general */
+  background-color: #FFFFFF; /* mismo fondo que toast general */
   color: #083359;
 }
 

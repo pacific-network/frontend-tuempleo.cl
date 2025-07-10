@@ -23,6 +23,7 @@ const opcionesInstituciones = [
     { value: "Universidad Autónoma de Chile", text: "Universidad Autónoma de Chile", group: "🏛️ Universidades" },
     { value: "Universidad Mayor", text: "Universidad Mayor", group: "🏛️ Universidades" },
     { value: "Universidad SEK", text: "Universidad SEK", group: "🏛️ Universidades" },
+    { value: "Universidad Santo Tomás ", text: "Universidad Santo Tomás", group: "🏛️ Universidades" },
     { value: "Universidad Alberto Hurtado", text: "Universidad Alberto Hurtado", group: "🏛️ Universidades" },
     { value: "Universidad Central de Chile", text: "Universidad Central de Chile", group: "🏛️ Universidades" },
     { value: "Universidad de Valparaíso", text: "Universidad de Valparaíso", group: "🏛️ Universidades" },

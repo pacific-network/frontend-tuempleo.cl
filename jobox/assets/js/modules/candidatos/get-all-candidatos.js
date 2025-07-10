@@ -68,21 +68,22 @@ document.addEventListener("DOMContentLoaded", () => {
         candidatosContainer.innerHTML = "<p>No hay candidatos disponibles.</p>";
         return;
       }
-  
+    
       candidatosContainer.innerHTML = postulantes.map(p => `
-        <div class="card mb-3">
-          <div class="card-body">
-            <h5 class="card-title">${p.usuario.nombres} ${p.usuario.apellidos}</h5>
-            <p class="card-text">
-              <strong>Email:</strong> ${p.usuario.email}<br>
-              <strong>Región:</strong> ${p.data.datos_personales.region}<br>
-              <strong>Salario esperado:</strong> $${p.data.preferencias.salario_esperado}
-            </p>
+        <div class="user-profile-card">
+          <div class="user-profile-card-title">${p.usuario.nombres} ${p.usuario.apellidos}</div>
+          <ul class="profile-info-list">
+            <li>Email: <span>${p.usuario.email}</span></li>
+            <li>Región: <span>${p.data.datos_personales.region}</span></li>
+            <li>Salario esperado: <span>$${p.data.preferencias.salario_esperado}</span></li>
+          </ul>
+          <div class="user-profile-card-header-right mt-2">
             <a href="${p.data.redes_sociales[0]?.url || '#'}" target="_blank" class="btn btn-sm btn-outline-primary">LinkedIn</a>
           </div>
         </div>
       `).join("");
     }
+    
   
     // Renderizar paginación
     function renderPaginacion(meta) {
