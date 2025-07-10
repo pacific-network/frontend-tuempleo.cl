@@ -30,6 +30,9 @@
         .col-lg-9 {
             width: 100%;
         }
+        .site-breadcrumb{
+            height: 200px;
+        }
     </style>
 
 </head>
@@ -160,20 +163,6 @@
                             <div class="job-sidebar-item">
                                 <h4 class="job-sidebar-title">Modalidad</h4>
                                 <div class="job-type">
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-type" type="checkbox" value="1"
-                                            id="job-type1">
-                                        <label class="form-check-label" for="job-type1">
-                                            Prescencial <span>(20)</span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-type" type="checkbox" value="2"
-                                            id="job-type2">
-                                        <label class="form-check-label" for="job-type2">
-                                            Online <span>(15)</span>
-                                        </label>
-                                    </div>
                                     <div class="form-check">
                                         <input class="form-check-input" name="job-type" type="checkbox" value="3"
                                             id="job-type3">
@@ -364,7 +353,7 @@
                             </div>
                         
                             <!-- Trabajo 2 -->
-                            <div class="col-lg-12">
+                            <!--<div class="col-lg-12">
                                 <div class="job-item" onclick="window.location.href='job-single-2-si.html?id=2'" style="cursor:pointer;">
                                     <div class="job-img">
                                         <img src="assets/img/job/03.jpg" alt="">
@@ -391,10 +380,10 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                         
                             <!-- Trabajo 3 -->
-                            <div class="col-lg-12">
+                            <!--<div class="col-lg-12">
                                 <div class="job-item" onclick="window.location.href='job-single-2-si.html?id=5'" style="cursor:pointer;">
                                     <div class="job-img">
                                         <img src="assets/img/job/04.jpg" alt="">
@@ -418,10 +407,10 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                         
                             <!-- Trabajo 4 -->
-                            <div class="col-lg-12">
+                            <!--<div class="col-lg-12">
                                 <div class="job-item" onclick="window.location.href='creative-director.html'" style="cursor: pointer;">
                                     <a href="creative-director.html" class="job-bookmark"><i class="fe-bookmark"></i></a>
                                     <div class="job-img">
@@ -448,37 +437,9 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                         
                             <!-- Trabajo 5 -->
-                            <div class="col-lg-12">
-                                <div class="job-item" onclick="window.location.href='software-engineer.html'" style="cursor: pointer;">
-                                    <a href="software-engineer.html" class="job-bookmark"><i class="fe-bookmark"></i></a>
-                                    <div class="job-img">
-                                        <img src="assets/img/job/06.jpg" alt="">
-                                    </div>
-                                    <div class="job-content">
-                                        <div class="job-top">
-                                            <div class="job-title">
-                                                <h5>Software Engineer</h5>
-                                                <span class="job-employer"><i class="far fa-building"></i> Mariana Cahaya</span>
-                                            </div>
-                                        </div>
-                                        <ul class="job-info-list">
-                                            <li><i class="fe-briefcase"></i> Development</li>
-                                            <li><i class="fe-check-circle"></i> Full Time</li>
-                                            <li><i class="fe-clock"></i> 2 Hour Ago</li>
-                                            <li><i class="fe-dollar-sign"></i> Salary: 35k - 45k</li>
-                                            <li><i class="fe-map-pin"></i> 25/B Milford, New York</li>
-                                        </ul>
-                                        <div class="job-skill">
-                                            <a><span>Java</span></a>
-                                            <a><span>Python</span></a>
-                                            <a><span>AWS</span></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         
                             <!-- Trabajos 6 al 9 (similar estructura) -->
                             <!-- ... -->
@@ -551,82 +512,8 @@
     <script src="assets/js/config/config.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooterSiApplied.js"></script>
     <script src="assets/js/form-register/regiones.js"></script>
-    <script>
-  function verOferta(idOferta) {
-    localStorage.setItem('ofertaId', idOferta);
-    window.location.href = 'job-single-2-si.html';
-  }
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    const response = await fetch('https://tuempleo.cl/api/v1/ofertas');
-    const ofertas = await response.json();
-
-    const contenedor = document.getElementById('ofertas-container');
-    contenedor.innerHTML = '';
-
-    ofertas.forEach(oferta => {
-      const data = JSON.parse(oferta.data || '{}');
-      const herramientas = (data.herramientas_basicas || []).map(h => `<a><span>${h}</span></a>`).join('');
-
-      const html = `
-        <div class="col-lg-12">
-          <div class="job-item" onclick="window.location.href='job-single-2-si.html?id=${oferta.id}'" style="cursor:pointer;">
-            <div class="job-img">
-              <img src="assets/img/job/01.jpg" alt="">
-            </div>
-            <div class="job-content">
-              <div class="job-top">
-                <div class="job-title">
-                  <h5>${oferta.titulo}</h5>
-                  <span class="job-employer"><i class="far fa-building"></i> ${oferta.empresa.nombre_fantasia}</span>
-                </div>
-              </div>
-              <ul class="job-info-list">
-                <li><i class="fe-briefcase"></i> ${data.area_trabajo || 'Área no especificada'}</li>
-                <li><i class="fe-check-circle"></i> ${formatModalidad(data.modalidad)}</li>
-                <li><i class="fe-clock"></i> ${diasDesde(oferta.fecha_publicacion)}</li>
-                <li><i class="fas fa-timer"></i> Exp: ${formatFecha(oferta.fecha_cierre)}</li>
-                <li><i class="fe-dollar-sign"></i> Salario: ${formatRango(data.renta_salarial)}</li>
-                <li><i class="fe-map-pin"></i> ${oferta.empleador?.data?.region || 'Región no disponible'}</li>
-              </ul>
-              <div class="job-skill">${herramientas}</div>
-            </div>
-          </div>
-        </div>
-      `;
-      contenedor.insertAdjacentHTML('beforeend', html);
-    });
-  } catch (error) {
-    console.error('Error al cargar ofertas:', error);
-  }
-});
-
-// Helpers
-
-function formatModalidad(val) {
-  const mapa = { '1': 'Full Time', '2': 'Part Time', '3': 'Freelance' };
-  return mapa[val] || 'No especificado';
-}
-
-function formatFecha(fechaStr) {
-  const d = new Date(fechaStr);
-  return d.toLocaleDateString('es-CL');
-}
-
-function formatRango(renta) {
-  if (!renta?.desde || !renta?.hasta) return 'No disponible';
-  return `$${parseInt(renta.desde).toLocaleString('es-CL')} - $${parseInt(renta.hasta).toLocaleString('es-CL')}`;
-}
-
-function diasDesde(fechaStr) {
-  const hoy = new Date();
-  const fecha = new Date(fechaStr);
-  const dias = Math.floor((hoy - fecha) / (1000 * 60 * 60 * 24));
-  return dias === 0 ? 'Hoy' : dias === 1 ? 'Ayer' : `Hace ${dias} días`;
-}
-</script>
+    <script src="assets/js/job-list/lista-trabajos.js"></script>
+    <script src="assets/js/job-list/ver-trabajo.js"></script>
 
 
 

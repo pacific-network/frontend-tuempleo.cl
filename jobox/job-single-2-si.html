@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="assets/css/nice-select.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/stars.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
 </head>
 
@@ -65,7 +66,7 @@
                                 </div>
                                 <div class="job-single-heading-btns mt-5">
                                     <a href="job-list.html" class="theme-btn theme-btn1"><span class="fe-arrow-left"></span> Volver</a>
-                                    <a href="#" class="theme-btn"><span class="fe-briefcase"></span> Postular</a>
+                                    <a href="#" id="btn-postular" class="theme-btn"><span class="fe-briefcase"></span> Postular</a>
                                     <a href="#" class="theme-btn theme-btn2"><span class="fe-bookmark"></span> Guardar Trabajo</a>
                                 </div>
                             </div>
@@ -391,11 +392,46 @@
             </div>
         </div>
         <!-- job single -->
-
+        <div class="modal fade" id="modalPreguntas" tabindex="-1" aria-labelledby="modalPreguntasLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content border-0 rounded-4 shadow-lg">
+                <!-- Header -->
+                    <div class="modal-header bg-light rounded-top-4 px-4 py-3 border-bottom-0">
+                        <div class="d-flex align-items-center w-100">
+                            <div class="me-3">
+                                <span class="bg-primary bg-opacity-10 text-primary rounded-circle p-2">
+                                    <i class="fas fa-question-circle fa-lg"></i>
+                                </span>
+                            </div>
+                            <div>
+                                <h5 class="modal-title fw-bold text-primary mb-1" id="modalPreguntasLabel">
+                                    Responde estas preguntas antes de postular
+                                </h5>
+                                <p class="mb-0 text-muted small">Tus respuestas serán enviadas al empleador junto con tu postulación.</p>
+                            </div>
+                            <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                        </div>
+                    </div>
+              
+                <!-- Body -->
+                    <div class="modal-body px-4 pt-2 pb-0">
+                        <form id="formulario-preguntas" class="needs-validation" novalidate></form>
+                    </div>
+              
+                <!-- Footer -->
+                    <div class="modal-footer px-4 py-3 bg-light rounded-bottom-4 border-top-0">
+                        <button type="button" class="btn btn-outline-primary rounded-pill px-4" data-bs-dismiss="modal">
+                            Cancelar
+                        </button>
+                        <button type="button" id="btn-confirmar-postulacion" class="btn rounded-pill px-4 text-white" style="background-color: rgb(60, 101, 245);">
+                            <i class="fas fa-paper-plane me-2"></i> Confirmar Postulación
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </main>
-
-
 
     <!-- footer area -->
     <div id="footer-placeholder">
@@ -424,6 +460,7 @@
     <script src="assets/js/config/config.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooterSiApplied.js"></script>
     <script src="assets/js/calification.js"></script>
+    <script src="assets/js/postulaciones/postulacion.js"></script>
     <script>
         document.querySelectorAll('.job-item').forEach(item => {
             item.addEventListener('click', function(e) {
@@ -435,108 +472,6 @@
             item.style.cursor = 'pointer';
         });
     </script>
-    <script>
-  document.addEventListener('DOMContentLoaded', async () => {
-    const idOferta = getIdOfertaFromURL();
-
-    if (!idOferta) {
-      alert('No se encontró la oferta');
-      return;
-    }
-
-    try {
-      const response = await fetch(`https://tuempleo.cl/api/v1/ofertas/${idOferta}`);
-      const oferta = await response.json();
-      const data = JSON.parse(oferta.data);
-
-      document.title = `${oferta.titulo} - TuEmpleo`;
-      
-      // ✅ Título de la oferta
-      document.querySelector('h4.mb-4').textContent = oferta.titulo;
-      document.querySelector('.job-single-employer-info h5 a').textContent = oferta.empresa.nombre_fantasia;
-      document.querySelector('.job-single-employer-info p').textContent = oferta.empresa.data.actividades_economicas[0] || '';
-
-      // ✅ Fechas
-      document.querySelector('.fecha-publicacion').textContent = formatFecha(oferta.fecha_publicacion);
-      document.querySelector('.fecha-cierre').textContent = formatFecha(oferta.fecha_cierre);
-
-      // ✅ Info general
-      document.querySelector('.area-trabajo').textContent = data.area_trabajo || 'No especificado';
-      document.querySelector('.experiencia').textContent = (data.anios_experiencia || '0') + ' años';
-      document.querySelector('.ubicacion').textContent = oferta.empleador?.data?.region || 'Sin datos';
-      document.querySelector('.educacion').textContent = formatEducacion(data.educacion_requerida);
-      document.querySelector('.tipo-contrato').textContent = data.tipo_contrato || 'No definido';
-      document.querySelector('.modalidad').textContent = formatModalidad(data.modalidad);
-
-      // ✅ Renta
-      document.querySelector('.renta').textContent =
-        data.renta_salarial?.desde && data.renta_salarial?.hasta
-          ? `$${formatNum(data.renta_salarial.desde)} - $${formatNum(data.renta_salarial.hasta)}`
-          : 'De acuerdo al mercado';
-
-      // ✅ Descripción
-      document.querySelector('.descripcion-puesto').textContent = data.descripcion_puesto || '';
-
-      // ✅ Listas dinámicas
-      renderLista(data.responsabilidades, '.responsabilidades-list');
-      renderLista(data.requisitos_minimos, '.requisitos-list');
-      renderLista(data.beneficios, '.beneficios-list');
-      renderLista(data.herramientas_basicas, '.herramientas-list');
-      renderLista(data.preguntas_personalizadas, '.preguntas-list');
-
-    } catch (error) {
-      console.error('Error cargando la oferta:', error);
-    }
-  });
-
-  function renderLista(arr, selector) {
-    const ul = document.querySelector(selector);
-    if (!ul || !Array.isArray(arr)) return;
-    ul.innerHTML = '';
-    arr.forEach(texto => {
-      const li = document.createElement('li');
-      li.textContent = texto;
-      li.classList.add('mb-2');
-      ul.appendChild(li);
-    });
-  }
-
-  function formatFecha(fechaStr) {
-    const d = new Date(fechaStr);
-    return d.toLocaleDateString('es-CL');
-  }
-
-  function formatNum(num) {
-    return parseInt(num).toLocaleString('es-CL');
-  }
-
-  function formatEducacion(value) {
-    const mapa = {
-      superior: 'Superior - Universitario',
-      media: 'Educación Media',
-      basica: 'Educación Básica'
-    };
-    return mapa[value] || value;
-  }
-
-  function formatModalidad(val) {
-    const mapa = {
-      '1': 'Full Time',
-      '2': 'Part Time',
-      '3': 'Freelance'
-    };
-    return mapa[val] || 'No especificado';
-  }
-
-  function getIdOfertaFromURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('id');
-  }
-</script>
-
-
-
-
 
 </body>
 
