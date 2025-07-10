@@ -436,7 +436,6 @@
         });
     </script>
     <script>
-        
   document.addEventListener('DOMContentLoaded', async () => {
     const idOferta = getIdOfertaFromURL();
 
@@ -450,38 +449,40 @@
       const oferta = await response.json();
       const data = JSON.parse(oferta.data);
 
-      // Título y empresa
+      document.title = `${oferta.titulo} - TuEmpleo`;
+      
+      // ✅ Título de la oferta
       document.querySelector('h4.mb-4').textContent = oferta.titulo;
       document.querySelector('.job-single-employer-info h5 a').textContent = oferta.empresa.nombre_fantasia;
-      document.querySelector('.job-single-employer-info p').textContent =
-        oferta.empresa.data.actividades_economicas[0] || '';
+      document.querySelector('.job-single-employer-info p').textContent = oferta.empresa.data.actividades_economicas[0] || '';
 
-      // Fechas
-      document.querySelector('p.fecha-publicacion').textContent = formatFecha(oferta.fecha_publicacion);
-      document.querySelector('p.fecha-cierre').textContent = formatFecha(oferta.fecha_cierre);
+      // ✅ Fechas
+      document.querySelector('.fecha-publicacion').textContent = formatFecha(oferta.fecha_publicacion);
+      document.querySelector('.fecha-cierre').textContent = formatFecha(oferta.fecha_cierre);
 
-      // Info general
-      document.querySelector('p.area-trabajo').textContent = data.area_trabajo;
-      document.querySelector('p.experiencia').textContent = data.anios_experiencia + ' años';
-      document.querySelector('p.ubicacion').textContent = oferta.empleador?.data?.region || 'Sin datos';
-      document.querySelector('p.educacion').textContent = formatEducacion(data.educacion_requerida);
-      document.querySelector('p.tipo-contrato').textContent = data.tipo_contrato;
-      document.querySelector('p.modalidad').textContent = formatModalidad(data.modalidad);
+      // ✅ Info general
+      document.querySelector('.area-trabajo').textContent = data.area_trabajo || 'No especificado';
+      document.querySelector('.experiencia').textContent = (data.anios_experiencia || '0') + ' años';
+      document.querySelector('.ubicacion').textContent = oferta.empleador?.data?.region || 'Sin datos';
+      document.querySelector('.educacion').textContent = formatEducacion(data.educacion_requerida);
+      document.querySelector('.tipo-contrato').textContent = data.tipo_contrato || 'No definido';
+      document.querySelector('.modalidad').textContent = formatModalidad(data.modalidad);
 
-      // Renta
-      document.querySelector('p.renta').textContent = 
+      // ✅ Renta
+      document.querySelector('.renta').textContent =
         data.renta_salarial?.desde && data.renta_salarial?.hasta
-        ? `$${formatNum(data.renta_salarial.desde)} - $${formatNum(data.renta_salarial.hasta)}`
-        : 'De acuerdo al mercado';
+          ? `$${formatNum(data.renta_salarial.desde)} - $${formatNum(data.renta_salarial.hasta)}`
+          : 'De acuerdo al mercado';
 
-      // Descripción
-      document.querySelector('p.descripcion-puesto').textContent = data.descripcion_puesto;
+      // ✅ Descripción
+      document.querySelector('.descripcion-puesto').textContent = data.descripcion_puesto || '';
 
-      // Listas dinámicas
+      // ✅ Listas dinámicas
       renderLista(data.responsabilidades, '.responsabilidades-list');
       renderLista(data.requisitos_minimos, '.requisitos-list');
       renderLista(data.beneficios, '.beneficios-list');
       renderLista(data.herramientas_basicas, '.herramientas-list');
+      renderLista(data.preguntas_personalizadas, '.preguntas-list');
 
     } catch (error) {
       console.error('Error cargando la oferta:', error);
@@ -522,11 +523,17 @@
     const mapa = {
       '1': 'Full Time',
       '2': 'Part Time',
-      '3': 'Freelance',
+      '3': 'Freelance'
     };
     return mapa[val] || 'No especificado';
   }
+
+  function getIdOfertaFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('id');
+  }
 </script>
+
 
 
 
