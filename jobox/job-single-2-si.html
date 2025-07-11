@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="assets/css/nice-select.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/stars.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
 </head>
 
@@ -65,7 +66,7 @@
                                 </div>
                                 <div class="job-single-heading-btns mt-5">
                                     <a href="job-list.html" class="theme-btn theme-btn1"><span class="fe-arrow-left"></span> Volver</a>
-                                    <a href="#" class="theme-btn"><span class="fe-briefcase"></span> Postular</a>
+                                    <a href="#" id="btn-postular" class="theme-btn"><span class="fe-briefcase"></span> Postular</a>
                                     <a href="#" class="theme-btn theme-btn2"><span class="fe-bookmark"></span> Guardar Trabajo</a>
                                 </div>
                             </div>
@@ -78,7 +79,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Fecha Postulación</h6>
-                                            <p>12-05-2025</p>
+                                            <p class="fecha-publicacion">12-05-2025</p>
                                         </div>
                                     </li>
                                     <li>
@@ -87,7 +88,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Fecha Expiración</h6>
-                                            <p>12-06-2025</p>
+                                            <p class="fecha-cierre">12-06-2025</p>
                                         </div>
                                     </li>
                                     <li>
@@ -96,7 +97,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Área</h6>
-                                            <p>Tecnologias, Sistemas y Telecomunicaciones</p>
+                                            <p class="area-trabajo">Tecnologias, Sistemas y Telecomunicaciones</p>
                                         </div>
                                     </li>
                                     <li>
@@ -105,7 +106,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Experiencia</h6>
-                                            <p>3 Años</p>
+                                            <p class="experiencia">3 Años</p>
                                         </div>
                                     </li>
                                     <li>
@@ -114,7 +115,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Ubicación</h6>
-                                            <p>Metropolitana de Santiago</p>
+                                            <p class="ubicacion">Metropolitana de Santiago</p>
                                         </div>
                                     </li>
                                     <li>
@@ -123,7 +124,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Educación Requerida</h6>
-                                            <p>Superior - Universitario</p>
+                                            <p class="educacion">Superior - Universitario</p>
                                         </div>
                                     </li>
                                     <li>
@@ -132,7 +133,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Tipo Contratación</h6>
-                                            <p>Indefinido</p>
+                                            <p class="tipo-contrato">Indefinido</p>
                                         </div>
                                     </li>
                                     <li>
@@ -141,7 +142,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Modalidad</h6>
-                                            <p>Full Time</p>
+                                            <p class="modalidad">Full Time</p>
                                         </div>
                                     </li>
                                     <li>
@@ -150,7 +151,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Renta Salarial</h6>
-                                            <p>$500.000 - $850.000</p>
+                                            <p class="renta">$500.000 - $850.000</p>
                                         </div>
                                     </li>
                                 </ul>
@@ -165,13 +166,13 @@
                                 <!-- Descripción del puesto -->
                                 <div class="mb-4">
                                     <h5 class="mb-3">Descripción del puesto</h5>
-                                    <p>En Vertice CC, estamos en búsqueda de un Desarrollador Full Stack para colaborar con un cliente del sector bancario en el desarrollo de productos digitales.</p>
+                                    <p class="descripcion-puesto">En Vertice CC, estamos en búsqueda de un Desarrollador Full Stack para colaborar con un cliente del sector bancario en el desarrollo de productos digitales.</p>
                                 </div>
                             
                                 <!-- Responsabilidades -->
                                 <div class="mb-4">
                                     <h5 class="mb-3">Responsabilidades</h5>
-                                    <ul class="ps-4">
+                                    <ul class="ps-4 responsabilidades-list">
                                         <li class="mb-2">Crear interfaces de usuario responsivas con React</li>
                                         <li class="mb-2">Desarrollar lógica server-side con Node.js y NestJS</li>
                                         <li class="mb-2">Diseñar y gestionar bases de datos SQL y NoSQL</li>
@@ -183,7 +184,7 @@
                                 <!-- Requisitos mínimos -->
                                 <div class="mb-4">
                                     <h5 class="mb-3">Requisitos mínimos</h5>
-                                    <ul class="ps-4">
+                                    <ul class="ps-4 requisitos-list">
                                         <li class="mb-2">3+ años de experiencia en desarrollo Full Stack</li>
                                         <li class="mb-2">Dominio de JavaScript/TypeScript</li>
                                         <li class="mb-2">Experiencia con bases de datos relacionales</li>
@@ -194,7 +195,7 @@
                                 <!-- Beneficios -->
                                 <div class="mb-4">
                                     <h5 class="mb-3">Beneficios</h5>
-                                    <ul class="ps-4">
+                                    <ul class="ps-4 beneficios-list">
                                         <li class="mb-2">Modalidad híbrida</li>
                                         <li class="mb-2">Seguro complementario de salud</li>
                                         <li>Capacitaciones constantes</li>
@@ -202,7 +203,7 @@
                                 </div>
                                 <div class="mb-4">
                                     <h5 class="mb-3">Herramientas Básicas</h5>
-                                    <ul class="ps-4">
+                                    <ul class="ps-4 herramientas-list">
                                         <li class="mb-2">Office 365</li>
                                         <li class="mb-2">Adobe PDF</li>
                                         <li class="mb-2">Windows 10</li>
@@ -391,11 +392,46 @@
             </div>
         </div>
         <!-- job single -->
-
+        <div class="modal fade" id="modalPreguntas" tabindex="-1" aria-labelledby="modalPreguntasLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content border-0 rounded-4 shadow-lg">
+                <!-- Header -->
+                    <div class="modal-header bg-light rounded-top-4 px-4 py-3 border-bottom-0">
+                        <div class="d-flex align-items-center w-100">
+                            <div class="me-3">
+                                <span class="bg-primary bg-opacity-10 text-primary rounded-circle p-2">
+                                    <i class="fas fa-question-circle fa-lg"></i>
+                                </span>
+                            </div>
+                            <div>
+                                <h5 class="modal-title fw-bold text-primary mb-1" id="modalPreguntasLabel">
+                                    Responde estas preguntas antes de postular
+                                </h5>
+                                <p class="mb-0 text-muted small">Tus respuestas serán enviadas al empleador junto con tu postulación.</p>
+                            </div>
+                            <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                        </div>
+                    </div>
+              
+                <!-- Body -->
+                    <div class="modal-body px-4 pt-2 pb-0">
+                        <form id="formulario-preguntas" class="needs-validation" novalidate></form>
+                    </div>
+              
+                <!-- Footer -->
+                    <div class="modal-footer px-4 py-3 bg-light rounded-bottom-4 border-top-0">
+                        <button type="button" class="btn btn-outline-primary rounded-pill px-4" data-bs-dismiss="modal">
+                            Cancelar
+                        </button>
+                        <button type="button" id="btn-confirmar-postulacion" class="btn rounded-pill px-4 text-white" style="background-color: rgb(60, 101, 245);">
+                            <i class="fas fa-paper-plane me-2"></i> Confirmar Postulación
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </main>
-
-
 
     <!-- footer area -->
     <div id="footer-placeholder">
@@ -424,6 +460,7 @@
     <script src="assets/js/config/config.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooterSiApplied.js"></script>
     <script src="assets/js/calification.js"></script>
+    <script src="assets/js/postulaciones/postulacion.js"></script>
     <script>
         document.querySelectorAll('.job-item').forEach(item => {
             item.addEventListener('click', function(e) {
@@ -435,7 +472,6 @@
             item.style.cursor = 'pointer';
         });
     </script>
-
 
 </body>
 

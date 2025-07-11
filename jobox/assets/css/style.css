@@ -1252,20 +1252,9 @@ hero css
 }
 
 .hero-shape img{
-  position: absolute;
-  pointer-events: none;
-  z-index: 1;
+  position: absolute; 
 }
 
-.hero-shape {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: 1;
-}
 
 .hero-shape .hero-shape-1{
   left: 0;
@@ -7225,3 +7214,4 @@ home 5
 .custom-toast.warning .custom-toast-header {
   background-color: #C2D7F2; /* azul claro para aviso */
   color: #083359;
+
