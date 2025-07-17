@@ -26,6 +26,28 @@
     <link rel="stylesheet" href="assets/css/nice-select.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/stars.css">
+    <style>
+        .alert-box {
+  background-color: #e6f6fb;
+  border-left: 4px solid #0ca4df;
+  padding: 1rem;
+  border-radius: 4px;
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.alert-icon {
+  font-size: 1.8rem;
+  color: #0ca4df;
+}
+
+.alert-content {
+  color: #333;
+  font-size: 0.95rem;
+}
+
+    </style>
 
 </head>
 
@@ -62,10 +84,24 @@
                                         <h5><a href="candidate-employer-view-si.html">Vertice Call Center</a></h5>
                                         <p>Call Center</p>
                                     </div>
+                                </div>                              
+                                <div class="job-single-heading-btns d-flex gap-2 mt-3 flex-wrap">
+                                    <a href="job-list-2.html" class="theme-btn theme-btn1 d-flex align-items-center">
+                                        <span class="fe-arrow-left me-1"></span> Volver
+                                    </a>
+                                    <a href="#" id="btn-postular" class="theme-btn d-flex align-items-center">
+                                        <span class="fe-briefcase me-1"></span> Postular
+                                    </a>
                                 </div>
-                                <div class="job-single-heading-btns mt-5">
-                                    <a href="job-list-2.html" class="theme-btn theme-btn1"><span class="fe-arrow-left"></span> Volver</a>
-                                    <a href="#" id="btn-postular" class="theme-btn"><span class="fe-briefcase"></span> Postular</a>
+                                <div class="alert-box mt-3 d-flex align-items-center">
+                                    <div class="alert-icon">
+                                        <i class="fe-info"></i>
+                                    </div>
+                                    <div class="alert-contnet">
+                                        <strong>Postulación con preguntas:</strong>
+                                        <br>
+                                        Esta oferta requiere de responder preguntas adicionales para postular
+                                    </div>
                                 </div>
                             </div>
                             <div class="job-single-list">
@@ -76,7 +112,7 @@
                                             <i class="fal fa-clock"></i>
                                         </div>
                                         <div class="job-single-list-info">
-                                            <h6>Fecha Postulación</h6>
+                                            <h6>Fecha Publicación</h6>
                                             <p class="fecha-publicacion">12-05-2025</p>
                                         </div>
                                     </li>
@@ -148,7 +184,7 @@
                                             <i class="fal fa-sack-dollar"></i>
                                         </div>
                                         <div class="job-single-list-info">
-                                            <h6>Renta Salarial</h6>
+                                            <h6>Renta Mensual</h6>
                                             <p class="renta">$500.000 - $850.000</p>
                                         </div>
                                     </li>
@@ -424,6 +460,7 @@
     <script src="assets/js/header-footer/loadHeaderFooter.js"></script>
     <script src="assets/js/calification.js"></script>
     <script src="assets/js/postulaciones/ver-trabajo-solo.js"></script>
+    <script src="assets/js/postulaciones/filtros-postulacion.js"></script>
     <script>
         document.querySelectorAll('.job-item').forEach(item => {
             item.addEventListener('click', function(e) {

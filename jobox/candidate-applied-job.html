@@ -27,24 +27,24 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
         .profile-job-content h6 a,
-.profile-job-list li,
-.profile-job-content ul:not(.profile-job-list) li {
-    white-space: normal;
-    word-break: break-word;
-    overflow-wrap: break-word;
-    max-width: 27ch; /* 27 caracteres aproximadamente */
-    display: inline-block;
-    vertical-align: top;
-    line-height: 1.4;
-}
+        .profile-job-list li,
+        .profile-job-content ul:not(.profile-job-list) li {
+            white-space: normal;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            max-width: 27ch; /* 27 caracteres aproximadamente */
+            display: inline-block;
+            vertical-align: top;
+            line-height: 1.4;
+        }
 
-.profile-job-list li i,
-.profile-job-content ul:not(.profile-job-list) li i {
-    margin-right: 5px;
-    min-width: 16px;
-    display: inline-block;
-    text-align: center;
-}
+        .profile-job-list li i,
+        .profile-job-content ul:not(.profile-job-list) li i {
+            margin-right: 5px;
+            min-width: 16px;
+            display: inline-block;
+            text-align: center;
+        }
     </style>
 
 </head>
@@ -62,7 +62,7 @@
     <!-- preloader end -->
 
 
-    <!-- header area -->
+    <!-- header area candidato logueado-->
     <div id="header-placeholder"></div>
     <!-- header area end -->
 
@@ -98,9 +98,10 @@
                                     <button type="button" class="profile-img-btn"><i class="far fa-camera"></i></button>
                                     <input type="file" class="profile-img-file">
                                 </div>
-                                <h4 id="userFullName">Cargando...</h4>
-                                <p id="userCategory">Cargando...</p>
+                                <h4 id="userFullName">Cargando...</h4> <!-- Nombre Candidato-->
+                                <p id="userCategory">Cargando...</p> <!-- Categoria del candidato-->
                             </div>
+                            <!-- Sidebar de la izquierda -->
                             <ul class="user-profile-sidebar-list">
                                 <li><a href="candidate-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a></li>
                                 <li><a href="candidate-profile.html"><i class="far fa-user-tie"></i> Mi Perfil</a></li>
