@@ -30,6 +30,9 @@
         .col-lg-9 {
             width: 100%;
         }
+        .site-breadcrumb{
+            height: 200px;
+        }
     </style>
 
 </head>
@@ -67,31 +70,30 @@
                 <div class="job-list2 search-form mt-5 mb-3">
                     <div class="col-lg-9 mx-auto">
                         <div class="search-form-wrapper">
-                            <form action="#">
+                            <form id="form-busqueda" action="#">
                                 <div class="row">
                                     <div class="col-md-4 px-0">
                                         <div class="form-group">
                                             <div class="form-group-icon">
-                                                <input type="text" class="form-control"
-                                                    placeholder="Buscar empleo por puesto o palabra clave">
+                                                <input type="text" id="input-keyword" class="form-control" placeholder="Buscar empleo por puesto o palabra clave">
                                                 <i class="fe-search"></i>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-4 px-0">
-                                        <div class="form-group">
-                                            <div class="form-group-icon">
-                                                <select type="text" class="form-control" id="region-select" data-region-seleccionada="0">
-                                                  <option value="">Ubicación</option>
-                                                </select>
-                                                <i class="fe-map-pin"></i>
-                                            </div>
+                                      <div class="form-group">
+                                        <div class="form-group-icon">
+                                          <select type="text" class="form-control" id="region-select" data-region-seleccionada="0">
+                                            <option value="">Ubicación</option>
+                                          </select>
+                                          <i class="fe-map-pin"></i>
                                         </div>
+                                      </div>
                                     </div>
                                     <div class="col-md-3 px-0">
                                         <div class="form-group">
                                             <div class="form-group-icon">
-                                                <select type="text" class="form-control">
+                                                <select type="text" id="categoria-select" class="form-control">
                                                     <option value="">Categoría</option>
                                                     <option value="1">Informática / Tecnología</option>
                                                     <option value="2">Administración / Oficina</option>
@@ -131,7 +133,8 @@
                                     <div class="col-md-1 px-1">
                                         <div class="form-group">
                                             <button type="submit" class="theme-btn w-100"><span
-                                                    class="fe-search"></span>Buscar</button>
+                                                    class="fe-search"></span>Buscar
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -148,9 +151,6 @@
             </div>
         </div>
 
-
-
-
         <!-- job list -->
         <div class="job-list2 py-120">
             <div class="container">
@@ -158,22 +158,14 @@
                     <div class="col-lg-4 col-xl-3 mb-4">
                         <div class="job-sidebar">
                             <div class="job-sidebar-item">
+                                <div id="ultimas-busquedas" class="bg-light border rounded px-3 py-2 small shadow-sm">
+                                    <strong class="text-muted d-block mb-1">Últimas búsquedas:</strong>
+                                    <ul class="list-unstyled mb-0" id="lista-busquedas" style="font-size: 0.85rem;"></ul>
+                                </div>
+                            </div>
+                            <div class="job-sidebar-item">
                                 <h4 class="job-sidebar-title">Modalidad</h4>
                                 <div class="job-type">
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-type" type="checkbox" value="1"
-                                            id="job-type1">
-                                        <label class="form-check-label" for="job-type1">
-                                            Prescencial <span>(20)</span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-type" type="checkbox" value="2"
-                                            id="job-type2">
-                                        <label class="form-check-label" for="job-type2">
-                                            Online <span>(15)</span>
-                                        </label>
-                                    </div>
                                     <div class="form-check">
                                         <input class="form-check-input" name="job-type" type="checkbox" value="3"
                                             id="job-type3">
@@ -332,7 +324,7 @@
                                 <h5>2,350 Results Found</h5>
                             </div>
                         </div>
-                        <div class="row">
+                        <div id="ofertas-container" class="row g-4">
                             <!-- Trabajo 1 -->
                             <div class="col-lg-12">
                                 <div class="job-item" onclick="window.location.href='job-single-2.html'" style="cursor: pointer;">
@@ -351,7 +343,7 @@
                                             <li><i class="fe-briefcase"></i> Tecnologias, Sistemas y Telecomunicaciones</li>
                                             <li><i class="fe-check-circle"></i> Full Time</li>
                                             <li><i class="fe-clock"></i> Hace 2 días</li>
-                                            <li><i class="fas fa-timer"></i> Exp: 30-07-2025 </li>
+                                            <li><i class="f -timer"></i> Exp: 30-07-2025 </li>
                                             <li><i class="fe-dollar-sign"></i> Salario: 500.000 - 850.000</li>
                                             <li><i class="fe-map-pin"></i> Región Metropolitana de Santiago</li>
                                         </ul>
@@ -554,6 +546,9 @@
     <script src="assets/js/config/config.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooter.js"></script>
     <script src="assets/js/form-register/regiones.js"></script>
+    <script src="assets/js/job-list/lista-trabajos-lo.js"></script>
+    <script src="assets/js/postulaciones/paginacion.js"></script>
+    <script src="assets/js/postulaciones/busqueda-empleos.js"></script>
 
 </body>
 

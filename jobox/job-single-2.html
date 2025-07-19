@@ -26,6 +26,28 @@
     <link rel="stylesheet" href="assets/css/nice-select.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/stars.css">
+    <style>
+        .alert-box {
+  background-color: #e6f6fb;
+  border-left: 4px solid #0ca4df;
+  padding: 1rem;
+  border-radius: 4px;
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.alert-icon {
+  font-size: 1.8rem;
+  color: #0ca4df;
+}
+
+.alert-content {
+  color: #333;
+  font-size: 0.95rem;
+}
+
+    </style>
 
 </head>
 
@@ -55,18 +77,31 @@
                         <div class="job-sidebar mb-5">
                             <div class="job-single-heading">
                                 <div class="job-single-employer">
-                                    <a href="candidate-employer-view.html">
+                                    <a href="candidate-employer-view-si.html">
                                         <img src="assets/img/job/verticecc.jpeg" alt="Vertice CC">
                                     </a>
                                     <div class="job-single-employer-info">
-                                        <h5><a href="candidate-employer-view.html">Vertice Call Center</a></h5>
+                                        <h5><a href="candidate-employer-view-si.html">Vertice Call Center</a></h5>
                                         <p>Call Center</p>
                                     </div>
+                                </div>                              
+                                <div class="job-single-heading-btns d-flex gap-2 mt-3 flex-wrap">
+                                    <a href="job-list-2.html" class="theme-btn theme-btn1 d-flex align-items-center">
+                                        <span class="fe-arrow-left me-1"></span> Volver
+                                    </a>
+                                    <a href="#" id="btn-postular" class="theme-btn d-flex align-items-center">
+                                        <span class="fe-briefcase me-1"></span> Postular
+                                    </a>
                                 </div>
-                                <div class="job-single-heading-btns mt-5">
-                                    <a href="job-list-2.html" class="theme-btn theme-btn1"><span class="fe-arrow-left"></span> Volver</a>
-                                    <a href="#" class="theme-btn"><span class="fe-briefcase"></span> Postular</a>
-                                    <a href="#" class="theme-btn theme-btn2"><span class="fe-bookmark"></span> Guardar Trabajo</a>
+                                <div class="alert-box mt-3 d-flex align-items-center">
+                                    <div class="alert-icon">
+                                        <i class="fe-info"></i>
+                                    </div>
+                                    <div class="alert-contnet">
+                                        <strong>Postulación con preguntas:</strong>
+                                        <br>
+                                        Esta oferta requiere de responder preguntas adicionales para postular
+                                    </div>
                                 </div>
                             </div>
                             <div class="job-single-list">
@@ -77,8 +112,8 @@
                                             <i class="fal fa-clock"></i>
                                         </div>
                                         <div class="job-single-list-info">
-                                            <h6>Fecha Postulación</h6>
-                                            <p>12-05-2025</p>
+                                            <h6>Fecha Publicación</h6>
+                                            <p class="fecha-publicacion">12-05-2025</p>
                                         </div>
                                     </li>
                                     <li>
@@ -87,7 +122,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Fecha Expiración</h6>
-                                            <p>12-06-2025</p>
+                                            <p class="fecha-cierre">12-06-2025</p>
                                         </div>
                                     </li>
                                     <li>
@@ -96,7 +131,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Área</h6>
-                                            <p>Tecnologias, Sistemas y Telecomunicaciones</p>
+                                            <p class="area-trabajo">Tecnologias, Sistemas y Telecomunicaciones</p>
                                         </div>
                                     </li>
                                     <li>
@@ -105,7 +140,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Experiencia</h6>
-                                            <p>3 Años</p>
+                                            <p class="experiencia">3 Años</p>
                                         </div>
                                     </li>
                                     <li>
@@ -114,7 +149,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Ubicación</h6>
-                                            <p>Metropolitana de Santiago</p>
+                                            <p class="ubicacion">Metropolitana de Santiago</p>
                                         </div>
                                     </li>
                                     <li>
@@ -123,7 +158,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Educación Requerida</h6>
-                                            <p>Superior - Universitario</p>
+                                            <p class="educacion">Superior - Universitario</p>
                                         </div>
                                     </li>
                                     <li>
@@ -132,7 +167,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Tipo Contratación</h6>
-                                            <p>Indefinido</p>
+                                            <p class="tipo-contrato">Indefinido</p>
                                         </div>
                                     </li>
                                     <li>
@@ -141,7 +176,7 @@
                                         </div>
                                         <div class="job-single-list-info">
                                             <h6>Modalidad</h6>
-                                            <p>Full Time</p>
+                                            <p class="modalidad">Full Time</p>
                                         </div>
                                     </li>
                                     <li>
@@ -149,8 +184,8 @@
                                             <i class="fal fa-sack-dollar"></i>
                                         </div>
                                         <div class="job-single-list-info">
-                                            <h6>Renta Salarial</h6>
-                                            <p>$500.000 - $850.000</p>
+                                            <h6>Renta Mensual</h6>
+                                            <p class="renta">$500.000 - $850.000</p>
                                         </div>
                                     </li>
                                 </ul>
@@ -165,13 +200,13 @@
                                 <!-- Descripción del puesto -->
                                 <div class="mb-4">
                                     <h5 class="mb-3">Descripción del puesto</h5>
-                                    <p>En Vertice CC, estamos en búsqueda de un Desarrollador Full Stack para colaborar con un cliente del sector bancario en el desarrollo de productos digitales.</p>
+                                    <p class="descripcion-puesto">En Vertice CC, estamos en búsqueda de un Desarrollador Full Stack para colaborar con un cliente del sector bancario en el desarrollo de productos digitales.</p>
                                 </div>
                             
                                 <!-- Responsabilidades -->
                                 <div class="mb-4">
                                     <h5 class="mb-3">Responsabilidades</h5>
-                                    <ul class="ps-4">
+                                    <ul class="ps-4 responsabilidades-list">
                                         <li class="mb-2">Crear interfaces de usuario responsivas con React</li>
                                         <li class="mb-2">Desarrollar lógica server-side con Node.js y NestJS</li>
                                         <li class="mb-2">Diseñar y gestionar bases de datos SQL y NoSQL</li>
@@ -183,7 +218,7 @@
                                 <!-- Requisitos mínimos -->
                                 <div class="mb-4">
                                     <h5 class="mb-3">Requisitos mínimos</h5>
-                                    <ul class="ps-4">
+                                    <ul class="ps-4 requisitos-list">
                                         <li class="mb-2">3+ años de experiencia en desarrollo Full Stack</li>
                                         <li class="mb-2">Dominio de JavaScript/TypeScript</li>
                                         <li class="mb-2">Experiencia con bases de datos relacionales</li>
@@ -194,7 +229,7 @@
                                 <!-- Beneficios -->
                                 <div class="mb-4">
                                     <h5 class="mb-3">Beneficios</h5>
-                                    <ul class="ps-4">
+                                    <ul class="ps-4 beneficios-list">
                                         <li class="mb-2">Modalidad híbrida</li>
                                         <li class="mb-2">Seguro complementario de salud</li>
                                         <li>Capacitaciones constantes</li>
@@ -202,7 +237,7 @@
                                 </div>
                                 <div class="mb-4">
                                     <h5 class="mb-3">Herramientas Básicas</h5>
-                                    <ul class="ps-4">
+                                    <ul class="ps-4 herramientas-list">
                                         <li class="mb-2">Office 365</li>
                                         <li class="mb-2">Adobe PDF</li>
                                         <li class="mb-2">Windows 10</li>
@@ -238,7 +273,7 @@
                                     <br>
                                     <h6>¿Cuál es tu opinión sobre esta empresa?</h6>
                                     <br>
-                                    <button class="theme-btn theme-btn2" onclick="window.location.href='login.html'">
+                                    <button class="theme-btn theme-btn2" onclick="window.location.href='calification.html'">
                                         <span class="fe-star"></span> Calificar Empresa
                                 </div>
                             </div>
@@ -424,6 +459,8 @@
     <script src="assets/js/config/config.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooter.js"></script>
     <script src="assets/js/calification.js"></script>
+    <script src="assets/js/postulaciones/ver-trabajo-solo.js"></script>
+    <script src="assets/js/postulaciones/filtros-postulacion.js"></script>
     <script>
         document.querySelectorAll('.job-item').forEach(item => {
             item.addEventListener('click', function(e) {

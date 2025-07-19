@@ -14,8 +14,41 @@ function showAlert(message, type = 'success') {
     }, 3000);
 }
 
-document.getElementById("registroForm").addEventListener("submit", async function(e) {
-    e.preventDefault(); // Evita recarga del form
+// === Mostrar/ocultar contraseña principal ===
+const togglePassword = document.getElementById("togglePassword");
+const passwordField = document.getElementById("password");
+
+if (togglePassword && passwordField) {
+    togglePassword.addEventListener("click", () => {
+        const isHidden = passwordField.type === "password";
+        passwordField.type = isHidden ? "text" : "password";
+        const icon = togglePassword.querySelector("i");
+        if (icon) {
+            icon.classList.toggle("fa-eye");
+            icon.classList.toggle("fa-eye-slash");
+        }
+    });
+}
+
+// === Mostrar/ocultar confirmación de contraseña ===
+const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
+const confirmPasswordField = document.getElementById("confirmPassword");
+
+if (toggleConfirmPassword && confirmPasswordField) {
+    toggleConfirmPassword.addEventListener("click", () => {
+        const isHidden = confirmPasswordField.type === "password";
+        confirmPasswordField.type = isHidden ? "text" : "password";
+        const icon = toggleConfirmPassword.querySelector("i");
+        if (icon) {
+            icon.classList.toggle("fa-eye");
+            icon.classList.toggle("fa-eye-slash");
+        }
+    });
+}
+
+// === Validación del formulario ===
+document.getElementById("registroForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
 
     const nombre = document.getElementById("nombre").value.trim();
     const email = document.getElementById("email").value.trim();
@@ -97,7 +130,7 @@ document.getElementById("registroForm").addEventListener("submit", async functio
     }
 });
 
-// Monitoreo de requisitos de contraseña
+// === Monitoreo de requisitos de contraseña ===
 const passwordInput = document.getElementById("password");
 
 if (passwordInput) {

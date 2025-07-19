@@ -90,7 +90,7 @@
                     <div class="login-form">
                         <div class="login-header">
                             <img src="assets/img/logo/tuempleo.png" alt="" />
-                            <p style="color: #3C65F5">Ingresa tu cuenta de Candidato en Tuempleo</p>
+                            <p style="color: #3C65F5">Ingresa tu cuenta de Candidato en Tuempleo.</p>
                         </div>
                         <form action="#" id="loginForm" novalidate>
                             <div class="form-group">
@@ -99,10 +99,12 @@
                             </div>
                             <div class="form-group password-wrapper">
                                 <label>Contraseña</label>
-                                <input type="password" id="password" class="form-control" placeholder="Tu Contraseña" required />
-                                <button type="button" class="password-toggle" id="togglePassword">
-                                    <i class="far fa-eye"></i>
-                                </button>
+                                <div class="input-group">
+                                    <input type="password" id="password" class="form-control" placeholder="Tu Contraseña" required />
+                                    <button type="button" class="password-toggle" id="togglePassword">
+                                        <i class="far fa-eye"></i>
+                                    </button>
+                                </div>
                             </div>
                             <div class="d-flex justify-content-between mb-4">
                                 <div class="form-check">
@@ -120,8 +122,8 @@
                         <div class="login-footer">
                             <div class="login-divider"><span>O</span></div>
                             <div class="social-login">
-                                <a href="#" class="btn-fb"><i class="fab fa-linkedin"></i> Ingresa con Linkedin</a>
-                                <a href="#" class="btn-gl"><i class="fab fa-google"></i> Ingresa con Google</a>
+                                <a href="#" id="linkedinLoginBtn" class="btn-fb"><i class="fab fa-linkedin"></i> Ingresa con Linkedin</a>
+                                <a href="#" id="googleLoginBtn" class="btn-gl"><i class="fab fa-google"></i> Ingresa con Google</a>
                             </div>
                             <p>¿Aún no tienes una cuenta? <a href="register.html">Regístrate aquí</a></p>
                         </div>
@@ -163,6 +165,7 @@
     <script src="assets/js/masonry.pkgd.min.js"></script>
     <script src="assets/js/wow.min.js"></script>
     <script src="assets/js/nice-select.min.js"></script>
+    <script src="assets/js/config/config.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooterCan.js"></script>
     <script src="assets/js/login.js"></script>

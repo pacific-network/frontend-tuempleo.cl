@@ -58,16 +58,38 @@
   margin: 0 0.5rem;
   color: #888;
 }
-</style>
-<style>
-        .fade-text {
+.user-profile-sidebar .d-flex {
+    margin-bottom: 0.1rem;
+}
+.fade-text {
     transition: opacity 0.3s ease;
     opacity: 1;
 }
 .fade-out {
-    opacity: 0;
+    opacity: 0.5;
+    transition: opacity 0.2s;
 }
-
+.user-profile-sidebar .item-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px 0;
+    margin: 0;
+    line-height: 1.2;
+}
+.user-profile-sidebar .item-toggle + .item-toggle {
+    margin-top: 4px;
+}
+.user-profile-sidebar .item-toggle div {
+    margin: 0;
+    padding: 0;
+}
+.user-profile-sidebar i {
+    transition: color 0.2s;
+}
+.toggle-azul {
+    color: #3C65F5 !important;
+}
     </style>
 
 </head>
@@ -150,21 +172,32 @@
                         </div>
                         <div class="user-profile-sidebar">
                             <h6>Informa a las empresas tu disponibilidad</h6>
-                            <br>
 
-                            <!-- Estado 1 -->
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <div class="user-profile fade-text mb-0" id="estadoDisponibilidad1">Escucho propuestas de empleo</div>
+                            <div class="item-toggle">
+                                <div class="user-profile fade-text" id="estadoDisponibilidad1">Escucho propuestas de empleo</div>
                                 <a onclick="toggleDisponibilidad('1')" style="cursor: pointer;">
-                                    <i id="toggleIcon1" class="fas fa-toggle-on fa-2x" style="color: #3C65F5;"></i>
+                                    <i id="toggleIcon1" class="fas fa-toggle-off fa-2x text-secondary toggle-azul"></i>
                                 </a>
                             </div>
-                        
-                            <!-- Estado 2 -->
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="user-profile fade-text mb-0" id="estadoDisponibilidad2">Puedo empezar de inmediato</div>
+                      
+                            <div class="item-toggle">
+                                <div class="user-profile fade-text" id="estadoDisponibilidad2">Puedo empezar de inmediato</div>
                                 <a onclick="toggleDisponibilidad('2')" style="cursor: pointer;">
-                                    <i id="toggleIcon2" class="fas fa-toggle-on fa-2x" style="color: #3C65F5;"></i>
+                                    <i id="toggleIcon2" class="fas fa-toggle-off fa-2x text-secondary toggle-azul"></i>
+                                </a>
+                            </div>
+                            <h6>Notificaciones</h6>
+                            <div class="item-toggle">
+                                <div class="user-profile fade-text" id="estadoDisponibilidad3">Notificación por Mail</div>
+                                <a onclick="toggleDisponibilidad('3')" style="cursor: pointer;">
+                                    <i id="toggleIcon3" class="fas fa-toggle-off fa-2x text-secondary toggle-azul"></i>
+                                </a>
+                            </div>
+                      
+                            <div class="item-toggle">
+                                <div class="user-profile fade-text" id="estadoDisponibilidad4">Notificación por SMS</div>
+                                <a onclick="toggleDisponibilidad('4')" style="cursor: pointer;">
+                                    <i id="toggleIcon4" class="fas fa-toggle-off fa-2x text-secondary toggle-azul"></i>
                                 </a>
                             </div>
                         </div>
@@ -614,6 +647,7 @@
     <script src="assets/js/header-footer/loadHeaderFooterSI.js"></script>
     <script src="assets/js/logout-button.js" ></script>
     <script src="assets/js/candidate-name-category.js"></script>
+    <script src="assets/js/dashboard/estados-button.js"></script>
     <script>
 // Lógica para manejar los tabs
 document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -630,33 +664,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     });
   });
 </script>
-<script>
-function toggleDisponibilidad(id) {
-    const icon = document.getElementById("toggleIcon" + id);
-    const texto = document.getElementById("estadoDisponibilidad" + id);
 
-    const estaActivo = icon.classList.contains("fa-toggle-on");
-
-    texto.classList.add("fade-out");
-
-    setTimeout(() => {
-        if (estaActivo) {
-            icon.classList.remove("fa-toggle-on");
-            icon.classList.add("fa-toggle-off");
-            texto.innerText = id === "1" 
-                ? "No estoy disponible actualmente" 
-                : "Necesito unos días para comenzar";
-        } else {
-            icon.classList.remove("fa-toggle-off");
-            icon.classList.add("fa-toggle-on");
-            texto.innerText = id === "1" 
-                ? "Escucho propuestas de empleo" 
-                : "Puedo empezar de inmediato";
-        }
-        texto.classList.remove("fade-out");
-    }, 200);
-}
-</script>
 
 
 

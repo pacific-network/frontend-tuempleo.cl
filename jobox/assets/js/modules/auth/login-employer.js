@@ -60,8 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   if (tokenFromGoogle) {
-    localStorage.setItem('token', tokenFromGoogle);
-    window.history.replaceState(null, '', window.location.pathname); // Limpia el token de la URL
+    localStorage.setItem('auth_token', tokenFromGoogle);
+
+    // Limpia la URL para evitar problemas al recargar
+    const cleanUrl = window.location.origin + window.location.pathname;
+    window.history.replaceState(null, '', cleanUrl);
+
     verificarYRedirigir(tokenFromGoogle);
     return;
   }
@@ -111,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      localStorage.setItem('token', data.token);
+      localStorage.setItem('auth_token', data.token);
       verificarYRedirigir(data.token);
 
     } catch (error) {

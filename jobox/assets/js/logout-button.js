@@ -3,7 +3,7 @@
     // Protección del dashboard: redirige si no hay token
     const token = localStorage.getItem('token');
     if (!token) {
-      location.replace('../index.html'); // redirige sin dejar volver atrás
+      location.replace('./index.html'); // redirige sin dejar volver atrás
     }
 
     // Mostrar modal al hacer click en "Cerrar sesión"
@@ -16,6 +16,6 @@
     // Confirmar logout
     document.getElementById('confirmLogout').addEventListener('click', function () {
       localStorage.removeItem('token');
-      location.replace('../index.html'); // redirección sin historial
+      location.replace('./index.html'); // redirección sin historial
     });
   });
