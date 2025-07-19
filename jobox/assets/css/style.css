@@ -7200,7 +7200,7 @@ home 5
 
 /* Cuerpo del toast */
 .custom-toast-body {
-  background-color: #C2D7F2; /* mismo fondo que toast general */
+  background-color: #FFFFFF; /* mismo fondo que toast general */
   color: #083359;
 }
 
@@ -7214,4 +7214,136 @@ home 5
 .custom-toast.warning .custom-toast-header {
   background-color: #C2D7F2; /* azul claro para aviso */
   color: #083359;
+}
 
+/* Contenedor en grid con 2 columnas para las tarjetas */
+.user-profiles-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 15px;
+}
+
+/* Estilo para cada tarjeta de postulante */
+.user-profile-card {
+  background: #fff;
+  padding: 25px 30px 30px 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 40px 5px rgb(0 0 0 / 5%);
+  margin-bottom: 25px;
+}
+
+/* Título dentro de la tarjeta */
+.user-profile-card-title {
+  color: #05264E;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+  font-size: 19px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Header dentro de la tarjeta */
+.user-profile-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Contenedor derecho del header */
+.user-profile-card-header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Lista de datos perfil */
+.profile-info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.profile-info-list li {
+  margin: 12px 0;
+  font-weight: 500;
+  color: #05264E;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+}
+
+.profile-info-list li span {
+  font-weight: 300;
+  font-size: 16px;
+  text-align: right;
+}
+
+/* Estilos básicos para las pestañas (puedes ajustarlo según tu tema) */
+.nav-tabs {
+  border-bottom: 2px solid #ddd;
+}
+
+.nav-tabs .nav-link {
+  color: #05264E;
+  padding: 10px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-link:hover {
+  color: #3C65F5;
+  border-bottom: 3px solid #3C65F5;
+  background-color: transparent;
+}
+
+/* Paginación simple */
+.pagination {
+  display: flex;
+  list-style: none;
+  padding-left: 0;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination li {
+  margin: 0 5px;
+}
+
+.pagination li button {
+  border: 1px solid #ccc;
+  background-color: white;
+  padding: 5px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #05264E;
+  transition: background-color 0.2s ease;
+}
+
+.pagination li button:hover {
+  background-color: #3C65F5;
+  color: white;
+  border-color: #3C65F5;
+}
+
+.pagination li button.active {
+  background-color: #3C65F5;
+  color: white;
+  border-color: #3C65F5;
+  cursor: default;
+}
+
+.user-profiles-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 15px;
+}
