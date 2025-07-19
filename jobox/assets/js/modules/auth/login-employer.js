@@ -7,66 +7,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const togglePasswordBtn = document.getElementById('togglePassword');
   const passwordInput = document.getElementById('password');
 
-  const parseJwt = (token) => {
-    try {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      return JSON.parse(decodeURIComponent(escape(window.atob(base64))));
-    } catch (err) {
-      console.error('Error decodificando el token:', err);
-      return null;
-    }
-  };
-
-  const verificarYRedirigir = async (token) => {
-    const payload = parseJwt(token);
-    if (!payload || !payload.sub) {
-      messageEl.textContent = 'Token inválido.';
-      return;
-    }
-
-    const userId = payload.sub;
-
-    try {
-      const res = await fetch(`${BASE_URL_API}/empleador/${userId}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (!res.ok) {
-        const errText = await res.text();
-        messageEl.textContent = `Error verificando usuario: ${errText}`;
-        return;
-      }
-
-      let employerData = null;
-      const contentLength = res.headers.get("content-length");
-      if (contentLength && parseInt(contentLength) > 0) {
-        employerData = await res.json();
-      }
-
-      if (!employerData || employerData.employer?.empresaId === 0) {
-        window.location.href = 'employer-form-register.html';
-      } else {
-        window.location.href = 'employer-dashboard.html';
-      }
-    } catch (error) {
-      console.error('Error validando token:', error);
-      messageEl.textContent = 'No se pudo conectar con el servidor.';
-    }
-  };
-
   if (tokenFromGoogle) {
+    console.log('Token recibido por URL:', tokenFromGoogle);
     localStorage.setItem('auth_token', tokenFromGoogle);
 
-    // Limpia la URL para evitar problemas al recargar
+    // Limpiar URL
     const cleanUrl = window.location.origin + window.location.pathname;
     window.history.replaceState(null, '', cleanUrl);
 
-    verificarYRedirigir(tokenFromGoogle);
+    // Redirigir directo al dashboard sin validar
+    window.location.href = 'employer-dashboard.html';
     return;
   }
 
@@ -115,8 +65,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      console.log('Token recibido por login:', data.token);
       localStorage.setItem('auth_token', data.token);
-      verificarYRedirigir(data.token);
+
+      // Redirigir directo al dashboard sin validar
+      window.location.href = 'employer-dashboard.html';
 
     } catch (error) {
       console.error('Error en login:', error);
@@ -124,3 +77,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
