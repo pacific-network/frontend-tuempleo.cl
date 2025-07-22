@@ -2,16 +2,20 @@
     <div class="main-navigation">
         <nav class="navbar navbar-expand-lg">
             <div class="container">
+                <!-- Logo -->
                 <a class="navbar-brand" href="index.html">
                     <img src="./assets/img/logo/logo.png" alt="logo">
                 </a>
-                <div class="mobile-menu-right">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#main_nav" aria-expanded="false" aria-label="Toggle navigation">
-                    </button>
-                </div>
+
+                <!-- Botón hamburguesa -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main_nav"
+                  aria-controls="main_nav" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Menú colapsable -->
                 <div class="collapse navbar-collapse" id="main_nav">
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav me-auto">
                         <li class="nav-item">
                             <a class="nav-link active" href="index.html">Inicio</a>
                         </li>
@@ -20,7 +24,7 @@
                             <ul class="dropdown-menu fade-down">
                                 <li><a class="dropdown-item" href="about.html">Sobre Nosotros</a></li>
                                 <li><a class="dropdown-item" href="faq.html">Preguntas Frecuentes</a></li>
-                                <li><a class="dropdown-item" href="terms.html">Terminos de Servicio</a></li>
+                                <li><a class="dropdown-item" href="terms.html">Términos de Servicio</a></li>
                                 <li><a class="dropdown-item" href="privacy.html">Política de Privacidad</a></li>
                             </ul>
                         </li>
@@ -31,13 +35,13 @@
                             <a class="nav-link" href="register.html">Crear Cuenta Candidato</a>
                         </li>
                     </ul>
-                    <div class="header-nav-right">
-                        <div class="header-btn">
-                            <a href="login.html" class="theme-btn theme-btn2"><span class="far fa-sign-in"></span> Ingresar Candidato</a>
-                            <a href="index-employer.html" class="theme-btn"><span class="far fa-suitcase"></span> Portal Empresa</a>
-                            <a href="https://wa.me/56991836445" target="_blank" class="theme-btn" style="background-color: #25D366;"><span class="fab fa-whatsapp"></span> Whatsapp
-                            </a>
-                        </div>
+                    <!-- Botones a la derecha -->
+                    <div class="header-nav-right d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2 mt-3 mt-lg-0">
+                        <a href="login.html" class="theme-btn theme-btn2"><span class="far fa-sign-in"></span> Ingresar Candidato</a>
+                        <a href="index-employer.html" class="theme-btn"><span class="far fa-suitcase"></span> Portal Empresa</a>
+                        <a href="https://wa.me/56991836445" target="_blank" class="theme-btn" style="background-color: #25D366;">
+                          <span class="fab fa-whatsapp"></span> Whatsapp
+                        </a>
                     </div>
                 </div>
             </div>
