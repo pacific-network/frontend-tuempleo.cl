@@ -1,24 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const tokenFromGoogle = urlParams.get('token');
+
 
   const loginForm = document.getElementById('loginForm');
   const messageEl = document.getElementById('message');
   const togglePasswordBtn = document.getElementById('togglePassword');
   const passwordInput = document.getElementById('password');
 
-  if (tokenFromGoogle) {
-    console.log('Token recibido por URL:', tokenFromGoogle);
-    localStorage.setItem('auth_token', tokenFromGoogle);
 
-    // Limpiar URL
-    const cleanUrl = window.location.origin + window.location.pathname;
-    window.history.replaceState(null, '', cleanUrl);
-
-    // Redirigir directo al dashboard sin validar
-    window.location.href = 'employer-dashboard.html';
-    return;
-  }
 
   if (togglePasswordBtn) {
     togglePasswordBtn.addEventListener('click', () => {
