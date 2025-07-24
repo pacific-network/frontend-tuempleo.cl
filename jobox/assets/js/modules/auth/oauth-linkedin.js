@@ -1,8 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Botón de login con LinkedIn
     const linkedinBtn = document.getElementById('linkedinLoginBtn');
-    if( !linkedinBtn ) return;
-
+    if (!linkedinBtn) return;
+  
     const parseJwt = (token) => {
       try {
         const base64Url = token.split('.')[1];
@@ -13,51 +12,56 @@ document.addEventListener('DOMContentLoaded', () => {
         return null;
       }
     };
-
-
+  
     const verificarYRedirigir = async (token) => {
       if (!token) return;
-
+  
       const payload = parseJwt(token);
       if (!payload?.sub) return;
-
+  
       try {
-          const res = await fetch(`${BASE_URL_API}/user/${payload.sub}`, {
-              headers: { 'Authorization': `Bearer ${token}` }
-          });
-
-          if (res.status === 404) {
-              window.location.href = 'employer-register.html';
-              return;
-          }
-
-          if (!res.ok) return;
-
-          const user = await res.json();
-
-          if (!user.rut) {
-              window.location.href = 'employer-form-register.html';
-          } else {
-              window.location.href = 'employer-dashboard.html';
-          }
-
+        const res = await fetch(`${BASE_URL_API}/user/${payload.sub}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+  
+        if (res.status === 404) {
+          window.location.href = 'employer-register.html';
+          return;
+        }
+  
+        if (!res.ok) return;
+  
+        const user = await res.json();
+  
+        if (!user.rut) {
+          window.location.href = 'employer-form-register.html';
+        } else {
+          window.location.href = 'employer-dashboard.html';
+        }
       } catch (error) {
-          console.error('Error:', error);
+        console.error('Error:', error);
       }
-  };
-
-  window.addEventListener('message', (event) => {
-    const { token } = event.data;
-    if (token) {
-        localStorage.setItem('auth_token', token);
-        verificarYRedirigir(token);
+    };
+  
+    // Extraemos el token del query string si está
+    const urlParams = new URLSearchParams(window.location.search);
+    const tokenFromUrl = urlParams.get('token');
+    if (tokenFromUrl) {
+      localStorage.setItem('auth_token', tokenFromUrl);
+      // Limpio query string para no tener token visible en URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+      verificarYRedirigir(tokenFromUrl);
+    } else {
+      // No token en URL, verifico si hay token guardado para seguir sesión
+      const tokenStored = localStorage.getItem('auth_token');
+      if (tokenStored) {
+        verificarYRedirigir(tokenStored);
+      }
     }
-});
-
+  
     linkedinBtn.addEventListener('click', () => {
-        window.open(`${BASE_URL_API}/oauth/linkedin/login`, 'LinkedIn Login', 'width=500,height=600');
+      // Redirige directamente al login de LinkedIn
+      window.location.href = `${BASE_URL_API}/oauth/linkedin`;
     });
-
-
   });
   
