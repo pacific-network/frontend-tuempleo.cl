@@ -1,30 +1,58 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM completamente cargado');
-
     const googleBtn = document.getElementById('googleLoginBtn');
+    if (!googleBtn) return;
 
-    if (googleBtn) {
-        console.log('Botón de Google Login detectado');
-        googleBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            console.log('Click en botón de Google Login');
-            const redirectUrl = `${BASE_URL_API}/auth/google`;
-            console.log('Redirigiendo a:', redirectUrl);
-            window.location.href = redirectUrl;
-        });
-    } else {
-        console.warn('Botón de Google Login NO encontrado en el DOM');
-    }
+    const parseJwt = (token) => {
+        try {
+          const base64Url = token.split('.')[1];
+          const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+          return JSON.parse(decodeURIComponent(escape(window.atob(base64))));
+        } catch (err) {
+          console.error('Error decodificando el token:', err);
+          return null;
+        }
+      };
 
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get('token');
+    const verificarYRedirigir = async (token) => {
+        if (!token) return;
 
-    if (token) {
-        console.log('Token detectado en URL:', token);
-        localStorage.setItem('auth_token', token);
-        console.log('Token guardado en localStorage como auth_token');
-        window.location.href = '/dashboard.html';
-    } else {
-        console.log('No se detectó token en la URL');
-    }
+        const payload = parseJwt(token);
+        if (!payload?.sub) return;
+
+        try {
+            const res = await fetch(`${BASE_URL_API}/user/${payload.sub}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (res.status === 404) {
+                window.location.href = 'employer-register.html';
+                return;
+            }
+
+            if (!res.ok) return;
+
+            const user = await res.json();
+
+            if (!user.rut) {
+                window.location.href = 'employer-form-register.html';
+            } else {
+                window.location.href = 'employer-dashboard.html';
+            }
+
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+    window.addEventListener('message', (event) => {
+        const { token } = event.data;
+        if (token) {
+            localStorage.setItem('auth_token', token);
+            verificarYRedirigir(token);
+        }
+    });
+
+    googleBtn.addEventListener('click', () => {
+        window.open(`${BASE_URL_API}/oauth/google`, 'Google Login', 'width=500,height=600');
+    });
 });
