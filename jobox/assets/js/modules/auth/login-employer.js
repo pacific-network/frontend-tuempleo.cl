@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       console.log('Token recibido por login:', data.token);
-      localStorage.setItem('auth_token', data.token);
+      localStorage.setItem('token', data.token);
 
       // Redirigir directo al dashboard sin validar
       window.location.href = 'employer-dashboard.html';

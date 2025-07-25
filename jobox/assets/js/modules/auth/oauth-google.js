@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('message', (event) => {
         const { token } = event.data;
         if (token) {
-            localStorage.setItem('auth_token', token);
+            localStorage.setItem('token', token);
             verificarYRedirigir(token);
         }
     });

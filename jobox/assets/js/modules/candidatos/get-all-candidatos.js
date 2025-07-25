@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const BASE_URL_API = "http://localhost:3000/v1";
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
   
     if (!token) {
       console.warn("No hay token. Redirigiendo al login...");
