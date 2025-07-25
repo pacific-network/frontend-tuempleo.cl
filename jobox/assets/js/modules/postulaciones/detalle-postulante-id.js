@@ -9,7 +9,7 @@ const idUsuario = getIdFromUrl();
 if (!idUsuario) {
   console.error('❌ ID de usuario no proporcionado en la URL');
 } else {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('auth_token');
 
   fetch(`${BASE_URL_API}/postulante/${idUsuario}`, {
     method: 'GET',

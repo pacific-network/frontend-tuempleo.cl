@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("businessForm");
 
   function obtenerUserIdDelToken() {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("auth_token");
     if (!token) return null;
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
