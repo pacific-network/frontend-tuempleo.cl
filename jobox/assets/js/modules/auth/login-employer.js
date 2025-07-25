@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const passwordInput = document.getElementById('password');
 
 
-
   if (togglePasswordBtn) {
     togglePasswordBtn.addEventListener('click', () => {
       const isHidden = passwordInput.type === 'password';
