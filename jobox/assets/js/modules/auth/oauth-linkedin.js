@@ -60,8 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   
     linkedinBtn.addEventListener('click', () => {
-      // Redirige directamente al login de LinkedIn
-      window.location.href = `${BASE_URL_API}/oauth/linkedin`;
-    });
+        window.open(`${BASE_URL_API}/oauth/linkedin`, 'LinkedIn Login', 'width=500,height=600');
+      });
   });
   
