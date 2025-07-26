@@ -44,16 +44,16 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   
     // Extraemos el token del query string si está
-    const urlParams = new URLSearchParams(window.location.search);
+   const urlParams = new URLSearchParams(window.location.search);
     const tokenFromUrl = urlParams.get('token');
     if (tokenFromUrl) {
-      localStorage.setItem('auth_token', tokenFromUrl);
+      localStorage.setItem('token', tokenFromUrl);
       // Limpio query string para no tener token visible en URL
       window.history.replaceState({}, document.title, window.location.pathname);
       verificarYRedirigir(tokenFromUrl);
     } else {
       // No token en URL, verifico si hay token guardado para seguir sesión
-      const tokenStored = localStorage.getItem('auth_token');
+      const tokenStored = localStorage.getItem('token');
       if (tokenStored) {
         verificarYRedirigir(tokenStored);
       }
