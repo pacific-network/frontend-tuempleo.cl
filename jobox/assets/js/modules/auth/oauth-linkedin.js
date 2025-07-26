@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   
     // Extraemos el token del query string si está
-    const urlParams = new URLSearchParams(window.location.search);
+   const urlParams = new URLSearchParams(window.location.search);
     const tokenFromUrl = urlParams.get('token');
     if (tokenFromUrl) {
       localStorage.setItem('token', tokenFromUrl);

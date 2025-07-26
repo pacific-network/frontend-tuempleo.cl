@@ -43,8 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error:', error);
         }
     };
-
-    window.addEventListener('message', (event) => {
+  
+  window.addEventListener('message', (event) => {
         const { token } = event.data;
         if (token) {
             localStorage.setItem('token', token);
