@@ -13,38 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       };
 
-    const verificarYRedirigir = async (token) => {
-        if (!token) return;
-
-        const payload = parseJwt(token);
-        if (!payload?.sub) return;
-
-        try {
-            const res = await fetch(`${BASE_URL_API}/user/${payload.sub}`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-
-            if (res.status === 404) {
-                window.location.href = 'employer-register.html';
-                return;
-            }
-
-            if (!res.ok) return;
-
-            const user = await res.json();
-
-            if (!user.rut) {
-                window.location.href = 'employer-form-register.html';
-            } else {
-                window.location.href = 'employer-dashboard.html';
-            }
-
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
-
-    window.addEventListener('message', (event) => {
+      window.addEventListener('message', (event) => {
         const { token } = event.data;
         if (token) {
             localStorage.setItem('token', token);
@@ -55,4 +24,14 @@ document.addEventListener('DOMContentLoaded', () => {
     googleBtn.addEventListener('click', () => {
         window.open(`${BASE_URL_API}/oauth/google`, 'Google Login', 'width=500,height=600');
     });
+
+    window.addEventListener('message', (event) => {
+        if (event.origin !== BASE_URL_API && !event.origin.includes('localhost')) return;
+    
+        const { token, user } = event.data || {};
+        if (!token) return;
+    
+        localStorage.setItem('token', token); // opcional: guardar token
+        verificarYRedirigir(token);
+      });
 });

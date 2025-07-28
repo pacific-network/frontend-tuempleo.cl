@@ -13,30 +13,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  
   const verificarYRedirigir = async (token) => {
     if (!token) return;
-
+  
     const payload = parseJwt(token);
-    if (!payload?.email) return;
-
+    if (!payload?.sub) return;
+  
     try {
-      const res = await fetch(`${BASE_URL_API}/oauth/${payload.email}`, {
+      const res = await fetch(`${BASE_URL_API}/empleador/basic-info/${payload.sub}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
+  
       if (res.status === 404) {
         window.location.href = 'login-employer.html';
         return;
       }
-
+  
       if (!res.ok) {
         console.error('Error en la respuesta:', await res.text());
         return;
       }
-
+  
       const user = await res.json();
-
-      if (user && user.rut) {
+  
+      if (user.empresa_id && user.empleador_id) {
         window.location.href = 'employer-dashboard.html';
       } else {
         window.location.href = 'employer-form-register.html';
@@ -45,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error('Error al verificar usuario:', error);
     }
   };
+  
 
   linkedinBtn.addEventListener('click', () => {
     window.open(`${BASE_URL_API}/oauth/linkedin`, 'LinkedIn Login', 'width=500,height=600');
