@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        const response = await fetch('https://tuempleo.cl/api/v1/ofertas');
+        const response = await fetch(`${BASE_URL_API}/ofertas`);
         const ofertas = await response.json();
 
         const contenedor = document.getElementById('ofertas-container');

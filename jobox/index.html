@@ -45,6 +45,35 @@
             position: relative;
             z-index: 2;
         }
+        .hero-img img {
+            max-height: 630px;
+            margin-top: 50px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        @media (min-width: 768px) and (max-width: 1200px) {
+            .hero-img img {
+                max-height: 400px; /* achica más en tablets */
+                margin-top: 100px; /* empuja más hacia abajo */
+            }
+            .hero-img {
+                display: none !important;
+            }
+        
+            .hero-right {
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                padding-top: 40px;
+            }
+        }
+        .navbar {
+            padding: 0 !important;
+        }
     </style>
 </head>
 

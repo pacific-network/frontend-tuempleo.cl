@@ -3,11 +3,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!idOferta) return alert('No se encontró la oferta');
 
     try {
-        const response = await fetch(`https://tuempleo.cl/api/v1/ofertas/${idOferta}`);
+        // Obtener oferta
+        const response = await fetch(`${BASE_URL_API}/ofertas/${idOferta}`);
         const oferta = await response.json();
         const data = JSON.parse(oferta.data);
         const preguntas = data.preguntas_personalizadas;
 
+        // Renderizar preguntas personalizadas
         if (Array.isArray(preguntas) && preguntas.length > 0) {
             const form = document.getElementById('formulario-preguntas');
             preguntas.forEach(pregunta => {
@@ -22,6 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.body.dataset.tienePreguntas = '1';
         }
 
+        // Datos oferta en DOM
         document.title = `${oferta.titulo} - ${oferta.empresa.nombre_fantasia}`;
         document.querySelector('h4.mb-4').textContent = oferta.titulo;
         document.querySelector('.job-single-employer-info h5 a').textContent = oferta.empresa.nombre_fantasia;
@@ -43,27 +46,30 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderLista(data.herramientas_basicas, '.herramientas-list');
         renderLista(data.preguntas_personalizadas, '.preguntas-list');
 
+        // Obtener token y usuario
         const token = localStorage.getItem('token');
         if (!token) return;
 
         const decoded = JSON.parse(atob(token.split('.')[1]));
         const usuarioId = decoded.sub;
 
+        // Cambié aquí: endpoint para obtener postulaciones del usuario
         try {
-            const postulacionesRes = await fetch(`https://tuempleo.cl/api/v1/postulaciones/oferta/${idOferta}`, {
+            const postulacionesRes = await fetch(`${BASE_URL_API}/postulaciones/postulante`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
-  
+
             if (!postulacionesRes.ok) throw new Error('Error al obtener postulaciones');
             const postulaciones = await postulacionesRes.json();
-            
-            const yaPostulado = postulaciones.some(postulacion => postulacion.postulante.usuario.id === usuarioId);
+
+            // Verificar si ya postuló a esta oferta (por id)
+            const yaPostulado = postulaciones.some(postulacion => postulacion.oferta?.id === parseInt(idOferta));
             const btnPostular = document.getElementById('btn-postular');
-            
+
             if (yaPostulado) {
                 btnPostular.innerHTML = `<span class="fe-check-circle"></span> Ya estás postulado`;
                 btnPostular.classList.remove('btn-primary');
-                btnPostular.classList.add('btn-secondary');
+                btnPostular.classList.add('btn-secondary', 'disabled');
                 btnPostular.href = '#';
                 btnPostular.setAttribute('aria-disabled', 'true');
                 btnPostular.style.pointerEvents = 'none';
@@ -72,7 +78,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             } else {
                 btnPostular.innerHTML = `<span class="fe-briefcase"></span> Postular`;
                 btnPostular.classList.add('btn', 'btn-primary');
-                btnPostular.classList.remove('btn-secondary');
+                btnPostular.classList.remove('btn-secondary', 'disabled');
                 btnPostular.href = '#';
                 btnPostular.setAttribute('aria-disabled', 'false');
                 btnPostular.style.pointerEvents = 'auto';
@@ -82,31 +88,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
         } catch (error) {
-        console.error('Error verificando postulación:', error);
-        } if (Array.isArray(preguntas) && preguntas.length > 0) {
-            const form = document.getElementById('formulario-preguntas');
-            preguntas.forEach(pregunta => {
-                const div = document.createElement('div');
-                div.classList.add('mb-3');
-                div.innerHTML = `
-                    <label class="form-label fw-semibold">${pregunta}</label>
-                    <input type="text" class="form-control pregunta-input" data-pregunta="${pregunta}" placeholder="Escribe tu respuesta aquí" required>
-                `;
-                form.appendChild(div);
-            });
-
-            const alerta = document.getElementById('alerta-preguntas');
-            if (alerta) alerta.classList.remove('d-none');
-
-            document.body.dataset.tienePreguntas = '1';
-        } else {
-            const alerta = document.getElementById('alerta-preguntas');
-            if (alerta) alerta.classList.add('d-none');
-
-            document.body.dataset.tienePreguntas = '0';
+            console.error('Error verificando postulación:', error);
         }
+
     } catch (error) {
-    console.error('Error cargando la oferta:', error);
+        console.error('Error cargando la oferta:', error);
     }
 });
 
@@ -125,11 +111,10 @@ function handlePostularClick(e) {
             if (firstInput) firstInput.focus();
         }, 200);
     } else {
-    enviarPostulacion();
+        enviarPostulacion();
     }
 }
 
-// **AGREGAR ESTO** para que el botón Confirmar del modal funcione:
 document.getElementById('btn-confirmar-postulacion').addEventListener('click', async () => {
     const form = document.getElementById('formulario-preguntas');
     if (!form.checkValidity()) {
@@ -150,10 +135,10 @@ async function enviarPostulacion() {
     const usuarioId = decoded.sub;
 
     try {
-        const postulanteResp = await fetch(`https://tuempleo.cl/api/v1/postulante/${usuarioId}`, {
+        const postulanteResp = await fetch(`${BASE_URL_API}/postulante/${usuarioId}`, {
             headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
             }
         });
 
@@ -175,10 +160,11 @@ async function enviarPostulacion() {
             data: { preguntas: preguntasRespuestas }
         };
 
-        const res = await fetch('https://tuempleo.cl/api/v1/postulaciones', {
+        const res = await fetch(`${BASE_URL_API}/postulaciones`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(payload)
         });
@@ -192,10 +178,13 @@ async function enviarPostulacion() {
             const btnPostular = document.getElementById('btn-postular');
             btnPostular.textContent = 'Ya estás postulado';
             btnPostular.classList.add('disabled', 'btn-secondary');
-            btnPostular.classList.remove('theme-btn');
+            btnPostular.classList.remove('theme-btn', 'btn-primary');
             btnPostular.removeEventListener('click', handlePostularClick);
             btnPostular.href = '#';
             btnPostular.setAttribute('aria-disabled', 'true');
+            btnPostular.style.pointerEvents = 'none';
+            btnPostular.style.opacity = '0.65';
+            btnPostular.style.cursor = 'not-allowed';
         }
 
     } catch (err) {
@@ -204,7 +193,7 @@ async function enviarPostulacion() {
     }
 }
 
-// Resto de funciones auxiliares (igual que antes)
+// Funciones auxiliares
 function renderLista(arr, selector) {
     const ul = document.querySelector(selector);
     if (!ul || !Array.isArray(arr)) return;
