@@ -1,6 +1,6 @@
 // ✅ Esta función se encarga de obtener y mostrar la información del usuario
 async function fetchUserDataOnce() {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('auth_token');
     if (!token) return;
 
     console.log('Token de autenticación:', token);
