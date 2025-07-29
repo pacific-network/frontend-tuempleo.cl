@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const verificarYRedirigir = async (token) => {
     const payload = parseJwt(token);
     if (!payload || !payload.sub) {
-      if (messageEl) messageEl.textContent = 'Token inválido.';
+      if (messageEl) messageEl.textContent = 'Token inválido.'; //cambiar a mensaje mas amigable, el user no sabe del token
       return;
     }
 
