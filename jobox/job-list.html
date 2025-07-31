@@ -33,6 +33,86 @@
         .site-breadcrumb{
             height: 200px;
         }
+        .btn-filtro {
+          background-color: #3C65F5;
+          color: white;
+          border: none;
+          padding: 6px 14px;
+          border-radius: 5px;
+          font-size: 0.9rem;
+          margin-top: 10px;
+          transition: background-color 0.3s ease;
+        }
+        .btn-filtro:hover {
+          background-color: #2b4bd4;
+        }
+        .row {
+            --bs-gutter-x: 1.5rem;
+            --bs-gutter-y: 0;
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: calc(-1 * var(--bs-gutter-y));
+            margin-right: calc(-.5 * var(--bs-gutter-x));
+            margin-left: calc(-.5 * var(--bs-gutter-x));
+        }
+        
+        /* Estilos específicos para móvil */
+        @media (max-width: 768px) {
+            .site-breadcrumb {
+                height: auto;
+                padding: 20px 0;
+            }
+            
+            .search-form-wrapper {
+                background: white;
+                padding: 15px;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                margin-bottom: 8px; /* Reducido de 15px a 8px */
+            }
+            
+            .search-form-wrapper .form-control {
+                margin-bottom: 10px;
+                font-size: 16px;
+                height: 48px;
+            }
+            
+            .search-form-wrapper button.theme-btn {
+                width: 100%;
+                height: 48px;
+            }
+                        
+            #ultimas-busquedas {
+                margin-top: 8px; /* Añadido para reducir espacio */
+            }
+            
+            .hero-shape {
+                display: none;
+            }
+            
+            /* Asegurar que los elementos de filtro sean táctiles */
+            .form-check-label, .form-check-input {
+                min-height: 24px;
+                min-width: 24px;
+            }
+            
+            /* Mejorar espaciado en móvil */
+            .job-item {
+                padding: 15px;
+            }
+            
+            .job-info-list li {
+                margin-bottom: 8px;
+            }
+        }
+        
+        /* Estilos para desktop */
+        @media (min-width: 769px) {
+            .hero-shape {
+                display: block;
+            }
+            
+        }
     </style>
     <!--btn de los filtros -->
     <style>
@@ -93,7 +173,7 @@
                                     <div class="col-md-4 px-0">
                                         <div class="form-group">
                                             <div class="form-group-icon">
-                                                <input type="text" class="form-control"
+                                                <input type="text" id="input-keyword" class="form-control"
                                                     placeholder="Buscar empleo por puesto o palabra clave">
                                                 <i class="fe-search"></i>
                                             </div>
@@ -112,7 +192,7 @@
                                     <div class="col-md-3 px-0">
                                         <div class="form-group">
                                             <div class="form-group-icon">
-                                                <select type="text" class="form-control">
+                                                <select type="text" class="form-control" id="categoria-select">
                                                     <option value="">Categoría</option>
                                                     <option value="1">Informática / Tecnología</option>
                                                     <option value="2">Administración / Oficina</option>
@@ -191,35 +271,35 @@
                                         <input class="form-check-input" name="job-type" type="checkbox" value="3"
                                             id="job-type3">
                                         <label class="form-check-label" for="job-type3">
-                                            Híbrido <span>(18)</span>
+                                            Híbrido <span>(0)</span>
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" name="job-type" type="checkbox" value="4"
                                             id="job-type4">
                                         <label class="form-check-label" for="job-type4">
-                                            Part-Time <span>(35)</span>
+                                            Part-Time <span>(0)</span>
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" name="job-type" type="checkbox" value="5"
                                             id="job-type5">
                                         <label class="form-check-label" for="job-type5">
-                                            Full-time <span>(49)</span>
+                                            Full-time <span>(0)</span>
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" name="job-type" type="checkbox" value="6"
                                             id="job-type6">
                                         <label class="form-check-label" for="job-type6">
-                                            Freelance <span>(23)</span>
+                                            Freelance <span>(0)</span>
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" name="job-type" type="checkbox" value="7"
                                             id="job-type7">
                                         <label class="form-check-label" for="job-type6">
-                                            Remoto <span>(23)</span>
+                                            Remoto <span>(0)</span>
                                         </label>
                                     </div>
                                 </div>
@@ -245,49 +325,49 @@
                                         <input class="form-check-input" name="experience" type="checkbox" value="1"
                                             id="experience1">
                                         <label class="form-check-label" for="experience1">
-                                            Manager <span>(20)</span>
+                                            Manager <span>(0)</span>
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" name="experience" type="checkbox" value="2"
                                             id="experience1">
                                         <label class="form-check-label" for="experience1">
-                                            Lider Técnico / Lead <span>(20)</span>
+                                            Lider Técnico / Lead <span>(0)</span>
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" name="experience" type="checkbox" value="3"
                                             id="experience2">
                                         <label class="form-check-label" for="experience2">
-                                            Senior <span>(15)</span>
+                                            Senior <span>(0)</span>
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" name="experience" type="checkbox" value="4"
                                             id="experience2">
                                         <label class="form-check-label" for="experience2">
-                                            Semi Senior <span>(15)</span>
+                                            Semi Senior <span>(0)</span>
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" name="experience" type="checkbox" value="5"
                                             id="experience3">
                                         <label class="form-check-label" for="experience3">
-                                            Junior <span>(18)</span>
+                                            Junior <span>(0)</span>
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" name="experience" type="checkbox" value="6"
                                             id="experience4">
                                         <label class="form-check-label" for="experience4">
-                                            Trainee <span>(35)</span>
+                                            Trainee <span>(0)</span>
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" name="experience" type="checkbox" value="7"
                                             id="experience5">
                                         <label class="form-check-label" for="experience5">
-                                            Practicante <span>(49)</span>
+                                            Practicante <span>(0)</span>
                                         </label>
                                     </div>
                                 </div>
@@ -300,42 +380,42 @@
                                         <input class="form-check-input" name="job-posted" type="checkbox" value="1"
                                             id="job-posted1">
                                         <label class="form-check-label" for="job-posted1">
-                                            Todos <span>(20)</span>
+                                            Todos <span>(0)</span>
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" name="job-posted" type="checkbox" value="2"
                                             id="job-posted2">
                                         <label class="form-check-label" for="job-posted2">
-                                            Recientes <span>(15)</span>
+                                            Recientes <span>(0)</span>
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" name="job-posted" type="checkbox" value="3"
                                             id="job-posted3">
                                         <label class="form-check-label" for="job-posted3">
-                                            Ultimas 24 horas <span>(18)</span>
+                                            Ultimas 24 horas <span>(0)</span>
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" name="job-posted" type="checkbox" value="4"
                                             id="job-posted4">
                                         <label class="form-check-label" for="job-posted4">
-                                            Ultimos 7 días <span>(35)</span>
+                                            Ultimos 7 días <span>(0)</span>
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" name="job-posted" type="checkbox" value="5"
                                             id="job-posted5">
                                         <label class="form-check-label" for="job-posted5">
-                                            Ultimos 30 días <span>(49)</span>
+                                            Ultimos 30 días <span>(0)</span>
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" name="job-posted" type="checkbox" value="6"
                                             id="job-posted5">
                                         <label class="form-check-label" for="job-posted5">
-                                            Ultimos 60 días <span>(12)</span>
+                                            Ultimos 60 días <span>(0)</span>
                                         </label>
                                     </div>
                                 </div>
@@ -346,7 +426,7 @@
                     <div class="col-lg-8 col-xl-9">
                         <div class="col-md-12">
                             <div class="job-sort">
-                                <h5>2,350 Results Found</h5>
+                                <h5>Resultados obtenidos</h5>
                             </div>
                         </div>
                         <div id="ofertas-container" class="row g-4">
@@ -552,7 +632,11 @@
             console.log("Valores seleccionados:", seleccionados);
         }
     </script>
+<<<<<<< HEAD
+    <script src="assets/js/postulaciones/busqueda-empleos.js"></script>
+=======
     <script src="assets/js/postulaciones/busqueda-empleos-lo.js"></script>
+>>>>>>> dev
 
 </body>
 

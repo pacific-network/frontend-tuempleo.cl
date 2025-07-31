@@ -7203,6 +7203,16 @@ home 5
   background-color: #FFFFFF; /* mismo fondo que toast general */
   color: #083359;
 }
+.btn-confirmar-actualizacion-flotante{
+  background-color: #3C65F5 !important;
+  border-color: #3C65F5 !important;
+  color: #fff !important;
+}
+.btn-confirmar-actualizacion{
+  background-color: #3C65F5 !important;
+  border-color: #3C65F5 !important;
+  color: #fff !important;
+}
 
 /* Colores para distintos tipos de toast (opcional) */
 .custom-toast.success .custom-toast-header {
@@ -7215,6 +7225,8 @@ home 5
   background-color: #C2D7F2; /* azul claro para aviso */
   color: #083359;
 }
+<<<<<<< HEAD
+=======
 
 /* Contenedor en grid con 2 columnas para las tarjetas */
 .user-profiles-grid {
@@ -7507,3 +7519,4 @@ home 5
       margin-top: 0;
   }
 }
+>>>>>>> dev
