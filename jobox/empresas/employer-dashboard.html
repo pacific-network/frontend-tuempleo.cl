@@ -136,41 +136,40 @@
                             </div>
                             <div class="row">
                                 <div class="col-lg-8">
-                                    <div class="user-profile-card">
-                                        <h4 class="user-profile-card-title">Visitas al Perfil</h4>
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div>
-                                                    <!-- hacer 3 pestanas navegables -->
-                                                    <!-- Pestañas -->
-                                                    <ul class="nav nav-tabs" id="visitasTabs">
-                                                        <li class="nav-item">
-                                                            <a class="nav-link active" href="#"
-                                                                data-tab="hoy">Candidatos Sugeridos</a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <a class="nav-link" href="#" data-tab="semana">Historial de
-                                                                ofertas</a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <a class="nav-link" href="#" data-tab="mes">Pendiente</a>
-                                                        </li>
-                                                    </ul>
+                                    <ul class="nav nav-tabs" id="visitasTabs">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" href="#" data-tab="hoy">Candidatos Sugeridos</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#" data-tab="semana">Historial de ofertas</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#" data-tab="mes">Pendiente</a>
+                                        </li>
+                                    </ul>
 
-                                                    <!-- Contenido -->
-                                                    <div class="tab-content mt-3">
-                                                        <div class="tab-pane active" id="tab-hoy">Candidatos sugeridos:
-                                                            <strong></strong>
-                                                        </div>
-                                                        <div class="tab-pane d-none" id="tab-semana">Historial ofertas
-                                                            <strong>48</strong>
-                                                        </div>
-                                                        <div class="tab-pane d-none" id="tab-mes">
-                                                            Pendientes<strong>211</strong></div>
-                                                    </div>
-
-                                                </div>
+                                    <!-- Contenido de las pestañas -->
+                                    <div class="tab-content mt-3">
+                                        <!-- Pestaña HOY: Candidatos Sugeridos -->
+                                        <div class="tab-pane active" id="tab-hoy">
+                                            <p>Candidatos sugeridos:</p>
+                                            <div id="candidatos-container" class="user-profiles-grid">
+                                                <!-- Aquí el JS insertará múltiples tarjetas .user-profile-card -->
                                             </div>
+                                            <!-- Paginación -->
+                                            <nav>
+                                                <ul id="paginacion" class="pagination mt-3"></ul>
+                                            </nav>
+                                        </div>
+
+                                        <!-- Pestaña SEMANA: Historial de ofertas -->
+                                        <div class="tab-pane d-none" id="tab-semana">
+                                            <p>Historial de ofertas <strong>48</strong></p>
+                                        </div>
+
+                                        <!-- Pestaña MES: Pendiente -->
+                                        <div class="tab-pane d-none" id="tab-mes">
+                                            <p>Pendientes <strong>211</strong></p>
                                         </div>
                                     </div>
                                 </div>
@@ -261,6 +260,7 @@
     <script src="../assets/js/logout-button-emp.js"></script>
     <script src="../assets/js/modules/empresa/dinamic-sidebar.js"></script>
     <script src="../assets/js/modules/utils/dashboard-tabs.js"></script>
+    <script src="../assets/js/modules/candidatos/get-all-candidatos.js"></script>
 </body>
 
 </html>

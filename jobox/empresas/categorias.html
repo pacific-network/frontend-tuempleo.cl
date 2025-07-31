@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Categorías Laborales</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f7f9fc;
+            margin: 0;
+            padding: 40px 20px;
+            color: #05264E;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 700;
+            font-size: 2.5rem;
+        }
+
+        .categories-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .category-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+            background: #fff;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(0, 0, 0, .08);
+            transition: transform .3s ease;
+            cursor: pointer;
+        }
+
+        .category-item:hover {
+            transform: translateY(-7px);
+        }
+
+        .category-icon {
+            background: rgba(60, 101, 245, .1);
+            width: 65px;
+            height: 65px;
+            line-height: 65px;
+            text-align: center;
+            font-size: 40px;
+            color: #3C65F5;
+            border-radius: 15px;
+            transition: all .5s ease-in-out;
+            flex-shrink: 0;
+        }
+
+        .category-item:hover .category-icon {
+            background: #3C65F5;
+            color: #fff;
+        }
+
+        .category-item h6 {
+            font-size: 17px;
+            margin-bottom: 3px;
+            transition: all .5s ease-in-out;
+        }
+
+        .category-item p {
+            font-weight: 500;
+            color: #757F95;
+            font-size: 15px;
+            transition: all .5s ease-in-out;
+            margin: 0;
+        }
+
+        .category-item p:hover,
+        .category-item h6:hover {
+            color: #3C65F5;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Categorías Laborales</h1>
+
+    <div class="categories-container" id="categoriesContainer">
+        <!-- Aquí se cargan las categorías -->
+    </div>
+
+    <script>
+        const categorias = [
+            { id: 1, icon: "💻", nombre: "Tecnología", descripcion: "Desarrollo de software, sistemas y soporte técnico." },
+            { id: 2, icon: "📊", nombre: "Marketing", descripcion: "Publicidad, análisis de mercados y ventas." },
+            { id: 3, icon: "🏗️", nombre: "Construcción", descripcion: "Obra civil, arquitectura y supervisión técnica." },
+            { id: 4, icon: "🎨", nombre: "Diseño", descripcion: "Diseño gráfico, UX/UI y producción creativa." },
+            { id: 5, icon: "⚖️", nombre: "Legal", descripcion: "Asesoría legal, contratos y regulación." }
+        ];
+
+        const container = document.getElementById('categoriesContainer');
+
+        function renderCategorias() {
+            container.innerHTML = categorias.map(cat => `
+      <div class="category-item" tabindex="0">
+        <div class="category-icon" aria-label="${cat.nombre} icono">${cat.icon}</div>
+        <div>
+          <h6>${cat.nombre}</h6>
+          <p>${cat.descripcion}</p>
+        </div>
+      </div>
+    `).join('');
+        }
+
+        renderCategorias();
+    </script>
+
+</body>
+
+</html>

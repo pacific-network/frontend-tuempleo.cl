@@ -23,19 +23,37 @@ function showToast(message, type = 'success') {
   toast.show();
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const form = document.getElementById("businessForm");
+  const token = localStorage.getItem('token');
+  if (!token) return;
 
-  function obtenerUserIdDelToken() {
-    const token = localStorage.getItem("token");
-    if (!token) return null;
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.sub; // user_id está en "sub"
-    } catch (error) {
-      console.error("Error al decodificar el token:", error);
-      return null;
+  let userIdGlobal = null;
+
+  try {
+    const response = await fetch(`${BASE_URL_API}/auth/me`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      console.error('Error al obtener los datos del usuario:', response.status, response.statusText);
+      return;
     }
+
+    const userData = await response.json();
+    userIdGlobal = userData.id;
+
+    // Rellenar campos del formulario (opcional)
+    document.getElementById('nombre_empleador').value = userData.nombres || '';
+    document.getElementById('apellido_empleador').value = userData.apellidos || '';
+    document.getElementById('correo_empleador').value = userData.email || '';
+  } catch (error) {
+    console.error('❌ Error al hacer la solicitud:', error);
+    return;
   }
 
   form.addEventListener("submit", async (event) => {
@@ -67,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       employer: {
         rut: formData.get("rut_empleador"),
-        userId: obtenerUserIdDelToken(),
+        userId: userIdGlobal,
         nombre: formData.get("nombre_empleador"),
         apellido: formData.get("apellido_empleador"),
         correo: formData.get("correo_empleador"),

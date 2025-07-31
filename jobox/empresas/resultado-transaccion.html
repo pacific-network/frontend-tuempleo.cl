@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Resultado de la Transacción</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7ff;
+            color: #333;
+        }
+
+        .hero-single {
+            position: relative;
+            padding: 100px 20px;
+            text-align: center;
+            background-color: #fff;
+            overflow: hidden;
+        }
+
+        .hero-info-content h6 {
+            font-weight: 600;
+            font-size: 20px;
+        }
+
+        .hero-info-content h6 span {
+            color: #3C65F5;
+            font-weight: 700;
+        }
+
+        .resultado-box {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 500px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .success {
+            color: #2ecc71;
+        }
+
+        .error {
+            color: #e74c3c;
+        }
+
+        .hero-shape img {
+            position: absolute;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .hero-shape .hero-shape-1 {
+            left: 0;
+            bottom: 0;
+            width: 200px;
+            opacity: 0.3;
+        }
+
+        .hero-shape .hero-shape-2 {
+            left: 40%;
+            top: 20%;
+            width: 100px;
+            opacity: 0.2;
+        }
+
+        .hero-shape .hero-shape-3 {
+            right: 10%;
+            top: 20%;
+            width: 50px;
+            opacity: 0.2;
+        }
+
+        .hero-shape .hero-shape-4 {
+            left: 22%;
+            top: 0;
+            width: 120px;
+            opacity: 0.1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="hero-single">
+        <div class="hero-info-content">
+            <h6>Estado de la <span>transacción</span></h6>
+            <!-- <div class="resultado-box" id="resultado">
+                Cargando información de la transacción...
+            </div> -->
+        </div>
+
+        <!-- Formas decorativas -->
+        <div class="hero-shape">
+            <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f4b0.svg" class="hero-shape-1">
+            <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/2728.svg" class="hero-shape-2">
+            <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f4b3.svg" class="hero-shape-3">
+            <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f4af.svg" class="hero-shape-4">
+        </div>
+    </section>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get("token_ws");
+
+        const box = document.getElementById("resultado");
+
+        if (!token) {
+            box.innerHTML = '<p class="error">Token inválido. No se puede mostrar la transacción.</p>';
+        } else {
+            fetch(`https://api.tudominio.cl/v1/webpay/detail?token_ws=${token}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === "AUTHORIZED") {
+                        box.innerHTML = `
+              <p class="success"><strong>¡Pago exitoso!</strong></p>
+              <p>Monto: <strong>$${data.amount}</strong></p>
+              <p>Orden: <strong>${data.orderId}</strong></p>
+              <p>Estado: <strong>${data.status}</strong></p>
+            `;
+                    } else {
+                        box.innerHTML = `
+              <p class="error"><strong>Transacción rechazada</strong></p>
+              <p>Estado: <strong>${data.status}</strong></p>
+            `;
+                    }
+                })
+                .catch(() => {
+                    box.innerHTML = '<p class="error">Error al consultar los datos de la transacción.</p>';
+                });
+        }
+    </script>
+</body>
+
+</html>
