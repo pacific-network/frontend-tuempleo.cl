@@ -88,7 +88,28 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
         } catch (error) {
-            console.error('Error verificando postulación:', error);
+        console.error('Error verificando postulación:', error);
+        } if (Array.isArray(preguntas) && preguntas.length > 0) {
+            const form = document.getElementById('formulario-preguntas');
+            preguntas.forEach(pregunta => {
+                const div = document.createElement('div');
+                div.classList.add('mb-3');
+                div.innerHTML = `
+                    <label class="form-label fw-semibold">${pregunta}</label>
+                    <input type="text" class="form-control pregunta-input" data-pregunta="${pregunta}" placeholder="Escribe tu respuesta aquí" required>
+                `;
+                form.appendChild(div);
+            });
+
+            const alerta = document.getElementById('alerta-preguntas');
+            if (alerta) alerta.classList.remove('d-none');
+
+            document.body.dataset.tienePreguntas = '1';
+        } else {
+            const alerta = document.getElementById('alerta-preguntas');
+            if (alerta) alerta.classList.add('d-none');
+
+            document.body.dataset.tienePreguntas = '0';
         }
 
     } catch (error) {
