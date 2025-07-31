@@ -88,6 +88,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
         } catch (error) {
+            console.error('Error verificando postulación:', error);
         console.error('Error verificando postulación:', error);
         } if (Array.isArray(preguntas) && preguntas.length > 0) {
             const form = document.getElementById('formulario-preguntas');

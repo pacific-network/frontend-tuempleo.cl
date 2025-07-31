@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const verificarYRedirigir = async (token) => {
     const payload = parseJwt(token);
     if (!payload || !payload.sub) {
-      if (messageEl) messageEl.textContent = 'Token inválido.'; //cambiar a mensaje mas amigable, el user no sabe del token
+      if (messageEl) messageEl.textContent = 'No se pudo validar tu sesión. Por favor, vuelve a iniciar sesión.';
       return;
     }
 
@@ -74,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Botón login con Google
   const googleBtn = document.getElementById('googleLoginBtn');
   if (googleBtn) {
     googleBtn.addEventListener('click', (e) => {
@@ -83,7 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Botón login con LinkedIn
   const linkedinBtn = document.getElementById('linkedinLoginBtn');
   if (linkedinBtn) {
     linkedinBtn.addEventListener('click', (e) => {
@@ -138,9 +136,5 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error('Error en login:', error);
       if (messageEl) messageEl.textContent = 'No se pudo conectar con el servidor.';
     }
-<<<<<<< HEAD
-});
-=======
   });
 });
->>>>>>> dev

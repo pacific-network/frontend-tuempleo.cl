@@ -297,11 +297,7 @@ Version         : 1.2
                 range: true,
                 min: 100000,
                 max: maxVal,
-<<<<<<< HEAD
                 values: [100000, 750000],
-=======
-                values: [250000, 750000],
->>>>>>> dev
                 slide: function (event, ui) {
                     const minText = "$" + ui.values[0].toLocaleString();
                     const maxText = "$" + ui.values[1].toLocaleString() + (ui.values[1] === maxVal ? "+" : "");
