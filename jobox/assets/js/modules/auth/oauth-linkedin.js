@@ -29,13 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      if (res.status === 404) {
-        if (!window.location.href.includes('login-employer.html')) {
-          window.location.href = 'login-employer.html';
-        }
-        return;
-      }
-
       if (!res.ok) {
         console.error('Error en la respuesta:', await res.text());
         return;
