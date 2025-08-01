@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!idOferta) return alert('No se encontró la oferta');
 
     try {
-        const response = await fetch(`https://tuempleo.cl/api/v1/ofertas/${idOferta}`);
+        const response = await fetch(`${BASE_URL_API}/ofertas/${idOferta}`);
         if (!response.ok) throw new Error('Error al cargar la oferta');
         
         const oferta = await response.json();

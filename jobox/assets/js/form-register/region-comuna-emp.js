@@ -1,4 +1,9 @@
+// region-comuna-local.js
 document.addEventListener('DOMContentLoaded', function() {
+  const regionSelect = document.getElementById('region_empleador');
+  const comunaSelect = document.getElementById('comuna_empleador');
+  
+  // Datos de regiones y comunas (comunas ordenadas alfabéticamente)
   const regionesComunas = {
     "regiones": [
       {
@@ -68,50 +73,35 @@ document.addEventListener('DOMContentLoaded', function() {
     ]
   };
 
-function cargarRegionesYComunas(idRegion, idComuna) {
-    const regionSelect = document.getElementById(idRegion);
-    const comunaSelect = document.getElementById(idComuna);
+  // Llenar el select de regiones
+  regionesComunas.regiones.forEach(region => {
+    const option = document.createElement('option');
+    option.value = region.region;
+    option.textContent = region.region;
+    regionSelect.appendChild(option);
+  });
 
-    if (!regionSelect || !comunaSelect) return;
+  // Manejar el cambio de región
+  regionSelect.addEventListener('change', () => {
+    const selectedRegion = regionSelect.value;
+    const regionData = regionesComunas.regiones.find(r => r.region === selectedRegion);
 
-    // Inicializar selects
-    regionSelect.innerHTML = '<option value="">Seleccione una región</option>';
+    // Resetear el select de comunas
     comunaSelect.innerHTML = '<option value="">Seleccione una comuna</option>';
     comunaSelect.disabled = true;
 
-    // Llenar regiones
-    regionesComunas.regiones.forEach(region => {
-      const option = document.createElement('option');
-      option.value = region.region;
-      option.textContent = region.region;
-      regionSelect.appendChild(option);
-    });
+    // Si se encontró la región y tiene comunas, llenar el select
+    if (regionData?.comunas?.length) {
+      regionData.comunas.forEach(comuna => {
+        const option = document.createElement('option');
+        option.value = comuna;
+        option.textContent = comuna;
+        comunaSelect.appendChild(option);
+      });
+      comunaSelect.disabled = false;
+    }
+  });
 
-    // Evento: cambia región
-    regionSelect.addEventListener('change', () => {
-      const selectedRegion = regionSelect.value;
-      const regionData = regionesComunas.regiones.find(r => r.region === selectedRegion);
-
-      comunaSelect.innerHTML = '<option value="">Seleccione una comuna</option>';
-      comunaSelect.disabled = true;
-
-      if (regionData?.comunas?.length) {
-        regionData.comunas.forEach(comuna => {
-          const option = document.createElement('option');
-          option.value = comuna;
-          option.textContent = comuna;
-          comunaSelect.appendChild(option);
-        });
-        comunaSelect.disabled = false;
-      }
-    });
-  }
-
-  // Inicializar múltiples combos (usa los IDs correctos del HTML)
-  cargarRegionesYComunas('region_empresa', 'comuna_empresa');
-  cargarRegionesYComunas('region_empleador', 'comuna_empleador');
+  // Inicializar el select de comunas como deshabilitado
+  comunaSelect.disabled = true;
 });
-
-
-
-
