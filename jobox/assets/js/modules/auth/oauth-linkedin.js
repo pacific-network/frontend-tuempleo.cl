@@ -17,7 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  const verificarYRedirigir = async (token) => {
+  const verificarYRedirigir = async (inputToken) => {
+    const token = inputToken || localStorage.getItem('token');
     if (!token) return;
 
     const payload = parseJwt(token);
@@ -29,7 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       if (res.status === 404) {
-        window.location.href = 'login-employer.html';
+        if (!window.location.href.includes('login-employer.html')) {
+          window.location.href = 'login-employer.html';
+        }
         return;
       }
 
@@ -50,15 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // ✅ Solo redirigir si token vino desde OAuth
-  const savedToken = localStorage.getItem('token');
-  const fromOAuth = localStorage.getItem('fromOAuth');
-
-  if (savedToken && fromOAuth === 'true') {
-    verificarYRedirigir(savedToken);
-    localStorage.removeItem('fromOAuth'); // Evitar bucles
-  }
-
   linkedinBtn.addEventListener('click', () => {
     window.open(
       `${window.BASE_URL_API}/oauth/linkedin`,
@@ -67,6 +61,13 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   });
 
+  // ✅ Al cargar la página, revisar si hay un token guardado
+  const savedToken = localStorage.getItem('token');
+  if (savedToken) {
+    verificarYRedirigir(savedToken);
+  }
+
+  // ✅ Escuchar token enviado desde popup
   window.addEventListener('message', (event) => {
     if (!ALLOWED_ORIGINS.includes(event.origin)) {
       console.warn('Origen no permitido:', event.origin);
@@ -77,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!token) return;
 
     localStorage.setItem('token', token);
-    localStorage.setItem('fromOAuth', 'true'); // ✅ Marcamos que viene del login
     verificarYRedirigir(token);
   });
 });
