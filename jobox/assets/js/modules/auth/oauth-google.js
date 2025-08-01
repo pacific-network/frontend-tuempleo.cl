@@ -28,10 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      if (res.status === 404) {
-        window.location.href = 'login-employer.html';
-        return;
-      }
 
       if (!res.ok) {
         console.error('Error en la respuesta:', await res.text());

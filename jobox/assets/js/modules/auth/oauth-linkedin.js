@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     : ['https://tuempleo.cl'];
 
   const linkedinBtn = document.getElementById('linkedinLoginBtn');
-  if (!linkedinBtn) return;
+  const isLoginPage = window.location.pathname.includes('login-employer.html');
 
   const parseJwt = (token) => {
     try {
@@ -17,8 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  const verificarYRedirigir = async (inputToken) => {
-    const token = inputToken || localStorage.getItem('token');
+  const verificarYRedirigir = async (token) => {
     if (!token) return;
 
     const payload = parseJwt(token);
@@ -37,30 +36,37 @@ document.addEventListener('DOMContentLoaded', () => {
       const user = await res.json();
 
       if (user.empresa_id && user.empleador_id) {
-        window.location.href = 'employer-dashboard.html';
+        if (!window.location.pathname.includes('employer-dashboard.html')) {
+          window.location.href = 'employer-dashboard.html';
+        }
       } else {
-        window.location.href = 'employer-form-register.html';
+        if (!window.location.pathname.includes('employer-form-register.html')) {
+          window.location.href = 'employer-form-register.html';
+        }
       }
     } catch (error) {
       console.error('Error al verificar usuario:', error);
     }
   };
 
-  linkedinBtn.addEventListener('click', () => {
-    window.open(
-      `${window.BASE_URL_API}/oauth/linkedin`,
-      'LinkedIn Login',
-      'width=500,height=600'
-    );
-  });
-
-  // ✅ Al cargar la página, revisar si hay un token guardado
+  // ✅ Verificar si ya hay un token guardado
   const savedToken = localStorage.getItem('token');
-  if (savedToken) {
+  if (savedToken && !isLoginPage) {
     verificarYRedirigir(savedToken);
   }
 
-  // ✅ Escuchar token enviado desde popup
+  // ✅ Botón login
+  if (linkedinBtn) {
+    linkedinBtn.addEventListener('click', () => {
+      window.open(
+        `${window.BASE_URL_API}/oauth/linkedin`,
+        'LinkedIn Login',
+        'width=500,height=600'
+      );
+    });
+  }
+
+  // ✅ Listener para recibir el token desde el popup
   window.addEventListener('message', (event) => {
     if (!ALLOWED_ORIGINS.includes(event.origin)) {
       console.warn('Origen no permitido:', event.origin);
