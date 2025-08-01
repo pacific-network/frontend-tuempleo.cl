@@ -50,14 +50,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Verifica si ya hay un token guardado (por ejemplo, tras recargar)
+  // ✅ Solo redirigir si token vino desde OAuth
   const savedToken = localStorage.getItem('token');
-  if (savedToken) {
+  const fromOAuth = localStorage.getItem('fromOAuth');
+
+  if (savedToken && fromOAuth === 'true') {
     verificarYRedirigir(savedToken);
+    localStorage.removeItem('fromOAuth'); // Evitar bucles
   }
 
   linkedinBtn.addEventListener('click', () => {
-    window.open(`${window.BASE_URL_API}/oauth/linkedin`, 'LinkedIn Login', 'width=500,height=600');
+    window.open(
+      `${window.BASE_URL_API}/oauth/linkedin`,
+      'LinkedIn Login',
+      'width=500,height=600'
+    );
   });
 
   window.addEventListener('message', (event) => {
@@ -70,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!token) return;
 
     localStorage.setItem('token', token);
+    localStorage.setItem('fromOAuth', 'true'); // ✅ Marcamos que viene del login
     verificarYRedirigir(token);
   });
 });
