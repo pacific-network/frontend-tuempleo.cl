@@ -3,9 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ? ['http://localhost:3000', 'http://127.0.0.1:5500']
     : ['https://tuempleo.cl'];
 
-  const linkedinBtn = document.getElementById('linkedinLoginBtn');
   const pathname = window.location.pathname;
-
   const isLoginPage = pathname.includes('login-employer.html');
   const isDashboardPage = pathname.includes('employer-dashboard.html');
   const isRegisterPage = pathname.includes('employer-form-register.html');
@@ -21,45 +19,47 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  const verificarYRedirigir = async (token) => {
+  const verificarYRedirigir = async (inputToken) => {
+    const token = inputToken || localStorage.getItem('token');
     if (!token) return;
 
     const payload = parseJwt(token);
     if (!payload?.sub) return;
 
     try {
-      const res = await fetch(`${window.BASE_URL_API}/empleador/basic-info/${payload.sub}`, {
+      const res = await fetch(`${window.BASE_URL_API}/user/${payload.sub}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
+      if (res.status === 404) {
+        if (!isLoginPage) {
+          window.location.href = 'register-form-employer.html';
+        }
+        return;
+      }
+
       if (!res.ok) {
         console.error('Error en la respuesta:', await res.text());
-        // ⚠️ Borrar el token inválido para evitar loop
-        localStorage.removeItem('token');
         return;
       }
 
       const user = await res.json();
 
-      if (user?.empresa_id && user?.empleador_id) {
+      if (user.rut) {
         if (!isDashboardPage) {
           window.location.href = 'employer-dashboard.html';
         }
-      } else if (!isRegisterPage) {
-        window.location.href = 'employer-form-register.html';
+      } else {
+        if (!isRegisterPage) {
+          window.location.href = 'employer-form-register.html';
+        }
       }
     } catch (error) {
       console.error('Error al verificar usuario:', error);
     }
   };
 
-  // ✅ Solo redirigir si NO estás en login
-  const savedToken = localStorage.getItem('token');
-  if (savedToken && !isLoginPage) {
-    verificarYRedirigir(savedToken);
-  }
-
-  // ✅ Login click
+  const linkedinBtn = document.getElementById('linkedinLoginBtn');
   if (linkedinBtn) {
     linkedinBtn.addEventListener('click', () => {
       window.open(
@@ -70,7 +70,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ✅ Desde el popup
+  // ✅ Al cargar la página, revisar si hay un token guardado
+  const savedToken = localStorage.getItem('token');
+  if (savedToken) {
+    verificarYRedirigir(savedToken);
+  }
+
+  // ✅ Escuchar token enviado desde popup
   window.addEventListener('message', (event) => {
     if (!ALLOWED_ORIGINS.includes(event.origin)) {
       console.warn('Origen no permitido:', event.origin);
