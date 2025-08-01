@@ -1,10 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const googleBtn = document.getElementById('googleLoginBtn');
-  if (!googleBtn) return;
-
   const ALLOWED_ORIGINS = window.isDev
     ? ['http://localhost:3000', 'http://127.0.0.1:5500']
     : ['https://tuempleo.cl'];
+
+  const pathname = window.location.pathname;
+  const isLoginPage = pathname.includes('login-employer.html');
+  const isDashboardPage = pathname.includes('employer-dashboard.html');
+  const isRegisterPage = pathname.includes('employer-form-register.html');
 
   const parseJwt = (token) => {
     try {
@@ -17,17 +19,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  const verificarYRedirigir = async (token) => {
+  const verificarYRedirigir = async (inputToken) => {
+    const token = inputToken || localStorage.getItem('token');
     if (!token) return;
 
     const payload = parseJwt(token);
     if (!payload?.sub) return;
 
     try {
-      const res = await fetch(`${window.BASE_URL_API}/empleador/basic-info/${payload.sub}`, {
+      const res = await fetch(`${window.BASE_URL_API}/user/${payload.sub}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
+      if (res.status === 404) {
+        if (!isLoginPage) {
+          window.location.href = 'register-form-employer.html';
+        }
+        return;
+      }
 
       if (!res.ok) {
         console.error('Error en la respuesta:', await res.text());
@@ -36,20 +45,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const user = await res.json();
 
-      if (user.empresa_id && user.empleador_id) {
-        window.location.href = 'employer-dashboard.html';
+      if (user.rut) {
+        if (!isDashboardPage) {
+          window.location.href = 'employer-dashboard.html';
+        }
       } else {
-        window.location.href = 'employer-form-register.html';
+        if (!isRegisterPage) {
+          window.location.href = 'employer-form-register.html';
+        }
       }
     } catch (error) {
       console.error('Error al verificar usuario:', error);
     }
   };
 
-  // Abrir popup de autenticación con Google
-  googleBtn.addEventListener('click', () => {
-    window.open(`${window.BASE_URL_API}/oauth/google`, 'Google Login', 'width=500,height=600');
-  });
+  const googleBtn = document.getElementById('googleLoginBtn'); // corregido nombre del ID
+  if (googleBtn) {
+    googleBtn.addEventListener('click', () => {
+      window.open(
+        `${window.BASE_URL_API}/oauth/google`,
+        'googleAuthPopup',
+        'width=600,height=700'
+      );
+    });
+  }
 
   // Verificar token guardado (en caso de recarga)
   const savedToken = localStorage.getItem('token');
