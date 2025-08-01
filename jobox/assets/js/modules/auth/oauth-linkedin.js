@@ -34,26 +34,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (!res.ok) {
         console.error('Error en la respuesta:', await res.text());
+        // ⚠️ Borrar el token inválido para evitar loop
+        localStorage.removeItem('token');
         return;
       }
 
       const user = await res.json();
 
-      if (user.empresa_id && user.empleador_id) {
+      if (user?.empresa_id && user?.empleador_id) {
         if (!isDashboardPage) {
           window.location.href = 'employer-dashboard.html';
         }
-      } else {
-        if (!isRegisterPage) {
-          window.location.href = 'employer-form-register.html';
-        }
+      } else if (!isRegisterPage) {
+        window.location.href = 'employer-form-register.html';
       }
     } catch (error) {
       console.error('Error al verificar usuario:', error);
     }
   };
 
-  // ✅ Solo ejecutamos redirección automática si NO estamos en login
+  // ✅ Solo redirigir si NO estás en login
   const savedToken = localStorage.getItem('token');
   if (savedToken && !isLoginPage) {
     verificarYRedirigir(savedToken);
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ✅ Token recibido desde popup: redireccionamos desde cualquier página
+  // ✅ Desde el popup
   window.addEventListener('message', (event) => {
     if (!ALLOWED_ORIGINS.includes(event.origin)) {
       console.warn('Origen no permitido:', event.origin);
@@ -81,6 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!token) return;
 
     localStorage.setItem('token', token);
-    verificarYRedirigir(token); // Siempre redirige aquí
+    verificarYRedirigir(token);
   });
 });
