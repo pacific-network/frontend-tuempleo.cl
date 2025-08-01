@@ -4,7 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
     : ['https://tuempleo.cl'];
 
   const linkedinBtn = document.getElementById('linkedinLoginBtn');
-  const isLoginPage = window.location.pathname.includes('login-employer.html');
+  const pathname = window.location.pathname;
+
+  const isLoginPage = pathname.includes('login-employer.html');
+  const isDashboardPage = pathname.includes('employer-dashboard.html');
+  const isRegisterPage = pathname.includes('employer-form-register.html');
 
   const parseJwt = (token) => {
     try {
@@ -36,11 +40,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const user = await res.json();
 
       if (user.empresa_id && user.empleador_id) {
-        if (!window.location.pathname.includes('employer-dashboard.html')) {
+        if (!isDashboardPage) {
           window.location.href = 'employer-dashboard.html';
         }
       } else {
-        if (!window.location.pathname.includes('employer-form-register.html')) {
+        if (!isRegisterPage) {
           window.location.href = 'employer-form-register.html';
         }
       }
@@ -49,13 +53,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // ✅ Verificar si ya hay un token guardado
+  // ✅ Solo ejecutamos redirección automática si NO estamos en login
   const savedToken = localStorage.getItem('token');
   if (savedToken && !isLoginPage) {
     verificarYRedirigir(savedToken);
   }
 
-  // ✅ Botón login
+  // ✅ Login click
   if (linkedinBtn) {
     linkedinBtn.addEventListener('click', () => {
       window.open(
@@ -66,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ✅ Listener para recibir el token desde el popup
+  // ✅ Token recibido desde popup: redireccionamos desde cualquier página
   window.addEventListener('message', (event) => {
     if (!ALLOWED_ORIGINS.includes(event.origin)) {
       console.warn('Origen no permitido:', event.origin);
@@ -77,6 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!token) return;
 
     localStorage.setItem('token', token);
-    verificarYRedirigir(token);
+    verificarYRedirigir(token); // Siempre redirige aquí
   });
 });
