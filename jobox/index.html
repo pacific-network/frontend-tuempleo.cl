@@ -21,60 +21,8 @@
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="assets/css/nice-select.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/indexnav.css">
 
-    <style>
-        .nice-select.open .list {
-            z-index: 9999 !important;
-        }
-
-        .nice-select .list {
-            position: absolute;
-            width: 100%;
-        }
-
-        .nice-select .option:hover {
-            background-color: #f0f0f0;
-        }
-
-        .form-group-icon {
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-        }
-        .hero-img img {
-            max-height: 630px;
-            margin-top: 50px;
-            width: auto;
-            height: auto;
-            object-fit: contain;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        @media (min-width: 768px) and (max-width: 1200px) {
-            .hero-img img {
-                max-height: 400px; /* achica más en tablets */
-                margin-top: 100px; /* empuja más hacia abajo */
-            }
-            .hero-img {
-                display: none !important;
-            }
-        
-            .hero-right {
-                display: flex;
-                justify-content: center;
-                align-items: flex-start;
-                padding-top: 40px;
-            }
-        }
-        .navbar {
-            padding: 0 !important;
-        }
-    </style>
 </head>
 
 <body>
@@ -275,40 +223,7 @@
             $('select.select').niceSelect();
         });
     </script>
-    <script>
-  const formIndex = document.getElementById('form-busqueda-index');
-
-  formIndex.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const keyword = document.getElementById('keyword-index').value.trim();
-    const region = document.getElementById('region-select').value.trim();
-    const categoria = document.getElementById('categoria-index').value.trim();
-
-    const busqueda = { keyword, region, categoria };
-    guardarBusquedaDesdeIndex(busqueda);
-
-    // Redirigir a job-list-2.html
-    window.location.href = 'job-list-2.html';
-  });
-
-  function guardarBusquedaDesdeIndex(nueva) {
-    let busquedas = JSON.parse(localStorage.getItem('busquedas_recientes')) || [];
-    busquedas.unshift(nueva);
-
-    // Evita duplicados exactos
-    busquedas = busquedas.filter((b, i, arr) =>
-      i === arr.findIndex(x =>
-        x.keyword === b.keyword &&
-        x.region === b.region &&
-        x.categoria === b.categoria
-      )
-    );
-
-    if (busquedas.length > 5) busquedas.length = 5;
-    localStorage.setItem('busquedas_recientes', JSON.stringify(busquedas));
-  }
-</script>
+    <script src="assets/js/busqueda/busqueda-logout.js"></script>
 
 
 </body>

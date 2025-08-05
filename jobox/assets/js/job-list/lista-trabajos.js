@@ -1,46 +1,47 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const response = await fetch(`${BASE_URL_API}/ofertas`);
-        const ofertas = await response.json();
+  try {
+    const response = await fetch(`${BASE_URL_API}/ofertas`);
+    const { data: ofertas } = await response.json(); // ✅ Extrae el array
 
-        const contenedor = document.getElementById('ofertas-container');
-        contenedor.innerHTML = '';
+    const contenedor = document.getElementById('ofertas-container');
+    contenedor.innerHTML = '';
 
-        ofertas.forEach(oferta => {
-            const data = JSON.parse(oferta.data || '{}');
-            const herramientas = (data.herramientas_basicas || []).map(h => `<a><span>${h}</span></a>`).join('');
+    ofertas.forEach(oferta => {
+      const data = JSON.parse(oferta.data || '{}');
+      const herramientas = (data.herramientas_basicas || [])
+        .map(h => `<a><span>${h}</span></a>`).join('');
 
-            const html = `
-                <div class="col-lg-12">
-                    <div class="job-item" onclick="window.location.href='job-single-2-si.html?id=${oferta.id}'" style="cursor:pointer;">
-                        <div class="job-img">
-                          <img src="assets/img/job/01.jpg" alt="">
-                        </div>
-                        <div class="job-content">
-                            <div class="job-top">
-                                <div class="job-title">
-                                    <h5>${oferta.titulo}</h5>
-                                    <span class="job-employer"><i class="far fa-building"></i> ${oferta.empresa.nombre_fantasia}</span>
-                                </div>
-                            </div>
-                            <ul class="job-info-list">
-                                <li><i class="fe-briefcase"></i> ${data.area_trabajo || 'Área no especificada'}</li>
-                                <li><i class="fe-check-circle"></i> ${formatModalidad(data.modalidad)}</li>
-                                <li><i class="fe-clock"></i> ${diasDesde(oferta.fecha_publicacion)}</li>
-                                <li><i class="fas fa-timer"></i> Exp: ${formatFecha(oferta.fecha_cierre)}</li>
-                                <li><i class="fe-dollar-sign"></i> Salario: ${formatRango(data.renta_salarial)}</li>
-                                <li><i class="fe-map-pin"></i> ${oferta.empleador?.data?.region || 'Región no disponible'}</li>
-                            </ul>
-                            <div class="job-skill">${herramientas}</div>
-                        </div>
-                    </div>
+      const html = `
+        <div class="col-lg-12">
+          <div class="job-item" onclick="window.location.href='job-single-2-si.html?id=${oferta.id}'" style="cursor:pointer;">
+            <div class="job-img">
+              <img src="assets/img/job/01.jpg" alt="">
+            </div>
+            <div class="job-content">
+              <div class="job-top">
+                <div class="job-title">
+                  <h5>${oferta.titulo}</h5>
+                  <span class="job-employer"><i class="far fa-building"></i> ${oferta.empresa.nombre_fantasia}</span>
                 </div>
-            `;
-            contenedor.insertAdjacentHTML('beforeend', html);
-        });
-    } catch (error) {
-        console.error('Error al cargar ofertas:', error);
-    }
+              </div>
+              <ul class="job-info-list">
+                <li><i class="fe-briefcase"></i> ${data.area_trabajo || 'Área no especificada'}</li>
+                <li><i class="fe-check-circle"></i> ${formatModalidad(data.modalidad)}</li>
+                <li><i class="fe-clock"></i> ${diasDesde(oferta.fecha_publicacion)}</li>
+                <li><i class="fas fa-timer"></i> Exp: ${formatFecha(oferta.fecha_cierre)}</li>
+                <li><i class="fe-dollar-sign"></i> Salario: ${formatRango(data.renta_salarial)}</li>
+                <li><i class="fe-map-pin"></i> ${oferta.empleador?.data?.region || 'Región no disponible'}</li>
+              </ul>
+              <div class="job-skill">${herramientas}</div>
+            </div>
+          </div>
+        </div>
+      `;
+      contenedor.insertAdjacentHTML('beforeend', html);
+    });
+  } catch (error) {
+    console.error('❌ Error al cargar ofertas:', error);
+  }
 });
 
 // Helpers

@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Manejar envío del formulario
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        
+
         if (!validateForm()) {
             return;
         }
@@ -50,10 +50,17 @@ document.addEventListener('DOMContentLoaded', function() {
             const formData = prepareFormData();
             const response = await crearPostulanteYCV(userId, formData, token);
 
-            // Improved response handling
             if (response && response.postulante && response.curriculum) {
-                alert('Datos guardados correctamente!');
-                window.location.href = 'login.html';
+                await Swal.fire({
+                    title: '¡Registro exitoso!',
+                    text: 'Te has registrado correctamente.',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor: '#3085d6',
+                    allowOutsideClick: false
+                });
+
+                window.location.href = 'candidate-dashboard.html';
             } else {
                 throw new Error('Respuesta inesperada del servidor');
             }
@@ -67,10 +74,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 errorMessage += ': ' + error.message;
             }
 
-            alert(errorMessage);
+            Swal.fire({
+                title: 'Error',
+                text: errorMessage,
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
         }
     });
-
     // Configurar campos obligatorios
     function setupRequiredFields() {
         // Lista de IDs de campos obligatorios

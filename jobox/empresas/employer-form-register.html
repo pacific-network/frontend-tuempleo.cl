@@ -23,6 +23,28 @@
     <link rel="stylesheet" href="../assets/css/nice-select.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
+        .required-field::after {
+            content: " *";
+            color: red;
+        }
+
+        .is-invalid {
+            border-color: #dc3545 !important;
+        }
+
+        .invalid-feedback {
+            color: #dc3545;
+            font-size: 0.875em;
+            display: none;
+            width: 100%;
+            margin-top: 0.25rem;
+        }
+
+        .is-invalid ~ .invalid-feedback {
+            display: block;
+        }
+    </style>
+    <style>
         .navbar {
             padding: 0 !important;
         }
@@ -69,13 +91,13 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="rutInput">RUT</label>
+                                                <label for="rutInput" class="required-field">RUT</label>
                                                 <div class="input-group">
                                                     <input 
                                                         type="text" 
                                                         id="rutInput" 
                                                         name="rutInput" 
-                                                        class="form-control" 
+                                                        class="form-control required-field" 
                                                         placeholder="Ingrese el RUT de la Empresa" 
                                                         pattern="[0-9]{7,8}-[0-9kK]" 
                                                         data-bs-toggle="tooltip" 
@@ -93,22 +115,22 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="razon_social">Razón Social</label>
+                                                <label for="razon_social" class="required-field">Razón Social</label>
                                                 <input type="text" id="razon_social" name="razon_social" class="form-control"
-                                                    placeholder="Ingrese la Razón Social">
+                                                    placeholder="Ingrese la Razón Social" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="nombre_empresa">Nombre de la Empresa</label>
+                                                <label for="nombre_empresa" class="required-field">Nombre de la Empresa</label>
                                                 <input type="text" id="nombre_empresa" name="nombre_empresa"
-                                                    class="form-control" placeholder="Ingrese el Nombre de la Empresa">
+                                                    class="form-control" placeholder="Ingrese el Nombre de la Empresa" required>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label for="categoria">Categoría</label>
-                                                <select class="form-control" id="categoria" name="categoria">
+                                                <label for="categoria" class="required-field">Categoría</label>
+                                                <select class="form-control" id="categoria" name="categoria" required>
                                                     <option value="">Seleccione una opción</option>
                                                     <option value="1">Primera Categoria</option>
                                                     <option value="2">Segunda Categoria</option>
@@ -117,29 +139,29 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label for="correo_empresa">Correo Empresa</label>
+                                                <label for="correo_empresa" class="required-field">Correo Empresa</label>
                                                 <input type="email" id="correo_empresa" name="correo_empresa"
-                                                    class="form-control" placeholder="Ingrese Correo">
+                                                    class="form-control" placeholder="Ingrese Correo" required>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label for="actividad_empresa">Actividad Empresa</label>
-                                                <input class="form-control" name="actividad_empresa" id="actividad_empresa">
+                                                <label for="actividad_empresa" class="required-field">Actividad Empresa</label>
+                                                <input class="form-control" name="actividad_empresa" id="actividad_empresa" required>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label for="pais">País</label>
+                                                <label for="pais" class="required-field">País</label>
                                                 <input type="text" id="pais" name="pais" class="form-control"
-                                                    placeholder="Ingrese País" value="Chile">
+                                                    placeholder="Ingrese País" value="Chile" required>
                                             
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="region_empresa">Región</label>
-                                                <select id="region_empresa" name="region_empresa" class="form-control">
+                                                <label for="region_empresa" class="required-field">Región</label>
+                                                <select id="region_empresa" name="region_empresa" class="form-control" required>
                                                     <option value="">Seleccione una región</option>
                                                     <!-- Opciones dinámicas -->
                                                 </select>
@@ -147,8 +169,8 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="comuna_empresa">Comuna</label>
-                                                <select id="comuna_empresa" name="comuna_empresa" class="form-control" disabled>
+                                                <label for="comuna_empresa" class="required-field">Comuna</label>
+                                                <select id="comuna_empresa" name="comuna_empresa" class="form-control" disabled required>
                                                     <option value="">Seleccione una comuna</option>
                                                     <!-- Opciones dinámicas -->
                                                 </select>
@@ -156,21 +178,21 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="direccion_texto">Dirección</label>
-                                                <input type="text" id="direccion_texto" class="form-control" placeholder="Ingrese dirección">
+                                                <label for="direccion_texto" class="required-field">Dirección</label>
+                                                <input type="text" id="direccion_texto" class="form-control" placeholder="Ingrese dirección" required>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label for="numero_texto">Número Calle</label>
-                                                <input type="text" id="numero_texto" class="form-control" placeholder="Ingrese número">
+                                                <label for="numero_texto" class="required-field">Número Calle</label>
+                                                <input type="text" id="numero_texto" class="form-control" placeholder="Ingrese número" required>
                                             </div>
                                         </div>
                                         <input type="hidden" id="direccion" name="direccion">
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="tamano_equipo">Tamaño Equipo</label>
-                                                <select class="form-control" id="tamano_equipo" name="tamano_equipo">
+                                                <label for="tamano_equipo" class="required-field">Tamaño Equipo</label>
+                                                <select class="form-control" id="tamano_equipo" name="tamano_equipo" required>
                                                     <option value="">Seleccione Tamaño de equipo</option>
                                                     <option value="1">MicroEmpresa(1-9 trabajadores)</option>
                                                     <option value="2">Pequeña Empresa(10-49 trabajadores)</option>
@@ -181,67 +203,69 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label for="anio_inicio_actividades">Año Inicio Actividades</label>
+                                                <label for="anio_inicio_actividades" class="required-field">Año Inicio Actividades</label>
                                                 <input type="number" id="anio_inicio_actividades" name="anio_inicio_actividades"
-                                                    class="form-control" placeholder="Ingrese Año">
+                                                    class="form-control" placeholder="Ingrese Año" required>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label>Fono Empresa</label>
+                                                <label class="required-field">Fono Empresa</label>
                                                 <div class="input-group">
-                                                    <span class="input-group-text">+56</span>
+                                                    <span class="input-group-text" class="required-field">+56</span>
                                                     <input type="text" class="form-control" placeholder="Ej: 9 1234 5678"
-                                                        id="numero_telefono_empresa" name="numero_telefono_empresa">
+                                                        id="numero_telefono_empresa" name="numero_telefono_empresa" required>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="descripcion_empresa">Descripción de Empresa</label>
+                                                <label for="descripcion_empresa" class="required-field">Descripción de Empresa</label>
                                                 <textarea class="form-control" id="descripcion_empresa"
-                                                    name="descripcion_empresa" cols="30" rows="5"
-                                                    placeholder="Escriba una breve descripción de la empresa"></textarea>
+                                                          name="descripcion_empresa" cols="30" rows="5" maxlength="500"
+                                                          placeholder="Escriba una breve descripción de la empresa" required></textarea>
+                                                <small id="contadorDescripcion" class="form-text text-muted">0 / 500 caracteres</small>
                                             </div>
                                         </div>
+
                                     
                                         <!-- INICIO FORMULARIO EMPLEADOR -->
                                     
                                         <div class="row mt-4">
                                             <h6 class="mb-3">Datos Usuario Empresa</h6>
                                             <div class="form-group col-md-4">
-                                                <label for="rut_empleador">RUT</label>
+                                                <label for="rut_empleador" class="required-field">RUT</label>
                                                 <div class="input-group">
                                                     <input type="text" id="rut_empleador" name="rut_empleador"
                                                         class="form-control" placeholder="Ingresa tu RUT (ej:18275903-2)"
-                                                        pattern="^\d{7,8}-[kK\d]$" title="El formato debe ser XXXXXXXX-X">
+                                                        pattern="^\d{7,8}-[kK\d]$" title="El formato debe ser XXXXXXXX-X" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="nombre_empleador">Nombre</label>
+                                                    <label for="nombre_empleador" class="required-field">Nombre</label>
                                                     <input type="text" id="nombre_empleador" name="nombre_empleador"
-                                                        class="form-control" placeholder="Ingrese Nombre">
+                                                        class="form-control" placeholder="Ingrese Nombre" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="apellido_empleador">Apellido</label>
+                                                    <label for="apellido_empleador" class="required-field">Apellido</label>
                                                     <input type="text" id="apellido_empleador" name="apellido_empleador"
-                                                        class="form-control" placeholder="Ingrese Apellido">
+                                                        class="form-control" placeholder="Ingrese Apellido" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="cargo_empleador">Pais</label>
+                                                    <label for="cargo_empleador" class="required-field">Pais</label>
                                                     <input type="text" id="pais_empleador" name="pais_empleador" ...
-                                                        class="form-control" placeholder="Ingrese su País">
+                                                        class="form-control" placeholder="Ingrese su País" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="region_empleador">Región</label>
-                                                    <select id="region_empleador" name="region_empleador" class="form-control">
+                                                    <label for="region_empleador" class="required-field">Región</label>
+                                                    <select id="region_empleador" name="region_empleador" class="form-control" required>
                                                         <option value="">Seleccione una región</option>
                                                         <!-- Opciones dinámicas -->
                                                     </select>
@@ -249,9 +273,9 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="comuna_empleador">Comuna</label>
+                                                    <label for="comuna_empleador" class="required-field">Comuna</label>
                                                     <select id="comuna_empleador" name="comuna_empleador" class="form-control"
-                                                        disabled>
+                                                        disabled required>
                                                         <option value="">Seleccione una comuna</option>
                                                         <!-- Opciones dinámicas -->
                                                     </select>
@@ -261,33 +285,33 @@
                                         
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="cargo_empleador">Direccion</label>
+                                                    <label for="cargo_empleador" class="required-field">Direccion</label>
                                                     <input type="text" id="direccion_empleador" name="direccion_empleador" ...
-                                                        class="form-control" placeholder="Ingrese su Dirección">
+                                                        class="form-control" placeholder="Ingrese su Dirección" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="correo_empleador">Correo</label>
+                                                    <label for="correo_empleador" class="required-field">Correo</label>
                                                     <input type="email" id="correo_empleador" name="correo_empleador"
-                                                        class="form-control" placeholder="Ingrese su Correo">
+                                                        class="form-control" placeholder="Ingrese su Correo" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label>Fono Empleador</label>
                                                     <div class="input-group">
-                                                        <span class="input-group-text">+56</span>
+                                                        <span class="input-group-text" class="required-field">+56</span>
                                                         <input type="text" class="form-control" placeholder="Ej: 9 1234 5678"
-                                                            id="numero_telefono_empleador" name="numero_telefono_empleador" />
+                                                            id="numero_telefono_empleador" name="numero_telefono_empleador" required/>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="cargo_empleador">Cargo</label>
+                                                    <label for="cargo_empleador" class="required-field">Cargo</label>
                                                     <input type="text" id="cargo_empleador" name="cargo_empleador" ...
-                                                        class="form-control" placeholder="Ingrese su Cargo">
+                                                        class="form-control" placeholder="Ingrese su Cargo" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -416,16 +440,62 @@
         }
       });
     </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const textarea = document.getElementById('descripcion_empresa');
+      const contador = document.getElementById('contadorDescripcion');
+    
+      textarea.addEventListener('input', () => {
+        const largo = textarea.value.length;
+        contador.textContent = `${largo} / 500 caracteres`;
+      });
+    });
+    </script>
+
     <script src="../assets/js/modules/empresa/form-registro-empresa.js"></script>
     <script src="../assets/js/modules/empresa/info-rut-empresa.js"></script>
     <script src="../assets/js/modules/empresa/funciones.js"></script>
     <script src="../assets/js/shared/custom-alert.js"></script>
     <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    tooltipTriggerList.map(el => new bootstrap.Tooltip(el))
-  });
-</script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        tooltipTriggerList.map(el => new bootstrap.Tooltip(el))
+      });
+    </script>
+    <script>
+        document.querySelector('form').addEventListener('submit', function (e) {
+            const rutInput = document.getElementById('rutInput');
+            const razonInput = document.getElementById('razon_social');
+            const categoria = document.getElementById('categoria');
+
+            let valid = true;
+
+            if (!rutInput.checkValidity()) {
+                rutInput.classList.add('is-invalid');
+                valid = false;
+            } else {
+                rutInput.classList.remove('is-invalid');
+            }
+
+            if (!razonInput.checkValidity()) {
+                razonInput.classList.add('is-invalid');
+                valid = false;
+            } else {
+                razonInput.classList.remove('is-invalid');
+            }
+
+            if (!categoria.checkValidity()) {
+                categoria.classList.add('is-invalid');
+                valid = false;
+            } else {
+                categoria.classList.remove('is-invalid');
+            }
+
+            if (!valid) {
+                e.preventDefault();
+            }
+        });
+    </script>
     </body>
 
 </html>

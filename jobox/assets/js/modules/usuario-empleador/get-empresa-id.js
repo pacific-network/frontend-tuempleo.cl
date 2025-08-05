@@ -1,12 +1,15 @@
-function getUserIdFromToken() {
+function getSubFromToken() {
   const token = localStorage.getItem('token');
-  if (!token) return null;
+  if (!token) {
+    console.warn('❌ No se encontró el token en localStorage');
+    return null;
+  }
+
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
-    console.log('User ID obtenido del token:', payload.sub);
     return payload.sub || null;
   } catch (e) {
-    console.error('Error al decodificar el token:', e);
+    console.error('❌ Error al decodificar el token:', e);
     return null;
   }
 }
@@ -18,15 +21,27 @@ function setFieldValue(id, value) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const userId = getUserIdFromToken();
-  if (!userId) {
-    console.error('No se pudo obtener userId del token');
+  const sub = getSubFromToken();
+  const token = localStorage.getItem('token');
+
+  if (!sub || !token) {
+    console.error('❌ No se pudo obtener el sub del token');
     return;
   }
 
   try {
-    const res = await fetch(`${BASE_URL_API}/empleador/${userId}`);
-    if (!res.ok) throw new Error('Error al obtener los datos del empleador');
+    const res = await fetch(`${BASE_URL_API}/empleador/${sub}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error('❌ Error al obtener los datos del empleador:', res.status, errorText);
+      throw new Error('Error al obtener los datos del empleador');
+    }
 
     const empleador = await res.json();
     const empresa = empleador.empresa || {};
@@ -44,7 +59,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     setFieldValue('empresa_comuna', empresaData.comuna);
     setFieldValue('empresa_direccion', Array.isArray(empresaData.domicilios) ? empresaData.domicilios[0] : '');
     setFieldValue('empresa_pais', empresaData.pais);
-
     setFieldValue('actividad_empresa', Array.isArray(empresaData.actividades_economicas) ? empresaData.actividades_economicas[0] : '');
 
     if (empresaData.fecha_inicio_actividades) {
@@ -59,13 +73,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     setFieldValue('nombre_usuario', usuario.nombres);
     setFieldValue('usuario_apellido', usuario.apellidos);
     setFieldValue('usuario_correo', usuario.email);
-    
-    // Campos adicionales en empleador.data (usuario extendido)
+
+    // === Empleador extendido ===
     setFieldValue('empleador_pais', empleadorData.pais);
     setFieldValue('empleador_region', empleadorData.region);
     setFieldValue('empleador_comuna', empleadorData.comuna);
     setFieldValue('empleador_direccion', empleadorData.direccion);
-
     setFieldValue('usuario_telefono', empleadorData.telefono);
     setFieldValue('usuario_cargo', empleadorData.cargo);
 
