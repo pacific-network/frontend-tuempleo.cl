@@ -1,3 +1,5 @@
+import { getUserIdFromToken } from '../utils/decode-jwt.js';
+
 function showToast(message, type = 'success') {
   const toastEl = document.getElementById('liveToast');
   const toastTitle = document.getElementById('toastTitle');
@@ -21,23 +23,35 @@ function showToast(message, type = 'success') {
   toast.show();
 }
 
-import { getUserIdFromToken } from '../utils/decode-jwt.js';
+(async () => {
+  const token = localStorage.getItem('token');
+  const userId = getUserIdFromToken();
 
-const userId = getUserIdFromToken();
+  if (!userId) {
+    console.error('❌ Token no válido o no contiene userId');
+    showToast('Token no válido', 'error');
+    return;
+  }
 
-if (!userId) {
-  console.error('Token no válido');
-  showToast('Token no válido', 'error');
-} else {
   try {
-    const empleadorRes = await fetch(`${BASE_URL_API}/empleador/basic-info/${userId}`);
+    const empleadorRes = await fetch(`${BASE_URL_API}/empleador/basic-info/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    if (!empleadorRes.ok) {
+      const error = await empleadorRes.text();
+      console.error('❌ Error al obtener empleador:', error);
+      showToast('Error al cargar empleador.', 'error');
+      return;
+    }
+
     const { empleador_id } = await empleadorRes.json();
 
     const ofertasRes = await fetch(`${BASE_URL_API}/ofertas/empleador/${empleador_id}?page=1&take=10&order=DESC`);
     const { data: ofertas } = await ofertasRes.json();
 
     const tbody = document.getElementById('ofertas-body');
-    tbody.innerHTML = ''; // limpia el contenido anterior
+    tbody.innerHTML = '';
 
     for (const oferta of ofertas) {
       const row = document.createElement('tr');
@@ -91,15 +105,15 @@ if (!userId) {
       tbody.appendChild(row);
     }
 
-    activarBotonesEliminar();
+    activarBotonesEliminar(token);
 
   } catch (error) {
     console.error('❌ Error cargando ofertas:', error);
-    showToast('Error cargando ofertas', 'error');
+    showToast('Error al cargar las ofertas', 'error');
   }
-}
+})();
 
-function activarBotonesEliminar() {
+function activarBotonesEliminar(token) {
   const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
   const confirmBtn = document.getElementById('confirmDeleteBtn');
 
@@ -119,7 +133,6 @@ function activarBotonesEliminar() {
     if (!idOfertaAEliminar) return;
 
     try {
-      const token = localStorage.getItem('token');
       const res = await fetch(`${BASE_URL_API}/ofertas/${idOfertaAEliminar}`, {
         method: 'DELETE',
         headers: {

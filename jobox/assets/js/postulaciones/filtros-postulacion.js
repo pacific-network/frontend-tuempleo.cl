@@ -111,7 +111,8 @@ function renderTrabajosRelacionados(ofertasRelacionadas) {
     const dataActual = parseDataString(ofertaActual.data);
 
     const todasResp = await fetch(`${BASE_URL_API}/ofertas`);
-    const todas = await todasResp.json();
+    const todasJson = await todasResp.json();
+    const todas = Array.isArray(todasJson) ? todasJson : todasJson.data || [];
 
     const relacionadas = todas
       .filter(o => o.id != id && o.es_activa)
