@@ -1,11 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-
-
   const loginForm = document.getElementById('loginForm');
   const messageEl = document.getElementById('message');
   const togglePasswordBtn = document.getElementById('togglePassword');
   const passwordInput = document.getElementById('password');
-
 
   if (togglePasswordBtn) {
     togglePasswordBtn.addEventListener('click', () => {
@@ -17,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   loginForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (!messageEl) return;
     messageEl.textContent = '';
 
     const email = loginForm.querySelector('#email')?.value.trim();
@@ -46,17 +44,35 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       const data = await res.json();
+      const token = data.token;
 
-      if (!data.token) {
+      if (!token) {
         messageEl.textContent = 'No se recibió un token válido.';
         return;
       }
 
-      console.log('Token recibido por login:', data.token);
-      localStorage.setItem('token', data.token);
+      console.log('✅ Token recibido:', token);
+      localStorage.setItem('token', token);
 
-      // Redirigir directo al dashboard sin validar
-      window.location.href = 'employer-dashboard.html';
+      // Decodificar token para obtener el sub (id del usuario)
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const userId = payload.sub;
+
+      // Verificar si el empleador ya tiene perfil creado
+      const perfilRes = await fetch(`${BASE_URL_API}/empleador/idUser/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (perfilRes.status === 404) {
+        console.log('➡️ Empleador sin perfil, redirigiendo a formulario...');
+        window.location.href = 'employer-form-register.html';
+      } else if (perfilRes.ok) {
+        console.log('➡️ Empleador con perfil, redirigiendo al dashboard...');
+        window.location.href = 'employer-dashboard.html';
+      } else {
+        const text = await perfilRes.text();
+        messageEl.textContent = `Error al verificar perfil: ${text}`;
+      }
 
     } catch (error) {
       console.error('Error en login:', error);
@@ -64,4 +80,3 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
-
