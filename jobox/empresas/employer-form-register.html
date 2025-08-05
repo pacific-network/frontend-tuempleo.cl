@@ -49,8 +49,8 @@
                 <img class="hero-shape-4" src="../assets/img/shape/07.svg" alt="">
             </div>
         </div>
-        <a href="login-employer.html" class="theme-btn theme-btn1 btn-volver-fixed">
-            <span class="fe-arrow-left"></span> Volver
+        <a href="login-employer.html" id="logoutBtn" class="theme-btn theme-btn1 btn-volver-fixed">
+          <span class="fe-arrow-left"></span> Volver
         </a>
         <div class="col-lg-8 mx-auto">
             <div class="user-profile-wrapper">
@@ -71,11 +71,23 @@
                                             <div class="form-group">
                                                 <label for="rutInput">RUT</label>
                                                 <div class="input-group">
-                                                    <input type="text" id="rutInput" name="rutInput" class="form-control" data-bs-toggle="tooltip"
-                                                        placeholder="Ingrese el RUT de la Empresa" pattern="[0-9]{7,8}-[0-9kK]" data-bs-placement="bottom"
-                                                        title="Formato válido: 12.345.678-9 o 12345678-9">
-                                                    <button class="btn btn-primary" type="button"
-                                                        id="consultarRutBtn">Consultar</button>
+                                                    <input 
+                                                        type="text" 
+                                                        id="rutInput" 
+                                                        name="rutInput" 
+                                                        class="form-control" 
+                                                        placeholder="Ingrese el RUT de la Empresa" 
+                                                        pattern="[0-9]{7,8}-[0-9kK]" 
+                                                        data-bs-toggle="tooltip" 
+                                                        data-bs-placement="bottom" 
+                                                        title="Formato válido: 12345678-9 o 12345678-K"
+                                                        required>
+                                                    <button 
+                                                        class="btn btn-primary" 
+                                                        type="button" 
+                                                        id="consultarRutBtn">
+                                                        Consultar
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -379,15 +391,31 @@
     <script src="../assets/js/form-register/region-comuna-emp.js"></script>
     <script src="../https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        document.getElementById('form-id').addEventListener('submit', function (e) {
-          const dir = document.getElementById('direccion_texto').value.trim();
-          const num = document.getElementById('numero_texto').value.trim();
-        
-          const direccionCompleta = `${dir} ${num}`;
-          document.getElementById('direccion').value = direccionCompleta;
-        });
-    </script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('businessForm'); // Asegúrate que este sea el ID real
+        if (!form) return;
 
+        form.addEventListener('submit', function () {
+          const calle = document.getElementById('direccion_texto').value.trim();
+          const numero = document.getElementById('numero_texto').value.trim();
+          const campoDireccion = document.getElementById('direccion');
+
+          if (campoDireccion) {
+            campoDireccion.value = `${calle} ${numero}`.trim();
+          }
+        });
+      });
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+          logoutBtn.addEventListener('click', function () {
+            localStorage.removeItem('token');
+          });
+        }
+      });
+    </script>
     <script src="../assets/js/modules/empresa/form-registro-empresa.js"></script>
     <script src="../assets/js/modules/empresa/info-rut-empresa.js"></script>
     <script src="../assets/js/modules/empresa/funciones.js"></script>

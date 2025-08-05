@@ -54,24 +54,30 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('✅ Token recibido:', token);
       localStorage.setItem('token', token);
 
-      // Decodificar token para obtener el sub (id del usuario)
+      // Decodificar token para obtener el userId
       const payload = JSON.parse(atob(token.split('.')[1]));
       const userId = payload.sub;
 
-      // Verificar si el empleador ya tiene perfil creado
-      const perfilRes = await fetch(`${BASE_URL_API}/empleador/idUser/${userId}`, {
+      // NUEVA VERIFICACIÓN: revisa si el usuario ya tiene empresa registrada
+      const empresaRes = await fetch(`${BASE_URL_API}/empleador/empresa/${userId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      if (perfilRes.status === 404) {
-        console.log('➡️ Empleador sin perfil, redirigiendo a formulario...');
+      if (empresaRes.ok) {
+        const empresaData = await empresaRes.json();
+        if (empresaData && Object.keys(empresaData).length > 0) {
+          console.log('➡️ Empresa encontrada, redirigiendo al dashboard...');
+          window.location.href = 'employer-dashboard.html';
+        } else {
+          console.log('➡️ Empresa vacía, redirigiendo al formulario...');
+          window.location.href = 'employer-form-register.html';
+        }
+      } else if (empresaRes.status === 404) {
+        console.log('➡️ Empresa no encontrada, redirigiendo al formulario...');
         window.location.href = 'employer-form-register.html';
-      } else if (perfilRes.ok) {
-        console.log('➡️ Empleador con perfil, redirigiendo al dashboard...');
-        window.location.href = 'employer-dashboard.html';
       } else {
-        const text = await perfilRes.text();
-        messageEl.textContent = `Error al verificar perfil: ${text}`;
+        const text = await empresaRes.text();
+        messageEl.textContent = `Error al verificar empresa: ${text}`;
       }
 
     } catch (error) {
