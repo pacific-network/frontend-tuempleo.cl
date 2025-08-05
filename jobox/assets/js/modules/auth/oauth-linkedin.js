@@ -1,10 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const linkedinBtn = document.getElementById('linkedinLoginBtn');
-  if (!linkedinBtn) return;
+  const ALLOWED_ORIGINS = window.isDev
+    ? ['http://localhost:3000', 'http://127.0.0.1:5500']
+    : ['https://tuempleo.cl'];
+
+  const pathname = window.location.pathname;
+  const isLoginPage = pathname.includes('login-employer.html');
+  const isDashboardPage = pathname.includes('employer-dashboard.html');
+  const isRegisterPage = pathname.includes('employer-form-register.html');
 
   const parseJwt = (token) => {
     try {
-      const base64Url = token.split('.')[1]; // payload está en la segunda parte
+      const base64Url = token.split('.')[1];
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
       return JSON.parse(decodeURIComponent(escape(window.atob(base64))));
     } catch (err) {
@@ -13,53 +19,74 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  
-  const verificarYRedirigir = async (token) => {
+  const verificarYRedirigir = async (inputToken) => {
+    const token = inputToken || localStorage.getItem('token');
     if (!token) return;
-  
+
     const payload = parseJwt(token);
     if (!payload?.sub) return;
-  
+
     try {
-      const res = await fetch(`${BASE_URL_API}/empleador/basic-info/${payload.sub}`, {
+      const res = await fetch(`${window.BASE_URL_API}/user/${payload.sub}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-  
+
       if (res.status === 404) {
-        window.location.href = 'login-employer.html';
+        if (!isLoginPage) {
+          window.location.href = 'register-form-employer.html';
+        }
         return;
       }
-  
+
       if (!res.ok) {
         console.error('Error en la respuesta:', await res.text());
         return;
       }
-  
+
       const user = await res.json();
-  
-      if (user.empresa_id && user.empleador_id) {
-        window.location.href = 'employer-dashboard.html';
+
+      if (user.rut) {
+        if (!isDashboardPage) {
+          window.location.href = 'employer-dashboard.html';
+        }
       } else {
-        window.location.href = 'employer-form-register.html';
+        if (!isRegisterPage) {
+          window.location.href = 'employer-form-register.html';
+        }
       }
     } catch (error) {
       console.error('Error al verificar usuario:', error);
     }
   };
-  
 
-  linkedinBtn.addEventListener('click', () => {
-    window.open(`${BASE_URL_API}/oauth/linkedin`, 'LinkedIn Login', 'width=500,height=600');
-  });
+  const linkedinBtn = document.getElementById('linkedinLoginBtn');
+  if (linkedinBtn) {
+    linkedinBtn.addEventListener('click', () => {
+      window.open(
+        `${window.BASE_URL_API}/oauth/linkedin`,
+        'LinkedIn Login',
+        'width=500,height=600'
+      );
+    });
+  }
 
-  // 🔥 Este es el código que faltaba
+  // ✅ Al cargar la página, revisar si hay un token guardado
+  const savedToken = localStorage.getItem('token');
+  if (savedToken) {
+    verificarYRedirigir(savedToken);
+  }
+
+  // ✅ Escuchar token enviado desde popup
   window.addEventListener('message', (event) => {
-    if (event.origin !== BASE_URL_API && !event.origin.includes('localhost')) return;
+    if (!ALLOWED_ORIGINS.includes(event.origin)) {
+      console.warn('Origen no permitido:', event.origin);
+      return;
+    }
 
-    const { token, user } = event.data || {};
+    const { token } = event.data || {};
     if (!token) return;
 
-    localStorage.setItem('token', token); // opcional: guardar token
+    localStorage.setItem('token', token);
     verificarYRedirigir(token);
   });
 });

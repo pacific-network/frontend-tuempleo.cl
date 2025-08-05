@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const togglePasswordButton = document.getElementById('togglePassword');
     const passwordInput = document.getElementById('password');
 
+<<<<<<< HEAD
     if (togglePasswordButton && passwordInput) {
         togglePasswordButton.addEventListener('click', () => {
             const isHidden = passwordInput.type === 'password';
@@ -30,6 +31,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 ? '<i class="far fa-eye-slash"></i>'
                 : '<i class="far fa-eye"></i>';
         });
+=======
+  const loginForm = document.getElementById('loginForm');
+  const messageEl = document.getElementById('message');
+  const togglePasswordBtn = document.getElementById('togglePassword');
+  const passwordInput = document.getElementById('password');
+
+  const parseJwt = (token) => {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      return JSON.parse(decodeURIComponent(escape(window.atob(base64))));
+    } catch (err) {
+      console.error('Error decodificando el token:', err);
+      return null;
+    }
+  };
+
+  const verificarYRedirigir = async (token) => {
+    const payload = parseJwt(token);
+    if (!payload || !payload.sub) {
+      if (messageEl) messageEl.textContent = 'No se pudo validar tu sesión. Por favor, vuelve a iniciar sesión.';
+      return;
+>>>>>>> dev
     }
 
     const alertElement = document.getElementById('custom-alert');
@@ -40,8 +64,43 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+<<<<<<< HEAD
 // Evento submit del login
 document.getElementById('loginForm').addEventListener('submit', async function (e) {
+=======
+  if (tokenFromOAuth) {
+    localStorage.setItem('token', tokenFromOAuth);
+    window.history.replaceState(null, '', window.location.pathname); // Limpia el token de la URL
+    verificarYRedirigir(tokenFromOAuth);
+    return;
+  }
+
+  if (togglePasswordBtn && passwordInput) {
+    togglePasswordBtn.addEventListener('click', () => {
+      const isHidden = passwordInput.type === 'password';
+      passwordInput.type = isHidden ? 'text' : 'password';
+      togglePasswordBtn.innerHTML = `<i class="far fa-eye${isHidden ? '-slash' : ''}"></i>`;
+    });
+  }
+
+  const googleBtn = document.getElementById('googleLoginBtn');
+  if (googleBtn) {
+    googleBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = `${BASE_URL_API}/auth/google`;
+    });
+  }
+
+  const linkedinBtn = document.getElementById('linkedinLoginBtn');
+  if (linkedinBtn) {
+    linkedinBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = `${BASE_URL_API}/auth/linkedin`;
+    });
+  }
+
+  loginForm?.addEventListener('submit', async (e) => {
+>>>>>>> dev
     e.preventDefault();
 
     const email = this.querySelector('input[type="email"]').value.trim();
