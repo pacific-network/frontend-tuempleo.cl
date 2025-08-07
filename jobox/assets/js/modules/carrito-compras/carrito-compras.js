@@ -139,7 +139,7 @@ checkoutBtn.addEventListener("click", async () => {
     }
 
     try {
-        const response = await fetch('http://localhost:3000/v1/webpay/create', {
+        const response = await fetch(`${BASE_URL_API}/webpay/create`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
