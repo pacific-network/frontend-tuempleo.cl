@@ -2,7 +2,7 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Resultado de la Transacción</title>
     <style>
         body {
@@ -35,8 +35,9 @@
             border-radius: 12px;
             padding: 30px;
             margin: 30px auto;
-            max-width: 500px;
+            max-width: 600px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            text-align: left;
         }
 
         .success {
@@ -84,7 +85,6 @@
 </head>
 
 <body>
-
     <section class="hero-single">
         <div class="hero-info-content">
             <h6>Estado de la <span>transacción</span></h6>
@@ -93,7 +93,6 @@
             </div>
         </div>
 
-        <!-- Formas decorativas -->
         <div class="hero-shape">
             <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f4b0.svg" class="hero-shape-1">
             <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/2728.svg" class="hero-shape-2">
@@ -113,22 +112,32 @@
             fetch(`http://localhost:3000/v1/webpay/detail?token_ws=${token}`)
                 .then(res => res.json())
                 .then(data => {
-                    if (data.status === "AUTHORIZED") {
-                        const date = new Date(data.transaction_date).toLocaleString("es-CL");
+                    const tx = data.response_data;
+                    const date = new Date(tx.transaction_date).toLocaleString("es-CL");
 
+                    if (data.status === "AUTHORIZED") {
                         box.innerHTML = `
                             <p class="success"><strong>¡Pago exitoso!</strong></p>
-                            <p><strong>Monto:</strong> $${data.amount}</p>
-                            <p><strong>Orden de compra:</strong> ${data.buy_order}</p>
-                            <p><strong>Tarjeta:</strong> **** **** **** ${data.card_detail?.card_number || '****'}</p>
-                            <p><strong>Código de autorización:</strong> ${data.authorization_code}</p>
-                            <p><strong>Fecha de transacción:</strong> ${date}</p>
-                            <p><strong>Estado:</strong> ${data.status}</p>
+                            <p><strong>Número de orden de pedido:</strong> ${tx.buy_order}</p>
+                            <p><strong>Nombre del comercio:</strong> Comercio XYZ</p>
+                            <p><strong>Monto:</strong> $${tx.amount} CLP</p>
+                            <p><strong>Código de autorización:</strong> ${tx.authorization_code}</p>
+                            <p><strong>Fecha de la transacción:</strong> ${date}</p>
+                            <p><strong>Tipo de pago:</strong> ${tx.payment_type_code === 'VD' ? 'Débito' : 'Crédito'}</p>
+                            <p><strong>Cantidad de cuotas:</strong> ${tx.installments_number > 0 ? tx.installments_number : 'Pago sin cuotas'}</p>
+                            <p><strong>Tarjeta:</strong> **** **** **** ${tx.card_detail?.card_number || '****'}</p>
+                            <p><strong>Descripción:</strong> Compra de bienes o servicios</p>
                         `;
                     } else {
                         box.innerHTML = `
-                            <p class="error"><strong>Transacción rechazada</strong></p>
+                            <p class="error"><strong>Orden de Compra ${tx?.buy_order || 'Desconocida'} rechazada</strong></p>
                             <p><strong>Estado:</strong> ${data.status}</p>
+                            <p>Las posibles causas de este rechazo son:</p>
+                            <ul>
+                                <li>Error en el ingreso de los datos de su tarjeta de crédito o débito (fecha y/o código de seguridad).</li>
+                                <li>Su tarjeta de crédito o débito no cuenta con saldo suficiente.</li>
+                                <li>Tarjeta aún no habilitada en el sistema financiero.</li>
+                            </ul>
                         `;
                     }
                 })
