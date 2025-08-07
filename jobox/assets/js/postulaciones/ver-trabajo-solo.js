@@ -35,6 +35,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderLista(data.herramientas_basicas, '.herramientas-list');
         renderLista(data.preguntas_personalizadas, '.preguntas-list');
         
+        const alerta = document.getElementById('alerta-preguntas');
+        const preguntas = data.preguntas_personalizadas;
+
+        if (Array.isArray(preguntas) && preguntas.length > 0) {
+            alerta?.classList.remove('d-none');
+            document.body.dataset.tienePreguntas = '1';
+        } else {
+            alerta?.classList.add('d-none');
+            document.body.dataset.tienePreguntas = '0';
+        }
         // Ocultar o modificar elementos relacionados con postulación
         const btnPostular = document.getElementById('btn-postular');
         if (btnPostular) {

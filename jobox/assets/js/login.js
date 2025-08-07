@@ -1,140 +1,121 @@
+// Función para mostrar notificación tipo popup (alert Bootstrap con animación)
+function showAlert(message, type = 'success') {
+    const alert = document.getElementById('custom-alert');
+    if (!alert) return;
+    alert.textContent = message;
+    alert.className = `alert alert-${type} shadow fixed-top m-3 rounded`;
+    alert.style.display = 'block';
+    alert.style.opacity = '1';
+    alert.style.transition = 'opacity 0.3s ease';
+
+    setTimeout(() => {
+        alert.style.opacity = '0';
+        setTimeout(() => {
+            alert.style.display = 'none';
+            alert.style.opacity = '1';
+        }, 300);
+    }, 3000);
+}
+
+// Permitir cerrar el alert con click y mostrar/ocultar contraseña
 document.addEventListener('DOMContentLoaded', () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const tokenFromOAuth = urlParams.get('token');
+    const togglePasswordButton = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
 
-  const loginForm = document.getElementById('loginForm');
-  const messageEl = document.getElementById('message');
-  const togglePasswordBtn = document.getElementById('togglePassword');
-  const passwordInput = document.getElementById('password');
-
-  const parseJwt = (token) => {
-    try {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      return JSON.parse(decodeURIComponent(escape(window.atob(base64))));
-    } catch (err) {
-      console.error('Error decodificando el token:', err);
-      return null;
-    }
-  };
-
-  const verificarYRedirigir = async (token) => {
-    const payload = parseJwt(token);
-    if (!payload || !payload.sub) {
-      if (messageEl) messageEl.textContent = 'No se pudo validar tu sesión. Por favor, vuelve a iniciar sesión.';
-      return;
+    if (togglePasswordButton && passwordInput) {
+        togglePasswordButton.addEventListener('click', () => {
+            const isHidden = passwordInput.type === 'password';
+            passwordInput.type = isHidden ? 'text' : 'password';
+            togglePasswordButton.innerHTML = isHidden
+                ? '<i class="far fa-eye-slash"></i>'
+                : '<i class="far fa-eye"></i>';
+        });
     }
 
-    const userId = payload.sub;
-
-    try {
-      const res = await fetch(`${BASE_URL_API}/postulante/${userId}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (!res.ok) {
-        const errText = await res.text();
-        if (messageEl) messageEl.textContent = `Error verificando usuario: ${errText}`;
-        return;
-      }
-
-      let candidatoData = null;
-      const contentLength = res.headers.get("content-length");
-      if (contentLength && parseInt(contentLength) > 0) {
-        candidatoData = await res.json();
-      }
-
-      if (!candidatoData || candidatoData.postulante?.id === 0) {
-        window.location.href = 'candidate-form-register.html';
-      } else {
-        window.location.href = 'candidate-dashboard.html';
-      }
-    } catch (error) {
-      console.error('Error validando token:', error);
-      if (messageEl) messageEl.textContent = 'No se pudo conectar con el servidor.';
+    const alertElement = document.getElementById('custom-alert');
+    if (alertElement) {
+        alertElement.addEventListener('click', () => {
+            alertElement.style.display = 'none';
+        });
     }
-  };
+});
 
-  if (tokenFromOAuth) {
-    localStorage.setItem('token', tokenFromOAuth);
-    window.history.replaceState(null, '', window.location.pathname); // Limpia el token de la URL
-    verificarYRedirigir(tokenFromOAuth);
-    return;
-  }
-
-  if (togglePasswordBtn && passwordInput) {
-    togglePasswordBtn.addEventListener('click', () => {
-      const isHidden = passwordInput.type === 'password';
-      passwordInput.type = isHidden ? 'text' : 'password';
-      togglePasswordBtn.innerHTML = `<i class="far fa-eye${isHidden ? '-slash' : ''}"></i>`;
-    });
-  }
-
-  const googleBtn = document.getElementById('googleLoginBtn');
-  if (googleBtn) {
-    googleBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      window.location.href = `${BASE_URL_API}/auth/google`;
-    });
-  }
-
-  const linkedinBtn = document.getElementById('linkedinLoginBtn');
-  if (linkedinBtn) {
-    linkedinBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      window.location.href = `${BASE_URL_API}/auth/linkedin`;
-    });
-  }
-
-  loginForm?.addEventListener('submit', async (e) => {
+// Evento submit del login
+document.getElementById('loginForm').addEventListener('submit', async function (e) {
     e.preventDefault();
-    if (messageEl) messageEl.textContent = '';
 
-    const emailInput = loginForm.querySelector('input[type="email"]');
-    const passwordInput = loginForm.querySelector('input[type="password"]');
-    const email = emailInput?.value.trim() || '';
-    const password = passwordInput?.value.trim() || '';
+    const email = this.querySelector('input[type="email"]').value.trim();
+    const password = this.querySelector('input[type="password"]').value.trim();
 
     if (!email || !password) {
-      if (messageEl) messageEl.textContent = 'Por favor, completa ambos campos.';
-      return;
+        showAlert('Por favor completa ambos campos.', 'warning');
+        return;
     }
 
     try {
-      const res = await fetch(`${BASE_URL_API}/auth/login-postulante`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
+        const loginResponse = await fetch(`${BASE_URL_API}/auth/login-postulante`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
 
-      if (res.status === 401) {
-        if (messageEl) messageEl.textContent = 'Usuario no existe o contraseña incorrecta.';
-        return;
-      }
+        if (loginResponse.status === 401) {
+            showAlert('Usuario no existe o la contraseña es incorrecta.', 'danger');
+            return;
+        }
 
-      if (!res.ok) {
-        const errorText = await res.text();
-        if (messageEl) messageEl.textContent = `Error en login: ${errorText}`;
-        return;
-      }
+        if (!loginResponse.ok) {
+            const errorText = await loginResponse.text();
+            showAlert('Error en el login: ' + errorText, 'danger');
+            return;
+        }
 
-      const data = await res.json();
+        const loginData = await loginResponse.json();
 
-      if (!data.token) {
-        if (messageEl) messageEl.textContent = 'No se recibió un token válido.';
-        return;
-      }
+        if (!loginData || !loginData.token) {
+            showAlert('No se recibió un token válido.', 'danger');
+            return;
+        }
 
-      localStorage.setItem('token', data.token);
-      verificarYRedirigir(data.token);
+        localStorage.setItem('token', loginData.token);
+
+        // Extraer userId del payload JWT
+        const base64Url = loginData.token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const payload = JSON.parse(atob(base64));
+        const userId = payload.sub;
+
+        const userCheckResponse = await fetch(`${BASE_URL_API}/postulante/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${loginData.token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (userCheckResponse.status === 404) {
+            window.location.href = 'candidate-form-register.html';
+        } else if (userCheckResponse.ok) {
+            // Mostrar popup de inicio de sesión y redirigir
+            const alertElement = document.getElementById('custom-alert');
+            if (alertElement) {
+                alertElement.textContent = 'Iniciando sesión...';
+                alertElement.className = 'alert alert-info shadow fixed-top m-3 rounded';
+                alertElement.style.display = 'block';
+                alertElement.style.opacity = '1';
+                alertElement.style.transition = 'opacity 0.3s ease';
+            }
+
+            setTimeout(() => {
+                window.location.href = 'candidate-dashboard.html';
+            }, 1500);
+        } else {
+            const errorText = await userCheckResponse.text();
+            showAlert('Error verificando usuario: ' + errorText, 'danger');
+        }
 
     } catch (error) {
-      console.error('Error en login:', error);
-      if (messageEl) messageEl.textContent = 'No se pudo conectar con el servidor.';
+        console.error('Error en login:', error);
+        showAlert('No se pudo conectar con el servidor.', 'danger');
     }
-  });
 });

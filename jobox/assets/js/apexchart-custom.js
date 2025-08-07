@@ -2,7 +2,7 @@ $(function () {
     "use strict";
 
     // Datos del gráfico
-    const chartData = [60, 50, 70, 60, 55, 50, 40, 60, 50, 70, 40, 0];
+    const chartData = [0];
 
     // Calcular la suma
     const totalViews = chartData.reduce((acc, val) => acc + val, 0);
