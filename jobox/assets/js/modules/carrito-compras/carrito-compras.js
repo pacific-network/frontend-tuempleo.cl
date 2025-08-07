@@ -59,6 +59,16 @@ const cartTotal = document.getElementById("cartTotal");
 const checkoutBtn = document.getElementById("checkoutBtn");
 const emptyCartMsg = document.getElementById("emptyCartMsg");
 
+function generarOrderId(longitud = 12) {
+    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let resultado = '';
+    for (let i = 0; i < longitud; i++) {
+        const indice = Math.floor(Math.random() * caracteres.length);
+        resultado += caracteres.charAt(indice);
+    }
+    return resultado;
+}
+
 function renderPlanes() {
     planGrid.innerHTML = planes.map(plan => `
       <div class="pricing-item ${plan.popular ? 'active' : ''}">
@@ -77,6 +87,7 @@ function renderPlanes() {
       </div>
     `).join('');
 }
+
 function renderCarrito() {
     if (carrito.length === 0) {
         cartSummary.style.display = "none";
@@ -92,7 +103,6 @@ function renderCarrito() {
 function agregarAlCarrito(id) {
     const plan = planes.find(p => p.id === id);
     if (!plan || plan.id === 1) return;
-
 
     const existente = carrito.find(p => p.id === id);
     if (existente) {
@@ -111,10 +121,62 @@ planGrid.addEventListener("click", (e) => {
     }
 });
 
-checkoutBtn.addEventListener("click", () => {
-    alert("Iniciando proceso de pago...");
-    carrito = [];
-    renderCarrito();
+checkoutBtn.addEventListener("click", async () => {
+    const total = carrito.reduce((sum, item) => sum + item.precio * item.cantidad, 0);
+
+    if (total <= 0) {
+        alert("El carrito está vacío o el monto no es válido.");
+        return;
+    }
+
+    const orderId = generarOrderId();
+
+    // Obtener token desde localStorage o donde lo tengas guardado
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert('Debes iniciar sesión para proceder con el pago.');
+        return;
+    }
+
+    try {
+        const response = await fetch('http://localhost:3000/v1/webpay/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                amount: total,
+                orderId: orderId
+            }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.url && data.token) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = data.url;
+
+            const tokenInput = document.createElement('input');
+            tokenInput.type = 'hidden';
+            tokenInput.name = 'token_ws';
+            tokenInput.value = data.token;
+
+            form.appendChild(tokenInput);
+            document.body.appendChild(form);
+            form.submit();
+
+            carrito = [];
+            renderCarrito();
+        } else {
+            alert('Error al iniciar el proceso de pago.');
+            console.error('Respuesta inesperada:', data);
+        }
+    } catch (error) {
+        console.error('Error al conectar con el backend:', error);
+        alert('Ocurrió un error al procesar el pago.');
+    }
 });
 
 renderPlanes();

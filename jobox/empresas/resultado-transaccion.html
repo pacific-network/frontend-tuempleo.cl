@@ -88,9 +88,9 @@
     <section class="hero-single">
         <div class="hero-info-content">
             <h6>Estado de la <span>transacción</span></h6>
-            <!-- <div class="resultado-box" id="resultado">
+            <div class="resultado-box" id="resultado">
                 Cargando información de la transacción...
-            </div> -->
+            </div>
         </div>
 
         <!-- Formas decorativas -->
@@ -105,27 +105,31 @@
     <script>
         const params = new URLSearchParams(window.location.search);
         const token = params.get("token_ws");
-
         const box = document.getElementById("resultado");
 
         if (!token) {
             box.innerHTML = '<p class="error">Token inválido. No se puede mostrar la transacción.</p>';
         } else {
-            fetch(`https://api.tudominio.cl/v1/webpay/detail?token_ws=${token}`)
+            fetch(`http://localhost:3000/v1/webpay/detail?token_ws=${token}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.status === "AUTHORIZED") {
+                        const date = new Date(data.transaction_date).toLocaleString("es-CL");
+
                         box.innerHTML = `
-              <p class="success"><strong>¡Pago exitoso!</strong></p>
-              <p>Monto: <strong>$${data.amount}</strong></p>
-              <p>Orden: <strong>${data.orderId}</strong></p>
-              <p>Estado: <strong>${data.status}</strong></p>
-            `;
+                            <p class="success"><strong>¡Pago exitoso!</strong></p>
+                            <p><strong>Monto:</strong> $${data.amount}</p>
+                            <p><strong>Orden de compra:</strong> ${data.buy_order}</p>
+                            <p><strong>Tarjeta:</strong> **** **** **** ${data.card_detail?.card_number || '****'}</p>
+                            <p><strong>Código de autorización:</strong> ${data.authorization_code}</p>
+                            <p><strong>Fecha de transacción:</strong> ${date}</p>
+                            <p><strong>Estado:</strong> ${data.status}</p>
+                        `;
                     } else {
                         box.innerHTML = `
-              <p class="error"><strong>Transacción rechazada</strong></p>
-              <p>Estado: <strong>${data.status}</strong></p>
-            `;
+                            <p class="error"><strong>Transacción rechazada</strong></p>
+                            <p><strong>Estado:</strong> ${data.status}</p>
+                        `;
                     }
                 })
                 .catch(() => {
