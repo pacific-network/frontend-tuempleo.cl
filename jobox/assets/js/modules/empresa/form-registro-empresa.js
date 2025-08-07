@@ -1,3 +1,44 @@
+function setupRequiredFields() {
+  const requiredFields = [
+    'rutInput', 'razon_social', 'nombre_empresa', 'categoria', 'correo_empresa',
+    'actividad_empresa', 'pais', 'region_empresa', 'comuna_empresa', 'direccion_texto',
+    'numero_texto', 'tamano_equipo', 'anio_inicio_actividades', 'numero_telefono_empresa',
+    'descripcion_empresa', 'rut_empleador', 'nombre_empleador', 'apellido_empleador',
+    'pais_empleador', 'region_empleador', 'comuna_empleador', 'direccion_empleador',
+    'correo_empleador', 'numero_telefono_empleador', 'cargo_empleador'
+  ];
+
+  requiredFields.forEach(fieldId => {
+    const input = document.getElementById(fieldId);
+    if (input) {
+      input.required = true;
+      const label = input.closest('.form-group')?.querySelector('label');
+      if (label && !label.classList.contains('required-field')) {
+        label.classList.add('required-field');
+      }
+
+      if (!input.nextElementSibling?.classList.contains('invalid-feedback')) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'invalid-feedback';
+        errorDiv.textContent = 'Este campo es obligatorio';
+        input.insertAdjacentElement('afterend', errorDiv);
+      }
+
+      input.addEventListener('blur', function() {
+        validateField(this);
+      });
+    }
+  });
+}
+
+function validateField(input) {
+  if (!input.checkValidity()) {
+    input.classList.add('is-invalid');
+  } else {
+    input.classList.remove('is-invalid');
+  }
+}
+
 function showToast(message, type = 'success') {
   const toastEl = document.getElementById('liveToast');
   const toastTitle = document.getElementById('toastTitle');
@@ -24,6 +65,8 @@ function showToast(message, type = 'success') {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+  setupRequiredFields();
+
   const form = document.getElementById("businessForm");
   const token = localStorage.getItem('token');
   if (!token) return;
@@ -47,7 +90,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const userData = await response.json();
     userIdGlobal = userData.id;
 
-    // Rellenar campos del formulario (opcional)
     document.getElementById('nombre_empleador').value = userData.nombres || '';
     document.getElementById('apellido_empleador').value = userData.apellidos || '';
     document.getElementById('correo_empleador').value = userData.email || '';

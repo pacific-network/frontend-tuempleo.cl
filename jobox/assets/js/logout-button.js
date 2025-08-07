@@ -16,6 +16,6 @@
     // Confirmar logout
     document.getElementById('confirmLogout').addEventListener('click', function () {
       localStorage.removeItem('token');
-      location.replace('../index.html'); // redirección sin historial
+      location.replace('./index.html'); // redirección sin historial
     });
   });

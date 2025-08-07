@@ -64,8 +64,8 @@
                 <img class="hero-shape-4" src="assets/img/shape/07.svg" alt="">
             </div>
         </div>
-        <a href="login.html" class="theme-btn theme-btn1 btn-volver-fixed">
-            <span class="fe-arrow-left"></span> Volver
+        <a href="login.html" id="btn-volver" class="theme-btn theme-btn1 btn-volver-fixed">
+          <span class="fe-arrow-left"></span> Volver
         </a>
         <div class="col-lg-8 mx-auto">
             <div class="user-profile-wrapper">
@@ -482,6 +482,20 @@
     <script src="assets/js/form-register/formacion.js"></script>
     <script src="assets/js/form-register/form-experiencia.js"></script>
     <script src="assets/js/form-register/candidate-add-info.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const volverBtn = document.getElementById('btn-volver');
+
+    if (volverBtn) {
+      volverBtn.addEventListener('click', (e) => {
+        e.preventDefault(); // prevenir navegación inmediata
+        localStorage.removeItem('token'); // eliminar token
+        window.location.href = volverBtn.href; // redirigir manualmente
+      });
+    }
+  });
+</script>
     
 </body>
 

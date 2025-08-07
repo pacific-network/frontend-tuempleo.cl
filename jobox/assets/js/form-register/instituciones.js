@@ -38,6 +38,7 @@ const opcionesInstituciones = [
     { value: "Universidad Finis Terrae", text: "Universidad Finis Terrae", group: "🏛️ Universidades" },
     { value: "Universidad Católica Silva Henríquez", text: "Universidad Católica Silva Henríquez", group: "🏛️ Universidades" },
     { value: "Universidad San Sebastián", text: "Universidad San Sebastián", group: "🏛️ Universidades" },
+    { value: "Universidad Santo Tomás", text: "Universidad Santo Tomás", group: "🏛️ Universidades" },
     { value: "Universidad de O'Higgins", text: "Universidad de O'Higgins", group: "🏛️ Universidades" },
     { value: "Universidad de Aysén", text: "Universidad de Aysén", group: "🏛️ Universidades" },
     
