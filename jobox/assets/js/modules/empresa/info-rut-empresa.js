@@ -24,8 +24,30 @@ document.getElementById('consultarRutBtn').addEventListener('click', async () =>
   const rutInput = document.getElementById('rutInput');
   let rut = rutInput.value.trim().toUpperCase().replace(/\./g, '');
 
-  if (!rut) return alert("Por favor, ingrese un RUT.");
-  if (!validarRut(rut)) return alert("RUT inválido. Verifique el dígito verificador.");
+if (!rut) {
+    await Swal.fire({
+        title: 'Campo vacío',
+        text: 'Por favor, ingrese un RUT.',
+        icon: 'warning',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#3085d6',
+        allowOutsideClick: false
+    });
+    return;
+}
+
+if (!validarRut(rut)) {
+    await Swal.fire({
+        title: 'RUT inválido',
+        text: 'Verifique el dígito verificador y vuelva a intentarlo.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#d33',
+        allowOutsideClick: false
+    });
+    return;
+}
+
 
   // Mostrar toast de carga
   document.getElementById('rut-loading-toast')?.classList.remove('d-none');

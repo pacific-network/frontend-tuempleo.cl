@@ -82,7 +82,7 @@
                                         Avisos</a></li>
                                 <li><a href="employer-transaction.html"><i class="far fa-coins"></i> Transacción</a>
                                 </li>
-                                <li><a href="employer-settings.html"><i class="far fa-cog"></i> Configuración</a></li>
+                                <li><a href="employer-settings.html"><i class="far fa-cog"></i> Cambiar Contraseña</a></li>
                                 <li><a href="#" id="logoutButton"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
                             </ul>
                         </div>
@@ -149,7 +149,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Categoría</label>
-                                                    <select class="select" id="categoria_empresa">
+                                                    <select class="form-control" id="categoria_empresa" disabled>
                                                         <option value="">Seleccione una categoría</option>
                                                         <option value="1">Primera</option>
                                                         <option value="2">Segunda</option>
@@ -159,13 +159,13 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Región</label>
-                                                    <input id="empresa_region" type="text" class="form-control" placeholder="Giro de la Empresa">
+                                                    <input id="empresa_region" type="text" class="form-control" placeholder="Giro de la Empresa" disabled>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Comuna</label>
-                                                    <input id="empresa_comuna" type="text" class="form-control" placeholder="Comuna">
+                                                    <input id="empresa_comuna" type="text" class="form-control" placeholder="Comuna" disabled>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -199,6 +199,7 @@
                                                 <div class="form-group">
                                                     <label>Descripción</label>
                                                     <textarea id="descripcion_empresa" class="form-control" rows="3" placeholder="Describe brevemente tu empresa"></textarea>
+                                                    <small id="contadorDescripcion" class="form-text text-muted">0 / 500 caracteres</small>
                                                 </div>
                                             </div>
                                             <div class="col-md-12 mt-3 mb-3 pb-4">
@@ -244,20 +245,24 @@
 
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label>País</label>
-                                                    <input id="empleador_pais" type="text" class="form-control" placeholder="País">
+                                                    <label>Nacionalidad</label>
+                                                    <input id="empleador_pais" type="text" class="form-control" placeholder="Nacionalidad">
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label>Región</label>
-                                                    <input id="empleador_region" type="text" class="form-control" placeholder="Región">
+                                                    <select id="empleador_region" type="text" class="form-control" placeholder="Región">
+                                                        <option value="">Seleccione una Región</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label>Comuna</label>
-                                                    <input id="empleador_comuna" type="text" class="form-control" placeholder="Comuna">
+                                                    <select id="empleador_comuna" type="text" class="form-control" placeholder="Comuna">
+                                                        <option value="">Seleccione una Comuna</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -372,7 +377,9 @@
     <script src="../assets/js/modules/empresa/editar-empresa.js"></script>
     <script src="../assets/js/modules/usuario-empleador/edit-empleador.js"></script>
     <script src="../assets/js/logout-button-emp.js"></script>
+    <script src="../assets/js/form-register/up-region-comuna-emp.js"></script>
     <script src="../assets/js/modules/empresa/dinamic-sidebar.js"></script>
+    <script src="../assets/js/char-limit.js"></script>
 
 </body>
 

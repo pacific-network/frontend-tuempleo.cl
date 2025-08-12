@@ -81,13 +81,13 @@ document.addEventListener('DOMContentLoaded', async function() {
     regionSelect.appendChild(option);
   });
 
-  // Función para cargar comunas
+  // Cargar comunas
   function cargarComunas(regionNombre, comunaSeleccionada = '') {
     comunaSelect.innerHTML = '<option value="">Seleccione una comuna</option>';
     comunaSelect.disabled = true;
 
     const regionData = regionesComunas.regiones.find(r => r.region === regionNombre);
-    if (regionData && regionData.comunas.length) {
+    if (regionData) {
       regionData.comunas.forEach(comuna => {
         const option = document.createElement('option');
         option.value = comuna;
@@ -102,32 +102,31 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
   }
 
-  // Evento cambio de región
   regionSelect.addEventListener('change', () => {
     cargarComunas(regionSelect.value);
   });
 
-  // Preseleccionar datos desde backend
+  // Preselección desde backend
   try {
     const token = localStorage.getItem('token');
-    const sub = getUserIdFromToken(); // Esta función debe obtener el ID del usuario desde el token
+    const sub = getUserIdFromToken();
 
     const res = await fetch(`${BASE_URL_API}/empleador/${sub}`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
-    if (!res.ok) throw new Error('Error al obtener datos del empleador');
+    if (res.ok) {
+      const data = await res.json();
+      const regionActual = data?.data?.region || '';
+      const comunaActual = data?.data?.comuna || '';
 
-    const data = await res.json();
-    const regionActual = data?.data?.region || '';
-    const comunaActual = data?.data?.comuna || '';
-
-    if (regionActual) {
-      regionSelect.value = regionActual;
-      cargarComunas(regionActual, comunaActual);
+      if (regionActual) {
+        regionSelect.value = regionActual;
+        cargarComunas(regionActual, comunaActual);
+      }
     }
   } catch (error) {
-    console.error('❌ Error cargando región y comuna:', error);
+    console.error('❌ Error cargando región/comuna:', error);
   }
 
   comunaSelect.disabled = true;
