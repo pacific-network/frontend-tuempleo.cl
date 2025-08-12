@@ -23,32 +23,6 @@
     <link rel="stylesheet" href="../assets/css/nice-select.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
-        .required-field::after {
-            content: " *";
-            color: red;
-            }
-
-        .is-invalid {
-        border-color: #dc3545 !important;
-        }
-        .input-group {
-        position: relative; /* Necesario para posicionar internamente el mensaje */
-        }
-        .input-group .invalid-feedback {
-        color: #dc3545;
-        font-size: 0.875em;
-        position: absolute;
-        bottom: -1.2rem;
-        left: 0;
-        display: none;
-        width: 100%;
-        }
-        .is-invalid ~ .invalid-feedback {
-        display: block;
-        }
-
-    </style>
-    <style>
         .navbar {
             padding: 0 !important;
         }
@@ -261,7 +235,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="cargo_empleador" class="required-field">Nacionalidad</label>
+                                                    <label for="cargo_empleador">Pais</label>
                                                     <input type="text" id="pais_empleador" name="pais_empleador" ...
                                                         class="form-control" placeholder="Ingrese su País" required>
                                                 </div>
@@ -298,7 +272,7 @@
                                                 <div class="form-group">
                                                     <label for="correo_empleador" class="required-field">Correo</label>
                                                     <input type="email" id="correo_empleador" name="correo_empleador"
-                                                        class="form-control" placeholder="Ingrese su Correo" disabled>
+                                                        class="form-control" placeholder="Ingrese su Correo">
                                                 </div>
                                             </div>
                                             <div class="col-md-3">

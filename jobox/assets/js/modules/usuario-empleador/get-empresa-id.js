@@ -1,5 +1,4 @@
-// ✅ Función para obtener el sub del token
-function getSubFromToken() {
+function getUserIdFromToken() {
   const token = localStorage.getItem('token');
   if (!token) {
     console.warn('❌ No se encontró el token en localStorage');
