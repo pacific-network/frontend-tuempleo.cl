@@ -1,5 +1,3 @@
-// loadPerfilEmpresa.js
-
 function getUserIdFromToken() {
   const token = localStorage.getItem('token');
   if (!token) return null;
@@ -54,6 +52,12 @@ async function cargarPerfilEmpresa() {
         : 'Mediana o Gran Empresa';
       empresaItems[8].querySelector('span').textContent = datosEmpresa.inicio_actividades ? 'Sí' : 'No';
       empresaItems[9].querySelector('span').textContent = new Date(empresa.fecha_creacion).toLocaleDateString('es-CL');
+    }
+
+    // ✅ Asignar valor al select de categoría empresa
+    const categoriaSelect = document.getElementById('categoria_empresa');
+    if (categoriaSelect && datosEmpresa.categoria_empresa) {
+      categoriaSelect.value = datosEmpresa.categoria_empresa;
     }
 
     // 📝 Descripción Empresa

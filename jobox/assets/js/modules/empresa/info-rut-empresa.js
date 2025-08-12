@@ -42,15 +42,11 @@ document.getElementById('consultarRutBtn').addEventListener('click', async () =>
     document.getElementById('nombre_empresa').value = data.razon_social || '';
     document.getElementById('correo_empresa').value = '';
 
-    // Actividad económica
+    // Actividad económica y categoría
     const actividad = data.actividades?.[0];
     if (actividad) {
-      const categoriaTexto = actividad.categoria === 1
-        ? 'Primera Categoría'
-        : actividad.categoria === 2
-        ? 'Segunda Categoría'
-        : `Categoría ${actividad.categoria}`;
-      document.getElementById('categoria').value = categoriaTexto;
+      const categoria = actividad.categoria?.toString(); // "1", "2", etc.
+      document.getElementById('categoria').value = categoria;
       document.getElementById('actividad_empresa').value = actividad.glosa || '';
     }
 

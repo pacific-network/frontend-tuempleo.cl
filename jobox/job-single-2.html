@@ -77,14 +77,14 @@
                         <div class="job-sidebar mb-5">
                             <div class="job-single-heading">
                                 <div class="job-single-employer">
-                                    <a href="candidate-employer-view-si.html">
+                                    <a id="link-logo-empresa">
                                         <img src="assets/img/job/verticecc.jpeg" alt="Vertice CC">
                                     </a>
                                     <div class="job-single-employer-info">
-                                        <h5><a href="candidate-employer-view-si.html">Vertice Call Center</a></h5>
+                                        <h5><a id="link-nombre-empresa">Vertice Call Center</a></h5>
                                         <p>Call Center</p>
                                     </div>
-                                </div>                              
+                                </div>
                                 <div class="job-single-heading-btns mt-5">
                                     <div class="d-flex flex-wrap gap-3">
                                         <a href="job-list-2.html" class="theme-btn theme-btn1">
@@ -480,6 +480,34 @@
             });
             item.style.cursor = 'pointer';
         });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+  const idOferta = getIdFromURL(); // extrae el id de la oferta
+  if (!idOferta) return;
+
+  try {
+    const response = await fetch(`${BASE_URL_API}/ofertas/${idOferta}`);
+    const oferta = await response.json();
+
+    const rutEmpresa = oferta.empresa?.rut; // EXTRAEMOS EL RUT DE LA EMPRESA
+    if (!rutEmpresa) return;
+
+    // Setea los links para redirigir usando el rut
+    const enlace = `candidate-employer-view.html?rut=${rutEmpresa}`;
+    document.getElementById('link-logo-empresa').href = enlace;
+    document.getElementById('link-nombre-empresa').href = enlace;
+
+  } catch (error) {
+    console.error('Error obteniendo oferta:', error);
+  }
+});
+
+function getIdFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('id');
+}
+
     </script>
 
 </body>

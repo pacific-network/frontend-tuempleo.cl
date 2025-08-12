@@ -44,19 +44,28 @@
                         <div class="user-profile-sidebar">
                             <div class="user-profile-sidebar-top">
                                 <div class="user-profile-img">
-                                    <img src="assets/img/job/verticecc.jpeg" alt="">
+                                    <img id="empresa-logo" src="assets/img/default-logo.png" alt="Logo empresa">
                                 </div>
-                                <h4>Vertice Call Center</h4>
-                                <h5><a class="fas fa-buildings"></a> Call Center</h5>
+                                <h4 id="empresa-nombre">Nombre empresa</h4>
+                                <h5><a class="fas fa-buildings"></a> <span id="empresa-rubro">Rubro</span></h5>
                             </div>
                         </div>
                         <div class="user-profile-sidebar">
                             <h4><a href="ofertas-empresa.html">Información básica</a></h4>
                             <br>
                             <ul>
-                                <li><a class="fas fe-map-pin"></a> Ubicación: <p>Huechuraba - Región Metropolitana de Santiago</p></li><br>
-                                <li><a class="fas fa-calendar"></a> Desde: <p>2020</p></li><br>
-                                <li><a class="fas fa-user-plus"></a> Tamaño de Empresa: <p>Entre 10 - 49 Trabajadores</p></li>
+                                <li>
+                                    <a class="fas fe-map-pin"></a> Ubicación:
+                                    <p id="empresa-ubicacion">Comuna - Región</p>
+                                </li><br>
+                                <li>
+                                    <a class="fas fa-calendar"></a> Desde:
+                                    <p id="empresa-fecha">Año</p>
+                                </li><br>
+                                <li>
+                                    <a class="fas fa-user-plus"></a> Tamaño de Empresa:
+                                    <p id="empresa-tamano">Tamaño</p>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -68,7 +77,11 @@
                                     <div class="col-lg-12">
                                         <div class="profile-info-list">
                                             <ul>
-                                                <li><span>Somos una empresa de Telecomunicaciones. En nuestro equipo, contamos con gente dedicada exclusivamente a ayudarte. Nuestros expertos están disponibles para resolver cualquier duda, problema o consulta que puedas tener. Nos apasiona brindar un excelente servicio al cliente y estamos comprometidos en asegurarnos de que recibas la asistencia que necesitas de manera rápida y eficiente. Tu satisfacción es nuestra prioridad y estamos aquí para ayudarte en todo momento.</span></li>
+                                                <li>
+                                                    <span id="empresa-descripcion">
+                                                      Descripción de la empresa
+                                                    </span>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -76,13 +89,7 @@
                                 <br>
                                 <h4 class="user-profile-card-title">Redes Sociales</h4>
                                 <div class="col-lg-6">
-                                    <div class="profile-social">
-                                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                        <a href="#"><i class="fab fa-twitter"></i></a>
-                                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                        <a href="#"><i class="fab fa-pinterest"></i></a>
-                                        <a href="#"><i class="fab fa-whatsapp"></i></a>
-                                    </div>
+                                    <div id="empresa-redes" class="profile-social">
                                 </div>
                             </div>
                         </div>
@@ -340,6 +347,50 @@
     <script src="assets/js/main.js"></script>
     <script src="assets/js/config/config.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooter.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+  const rut = new URLSearchParams(window.location.search).get('rut');
+  if (!rut) return;
+
+  try {
+    const res = await fetch(`${BASE_URL_API}/empresas/${rut}`);
+    const empresa = await res.json();
+
+    const datosEmpresa = empresa.data || {};
+
+    // Imagen
+    document.getElementById('empresa-logo').src = empresa.logo_url || 'assets/img/default-logo.png';
+
+    // Nombre y rubro
+    document.getElementById('empresa-nombre').textContent = empresa.nombre_fantasia;
+    document.getElementById('empresa-rubro').textContent = datosEmpresa.actividades_economicas?.[0] || 'Sin especificar';
+
+    // Ubicación
+    document.getElementById('empresa-ubicacion').textContent = `${datosEmpresa.comuna || ''} - ${datosEmpresa.region || ''}`;
+
+    // Fecha inicio
+    const fechaInicio = datosEmpresa.fecha_inicio_actividades
+      ? new Date(datosEmpresa.fecha_inicio_actividades).getFullYear()
+      : 'Sin datos';
+    document.getElementById('empresa-fecha').textContent = fechaInicio;
+
+    // Tamaño
+    document.getElementById('empresa-tamano').textContent = datosEmpresa.empresa_menor_tamano
+      ? 'Entre 10 - 49 Trabajadores'
+      : '50 o más trabajadores';
+
+    // Descripción
+    document.getElementById('empresa-descripcion').textContent = datosEmpresa.descripcion || 'Sin descripción';
+
+    // Si tienes redes sociales dentro de empresa.data (si es que las cambias ahí en vez de en empleador), puedes agregarlas aquí
+    // Por ahora las dejaremos vacías
+    document.getElementById('empresa-redes').innerHTML = '';
+
+  } catch (error) {
+    console.error('❌ Error al obtener datos de la empresa:', error);
+  }
+});
+    </script>
     
 </body>
 </html>

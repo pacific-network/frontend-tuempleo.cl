@@ -1,3 +1,4 @@
+// ✅ Función para obtener el sub del token
 function getSubFromToken() {
   const token = localStorage.getItem('token');
   if (!token) {
@@ -19,6 +20,8 @@ function setFieldValue(id, value) {
   if (el) el.value = value || '';
   else console.warn(`⚠️ Campo con ID '${id}' no encontrado`);
 }
+
+// ✅ Cargar datos del empleador al DOM
 
 document.addEventListener('DOMContentLoaded', async () => {
   const sub = getSubFromToken();
@@ -60,6 +63,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     setFieldValue('empresa_direccion', Array.isArray(empresaData.domicilios) ? empresaData.domicilios[0] : '');
     setFieldValue('empresa_pais', empresaData.pais);
     setFieldValue('actividad_empresa', Array.isArray(empresaData.actividades_economicas) ? empresaData.actividades_economicas[0] : '');
+    setFieldValue('web_facturacion', empresaData.web_factuacion);
+
+    // 🔄 Categoría empresa (conversión segura a string y asignación manual por si acaso)
+    const categoria = String(empresaData.categoria_empresa || '');
+    const selectCategoria = document.getElementById('categoria_empresa');
+    if (selectCategoria) {
+      selectCategoria.value = categoria;
+      console.log('🔎 Valor recibido para categoría:', categoria);
+    }
 
     if (empresaData.fecha_inicio_actividades) {
       const anio = new Date(empresaData.fecha_inicio_actividades).getFullYear();
