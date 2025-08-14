@@ -97,6 +97,40 @@
 }
 
     </style>
+    <style>
+        /* Estilo tipo popup flotante */
+#estado-postulacion {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  min-width: 300px;
+  background: #fff;
+  border-left: 5px solid #28a745;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.4s ease-in-out;
+}
+
+#estado-postulacion.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#estado-postulacion .alert-icon {
+  font-size: 24px;
+  color: #28a745;
+  margin-right: 10px;
+}
+
+#estado-postulacion .alert-contnet {
+  font-size: 14px;
+}
+
+    </style>
 
 </head>
 
@@ -143,7 +177,8 @@
                                             <span class="fe-briefcase"></span> Postular
                                         </a>
                                         <div id="estado-postulacion" class="alert-box alert-success d-none d-flex align-items-center">
-                                        <div class="alert-icon"><i class="fe-check-circle"></i></div>
+                                            <div class="alert-icon"><i class="fe-check-circle"></i>
+                                            </div>
                                             <div class="alert-contnet">
                                                 <strong>Ya estás postulado</strong><br>
                                                 Has postulado exitosamente a esta oferta.
@@ -488,11 +523,7 @@
         </div>
         <div class="modal fade" id="modalPreguntas" tabindex="-1" aria-labelledby="modalPreguntasLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
-<<<<<<< HEAD
                 <div class="modal-content border-0 rounded-4 shadow-lg-plus">
-=======
-                <div class="modal-content border-0 rounded-4 shadow-lg">
->>>>>>> dev
                     <div class="modal-header bg-light rounded-top-4 px-4 py-3 border-bottom-0">
                         <div class="d-flex align-items-center w-100">
                             <div class="me-3">
@@ -565,6 +596,22 @@
             });
             item.style.cursor = 'pointer';
         });
+    </script>
+    <script>
+        // Función para mostrar el popup y ocultarlo automáticamente
+function mostrarEstadoPostulacion() {
+  const popup = document.getElementById('estado-postulacion');
+  popup.classList.remove('d-none');
+  popup.classList.add('show');
+
+  setTimeout(() => {
+    popup.classList.remove('show');
+    setTimeout(() => {
+      popup.classList.add('d-none');
+    }, 400); // Tiempo para terminar la animación
+  }, 4000); // Visible 4 segundos
+}
+
     </script>
 
 
