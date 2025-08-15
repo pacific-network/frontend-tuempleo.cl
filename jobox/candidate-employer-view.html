@@ -21,6 +21,24 @@
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="assets/css/nice-select.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .btn-volver{
+  display:inline-flex; align-items:center; gap:.6rem;
+  padding:.7rem 1rem; border-radius:999px;
+  font-weight:600; text-decoration:none;
+  color:#fff; background: linear-gradient(135deg, #6157FF, #2B9DF4);
+  transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+  box-shadow: 0 6px 18px rgba(43,157,244,.25);
+  will-change: transform, filter;
+}
+.btn-volver:hover{ transform: translateY(-1px); filter: brightness(1.05); }
+.btn-volver:active{ transform: translateY(0); filter: brightness(.98); }
+.btn-volver-icon{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:28px; height:28px; border-radius:999px; background: rgba(255,255,255,.18);
+}
+.btn-volver-text{ letter-spacing:.2px; }
+    </style>
 
 </head>
 <body>
@@ -48,6 +66,20 @@
                                 </div>
                                 <h4 id="empresa-nombre">Nombre empresa</h4>
                                 <h5><a class="fas fa-buildings"></a> <span id="empresa-rubro">Rubro</span></h5>
+                                <div class="d-flex flex-wrap gap-3">
+                                    <a id="btn-volver-job"
+                                            href="job-list-2.html"
+                                            class="btn-volver shadow-sm"
+                                            title="Volver a la oferta">
+                                        <span class="btn-volver-icon" aria-hidden="true">
+                                            <!-- flecha simple (SVG), no dependemos de librerías -->
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                                <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </span>
+                                        <span class="btn-volver-text">Volver a la oferta</span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         <div class="user-profile-sidebar">
@@ -348,49 +380,124 @@
     <script src="assets/js/config/config.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooter.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-  const rut = new URLSearchParams(window.location.search).get('rut');
-  if (!rut) return;
+document.addEventListener('DOMContentLoaded', async () => {
+  // --------------------------
+  // 1) Botón "Volver a la oferta"
+  // --------------------------
+  const btnVolver = document.getElementById('btn-volver-job');
 
+  const qs = new URLSearchParams(location.search);
+  let jobId = qs.get('jobId') || sessionStorage.getItem('fromJobId') || null;
+
+  // Intento extra: deducir jobId desde el referrer si no lo tenemos
+  if (!jobId && document.referrer) {
+    try {
+      const ref = new URL(document.referrer);
+      jobId = new URLSearchParams(ref.search).get('id');
+    } catch {}
+  }
+
+  if (btnVolver) {
+    if (jobId) {
+      btnVolver.href = `job-single-2.html?id=${encodeURIComponent(jobId)}`;
+      // (Opcional) ocultar ?jobId= tras cargar:
+      // history.replaceState({}, '', 'candidate-employer-view.html');
+    } else {
+      // Sin id: back o lista
+      btnVolver.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (document.referrer) history.back();
+        else location.href = 'job-list.html';
+      });
+    }
+  }
+
+  // --------------------------
+  // 2) Resolver RUT sin exponerlo
+  // --------------------------
+  let rut = sessionStorage.getItem('selectedEmployerRut');
+
+  // Si no hay RUT pero sí jobId, resuélvelo desde /ofertas/{jobId}
+  if (!rut && jobId) {
+    try {
+      const r = await fetch(`${BASE_URL_API}/ofertas/${encodeURIComponent(jobId)}`);
+      if (r.ok) {
+        const of = await r.json();
+        rut = of?.empresa?.rut || null;
+        if (rut) sessionStorage.setItem('selectedEmployerRut', rut);
+      }
+    } catch (e) {
+      console.warn('No se pudo resolver RUT desde oferta:', e);
+    }
+  }
+
+  // Fallback: aceptar ?rut= y limpiar URL visible
+  if (!rut) {
+    const rutFromUrl = qs.get('rut');
+    if (rutFromUrl) {
+      rut = rutFromUrl;
+      sessionStorage.setItem('selectedEmployerRut', rutFromUrl);
+      history.replaceState({}, '', 'candidate-employer-view.html' + (jobId ? `?jobId=${encodeURIComponent(jobId)}` : ''));
+    }
+  }
+
+  if (!rut) {
+    console.warn('No se encontró RUT de empresa (ni en storage, ni por oferta, ni en URL).');
+    return;
+  }
+
+  // --------------------------
+  // 3) Fetch de la empresa y pintado de UI (IDs públicos)
+  // --------------------------
   try {
-    const res = await fetch(`${BASE_URL_API}/empresas/${rut}`);
+    const res = await fetch(`${BASE_URL_API}/empresas/${encodeURIComponent(rut)}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const empresa = await res.json();
-
     const datosEmpresa = empresa.data || {};
 
-    // Imagen
-    document.getElementById('empresa-logo').src = empresa.logo_url || 'assets/img/default-logo.png';
+    setImgSrc('empresa-logo', empresa.logo_url || 'assets/img/default-logo.png');
 
-    // Nombre y rubro
-    document.getElementById('empresa-nombre').textContent = empresa.nombre_fantasia;
-    document.getElementById('empresa-rubro').textContent = datosEmpresa.actividades_economicas?.[0] || 'Sin especificar';
+    setText('empresa-nombre', empresa.nombre_fantasia || 'Sin nombre');
+
+    // Rubro
+    const rubroTxt = (Array.isArray(datosEmpresa.actividades_economicas) && datosEmpresa.actividades_economicas[0]) || 'Sin especificar';
+    const rubroEl = byId('empresa-rubro');
+    if (rubroEl) rubroEl.textContent = rubroTxt;
 
     // Ubicación
-    document.getElementById('empresa-ubicacion').textContent = `${datosEmpresa.comuna || ''} - ${datosEmpresa.region || ''}`;
+    const comuna = datosEmpresa.comuna || '';
+    const region = datosEmpresa.region || '';
+    setText('empresa-ubicacion', `${comuna}${comuna && region ? ' - ' : ''}${region}`);
 
-    // Fecha inicio
+    // Desde (año)
     const fechaInicio = datosEmpresa.fecha_inicio_actividades
       ? new Date(datosEmpresa.fecha_inicio_actividades).getFullYear()
       : 'Sin datos';
-    document.getElementById('empresa-fecha').textContent = fechaInicio;
+    setText('empresa-fecha', fechaInicio);
 
     // Tamaño
-    document.getElementById('empresa-tamano').textContent = datosEmpresa.empresa_menor_tamano
-      ? 'Entre 10 - 49 Trabajadores'
-      : '50 o más trabajadores';
+    const tamano = datosEmpresa.empresa_menor_tamano ? 'Entre 10 - 49 Trabajadores' : '50 o más trabajadores';
+    setText('empresa-tamano', tamano);
 
     // Descripción
-    document.getElementById('empresa-descripcion').textContent = datosEmpresa.descripcion || 'Sin descripción';
+    setText('empresa-descripcion', datosEmpresa.descripcion || 'Sin descripción');
 
-    // Si tienes redes sociales dentro de empresa.data (si es que las cambias ahí en vez de en empleador), puedes agregarlas aquí
-    // Por ahora las dejaremos vacías
-    document.getElementById('empresa-redes').innerHTML = '';
+    // Redes (si algún día vienen URLs, setéalas sobre #empresa-redes)
+    // const redes = byId('empresa-redes'); if (redes) { ... }
 
   } catch (error) {
     console.error('❌ Error al obtener datos de la empresa:', error);
   }
+
+  // --------------------------
+  // Helpers
+  // --------------------------
+  function byId(id) { return document.getElementById(id) || null; }
+  function setText(id, value) { const el = byId(id); if (el) el.textContent = value ?? ''; }
+  function setImgSrc(id, src) { const el = byId(id); if (el && el.tagName === 'IMG') el.src = src; }
 });
-    </script>
+</script>
+
     
 </body>
 </html>

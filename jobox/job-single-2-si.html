@@ -597,133 +597,58 @@
             item.style.cursor = 'pointer';
         });
     </script>
+    <script src="assets/js/popup-estado-postulacion.js"></script>
+    <script src="assets/js/modules/saved-jobs/saved-job.js"></script>
     <script>
-        // Función para mostrar el popup y ocultarlo automáticamente
-function mostrarEstadoPostulacion() {
-  const popup = document.getElementById('estado-postulacion');
-  popup.classList.remove('d-none');
-  popup.classList.add('show');
+document.addEventListener('DOMContentLoaded', async () => {
+  const idOferta = getIdFromURL();
+  if (!idOferta) return;
 
-  setTimeout(() => {
-    popup.classList.remove('show');
-    setTimeout(() => {
-      popup.classList.add('d-none');
-    }, 400); // Tiempo para terminar la animación
-  }, 4000); // Visible 4 segundos
-}
-
-    </script>
-    <script>
-// ===== Guardar Trabajo: mismo estilo que "Ya Estás Postulado" =====
-document.addEventListener('DOMContentLoaded', initGuardarTrabajo);
-
-function getOfertaIdFromUrl() {
-  if (typeof getIdOfertaFromURL === 'function') return getIdOfertaFromURL();
-  return new URLSearchParams(location.search).get('id');
-}
-
-function setGuardarDisabled(btn) {
-  // Toma el estilo actual del botón de postular (que ya luce como "Ya Estás Postulado")
-  const postBtn = document.getElementById('btn-postular');
-
-  // Clases base: si existe el de postular, copia sus clases; si no, usa un fallback primario
-  const baseClasses = postBtn ? postBtn.className : 'theme-btn theme-btn1';
-  btn.className = baseClasses;
-
-  // Marca disabled e inerte (mismo comportamiento)
-  btn.classList.add('disabled');
-  btn.setAttribute('aria-disabled', 'true');
-  btn.href = '#';
-  btn.style.pointerEvents = 'none';
-  btn.style.opacity = '0.65';
-  btn.style.cursor = 'not-allowed';
-
-  // Texto/ícono
-  btn.innerHTML = '<span class="fe-bookmark"></span> Guardado';
-
-  // Remueve listeners para que quede inerte
-  const clone = btn.cloneNode(true);  // clona con el mismo id
-  btn.replaceWith(clone);
-}
-
-function setGuardarEnabled(btn) {
-  btn.className = 'theme-btn theme-btn2';
-  btn.removeAttribute('aria-disabled');
-  btn.style.pointerEvents = 'auto';
-  btn.style.opacity = '1';
-  btn.style.cursor = 'pointer';
-  btn.innerHTML = '<span class="fe-bookmark"></span> Guardar Trabajo';
-}
-
-async function initGuardarTrabajo() {
-  const btn = document.getElementById('btn-guardar');
-  if (!btn) return;
-
-  const token = localStorage.getItem('token');
-  const ofertaId = getOfertaIdFromUrl();
-  if (!ofertaId) return;
-
-  // Sin sesión → aviso y no guarda
-  if (!token) {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      (typeof mostrarPopup === 'function')
-        ? mostrarPopup({ titulo: 'Sesión requerida', texto: 'Inicia sesión para guardar trabajos.' }, 'error')
-        : alert('Inicia sesión para guardar trabajos.');
-    });
-    return;
-  }
-
-  // 1) Estado inicial
   try {
-    const r = await fetch(`${BASE_URL_API}/guardados/status?oferta_id=${encodeURIComponent(ofertaId)}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    if (r.ok) {
-      const { saved } = await r.json();
-      if (saved) {
-        setGuardarDisabled(btn);
-        return; // ya está guardado
-      }
-    }
-  } catch (e) {
-    console.error('status guardado:', e);
+    // Headers con auth si estás logeado
+    const headers = { 'Accept': 'application/json' };
+    const token = localStorage.getItem('token');
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    const resp = await fetch(`${BASE_URL_API}/ofertas/${encodeURIComponent(idOferta)}`, { headers });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const oferta = await resp.json();
+
+    const rutEmpresa = oferta?.empresa?.rut;
+    if (!rutEmpresa) return;
+
+    // Enlaces reales del bloque empleador (no hay IDs en el HTML)
+    const logoLink   = document.querySelector('.job-single-employer > a');
+    const nombreLink = document.querySelector('.job-single-employer-info h5 > a');
+
+    const go = (e) => {
+      e.preventDefault();
+      // Guardamos para la vista de empresa (oculto en URL)
+      sessionStorage.setItem('selectedEmployerRut', rutEmpresa);
+      // Guardamos para que el botón "Volver" retorne a la oferta exacta
+      sessionStorage.setItem('fromJobId', idOferta);
+      // 🔧 Navegamos PASANDO jobId en la URL (robusto aunque se pierda sessionStorage)
+      window.location.href = `candidate-employer-view-si.html?jobId=${encodeURIComponent(idOferta)}`;
+    };
+
+    if (logoLink)   logoLink.addEventListener('click', go);
+    if (nombreLink) nombreLink.addEventListener('click', go);
+
+    // Fallbacks por si JS falla: dejamos enlaces con jobId (sin rut)
+    const employerUrl = `candidate-employer-view-si.html?jobId=${encodeURIComponent(idOferta)}`;
+    if (logoLink)   logoLink.setAttribute('href', employerUrl);
+    if (nombreLink) nombreLink.setAttribute('href', employerUrl);
+
+  } catch (err) {
+    console.error('Error obteniendo oferta:', err);
   }
+});
 
-  // 2) Habilitado y con handler para guardar
-  setGuardarEnabled(btn);
-
-  const handler = async (e) => {
-    e.preventDefault();
-    if (btn.dataset.loading === '1') return;
-    btn.dataset.loading = '1';
-
-    try {
-      const res = await fetch(`${BASE_URL_API}/guardados`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ oferta_id: Number(ofertaId) })
-      });
-      if (!res.ok) throw new Error('POST /guardados falló');
-
-      setGuardarDisabled(btn);
-      if (typeof mostrarPopup === 'function') {
-        mostrarPopup({ titulo: 'Guardado', texto: 'Oferta añadida a tus guardados.' }, 'success');
-      }
-    } catch (err) {
-      console.error('guardar trabajo:', err);
-      if (typeof mostrarPopup === 'function') {
-        mostrarPopup({ titulo: 'Error', texto: 'No se pudo guardar esta oferta.' }, 'error');
-      }
-    } finally {
-      delete btn.dataset.loading;
-    }
-  };
-
-  btn.addEventListener('click', handler);
+function getIdFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('id');
 }
-
-    </script>
+</script>
 
 
 </body>

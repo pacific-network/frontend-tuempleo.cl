@@ -21,6 +21,25 @@
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="assets/css/nice-select.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .btn-volver{
+  display:inline-flex; align-items:center; gap:.6rem;
+  padding:.7rem 1rem; border-radius:999px;
+  font-weight:600; text-decoration:none;
+  color:#fff; background: linear-gradient(135deg, #6157FF, #2B9DF4);
+  transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+  box-shadow: 0 6px 18px rgba(43,157,244,.25);
+  will-change: transform, filter;
+}
+.btn-volver:hover{ transform: translateY(-1px); filter: brightness(1.05); }
+.btn-volver:active{ transform: translateY(0); filter: brightness(.98); }
+.btn-volver-icon{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:28px; height:28px; border-radius:999px; background: rgba(255,255,255,.18);
+}
+.btn-volver-text{ letter-spacing:.2px; }
+
+    </style>
 
 </head>
 <body>
@@ -44,19 +63,42 @@
                         <div class="user-profile-sidebar">
                             <div class="user-profile-sidebar-top">
                                 <div class="user-profile-img">
-                                    <img src="assets/img/job/verticecc.jpeg" alt="">
+                                    <img id="empresa-logo" src="assets/img/job/verticecc.jpeg" alt="">
                                 </div>
-                                <h4>Vertice Call Center</h4>
-                                <h5><a class="fas fa-buildings"></a> Call Center</h5>
+                                <h4 id="empresa-nombre">Vertice Call Center</h4>
+                                <h5 id="empresa-rubro"><a class="fas fa-buildings"></a> Call Center</h5>
+                                <div class="d-flex flex-wrap gap-3">
+                                    <a id="btn-volver-job"
+                                            href="job-list.html"
+                                            class="btn-volver shadow-sm"
+                                            title="Volver a la oferta">
+                                        <span class="btn-volver-icon" aria-hidden="true">
+                                            <!-- flecha simple (SVG), no dependemos de librerías -->
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                                <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </span>
+                                        <span class="btn-volver-text">Volver a la oferta</span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         <div class="user-profile-sidebar">
                             <h4><a href="ofertas-empresa.html">Información básica</a></h4>
                             <br>
                             <ul>
-                                <li><a class="fas fe-map-pin"></a> Ubicación: <p>Huechuraba - Región Metropolitana de Santiago</p></li><br>
-                                <li><a class="fas fa-calendar"></a> Desde: <p>2020</p></li><br>
-                                <li><a class="fas fa-user-plus"></a> Tamaño de Empresa: <p>Entre 10 - 49 Trabajadores</p></li>
+                                <li>
+                                  <a class="fas fe-map-pin"></a> Ubicación:
+                                  <p id="empresa-ubicacion">Huechuraba - Región Metropolitana de Santiago</p>
+                                </li><br>
+                                <li>
+                                  <a class="fas fa-calendar"></a> Desde:
+                                  <p id="empresa-fecha">2020</p>
+                                </li><br>
+                                <li>
+                                  <a class="fas fa-user-plus"></a> Tamaño de Empresa:
+                                  <p id="empresa-tamano">Entre 10 - 49 Trabajadores</p>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -68,7 +110,11 @@
                                     <div class="col-lg-12">
                                         <div class="profile-info-list">
                                             <ul>
-                                                <li><span>Somos una empresa de Telecomunicaciones. En nuestro equipo, contamos con gente dedicada exclusivamente a ayudarte. Nuestros expertos están disponibles para resolver cualquier duda, problema o consulta que puedas tener. Nos apasiona brindar un excelente servicio al cliente y estamos comprometidos en asegurarnos de que recibas la asistencia que necesitas de manera rápida y eficiente. Tu satisfacción es nuestra prioridad y estamos aquí para ayudarte en todo momento.</span></li>
+                                                <li>
+                                                  <span id="empresa-descripcion">
+                                                    Somos una empresa de Telecomunicaciones. En nuestro equipo, contamos con gente dedicada exclusivamente a ayudarte...
+                                                  </span>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -76,7 +122,7 @@
                                 <br>
                                 <h4 class="user-profile-card-title">Redes Sociales</h4>
                                 <div class="col-lg-6">
-                                    <div class="profile-social">
+                                    <div id="empresa-redes" class="profile-social">
                                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                                         <a href="#"><i class="fab fa-twitter"></i></a>
                                         <a href="#"><i class="fab fa-linkedin-in"></i></a>
@@ -340,6 +386,138 @@
     <script src="assets/js/main.js"></script>
     <script src="assets/js/config/config.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooterSiApplied.js"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', async () => {
+  // =========================
+  // 0) Utilidades
+  // =========================
+  const headers = { 'Accept': 'application/json' };
+  const token = localStorage.getItem('token');
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+
+  const qs = new URLSearchParams(location.search);
+  let jobId = qs.get('jobId') || sessionStorage.getItem('fromJobId') || null;
+
+  // =========================
+  // 1) Botón "Volver a la oferta"
+  // =========================
+  const btnVolver = document.getElementById('btn-volver-job');
+  if (btnVolver) {
+    if (jobId) {
+      btnVolver.href = `job-single-2-si.html?id=${encodeURIComponent(jobId)}`;
+    } else {
+      btnVolver.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (document.referrer) history.back();
+        else location.href = 'job-list.html';
+      });
+    }
+  }
+
+  // =========================
+  // 2) Resolver RUT de la empresa sin exponerlo en URL
+  //    - 1º: sessionStorage (flujo normal)
+  //    - 2º: si no hay, y tenemos jobId, pedimos /ofertas/{jobId} para obtener empresa.rut
+  //    - 3º: fallback: ?rut=... (y limpiamos la URL)
+  // =========================
+  let rut = sessionStorage.getItem('selectedEmployerRut');
+
+  if (!rut && jobId) {
+    try {
+      const r = await fetch(`${BASE_URL_API}/ofertas/${encodeURIComponent(jobId)}`, { headers });
+      if (r.ok) {
+        const of = await r.json();
+        rut = of?.empresa?.rut || null;
+        if (rut) sessionStorage.setItem('selectedEmployerRut', rut);
+      }
+    } catch (e) {
+      console.warn('No se pudo resolver RUT desde oferta:', e);
+    }
+  }
+
+  if (!rut) {
+    const rutFromUrl = qs.get('rut');
+    if (rutFromUrl) {
+      rut = rutFromUrl;
+      sessionStorage.setItem('selectedEmployerRut', rutFromUrl);
+      history.replaceState({}, '', 'candidate-employer-view-si.html' + (jobId ? `?jobId=${encodeURIComponent(jobId)}` : ''));
+    }
+  }
+
+  if (!rut) {
+    console.warn('No se encontró RUT de empresa (ni en storage ni por oferta ni en URL).');
+    return;
+  }
+
+  // =========================
+  // 3) Fetch de la empresa y pintado
+  // =========================
+  try {
+    const res = await fetch(`${BASE_URL_API}/empresas/${encodeURIComponent(rut)}`, { headers });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const empresa = await res.json();
+    const datos = empresa.data || {};
+
+    // Imagen
+    setImgSrc('empresa-logo', empresa.logo_url || 'assets/img/default-logo.png');
+
+    // Nombre
+    setText('empresa-nombre', empresa.nombre_fantasia || 'Sin nombre');
+
+    // Rubro (manteniendo el ícono)
+    const rubroTxt = (Array.isArray(datos.actividades_economicas) && datos.actividades_economicas[0]) || 'Sin especificar';
+    const rubroEl = byId('empresa-rubro');
+    if (rubroEl) rubroEl.innerHTML = '<a class="fas fa-buildings"></a> ' + escapeHtml(rubroTxt);
+
+    // Ubicación
+    const ubicacion = `${datos.comuna || ''}${datos.comuna && datos.region ? ' - ' : ''}${datos.region || ''}` || 'Sin ubicación';
+    setText('empresa-ubicacion', ubicacion);
+
+    // Desde (año)
+    const fechaInicio = datos.fecha_inicio_actividades
+      ? new Date(datos.fecha_inicio_actividades).getFullYear()
+      : 'Sin datos';
+    setText('empresa-fecha', fechaInicio);
+
+    // Tamaño
+    const tamano = datos.empresa_menor_tamano ? 'Entre 10 - 49 Trabajadores' : '50 o más trabajadores';
+    setText('empresa-tamano', tamano);
+
+    // Descripción
+    setText('empresa-descripcion', datos.descripcion || 'Sin descripción');
+
+    // Redes: si luego sumas URLs en datos, setéalas en #empresa-redes
+    // const redes = byId('empresa-redes');
+    // if (redes) { ... }
+
+  } catch (error) {
+    console.error('❌ Error al obtener datos de la empresa:', error);
+  }
+
+  // =========================
+  // Helpers
+  // =========================
+  function byId(id) {
+    return document.getElementById(id) || null;
+  }
+  function setText(id, value) {
+    const el = byId(id);
+    if (el != null) el.textContent = value ?? '';
+  }
+  function setImgSrc(id, src) {
+    const el = byId(id);
+    if (el && el.tagName === 'IMG') el.src = src;
+  }
+  function escapeHtml(s) {
+    return String(s)
+      .replaceAll('&','&amp;')
+      .replaceAll('<','&lt;')
+      .replaceAll('>','&gt;')
+      .replaceAll('"','&quot;')
+      .replaceAll("'","&#039;");
+  }
+});
+</script>
     
 </body>
 </html>
