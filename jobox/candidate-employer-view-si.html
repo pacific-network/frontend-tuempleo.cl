@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
 
-    <title>Empleos - Nombre Empresa</title>
+    <title id="empresa_nombre">Nombre Empresa</title>
 
     <link rel="icon" type="image/x-icon" href="assets/img/logo/favicon.png">
 
@@ -63,10 +63,11 @@
                         <div class="user-profile-sidebar">
                             <div class="user-profile-sidebar-top">
                                 <div class="user-profile-img">
-                                    <img id="empresa-logo" src="assets/img/job/verticecc.jpeg" alt="">
+                                    <img id="empresa-logo" src="assets/img/job/01.jpg" alt="">
                                 </div>
                                 <h4 id="empresa-nombre">Vertice Call Center</h4>
                                 <h5 id="empresa-rubro"><a class="fas fa-buildings"></a> Call Center</h5>
+                                <br>
                                 <div class="d-flex flex-wrap gap-3">
                                     <a id="btn-volver-job"
                                             href="job-list.html"
@@ -405,6 +406,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (btnVolver) {
     if (jobId) {
       btnVolver.href = `job-single-2-si.html?id=${encodeURIComponent(jobId)}`;
+      // (Opcional) ocultar ?jobId= tras cargar:
+      // history.replaceState({}, '', 'candidate-employer-view-si.html');
     } else {
       btnVolver.addEventListener('click', (e) => {
         e.preventDefault();
@@ -415,10 +418,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // =========================
-  // 2) Resolver RUT de la empresa sin exponerlo en URL
-  //    - 1º: sessionStorage (flujo normal)
-  //    - 2º: si no hay, y tenemos jobId, pedimos /ofertas/{jobId} para obtener empresa.rut
-  //    - 3º: fallback: ?rut=... (y limpiamos la URL)
+  // 2) Resolver RUT sin exponerlo
   // =========================
   let rut = sessionStorage.getItem('selectedEmployerRut');
 
@@ -435,6 +435,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
+  // Fallback: aceptar ?rut= y limpiar la URL visible
   if (!rut) {
     const rutFromUrl = qs.get('rut');
     if (rutFromUrl) {
@@ -450,7 +451,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // =========================
-  // 3) Fetch de la empresa y pintado
+  // 3) Fetch de la empresa y pintado (incluye título y redes)
   // =========================
   try {
     const res = await fetch(`${BASE_URL_API}/empresas/${encodeURIComponent(rut)}`, { headers });
@@ -458,11 +459,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const empresa = await res.json();
     const datos = empresa.data || {};
 
-    // Imagen
-    setImgSrc('empresa-logo', empresa.logo_url || 'assets/img/default-logo.png');
+    // Logo (con fallback robusto)
+    setImgSrcWithFallback('empresa-logo', empresa.logo_url);
 
-    // Nombre
-    setText('empresa-nombre', empresa.nombre_fantasia || 'Sin nombre');
+    // Nombre + título de la pestaña
+    const nombreFantasia = empresa.nombre_fantasia || 'Sin nombre';
+    setText('empresa-nombre', nombreFantasia);
+    setPageTitle(nombreFantasia);
 
     // Rubro (manteniendo el ícono)
     const rubroTxt = (Array.isArray(datos.actividades_economicas) && datos.actividades_economicas[0]) || 'Sin especificar';
@@ -486,9 +489,44 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Descripción
     setText('empresa-descripcion', datos.descripcion || 'Sin descripción');
 
-    // Redes: si luego sumas URLs en datos, setéalas en #empresa-redes
-    // const redes = byId('empresa-redes');
-    // if (redes) { ... }
+    // --- Redes sociales dinámicas ---
+    const redesEl = byId('empresa-redes');                 // contenedor de links
+    const redesCol = redesEl ? redesEl.closest('.col-lg-6') : null; // columna que envuelve
+    // título "Redes Sociales" (h4 inmediatamente anterior a la col)
+    let redesTitle = redesCol ? redesCol.previousElementSibling : null;
+    if (redesTitle && !redesTitle.classList.contains('user-profile-card-title')) {
+      redesTitle = null;
+    }
+
+    const redesCandidates = [
+      { url: datos.facebook || datos.facebook_url || empresa.facebook || empresa.facebook_url,   icon: 'fab fa-facebook-f',  label: 'Facebook'  },
+      { url: datos.twitter  || datos.twitter_url  || empresa.twitter  || empresa.twitter_url,    icon: 'fab fa-twitter',     label: 'Twitter'   },
+      { url: datos.linkedin || datos.linkedin_url || empresa.linkedin || empresa.linkedin_url,   icon: 'fab fa-linkedin-in', label: 'LinkedIn'  },
+      { url: datos.instagram|| datos.instagram_url|| empresa.instagram|| empresa.instagram_url,  icon: 'fab fa-instagram',   label: 'Instagram' },
+      { url: datos.pinterest|| datos.pinterest_url|| empresa.pinterest|| empresa.pinterest_url,  icon: 'fab fa-pinterest',   label: 'Pinterest' },
+      { url: datos.whatsapp || datos.whatsapp_url || empresa.whatsapp || empresa.whatsapp_url,   icon: 'fab fa-whatsapp',    label: 'WhatsApp'  }
+    ];
+
+    const redesValidas = redesCandidates
+      .filter(r => isValidHttpUrl(r.url))
+      .map(r => ({ href: r.url, icon: r.icon, label: r.label }));
+
+    if (redesEl) {
+      if (redesValidas.length > 0) {
+        redesEl.innerHTML = redesValidas.map(r => `
+          <a href="${escapeAttr(r.href)}" target="_blank" rel="noopener">
+            <i class="${escapeAttr(r.icon)}" aria-hidden="true"></i>
+            <span class="sr-only">${escapeHtml(r.label)}</span>
+          </a>
+        `).join('');
+        if (redesCol) redesCol.classList.remove('d-none');
+        if (redesTitle) redesTitle.classList.remove('d-none');
+      } else {
+        redesEl.innerHTML = '';
+        if (redesCol) redesCol.classList.add('d-none');
+        if (redesTitle) redesTitle.classList.add('d-none');
+      }
+    }
 
   } catch (error) {
     console.error('❌ Error al obtener datos de la empresa:', error);
@@ -504,9 +542,37 @@ document.addEventListener('DOMContentLoaded', async () => {
     const el = byId(id);
     if (el != null) el.textContent = value ?? '';
   }
-  function setImgSrc(id, src) {
-    const el = byId(id);
-    if (el && el.tagName === 'IMG') el.src = src;
+
+  // Fallback de imagen: intenta primary -> assets/img/default-logo.png -> /assets/img/default-logo.png
+  function setImgSrcWithFallback(id, primarySrc) {
+    const img = byId(id);
+    if (!img || img.tagName !== 'IMG') return;
+
+    const candidates = [];
+    if (primarySrc && typeof primarySrc === 'string') candidates.push(primarySrc);
+    candidates.push('assets/img/job/01.jpg', '/assets/img/job/01.jpg');
+
+    let i = 0;
+    const tryNext = () => {
+      img.src = candidates[i];
+    };
+    img.onerror = () => {
+      i++;
+      if (i < candidates.length) {
+        tryNext();
+      } else {
+        // evitar loop infinito
+        img.onerror = null;
+      }
+    };
+    tryNext();
+  }
+
+  function setPageTitle(name) {
+    const finalTitle = `${name} | TuEmpleo`;
+    document.title = finalTitle;
+    const titleEl = document.getElementById('empresa_nombre') || document.querySelector('head > title');
+    if (titleEl) titleEl.textContent = finalTitle;
   }
   function escapeHtml(s) {
     return String(s)
@@ -515,6 +581,16 @@ document.addEventListener('DOMContentLoaded', async () => {
       .replaceAll('>','&gt;')
       .replaceAll('"','&quot;')
       .replaceAll("'","&#039;");
+  }
+  function escapeAttr(s) {
+    return escapeHtml(String(s)).replaceAll('`','&#096;');
+  }
+  function isValidHttpUrl(u) {
+    if (!u || typeof u !== 'string') return false;
+    try {
+      const url = new URL(u.trim());
+      return url.protocol === 'http:' || url.protocol === 'https:';
+    } catch { return false; }
   }
 });
 </script>

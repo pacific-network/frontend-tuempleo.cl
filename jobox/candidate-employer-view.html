@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
 
-    <title>Empleos - Nombre Empresa</title>
+    <title id="empresa_nombre">Nombre empresa</title>
 
     <link rel="icon" type="image/x-icon" href="assets/img/logo/favicon.png">
 
@@ -62,10 +62,11 @@
                         <div class="user-profile-sidebar">
                             <div class="user-profile-sidebar-top">
                                 <div class="user-profile-img">
-                                    <img id="empresa-logo" src="assets/img/default-logo.png" alt="Logo empresa">
+                                    <img id="empresa-logo" src="assets/img/job/01.jpg" alt="Logo empresa">
                                 </div>
                                 <h4 id="empresa-nombre">Nombre empresa</h4>
                                 <h5><a class="fas fa-buildings"></a> <span id="empresa-rubro">Rubro</span></h5>
+                                <br>
                                 <div class="d-flex flex-wrap gap-3">
                                     <a id="btn-volver-job"
                                             href="job-list-2.html"
@@ -389,7 +390,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const qs = new URLSearchParams(location.search);
   let jobId = qs.get('jobId') || sessionStorage.getItem('fromJobId') || null;
 
-  // Intento extra: deducir jobId desde el referrer si no lo tenemos
   if (!jobId && document.referrer) {
     try {
       const ref = new URL(document.referrer);
@@ -403,7 +403,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       // (Opcional) ocultar ?jobId= tras cargar:
       // history.replaceState({}, '', 'candidate-employer-view.html');
     } else {
-      // Sin id: back o lista
       btnVolver.addEventListener('click', (e) => {
         e.preventDefault();
         if (document.referrer) history.back();
@@ -417,7 +416,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   // --------------------------
   let rut = sessionStorage.getItem('selectedEmployerRut');
 
-  // Si no hay RUT pero sí jobId, resuélvelo desde /ofertas/{jobId}
   if (!rut && jobId) {
     try {
       const r = await fetch(`${BASE_URL_API}/ofertas/${encodeURIComponent(jobId)}`);
@@ -431,7 +429,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // Fallback: aceptar ?rut= y limpiar URL visible
   if (!rut) {
     const rutFromUrl = qs.get('rut');
     if (rutFromUrl) {
@@ -455,35 +452,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     const empresa = await res.json();
     const datosEmpresa = empresa.data || {};
 
-    setImgSrc('empresa-logo', empresa.logo_url || 'assets/img/default-logo.png');
+    // Logo con fallback robusto
+    setImgSrcWithFallback('empresa-logo', empresa.logo_url);
 
-    setText('empresa-nombre', empresa.nombre_fantasia || 'Sin nombre');
+    const nombreFantasia = empresa.nombre_fantasia || 'Sin nombre';
+    setText('empresa-nombre', nombreFantasia);
+    setPageTitle(nombreFantasia); // título de la pestaña
 
-    // Rubro
     const rubroTxt = (Array.isArray(datosEmpresa.actividades_economicas) && datosEmpresa.actividades_economicas[0]) || 'Sin especificar';
     const rubroEl = byId('empresa-rubro');
     if (rubroEl) rubroEl.textContent = rubroTxt;
 
-    // Ubicación
     const comuna = datosEmpresa.comuna || '';
     const region = datosEmpresa.region || '';
     setText('empresa-ubicacion', `${comuna}${comuna && region ? ' - ' : ''}${region}`);
 
-    // Desde (año)
     const fechaInicio = datosEmpresa.fecha_inicio_actividades
       ? new Date(datosEmpresa.fecha_inicio_actividades).getFullYear()
       : 'Sin datos';
     setText('empresa-fecha', fechaInicio);
 
-    // Tamaño
     const tamano = datosEmpresa.empresa_menor_tamano ? 'Entre 10 - 49 Trabajadores' : '50 o más trabajadores';
     setText('empresa-tamano', tamano);
 
-    // Descripción
     setText('empresa-descripcion', datosEmpresa.descripcion || 'Sin descripción');
-
-    // Redes (si algún día vienen URLs, setéalas sobre #empresa-redes)
-    // const redes = byId('empresa-redes'); if (redes) { ... }
 
   } catch (error) {
     console.error('❌ Error al obtener datos de la empresa:', error);
@@ -494,10 +486,37 @@ document.addEventListener('DOMContentLoaded', async () => {
   // --------------------------
   function byId(id) { return document.getElementById(id) || null; }
   function setText(id, value) { const el = byId(id); if (el) el.textContent = value ?? ''; }
-  function setImgSrc(id, src) { const el = byId(id); if (el && el.tagName === 'IMG') el.src = src; }
+
+  // Fallback de imagen: intenta primary -> assets/img/default-logo.png -> /assets/img/default-logo.png
+  function setImgSrcWithFallback(id, primarySrc) {
+    const img = byId(id);
+    if (!img || img.tagName !== 'IMG') return;
+
+    const candidates = [];
+    if (primarySrc && typeof primarySrc === 'string') candidates.push(primarySrc);
+    candidates.push('assets/img/job/01.jpg', '/assets/img/job/01.jpg');
+
+    let i = 0;
+    const tryNext = () => { img.src = candidates[i]; };
+    img.onerror = () => {
+      i++;
+      if (i < candidates.length) {
+        tryNext();
+      } else {
+        img.onerror = null; // evita loop
+      }
+    };
+    tryNext();
+  }
+
+  function setPageTitle(name) {
+    const finalTitle = `${name} | TuEmpleo`;
+    document.title = finalTitle;
+    const titleEl = document.getElementById('empresa_nombre') || document.querySelector('head > title');
+    if (titleEl) titleEl.textContent = finalTitle;
+  }
 });
 </script>
-
     
 </body>
 </html>
