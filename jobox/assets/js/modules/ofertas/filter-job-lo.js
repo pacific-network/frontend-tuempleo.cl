@@ -1,14 +1,17 @@
-// =================== job-list (logeados) ===================
-// Requiere window.BASE_URL_API definido (assets/js/config/config.js)
+// =================== job-list-2 (no logeado) ===================
+// Requiere BASE_URL_API definido globalmente (p. ej. window.BASE_URL_API)
 
 (function () {
+  // Señalamos que el script avanzado está activo (para evitar doble carga con lista-trabajos-lo.js)
+  window.__JOBLIST_ADVANCED__ = true;
+
   const API = `${BASE_URL_API}/ofertas`;
 
   const STATE = {
     page: 1,
     take: 10,
     q: '',
-    q_raw: '',
+    q_raw: '',            // guardamos lo que escribió el usuario
     region: '',
     categoria: '',
     modalidad: [],
@@ -16,14 +19,64 @@
     salarioMax: undefined,
     posted: 'todos',
     sortBy: 'fecha_publicacion',
-    order: 'DESC',
+    order: 'DESC'
   };
 
-  // UI (checkbox values 3..7) -> códigos API (1..5)
+  // Mapeo de UI (checkbox values 3..7) -> códigos API (1..5)
   const UI_TO_API_MODALIDAD = { '3': '5', '4': '2', '5': '1', '6': '4', '7': '3' };
   const MOD_LABEL = { '1': 'Full Time', '2': 'Part Time', '3': 'Remoto', '4': 'Freelance', '5': 'Híbrido' };
 
-  // ---------- Helpers ----------
+  // ---------------- Popup "Aplicando filtros..." ----------------
+  const ApplyingUI = (() => {
+    let el = null;
+    let styleInjected = false;
+
+    function injectStyle() {
+      if (styleInjected) return;
+      const css = `
+#applying-popup{
+  position:fixed; right:20px; top:20px; z-index:9999;
+  display:none; align-items:center; gap:.6rem;
+  background:rgba(0,0,0,.85); color:#fff; padding:.6rem .9rem;
+  border-radius:.6rem; box-shadow:0 6px 20px rgba(0,0,0,.25); font-size:.95rem
+}
+#applying-popup .spinner{
+  width:16px; height:16px; border:2px solid #fff; border-top-color:transparent;
+  border-radius:50%; animation:spin .8s linear infinite
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+`;
+      const s = document.createElement('style');
+      s.textContent = css;
+      document.head.appendChild(s);
+      styleInjected = true;
+    }
+
+    function ensureEl() {
+      if (el) return el;
+      injectStyle();
+      el = document.createElement('div');
+      el.id = 'applying-popup';
+      el.innerHTML = `<span class="spinner"></span><span class="text"></span>`;
+      document.body.appendChild(el);
+      return el;
+    }
+
+    function show(text = 'Aplicando filtros…') {
+      const node = ensureEl();
+      node.querySelector('.text').textContent = text;
+      node.style.display = 'flex';
+    }
+
+    function hide() {
+      if (!el) return;
+      el.style.display = 'none';
+    }
+
+    return { show, hide };
+  })();
+
+  // ---------------- Helpers ----------------
   function formatModalidad(code) { return MOD_LABEL[String(code)] || 'No especificado'; }
   function formatFecha(fechaStr) {
     if (!fechaStr) return 'Sin fecha';
@@ -45,6 +98,8 @@
     const q = new URLSearchParams();
     Object.entries(params).forEach(([k, v]) => {
       if (v === undefined || v === null || v === '' || (Array.isArray(v) && v.length === 0)) return;
+      // No enviar "posted=todos" para evitar ruido en la API
+      if (k === 'posted' && v === 'todos') return;
       if (Array.isArray(v)) q.append(k, v.join(','));
       else q.append(k, String(v));
     });
@@ -52,9 +107,11 @@
   }
   function safeParse(jsonStr) { try { return JSON.parse(jsonStr || '{}'); } catch { return {}; } }
 
-  // Búsqueda flexible (quitar acentos + stem sencillo español)
+  // --- Normalización y “stemming” suave en español para la keyword ---
   function normalizeEs(s) {
-    return (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    return (s || '')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // quita acentos
+      .toLowerCase();
   }
   function stemEs(word) {
     const w = normalizeEs(word);
@@ -72,7 +129,7 @@
     return stemmed.length ? stemmed.join(' ') : normalizeEs(input);
   }
 
-  // ---------- Reset de filtros UI (para refresh) ----------
+  // ---------------- Reset de filtros UI en refresh ----------------
   function clearFiltersUI() {
     try {
       const kw = document.getElementById('input-keyword');
@@ -87,7 +144,7 @@
       document.querySelectorAll('input[name="job-type"]').forEach(cb => cb.checked = false);
       document.querySelectorAll('input[name="job-posted"]').forEach(cb => cb.checked = false);
 
-      // Slider jQuery UI (si está inicializado)
+      // Slider jQuery UI (si existe)
       const $slider = window.jQuery ? window.jQuery('.price-range') : null;
       if ($slider && typeof $slider.slider === 'function' && $slider.length) {
         const min = $slider.slider('option', 'min') ?? 0;
@@ -99,7 +156,38 @@
     } catch (_) {}
   }
 
-  // ---------- Leer filtros UI ----------
+  // ---------------- Últimas búsquedas ----------------
+  const BUSQ_KEY = 'ultimasBusquedas';
+  function pushBusqueda(term) {
+    if (!term) return;
+    const raw = localStorage.getItem(BUSQ_KEY);
+    let arr = [];
+    try { arr = raw ? JSON.parse(raw) : []; } catch {}
+    arr = [term, ...arr.filter(x => x !== term)].slice(0, 5);
+    localStorage.setItem(BUSQ_KEY, JSON.stringify(arr));
+    renderUltimasBusquedas(arr);
+  }
+  function renderUltimasBusquedas(arr) {
+    const ul = document.getElementById('lista-busquedas');
+    if (!ul) return;
+    ul.innerHTML = '';
+    (arr || []).forEach(t => {
+      const li = document.createElement('li');
+      li.innerHTML = `<a href="#" class="text-decoration-none">${t}</a>`;
+      li.querySelector('a').onclick = (e) => {
+        e.preventDefault();
+        const input = document.getElementById('input-keyword');
+        if (input) input.value = t;
+        STATE.q_raw = t;
+        STATE.q = mixtoQuery(t);
+        STATE.page = 1;
+        scheduleLoad(400);
+      };
+      ul.appendChild(li);
+    });
+  }
+
+  // ---------------- Leer filtros desde UI ----------------
   function readFiltersFromUI() {
     const kw = document.getElementById('input-keyword');
     const raw = kw?.value?.trim() || '';
@@ -112,9 +200,11 @@
     const catSel = document.getElementById('categoria-select');
     STATE.categoria = (catSel?.value || '').trim();
 
+    // Modalidad: checkboxes -> códigos API
     const checks = Array.from(document.querySelectorAll('input[name="job-type"]:checked'));
     STATE.modalidad = checks.map(ch => UI_TO_API_MODALIDAD[ch.value]).filter(Boolean);
 
+    // Publicados: selección única
     const postedCheck = document.querySelector('input[name="job-posted"]:checked');
     if (postedCheck) {
       const mapPosted = { '1': 'todos', '2': '7d', '3': '24h', '4': '7d', '5': '30d', '6': '60d' };
@@ -123,6 +213,7 @@
       STATE.posted = 'todos';
     }
 
+    // Salario: jQuery UI slider
     const $slider = window.jQuery ? window.jQuery('.price-range') : null;
     if ($slider && typeof $slider.slider === 'function' && $slider.length) {
       const maxVal = $slider.slider('option', 'max') ?? 3000000;
@@ -138,19 +229,21 @@
     }
   }
 
-  // ---------- Render ----------
+  // ---------------- Render de tarjetas ----------------
   function renderOfertas(ofertas) {
     const cont = document.getElementById('ofertas-container');
     cont.innerHTML = '';
+
     if (!ofertas || ofertas.length === 0) {
       cont.innerHTML = `<p class="text-center">No hay resultados con esos filtros.</p>`;
       return;
     }
+
     ofertas.forEach(oferta => {
       const data = safeParse(oferta.data);
       const herramientas = (data.herramientas_basicas || []).map(h => `<a><span>${h}</span></a>`).join('');
       const modalidadLegible = formatModalidad(data.modalidad);
-      const detailUrl = `job-single-2-si.html?id=${oferta.id}`;
+      const detailUrl = `job-single-2.html?id=${oferta.id}`;
 
       cont.insertAdjacentHTML('beforeend', `
         <div class="col-lg-12" id="oferta-${oferta.id}">
@@ -179,6 +272,7 @@
     });
   }
 
+  // ---------------- Paginación ----------------
   function renderPagination(meta) {
     const pag = document.querySelector('.pagination');
     const showing = document.querySelector('.pagination-showing p');
@@ -194,21 +288,21 @@
     const prev = document.createElement('li');
     prev.className = 'page-item' + (page <= 1 ? ' disabled' : '');
     prev.innerHTML = `<a class="page-link" href="#" aria-label="Previous"><i class="far fa-angle-double-left"></i></a>`;
-    prev.onclick = (e) => { e.preventDefault(); if (page > 1) { STATE.page = page - 1; loadOfertas(); } };
+    prev.onclick = (e) => { e.preventDefault(); if (page > 1) { STATE.page = page - 1; scheduleLoad(300); } };
     pag.appendChild(prev);
 
     for (let p = 1; p <= pages && p <= 5; p++) {
       const li = document.createElement('li');
       li.className = 'page-item' + (p === page ? ' active' : '');
       li.innerHTML = `<a class="page-link" href="#">${p}</a>`;
-      li.onclick = (e) => { e.preventDefault(); STATE.page = p; loadOfertas(); };
+      li.onclick = (e) => { e.preventDefault(); STATE.page = p; scheduleLoad(300); };
       pag.appendChild(li);
     }
 
     const next = document.createElement('li');
     next.className = 'page-item' + (page >= pages ? ' disabled' : '');
     next.innerHTML = `<a class="page-link" href="#" aria-label="Next"><i class="far fa-angle-double-right"></i></a>`;
-    next.onclick = (e) => { e.preventDefault(); if (page < pages) { STATE.page = page + 1; loadOfertas(); } };
+    next.onclick = (e) => { e.preventDefault(); if (page < pages) { STATE.page = page + 1; scheduleLoad(300); } };
     pag.appendChild(next);
 
     if (showing) {
@@ -218,28 +312,50 @@
     }
   }
 
-  // ---------- Carga ----------
-  async function loadOfertas() {
+  // ---------------- Carga principal + debounce ----------------
+  let APPLY_TIMER = null;
+  let INFLIGHT_CTRL = null;
+
+  function scheduleLoad(delay = 600) {
+    ApplyingUI.show('Aplicando filtros…');
+    if (APPLY_TIMER) clearTimeout(APPLY_TIMER);
+    if (INFLIGHT_CTRL) { try { INFLIGHT_CTRL.abort(); } catch {} INFLIGHT_CTRL = null; }
+
+    APPLY_TIMER = setTimeout(async () => {
+      APPLY_TIMER = null;
+      const ctrl = new AbortController();
+      INFLIGHT_CTRL = ctrl;
+      try {
+        await loadOfertas(ctrl.signal);
+      } finally {
+        INFLIGHT_CTRL = null;
+        ApplyingUI.hide();
+      }
+    }, delay);
+  }
+
+  async function loadOfertas(signal) {
     const qs = buildQuery({
       page: STATE.page,
       take: STATE.take,
       q: STATE.q,
       region: STATE.region,
       categoria: STATE.categoria,
-      area_trabajo: STATE.categoria, // alias
+      area_trabajo: STATE.categoria, // alias por compat
       modalidad: STATE.modalidad,
       salarioMin: STATE.salarioMin,
       salarioMax: STATE.salarioMax,
       posted: STATE.posted,
       sortBy: STATE.sortBy,
-      order: STATE.order,
+      order: STATE.order
     });
 
+    // Si no hay filtros (qs vacío), pega al endpoint base para "todas"
     const url = qs ? `${API}?${qs}` : API;
     const cont = document.getElementById('ofertas-container');
 
     try {
-      const res = await fetch(url);
+      const res = await fetch(url, { signal });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       const ofertas = json.data || json.items || [];
@@ -247,58 +363,70 @@
 
       renderOfertas(ofertas);
       renderPagination(meta);
+
+      if (STATE.q_raw) pushBusqueda(STATE.q_raw);
     } catch (err) {
+      if (err?.name === 'AbortError') return;
       console.error('❌ Error cargando ofertas:', err);
       if (cont) cont.innerHTML = `<p class="text-danger text-center">No se pudieron cargar las ofertas.</p>`;
     }
   }
 
-  // ---------- Eventos ----------
-  function wireUI() {
-    // “Job posted” (exclusivo)
+  // ---------------- Eventos UI ----------------
+  window.aplicarFiltro = function () {
+    readFiltersFromUI();
+    STATE.page = 1;
+    scheduleLoad(600);
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // “Job posted” selección única (tipo checkbox exclusivo)
     document.querySelectorAll('input[name="job-posted"]').forEach(ch => {
       ch.addEventListener('change', () => {
         if (ch.checked) {
           document.querySelectorAll('input[name="job-posted"]').forEach(o => { if (o !== ch) o.checked = false; });
           readFiltersFromUI();
           STATE.page = 1;
-          loadOfertas();
+          scheduleLoad(600);
         }
       });
     });
 
-    // Categoría
+    // Cambio de categoría ⇒ NO limpiamos la keyword
     const catSel = document.getElementById('categoria-select');
     if (catSel) {
       catSel.addEventListener('change', () => {
         readFiltersFromUI();
         STATE.page = 1;
-        loadOfertas();
+        scheduleLoad(400);
       });
     }
 
-    // Región
+    // Cambio de región
     const regionSel = document.getElementById('region-select');
     if (regionSel) {
       regionSel.addEventListener('change', () => {
         readFiltersFromUI();
         STATE.page = 1;
-        loadOfertas();
+        scheduleLoad(600);
       });
     }
 
-    // Submit formulario top
+    // Últimas búsquedas (solo mostrar, sin auto-aplicar)
+    try { renderUltimasBusquedas(JSON.parse(localStorage.getItem(BUSQ_KEY) || '[]')); } catch {}
+
+    // Submit del formulario superior
     const form = document.getElementById('form-busqueda');
     if (form) {
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         readFiltersFromUI();
         STATE.page = 1;
-        loadOfertas();
+        scheduleLoad(600);
       });
     }
 
-    // Enter en keyword
+    // Enter en el input de keyword
     const kw = document.getElementById('input-keyword');
     if (kw) {
       kw.addEventListener('keydown', (e) => {
@@ -306,24 +434,28 @@
           e.preventDefault();
           readFiltersFromUI();
           STATE.page = 1;
-          loadOfertas();
+          scheduleLoad(600);
         }
       });
     }
 
-    // Botón lateral “Aplicar filtro”
-    window.aplicarFiltro = function () {
-      readFiltersFromUI();
-      STATE.page = 1;
-      loadOfertas();
-    };
-  }
+    // Botón limpiar (si existe en tu HTML)
+    const clearBtn = document.getElementById('clear-keyword');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        const kw = document.getElementById('input-keyword');
+        if (kw) kw.value = '';
+        STATE.q_raw = '';
+        STATE.q = '';
+        STATE.page = 1;
+        scheduleLoad(300);
+      });
+    }
 
-  // ---------- Primera carga: reset filtros + traer TODO ----------
-  document.addEventListener('DOMContentLoaded', () => {
-    clearFiltersUI();     // ← resetea filtros al refrescar
-    wireUI();
-    readFiltersFromUI();  // con UI limpia → sin parámetros
-    loadOfertas();        // ← trae todas
+    // Primera carga: reset filtros + traer TODO
+    clearFiltersUI();      // ← reset UI al refrescar
+    readFiltersFromUI();   // ← leer (vacío)
+    ApplyingUI.show('Cargando ofertas…');
+    loadOfertas().finally(() => ApplyingUI.hide());
   });
 })();

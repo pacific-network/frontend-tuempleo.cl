@@ -1,104 +1,29 @@
-// function getIdFromURL() {
-//     const params = new URLSearchParams(window.location.search);
-//     return params.get('id');
-//   }
-  
-//   const idOferta = getIdFromURL();
-  
-//   if (!idOferta) {
-//     console.error('ID de oferta no proporcionado en la URL');
-//   } else {
-//     fetch(`${BASE_URL_API}/postulaciones/oferta/${idOferta}`)
-//       .then(res => res.json())
-//       .then((postulantes) => {
-//         if (!Array.isArray(postulantes)) {
-//           console.warn('⚠️ No se recibió un array de postulantes:', postulantes);
-//           return;
-//         }
-  
-//         const container = document.getElementById('candidates-container');
-//         container.innerHTML = '';
-  
-//         postulantes.forEach(post => {
-//           const postulante = post.postulante || {};
-//           const usuario = postulante.usuario || {};
-//           const data = postulante.data || {};
-//           const personales = data.datos_personales || {};
-  
-//           // Nombre completo concatenando nombres y apellidos de usuario
-//           const nombre = usuario.nombres && usuario.apellidos
-//             ? `${usuario.nombres} ${usuario.apellidos}`
-//             : 'Nombre no disponible';
-  
-//           // Cargo de la primera experiencia si existe
-//           const cargo = data.experiencias?.[0]?.cargo || 'Sin cargo';
-  
-//           // Comuna y salario esperado
-//           const comuna = personales.comuna || 'Comuna no especificada';
-//           const salario = data.preferencias?.salario_esperado || 0;
-  
-//           // Idiomas en links
-//           const idiomasHTML = Array.isArray(data.idiomas)
-//             ? data.idiomas.map(i => `<a href="#">${i.idioma}</a>`).join('')
-//             : '';
-  
-//           const html = `
-//             <div class="col-md-6 col-lg-6">
-//               <div class="candidate-item">
-//                 <div class="candidate-bio">
-//                   <div class="candidate-img">
-//                     <img src="../assets/img/candidate/default.jpg" alt="thumb">
-//                   </div>
-//                   <div class="candidate-bio-content">
-//                     <h5><a href="#">${nombre}</a></h5>
-//                     <span>${cargo}</span>
-//                   </div>
-//                 </div>
-//                 <div class="candidate-content">
-//                   <p><i class="far fa-location-dot"></i> ${comuna}</p>
-//                   <div class="candidate-skill">
-//                     ${idiomasHTML}
-//                   </div>
-//                   <div class="candidate-bottom">
-//                     <div class="candidate-salary">
-//                       $ ${Number(salario).toLocaleString('es-CL')} <span>Mensual</span>
-//                     </div>
-//                     <div class="profile-btns">
-//                       <a href=""employer-view-candidate.html=${id}" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
-//                       <a href="#" class="btn btn-outline-secondary btn-sm"><i class="far fa-check"></i></a>
-//                       <a href=" class="btn btn-outline-danger btn-sm delete-btn" data-candidate="${nombre}"><i class="far fa-trash-can"></i></a>
-//                     </div>
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-//           `;
-//           container.insertAdjacentHTML('beforeend', html);
-//         });
-//       })
-//       .catch(err => {
-//         console.error('❌ Error al obtener postulantes:', err);
-//       });
-//   }
-  
-// vista-postulantes.js
+// assets/js/modules/postulaciones/vista-postulantes.js
 (() => {
   // ====== Config ======
-  const token = localStorage.getItem('token') || '';
-  const AUTH_HEADERS = token ? { 'Authorization': `Bearer ${token}` } : {};
-  const JSON_HEADERS = { ...AUTH_HEADERS, 'Content-Type': 'application/json' };
-
   const PATHS = {
     OFERTA: '/postulaciones/oferta',   // GET {BASE_URL_API}/postulaciones/oferta/:idOferta
     SELECCION: '/seleccion',           // PATCH {BASE_URL_API}/seleccion/:postId/{preseleccionar|descartar|contratar}
     POSTULACIONES: '/postulaciones'    // DELETE {BASE_URL_API}/postulaciones/:postId
   };
 
-  // ====== Utils ======
-  function getIdFromURL() {
-    const p = new URLSearchParams(window.location.search);
-    return p.get('id');
+  // ====== Tokens (robusto) ======
+  const TOKEN_KEYS = ['auth_token_emp','auth_token','empleador_token','access_token','token','jwt','jwtToken'];
+  function getAuthToken() {
+    for (const k of TOKEN_KEYS) {
+      const v = localStorage.getItem(k);
+      if (v) return { token: v, key: k };
+    }
+    const anyKey = Object.keys(localStorage).find((x) => /token/i.test(x));
+    return anyKey ? { token: localStorage.getItem(anyKey), key: anyKey } : { token: null, key: null };
   }
+  const { token } = getAuthToken();
+  const AUTH_HEADERS = token ? { 'Authorization': `Bearer ${token}` } : {};
+  const JSON_HEADERS = { ...AUTH_HEADERS, 'Content-Type': 'application/json' };
+
+  // ====== Utils ======
+  const container = document.getElementById('candidates-container');
+
   function moneyCL(v) {
     const n = Number(v || 0);
     return n.toLocaleString('es-CL');
@@ -139,18 +64,59 @@
     new bootstrap.Toast(el).show();
   }
 
+  // Quita id/ofertaId de la URL y lo guarda
+  function resolveOfferId() {
+    const sp = new URLSearchParams(location.search);
+    let id = sp.get('id') || sp.get('ofertaId');
+
+    if (id) {
+      sessionStorage.setItem('sel_offer_id', id);
+      // fallback para nueva pestaña (1 min)
+      localStorage.setItem('tmp_sel_offer_id', JSON.stringify({ v: id, t: Date.now() }));
+
+      // limpiamos la URL
+      sp.delete('id'); sp.delete('ofertaId');
+      const qs = sp.toString();
+      const newUrl = location.pathname + (qs ? '?' + qs : '') + location.hash;
+      history.replaceState(null, '', newUrl);
+      return id;
+    }
+
+    // sin query: usar sessionStorage
+    id = sessionStorage.getItem('sel_offer_id');
+    if (id) return id;
+
+    // último recurso: nueva pestaña en la última 1 min
+    try {
+      const raw = localStorage.getItem('tmp_sel_offer_id');
+      if (raw) {
+        const o = JSON.parse(raw);
+        if (o && Date.now() - o.t < 60000) return o.v;
+      }
+    } catch {}
+    return null;
+  }
+
   // ====== API ======
   async function fetchPostulantesPorOferta(ofertaId) {
-    const res = await fetch(`${BASE_URL_API}${PATHS.OFERTA}/${ofertaId}`, { headers: AUTH_HEADERS });
-    if (!res.ok) throw new Error(`Error ${res.status}: ${await res.text()}`);
-    const data = await res.json();
-    return Array.isArray(data) ? data : (data.items || []);
+    const url = `${BASE_URL_API}${PATHS.OFERTA}/${ofertaId}`;
+
+    // 1) Con Bearer si hay token
+    if (token) {
+      const r1 = await fetch(url, { headers: AUTH_HEADERS });
+      if (r1.ok) return r1.json();
+      if (r1.status !== 401 && r1.status !== 403) throw new Error(`Error ${r1.status}: ${await r1.text()}`);
+    }
+    // 2) Reintento con cookies (sesión por cookie)
+    const r2 = await fetch(url, { credentials: 'include' });
+    if (!r2.ok) throw new Error(`Error ${r2.status}: ${await r2.text()}`);
+    return r2.json();
   }
   async function patchSeleccion(postulacionId, accion, observaciones = '') {
     const url = `${BASE_URL_API}${PATHS.SELECCION}/${postulacionId}/${accion}`;
     const res = await fetch(url, { method: 'PATCH', headers: JSON_HEADERS, body: JSON.stringify({ observaciones }) });
     if (!res.ok) throw new Error(`Error ${res.status}: ${await res.text()}`);
-    return res.json(); // { success: true }
+    return res.json();
   }
   async function borrarPostulacion(postulacionId) {
     const url = `${BASE_URL_API}${PATHS.POSTULACIONES}/${postulacionId}`;
@@ -160,10 +126,6 @@
   }
 
   // ====== Render ======
-  const container = document.getElementById('candidates-container');
-  const idOferta = getIdFromURL();
-
-  // Etiqueta del botón según estado actual
   function labelByEstado(estado) {
     switch (estado) {
       case 'preseleccionado': return 'Seleccionado';
@@ -171,7 +133,6 @@
       default: return 'Preseleccionar';
     }
   }
-  // Icono del botón según estado actual
   function iconByEstado(estado) {
     switch (estado) {
       case 'preseleccionado': return 'fa-check';
@@ -179,7 +140,6 @@
       default: return 'fa-star';
     }
   }
-  // Próxima acción que ejecutará el botón
   function nextActionByEstado(estado) {
     if (estado === 'preseleccionado') return 'contratar';
     if (estado === 'contratado') return ''; // no hay siguiente
@@ -189,7 +149,6 @@
   function cardTemplate(post) {
     const postulacionId = post.id;
     const estado = post.estado || 'postulado';
-
     const postulante = post.postulante || {};
     const usuario = postulante.usuario || {};
     const data = postulante.data || {};
@@ -199,8 +158,8 @@
       ? `${usuario.nombres} ${usuario.apellidos}`
       : (usuario.nombres || 'Nombre no disponible');
 
-    const cargo = data.experiencias?.[0]?.cargo || 'Sin cargo';
-    const comuna = personales.comuna || 'Comuna no especificada';
+    const cargo   = data.experiencias?.[0]?.cargo || 'Sin cargo';
+    const comuna  = personales.comuna || 'Comuna no especificada';
     const salario = data.preferencias?.salario_esperado || 0;
     const idiomasHTML = Array.isArray(data.idiomas)
       ? data.idiomas.map(i => `<a href="#" class="btn btn-xs btn-light me-1 mb-1">${i.idioma}</a>`).join('')
@@ -208,8 +167,8 @@
 
     const usuarioId = usuario.id || '';
     const btnLabel = labelByEstado(estado);
-    const btnIcon = iconByEstado(estado);
-    const nextAction = nextActionByEstado(estado);
+    const btnIcon  = iconByEstado(estado);
+    const nextAct  = nextActionByEstado(estado);
     const disabledAttr = (estado === 'contratado') ? 'disabled' : '';
 
     return `
@@ -221,7 +180,7 @@
             </div>
             <div class="candidate-bio-content">
               <h5 class="mb-1">
-                <a href="employer-view-candidate.html?id=${usuarioId}" class="view-btn" data-user-id="${usuarioId}">
+                <a href="employer-view-candidate.html" class="view-btn" data-user-id="${usuarioId}">
                   ${nombre}
                 </a>
               </h5>
@@ -237,14 +196,14 @@
                 $ ${moneyCL(salario)} <span>Mensual</span>
               </div>
               <div class="profile-btns d-flex gap-2">
-                <a href="employer-view-candidate.html?id=${usuarioId}"
+                <a href="employer-view-candidate.html"
                    class="btn btn-outline-secondary btn-sm view-btn"
                    data-user-id="${usuarioId}" title="Ver candidato">
                   <i class="far fa-eye"></i>
                 </a>
                 <button class="btn btn-primary btn-sm next-btn"
-                        data-next-action="${nextAction}"
-                        title="${nextAction === 'contratar' ? 'Contratar' : (nextAction ? 'Preseleccionar' : 'Sin acciones')}"
+                        data-next-action="${nextAct}"
+                        title="${nextAct === 'contratar' ? 'Contratar' : (nextAct ? 'Preseleccionar' : 'Sin acciones')}"
                         ${disabledAttr}>
                   <i class="far ${btnIcon} me-1"></i>${btnLabel}
                 </button>
@@ -261,15 +220,16 @@
       </div>`;
   }
 
-  async function renderPostulantes() {
+  async function renderPostulantes(ofertaId) {
     if (!container) return;
-    if (!idOferta) {
-      container.innerHTML = `<div class="col-12"><div class="alert alert-danger">ID de oferta no proporcionado en la URL.</div></div>`;
+    if (!ofertaId) {
+      container.innerHTML = `<div class="col-12"><div class="alert alert-danger">No se encontró el ID de la oferta. Abre esta página desde la gestión de avisos.</div></div>`;
       return;
     }
     container.innerHTML = `<div class="col-12"><div class="alert alert-light border">Cargando candidatos...</div></div>`;
     try {
-      const lista = await fetchPostulantesPorOferta(idOferta);
+      const data  = await fetchPostulantesPorOferta(ofertaId);
+      const lista = Array.isArray(data) ? data : (data.items || []);
       if (!lista.length) {
         container.innerHTML = `<div class="col-12"><div class="alert alert-light border">No hay candidatos para esta oferta.</div></div>`;
         return;
@@ -285,11 +245,27 @@
   function wireEvents() {
     if (!container) return;
 
+    // Navegar al perfil SIN id en la URL: guardamos sel_cand_id
+    document.addEventListener('click', (e) => {
+      const view = e.target.closest('a.view-btn');
+      if (!view) return;
+      e.preventDefault();
+      const uid = view.dataset.userId || view.getAttribute('data-user-id');
+      if (!uid) return;
+
+      // Guarda candidato y página de retorno; navega sin querystring
+      sessionStorage.setItem('sel_cand_id', uid);
+      localStorage.setItem('tmp_sel_cand_id', JSON.stringify({ v: uid, t: Date.now() }));
+      // A dónde volver desde el perfil
+      sessionStorage.setItem('return_to_offer_page', location.pathname);
+      location.href = 'employer-view-candidate.html';
+    }, true);
+
     // Modal eliminar
     const deleteModalEl = document.getElementById('confirmDeleteModal');
-    const deleteModal = deleteModalEl ? new bootstrap.Modal(deleteModalEl) : null;
+    const deleteModal   = deleteModalEl ? new bootstrap.Modal(deleteModalEl) : null;
     const candidateNameSpan = document.getElementById('candidateName');
-    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    const confirmDeleteBtn  = document.getElementById('confirmDeleteBtn');
     let pendingDeleteId = null;
 
     container.addEventListener('click', async (e) => {
@@ -297,41 +273,27 @@
       if (!card) return;
       const postulacionId = card.getAttribute('data-postulacion-id');
 
-      // Ver perfil: dejamos que el <a href> navegue
-      if (e.target.closest('.view-btn')) return;
-
-      // Siguiente (preseleccionar/contratar) con botón que refleja estado actual
+      // Botón siguiente estado
       const nextBtn = e.target.closest('.next-btn');
       if (nextBtn) {
         e.preventDefault();
         if (nextBtn.disabled) return;
-
         const accion = nextBtn.getAttribute('data-next-action'); // '', 'preseleccionar', 'contratar'
-        if (!accion) return; // Sin acciones (contratado)
-
+        if (!accion) return;
         try {
           await patchSeleccion(postulacionId, accion, `Cambio desde UI (${accion})`);
-
-          // Actualizar badge y botón según NUEVO estado
           let nuevoEstado = (accion === 'preseleccionar') ? 'preseleccionado'
-                          : (accion === 'contratar') ? 'contratado'
-                          : 'postulado';
+                        : (accion === 'contratar') ? 'contratado'
+                        : 'postulado';
 
-          // Badge
           const badge = card.querySelector('[data-role="estado-badge"]');
           if (badge) badge.outerHTML = estadoBadge(nuevoEstado);
 
-          // Botón principal
           nextBtn.innerHTML = `<i class="far ${iconByEstado(nuevoEstado)} me-1"></i>${labelByEstado(nuevoEstado)}`;
-          const siguienteAccion = nextActionByEstado(nuevoEstado);
+          const siguienteAccion = (nuevoEstado === 'preseleccionado') ? 'contratar' : (nuevoEstado === 'contratado' ? '' : 'preseleccionar');
           nextBtn.setAttribute('data-next-action', siguienteAccion || '');
-          nextBtn.title = siguienteAccion
-            ? (siguienteAccion === 'contratar' ? 'Contratar' : 'Preseleccionar')
-            : 'Sin acciones';
-
-          if (!siguienteAccion) {
-            nextBtn.disabled = true; // contratado
-          }
+          nextBtn.title = siguienteAccion ? (siguienteAccion === 'contratar' ? 'Contratar' : 'Preseleccionar') : 'Sin acciones';
+          if (!siguienteAccion) nextBtn.disabled = true;
 
           showToast('Estado actualizado correctamente');
         } catch (err) {
@@ -347,7 +309,6 @@
         e.preventDefault();
         try {
           await patchSeleccion(postulacionId, 'descartar', 'Descartado desde UI');
-
           const badge = card.querySelector('[data-role="estado-badge"]');
           if (badge) badge.outerHTML = estadoBadge('descartado');
 
@@ -358,7 +319,6 @@
             nextBtn2.title = 'Preseleccionar';
             nextBtn2.innerHTML = `<i class="far ${iconByEstado('postulado')} me-1"></i>${labelByEstado('postulado')}`;
           }
-
           showToast('Candidato descartado');
         } catch (err) {
           console.error(err);
@@ -393,7 +353,6 @@
       }
     });
 
-    // Confirmar eliminación (modal)
     if (confirmDeleteBtn && deleteModal) {
       confirmDeleteBtn.addEventListener('click', async () => {
         if (!pendingDeleteId) return;
@@ -415,8 +374,11 @@
 
   // ====== Init ======
   document.addEventListener('DOMContentLoaded', async () => {
-    await renderPostulantes();
+    // Guardar “ruta de retorno” (para el botón Volver del perfil)
+    sessionStorage.setItem('return_to_offer_page', location.pathname);
+
+    const ofertaId = resolveOfferId();
+    await renderPostulantes(ofertaId);
     wireEvents();
   });
 })();
-
