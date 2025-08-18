@@ -2,11 +2,16 @@
 // Requiere window.BASE_URL_API definido (assets/js/config/config.js)
 
 (function () {
-  const API = `${BASE_URL_API}/ofertas`;
+  const API = `${window.BASE_URL_API}/ofertas`;
+
+  // Umbrales y tamaños "seguros" para la API (evitar 400 por take grande)
+  const FILL_THRESHOLD = 10;  // si hay >=10 filtrados, mostramos solo esos
+  const FILL_TARGET    = 15;  // si hay <10, completamos hasta 15
+  const TAKE_SAFE      = 50;  // tamaño de página seguro para peticiones filtradas
 
   const STATE = {
     page: 1,
-    take: 10,
+    take: 10,                 // usado para escenario SIN filtros (paginado normal)
     q: '',
     q_raw: '',
     region: '',
@@ -24,6 +29,24 @@
   const MOD_LABEL = { '1': 'Full Time', '2': 'Part Time', '3': 'Remoto', '4': 'Freelance', '5': 'Híbrido' };
 
   // ---------- Helpers ----------
+  const isBlank = (v) =>
+    v == null ||
+    v === '' ||
+    v === '0' ||
+    v === 'Ubicación' ||
+    v === 'Categoría' ||
+    v === 'null' ||
+    v === 'undefined';
+
+  const hasAnyFilter = () =>
+    !!(STATE.q ||
+       (!isBlank(STATE.region) && STATE.region) ||
+       (!isBlank(STATE.categoria) && STATE.categoria) ||
+       (STATE.modalidad && STATE.modalidad.length) ||
+       STATE.salarioMin !== undefined ||
+       STATE.salarioMax !== undefined ||
+       (STATE.posted && STATE.posted !== 'todos'));
+
   function formatModalidad(code) { return MOD_LABEL[String(code)] || 'No especificado'; }
   function formatFecha(fechaStr) {
     if (!fechaStr) return 'Sin fecha';
@@ -48,11 +71,17 @@
       if (Array.isArray(v)) q.append(k, v.join(','));
       else q.append(k, String(v));
     });
+    // cache-buster
+    q.append('_', Date.now());
     return q.toString();
+  }
+  function buildUrl(params) {
+    const qs = buildQuery(params || {});
+    return qs ? `${API}?${qs}` : `${API}?_=${Date.now()}`;
   }
   function safeParse(jsonStr) { try { return JSON.parse(jsonStr || '{}'); } catch { return {}; } }
 
-  // Búsqueda flexible (quitar acentos + stem sencillo español)
+  // Búsqueda flexible (quitar acentos + stem sencillo)
   function normalizeEs(s) {
     return (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   }
@@ -66,7 +95,7 @@
       .replace(/(os|as|es)$/i, '')
       .replace(/(o|a)$/i, '');
   }
-  function mixtoQuery(input) {
+  function normalizeAndStem(input) {
     const tokens = normalizeEs(input).split(/[\s,;]+/).filter(Boolean);
     const stemmed = tokens.map(stemEs).filter(t => t.length >= 3);
     return stemmed.length ? stemmed.join(' ') : normalizeEs(input);
@@ -79,16 +108,15 @@
       if (kw) kw.value = '';
 
       const regionSel = document.getElementById('region-select');
-      if (regionSel) regionSel.value = '';
+      if (regionSel) regionSel.value = ''; // nunca "0"
 
       const catSel = document.getElementById('categoria-select');
-      if (catSel) catSel.value = '';
+      if (catSel) catSel.value = ''; // nunca "0"
 
       document.querySelectorAll('input[name="job-type"]').forEach(cb => cb.checked = false);
       document.querySelectorAll('input[name="job-posted"]').forEach(cb => cb.checked = false);
 
-      // Slider jQuery UI (si está inicializado)
-      const $slider = window.jQuery ? window.jQuery('.price-range') : null;
+      const $slider = window.jQuery ? window.jQuery('#price-range1') : null; // usa el ID real
       if ($slider && typeof $slider.slider === 'function' && $slider.length) {
         const min = $slider.slider('option', 'min') ?? 0;
         const max = $slider.slider('option', 'max') ?? 3000000;
@@ -104,13 +132,15 @@
     const kw = document.getElementById('input-keyword');
     const raw = kw?.value?.trim() || '';
     STATE.q_raw = raw;
-    STATE.q = raw ? mixtoQuery(raw) : '';
+    STATE.q = raw ? normalizeAndStem(raw) : '';
 
     const regionSel = document.getElementById('region-select');
-    STATE.region = (regionSel?.value || '').trim();
+    const regionVal = (regionSel?.value || '').trim();
+    STATE.region = isBlank(regionVal) ? '' : regionVal;
 
     const catSel = document.getElementById('categoria-select');
-    STATE.categoria = (catSel?.value || '').trim();
+    const catVal = (catSel?.value || '').trim();
+    STATE.categoria = isBlank(catVal) ? '' : catVal;
 
     const checks = Array.from(document.querySelectorAll('input[name="job-type"]:checked'));
     STATE.modalidad = checks.map(ch => UI_TO_API_MODALIDAD[ch.value]).filter(Boolean);
@@ -123,7 +153,7 @@
       STATE.posted = 'todos';
     }
 
-    const $slider = window.jQuery ? window.jQuery('.price-range') : null;
+    const $slider = window.jQuery ? window.jQuery('#price-range1') : null;
     if ($slider && typeof $slider.slider === 'function' && $slider.length) {
       const maxVal = $slider.slider('option', 'max') ?? 3000000;
       let min = $slider.slider('values', 0);
@@ -141,7 +171,9 @@
   // ---------- Render ----------
   function renderOfertas(ofertas) {
     const cont = document.getElementById('ofertas-container');
+    if (!cont) return;
     cont.innerHTML = '';
+
     if (!ofertas || ofertas.length === 0) {
       cont.innerHTML = `<p class="text-center">No hay resultados con esos filtros.</p>`;
       return;
@@ -191,6 +223,15 @@
 
     pag.innerHTML = '';
 
+    if (pages <= 1) {
+      if (showing) {
+        const start = total ? 1 : 0;
+        const end = total;
+        showing.textContent = total ? `Mostrando ${start} - ${end} de ${total} empleos` : 'Sin resultados';
+      }
+      return;
+    }
+
     const prev = document.createElement('li');
     prev.className = 'page-item' + (page <= 1 ? ' disabled' : '');
     prev.innerHTML = `<a class="page-link" href="#" aria-label="Previous"><i class="far fa-angle-double-left"></i></a>`;
@@ -214,42 +255,153 @@
     if (showing) {
       const start = total ? (page - 1) * take + 1 : 0;
       const end = Math.min(page * take, total);
-      showing.textContent = total ? `Showing ${start} - ${end} of ${total} Jobs` : 'Sin resultados';
+      showing.textContent = total ? `Mostrando ${start} - ${end} de ${total} empleos` : 'Sin resultados';
     }
   }
 
-  // ---------- Carga ----------
-  async function loadOfertas() {
-    const qs = buildQuery({
-      page: STATE.page,
-      take: STATE.take,
-      q: STATE.q,
-      region: STATE.region,
-      categoria: STATE.categoria,
-      area_trabajo: STATE.categoria, // alias
-      modalidad: STATE.modalidad,
+  // ---------- Fetch helpers ----------
+  async function fetchJson(url, token) {
+    const res = await fetch(url, {
+      mode: 'cors',
+      cache: 'no-store',
+      headers: {
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        'Accept': 'application/json'
+      }
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  }
+
+  // Parámetros filtrados listos para URL
+  function filteredParams(take, page) {
+    return {
+      page,
+      take,
+      q: STATE.q || undefined,
+      region: isBlank(STATE.region) ? undefined : STATE.region,
+      categoria: isBlank(STATE.categoria) ? undefined : STATE.categoria,
+      area_trabajo: isBlank(STATE.categoria) ? undefined : STATE.categoria, // alias
+      modalidad: (STATE.modalidad && STATE.modalidad.length ? STATE.modalidad : undefined),
       salarioMin: STATE.salarioMin,
       salarioMax: STATE.salarioMax,
-      posted: STATE.posted,
       sortBy: STATE.sortBy,
       order: STATE.order,
-    });
+      posted: STATE.posted && STATE.posted !== 'todos' ? STATE.posted : undefined
+    };
+  }
 
-    const url = qs ? `${API}?${qs}` : API;
+  async function fetchFilteredPage(take, page, token) {
+    const url = buildUrl(filteredParams(take, page));
+    const json = await fetchJson(url, token);
+    return {
+      items: json.data || json.items || [],
+      meta: json.meta || json.pagination || {}
+    };
+  }
+
+  // Trae todos los filtrados paginando en lotes de TAKE_SAFE
+  async function fetchAllFilteredPaged(token) {
+    // Página 1 con TAKE_SAFE
+    const first = await fetchFilteredPage(TAKE_SAFE, 1, token);
+    const total = first.meta?.total ?? first.meta?.itemCount ?? first.items.length;
+
+    // Si con la primera página ya tenemos todo, devolvemos
+    if (first.items.length >= total) {
+      return first.items;
+    }
+
+    const pages = Math.ceil(total / TAKE_SAFE);
+    const all = [...first.items];
+
+    for (let p = 2; p <= pages; p++) {
+      const { items } = await fetchFilteredPage(TAKE_SAFE, p, token);
+      all.push(...items);
+      if (all.length >= total) break;
+    }
+    return all.slice(0, total);
+  }
+
+  // Trae empleos “cualquiera” (sin filtros) para rellenar
+  async function fetchFillers(token, howMany, excludeIds = new Set()) {
+    const params = {
+      page: 1,
+      take: Math.max(howMany * 2, howMany),
+      sortBy: STATE.sortBy,
+      order: STATE.order
+    };
+    const url = buildUrl(params);
+    const json = await fetchJson(url, token);
+    const base = (json.data || json.items || []);
+    const filtered = base.filter(j => !excludeIds.has(j.id)).slice(0, howMany);
+    return filtered;
+  }
+
+  // ---------- Carga principal ----------
+  async function loadOfertas(firstLoad = false) {
+    const token = localStorage.getItem('token');
     const cont = document.getElementById('ofertas-container');
 
     try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const json = await res.json();
+      if (hasAnyFilter()) {
+        // 1) Hay filtros activos: página 1 con TAKE_SAFE para saber el total
+        const first = await fetchFilteredPage(TAKE_SAFE, 1, token);
+        const total = first.meta?.total ?? first.meta?.itemCount ?? first.items.length;
+
+        if (total >= FILL_THRESHOLD) {
+          // A) >=10 ⇒ traer todos los filtrados y mostrar SOLO esos
+          const allFiltered = (first.items.length >= total)
+            ? first.items
+            : await fetchAllFilteredPaged(token);
+          renderOfertas(allFiltered);
+          renderPagination({ itemCount: allFiltered.length, page: 1, take: allFiltered.length });
+          return;
+        } else {
+          // B) <10 ⇒ usar los filtrados y rellenar hasta 15
+          const filtered = first.items.slice(0, total); // total ya es todo
+          const need = Math.max(0, FILL_TARGET - filtered.length);
+          const exclude = new Set(filtered.map(o => o.id));
+          const fillers = need > 0 ? await fetchFillers(token, need, exclude) : [];
+          const combined = [...filtered, ...fillers];
+          renderOfertas(combined);
+          renderPagination({ itemCount: combined.length, page: 1, take: combined.length });
+          return;
+        }
+      }
+
+      // 2) SIN filtros: comportamiento normal (paginado)
+      const baseParams = {
+        page: STATE.page,
+        take: STATE.take,
+        sortBy: STATE.sortBy,
+        order: STATE.order,
+        posted: 'todos'
+      };
+      const url = buildUrl(baseParams);
+      let json;
+
+      try {
+        json = await fetchJson(url, token);
+      } catch (e) {
+        // Fallback si la API no acepta posted=todos
+        const fallbackUrl = buildUrl({
+          page: STATE.page,
+          take: STATE.take,
+          sortBy: STATE.sortBy,
+          order: STATE.order
+        });
+        json = await fetchJson(fallbackUrl, token);
+      }
+
       const ofertas = json.data || json.items || [];
       const meta = json.meta || json.pagination || {};
-
       renderOfertas(ofertas);
       renderPagination(meta);
+
     } catch (err) {
       console.error('❌ Error cargando ofertas:', err);
       if (cont) cont.innerHTML = `<p class="text-danger text-center">No se pudieron cargar las ofertas.</p>`;
+      renderPagination({ itemCount: 0, page: 1, take: 1 });
     }
   }
 
@@ -319,11 +471,11 @@
     };
   }
 
-  // ---------- Primera carga: reset filtros + traer TODO ----------
+  // ---------- Primera carga ----------
   document.addEventListener('DOMContentLoaded', () => {
-    clearFiltersUI();     // ← resetea filtros al refrescar
+    clearFiltersUI();     // resetea UI
     wireUI();
-    readFiltersFromUI();  // con UI limpia → sin parámetros
-    loadOfertas();        // ← trae todas
+    // Primera carga: sin filtros => lista normal
+    loadOfertas(true);
   });
 })();
