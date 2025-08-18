@@ -1,6 +1,15 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const idOferta = getIdOfertaFromURL();
-    if (!idOferta) return alert('No se encontró la oferta');
+    if (!idOferta) {
+        await Swal.fire({
+            icon: 'error',
+            title: 'No se encontró la oferta',
+            text: 'No se encontró la oferta',
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: '#3085d6'
+        });
+        return;
+    }
 
     try {
         const response = await fetch(`${BASE_URL_API}/ofertas/${idOferta}`);
@@ -51,16 +60,28 @@ document.addEventListener('DOMContentLoaded', async () => {
             btnPostular.innerHTML = `<span class="fe-log-in"></span> Iniciar sesión para postular`;
             btnPostular.classList.add('btn', 'btn-primary');
             btnPostular.href = 'login.html'; // Redirigir a página de login
-            btnPostular.addEventListener('click', (e) => {
+            btnPostular.addEventListener('click', async (e) => {
                 if (btnPostular.href.includes('login')) return;
                 e.preventDefault();
-                alert('Por favor inicia sesión para postular a esta oferta');
+                await Swal.fire({
+                    icon: 'warning',
+                    title: 'Sesión requerida',
+                    text: 'Por favor inicia sesión para postular a esta oferta',
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor: '#3085d6'
+                });
             });
         }
         
     } catch (error) {
         console.error('Error cargando la oferta:', error);
-        alert('Error al cargar los detalles de la oferta');
+        await Swal.fire({
+            icon: 'error',
+            title: 'Error al cargar los detalles',
+            text: 'Error al cargar los detalles de la oferta',
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: '#3085d6'
+        });
     }
 });
 

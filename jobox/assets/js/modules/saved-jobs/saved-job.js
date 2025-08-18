@@ -51,12 +51,26 @@ async function initGuardarTrabajo() {
   if (!token) {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      (typeof mostrarPopup === 'function')
-        ? mostrarPopup({ titulo: 'Sesión requerida', texto: 'Inicia sesión para guardar trabajos.' }, 'error')
-        : alert('Inicia sesión para guardar trabajos.');
+    
+      if (typeof mostrarPopup === 'function') {
+        mostrarPopup(
+          { titulo: 'Sesión requerida', texto: 'Inicia sesión para guardar trabajos.' },
+          'error'
+        );
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Sesión requerida',
+          text: 'Inicia sesión para guardar trabajos.',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: '#3085d6',
+          allowOutsideClick: false
+        });
+      }
     });
     return;
   }
+
 
   // 1) Estado inicial
   try {

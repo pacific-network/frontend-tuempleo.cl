@@ -151,8 +151,8 @@
                         type="text"
                         id="input-keyword"
                         class="form-control ps-5"
-                        placeholder="Buscar por título, descripción, responsabilidades o requisitos"
-                        aria-label="Buscar por título, descripción, responsabilidades o requisitos"
+                        placeholder="Buscar empleo por puesto o por palabra clave"
+                        aria-label="Buscar empleo por puesto o por palabra clave"
                         autocomplete="off"
                       >
                       <i class="fe-search position-absolute top-50 translate-middle-y" style="left: 15px;"></i>
@@ -173,6 +173,7 @@
                   <!-- Categoría -->
                   <div class="col-12 col-md-6 col-lg-3">
                     <div class="form-group position-relative">
+                      <i class="fe-briefcase position-absolute" style="left: 15px; top: 50%; transform: translateY(-50%);"></i>
                       <select id="categoria-select" class="form-control ps-5" aria-label="Filtrar por categoría">
                         <option value="">Categoría</option>
                         <option value="Abastecimiento y Logistica">Abastecimiento y Logistica</option>
@@ -202,7 +203,6 @@
                         <option value="Sociología / Trabajo Social">Sociología / Trabajo Social</option>
                         <option value="Tecnologías, Sistemas y Telecomunicaciones">Tecnologías, Sistemas y Telecomunicaciones</option>
                       </select>
-                      <i class="fe-briefcase position-absolute" style="right: 15px; top: 50%; transform: translateY(-50%);"></i>
                     </div>
                   </div>
 
@@ -370,5 +370,6 @@
         }
     </script>
     <script src="assets/js/modules/ofertas/filter-job-lo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

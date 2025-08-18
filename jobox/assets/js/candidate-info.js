@@ -70,26 +70,34 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Función para cargar los datos del perfil
         async function loadProfileData() {
-            try {
-                const response = await fetch(apiUrl, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Error HTTP: ${response.status}`);
+        try {
+            const response = await fetch(apiUrl, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
                 }
-
-                const data = await response.json();
-                updateProfileUI(data);
-            } catch (error) {
-                console.error('Error al cargar el perfil:', error);
-                // Mostrar mensaje de error al usuario
-                alert('Error al cargar los datos del perfil. Por favor intenta nuevamente.');
+            });
+        
+            if (!response.ok) {
+                throw new Error(`Error HTTP: ${response.status}`);
             }
+        
+            const data = await response.json();
+            updateProfileUI(data);
+        } catch (error) {
+            console.error('Error al cargar el perfil:', error);
+        
+            // Popup de error en lugar de alert()
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al cargar el perfil',
+                text: 'No se pudieron obtener los datos. Por favor intenta nuevamente.',
+                confirmButtonText: 'Aceptar',
+                confirmButtonColor: '#3085d6'
+            });
         }
+    }
+
 
         function formatRUT(rut) {
             if (!rut) return 'No especificado';
