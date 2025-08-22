@@ -114,6 +114,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           actividades_economicas: [formData.get("actividad_empresa")],
           condicion_fiscal: "Regular",
           domicilios: [formData.get("direccion")],
+          categoria_empresa: formData.get("categoria"),
           inicio_actividades: true,
           fecha_inicio_actividades: `${formData.get("anio_inicio_actividades")}-01-01T00:00:00.000Z`,
           empresa_menor_tamano: formData.get("tamano_equipo") === "1",

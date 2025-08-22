@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const response = await fetch(`${BASE_URL_API}/ofertas`);
     const result = await response.json();
 
-    const ofertas = result.data || []; // ✅ accede correctamente al array
+    const ofertas = result.data || [];
 
     const contenedor = document.getElementById('ofertas-container');
     contenedor.innerHTML = '';
@@ -57,31 +57,26 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
-
-// ✅ Helpers
-
+// Helpers
 function formatModalidad(val) {
   const mapa = {
     '1': 'Full Time',
     '2': 'Part Time',
     '3': 'Remoto',
     '4': 'Freelance',
-    '5': 'Temporal'
+    '5': 'Híbrido'
   };
   return mapa[val] || 'No especificado';
 }
-
 function formatFecha(fechaStr) {
   if (!fechaStr) return 'Sin fecha';
   const d = new Date(fechaStr);
   return d.toLocaleDateString('es-CL');
 }
-
 function formatRango(renta) {
   if (!renta?.desde || !renta?.hasta) return 'No disponible';
   return `$${parseInt(renta.desde).toLocaleString('es-CL')} - $${parseInt(renta.hasta).toLocaleString('es-CL')}`;
 }
-
 function diasDesde(fechaStr) {
   if (!fechaStr) return 'Fecha desconocida';
   const hoy = new Date();

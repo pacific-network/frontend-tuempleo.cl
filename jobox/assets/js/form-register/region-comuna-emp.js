@@ -1,7 +1,7 @@
 // region-comuna-local.js
-document.addEventListener('DOMContentLoaded', function() {
-  const regionSelect = document.getElementById('region_empleador');
-  const comunaSelect = document.getElementById('comuna_empleador');
+document.addEventListener('DOMContentLoaded', async function() {
+  const regionSelect = document.getElementById('empleador_region');
+  const comunaSelect = document.getElementById('empleador_comuna');
   
   // Datos de regiones y comunas (comunas ordenadas alfabéticamente)
   const regionesComunas = {
@@ -81,17 +81,13 @@ document.addEventListener('DOMContentLoaded', function() {
     regionSelect.appendChild(option);
   });
 
-  // Manejar el cambio de región
-  regionSelect.addEventListener('change', () => {
-    const selectedRegion = regionSelect.value;
-    const regionData = regionesComunas.regiones.find(r => r.region === selectedRegion);
-
-    // Resetear el select de comunas
+  // Función para cargar comunas
+  function cargarComunas(regionNombre, comunaSeleccionada = '') {
     comunaSelect.innerHTML = '<option value="">Seleccione una comuna</option>';
     comunaSelect.disabled = true;
 
-    // Si se encontró la región y tiene comunas, llenar el select
-    if (regionData?.comunas?.length) {
+    const regionData = regionesComunas.regiones.find(r => r.region === regionNombre);
+    if (regionData && regionData.comunas.length) {
       regionData.comunas.forEach(comuna => {
         const option = document.createElement('option');
         option.value = comuna;
@@ -99,9 +95,40 @@ document.addEventListener('DOMContentLoaded', function() {
         comunaSelect.appendChild(option);
       });
       comunaSelect.disabled = false;
+
+      if (comunaSeleccionada) {
+        comunaSelect.value = comunaSeleccionada;
+      }
     }
+  }
+
+  // Evento cambio de región
+  regionSelect.addEventListener('change', () => {
+    cargarComunas(regionSelect.value);
   });
 
-  // Inicializar el select de comunas como deshabilitado
+  // Preseleccionar datos desde backend
+  try {
+    const token = localStorage.getItem('token');
+    const sub = getUserIdFromToken(); // Esta función debe obtener el ID del usuario desde el token
+
+    const res = await fetch(`${BASE_URL_API}/empleador/${sub}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    if (!res.ok) throw new Error('Error al obtener datos del empleador');
+
+    const data = await res.json();
+    const regionActual = data?.data?.region || '';
+    const comunaActual = data?.data?.comuna || '';
+
+    if (regionActual) {
+      regionSelect.value = regionActual;
+      cargarComunas(regionActual, comunaActual);
+    }
+  } catch (error) {
+    console.error('❌ Error cargando región y comuna:', error);
+  }
+
   comunaSelect.disabled = true;
 });

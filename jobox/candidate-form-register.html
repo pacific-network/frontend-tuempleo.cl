@@ -41,6 +41,53 @@
             display: block;
         }
     </style>
+    <style>
+/* Contenedor con grid: botón a la izquierda, título centrado */
+.breadcrumb-head{
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;  /* izq - centro - der */
+  align-items: center;
+  gap: 12px;
+  min-height: 72px;
+}
+
+/* Botón "Volver" normal (no flotante) */
+.btn-volver{
+  justify-self: start;
+  position: static;
+  border-radius: 9999px;
+  padding: 10px 16px;
+  box-shadow: 0 6px 18px rgba(60,101,245,.18);
+}
+
+/* Título centrado en la columna del medio */
+.breadcrumb-title{
+  grid-column: 2;
+  text-align: center;
+  margin: 0;
+}
+
+/* Móvil: todo a la izquierda para no estorbar */
+@media (max-width: 768px){
+  .breadcrumb-head{
+    grid-template-columns: auto 1fr;
+    row-gap: 8px;
+  }
+  .btn-volver{ grid-column: 1; }
+  .breadcrumb-title{
+    grid-column: 1 / -1;
+    text-align: left;
+  }
+}
+
+/* Por si aún queda el CSS antiguo cargado, lo anulas aquí */
+.btn-volver-fixed{
+  position: static !important;
+  left: auto !important;
+  bottom: auto !important;
+  z-index: auto !important;
+}
+    </style>
 
 </head>
 
@@ -56,7 +103,7 @@
     <main class="main">
         <div class="site-breadcrumb">
             <div class="container">
-                <h2 class="breadcrumb-title">Ingresa tus Datos</h2>
+                <h2 class="breadcrumb-title m-0">Ingresa tus Datos</h2>
             </div>
             <div class="hero-shape">
                 <img class="hero-shape-1" src="assets/img/shape/03.svg" alt="">
@@ -64,10 +111,10 @@
                 <img class="hero-shape-4" src="assets/img/shape/07.svg" alt="">
             </div>
         </div>
-        <a href="login.html" id="btn-volver" class="theme-btn theme-btn1 btn-volver-fixed">
-          <span class="fe-arrow-left"></span> Volver
-        </a>
         <div class="col-lg-8 mx-auto">
+            <a href="login.html" id="btn-volver" class="theme-btn theme-btn1 btn-volver-inline mb-3">
+                <span class="fe-arrow-left me-2"></span> Volver
+            </a>
             <div class="user-profile-wrapper">
                 <div class="user-profile-card">
                     <h4 class="user-profile-card-title">Datos Personales</h4>
@@ -484,18 +531,34 @@
     <script src="assets/js/form-register/candidate-add-info.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const volverBtn = document.getElementById('btn-volver');
+      document.addEventListener('DOMContentLoaded', () => {
+        const volverBtn = document.getElementById('btn-volver');
+        if (!volverBtn) return;
 
-    if (volverBtn) {
-      volverBtn.addEventListener('click', (e) => {
-        e.preventDefault(); // prevenir navegación inmediata
-        localStorage.removeItem('token'); // eliminar token
-        window.location.href = volverBtn.href; // redirigir manualmente
+        volverBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+
+          Swal.fire({
+            title: '¿Cancelar el registro?',
+            text: 'Si vuelves ahora, se perderán los datos no guardados.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, volver',
+            cancelButtonText: 'Seguir aquí',
+            reverseButtons: true,
+            confirmButtonColor: '#dc3545',   // rojo para acción destructiva
+            cancelButtonColor: '#3085d6'
+          }).then((r) => {
+            if (r.isConfirmed) {
+              // Borra el token y redirige
+              localStorage.removeItem('token');
+              window.location.href = volverBtn.getAttribute('href');
+            }
+          });
+        });
       });
-    }
-  });
-</script>
+    </script>
+
     
 </body>
 

@@ -133,391 +133,205 @@
     <!-- header area end -->
 
     <main class="main">
+    <!-- breadcrumb -->
+    <div class="site-breadcrumb pb-5">
+      <br><br><br>
+      <div class="container">
+        <h2 class="breadcrumb-title">Lista de Trabajos</h2>
 
-        <!-- breadcrumb -->
-        <div class="site-breadcrumb pb-5">
-            <br><br><br>
-            <div class="container">
-                <h2 class="breadcrumb-title">Lista de Trabajos</h2>
-
-                <div class="job-list2 search-form mt-4 mb-2"> <!-- Reducido mt-5 a mt-4 y mb-3 a mb-2 -->
-                    <div class="col-lg-9 mx-auto">
-                        <div class="search-form-wrapper container">
-                            <form id="form-busqueda" action="#">
-                                <div class="row g-3">
-                                    <div class="col-12 col-md-6 col-lg-4">
-                                        <div class="form-group position-relative">
-                                            <input type="text" id="input-keyword" class="form-control ps-5" placeholder="Buscar empleo por puesto o palabra clave">
-                                            <i class="fe-search position-absolute top-50 translate-middle-y" style="left: 15px;"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6 col-lg-4">
-                                        <div class="form-group position-relative">
-                                            <select class="form-control ps-5" id="region-select" data-region-seleccionada="0">
-                                                <option value="">Ubicación</option>
-                                            </select>
-                                            <i class="fe-map-pin position-absolute top-50 translate-middle-y" style="left: 15px;"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6 col-lg-3">
-                                        <div class="form-group position-relative">
-                                            <select id="categoria-select" class="form-control ps-5">
-                                                <option value="">Categoría</option>
-                                                <option value="1">Informática / Tecnología</option>
-                                                <option value="2">Administración / Oficina</option>
-                                                <option value="3">Operaciones / Logística</option>
-                                                <option value="4">Finanzas / Contabilidad</option>
-                                                <option value="5">Gerencia / Dirección</option>
-                                                <option value="6">Salud / Medicina</option>
-                                                <option value="7">Recursos Humanos</option>
-                                                <option value="8">Ventas / Comercial</option>
-                                                <option value="9">Atención al Cliente</option>
-                                                <option value="10">Educación / Docencia</option>
-                                                <option value="11">Construcción</option>
-                                                <option value="12">Electricidad / Electrónica</option>
-                                                <option value="13">Mecánica / Automotriz</option>
-                                                <option value="14">Transporte / Choferes</option>
-                                                <option value="15">Gastronomía / Cocina</option>
-                                                <option value="16">Panadería / Pastelería</option>
-                                                <option value="17">Aseo / Limpieza</option>
-                                                <option value="18">Seguridad / Guardia</option>
-                                                <option value="19">Agricultura / Ganadería</option>
-                                                <option value="20">Minería</option>
-                                                <option value="21">Turismo / Hotelería</option>
-                                                <option value="22">Periodismo / Comunicación</option>
-                                                <option value="23">Diseño / Creatividad</option>
-                                                <option value="24">Legal / Jurídico</option>
-                                                <option value="25">Manufactura / Producción</option>
-                                                <option value="26">Servicios Generales</option>
-                                                <option value="27">Cuidado de Personas / Niñera</option>
-                                                <option value="28">Veterinaria / Mascotas</option>
-                                                <option value="29">Soldadura / Metalurgia</option>
-                                                <option value="30">Gasfitería / Plomería</option>
-                                            </select>
-                                            <i class="fe-briefcase position-absolute" style="right: 15px; top: 50%; transform: translateY(-50%);"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6 col-lg-1 d-flex align-items-stretch">
-                                        <button type="submit" class="theme-btn w-100"><span class="fe-search"></span>Buscar</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+        <div class="job-list2 search-form mt-4 mb-2">
+          <div class="col-lg-9 mx-auto">
+            <div class="search-form-wrapper container">
+              <form id="form-busqueda" action="#">
+                <div class="row g-3">
+                  <!-- Palabras clave -->
+                  <div class="col-12 col-md-6 col-lg-4">
+                    <div class="form-group position-relative">
+                      <input
+                        type="text"
+                        id="input-keyword"
+                        class="form-control ps-5"
+                        placeholder="Buscar empleo por puesto o por palabra clave"
+                        aria-label="Buscar empleo por puesto o por palabra clave"
+                        autocomplete="off"
+                      >
+                      <i class="fe-search position-absolute top-50 translate-middle-y" style="left: 15px;"></i>
                     </div>
+                  </div>
+
+                  <!-- Región -->
+                  <div class="col-12 col-md-6 col-lg-4">
+                    <div class="form-group position-relative">
+                      <select class="form-control ps-5" id="region-select" aria-label="Filtrar por ubicación">
+                        <option value="">Ubicación</option>
+                        <!-- Se cargan por JS si quieres -->
+                      </select>
+                      <i class="fe-map-pin position-absolute top-50 translate-middle-y" style="left: 15px;"></i>
+                    </div>
+                  </div>
+
+                  <!-- Categoría -->
+                  <div class="col-12 col-md-6 col-lg-3">
+                    <div class="form-group position-relative">
+                      <i class="fe-briefcase position-absolute" style="left: 15px; top: 50%; transform: translateY(-50%);"></i>
+                      <select id="categoria-select" class="form-control ps-5" aria-label="Filtrar por categoría">
+                        <option value="">Categoría</option>
+                        <option value="Abastecimiento y Logistica">Abastecimiento y Logistica</option>
+                        <option value="Administración, Contabilidad y Finanzas">Administración, Contabilidad y Finanzas</option>
+                        <option value="Aduana y Comercio Exterior">Aduana y Comercio Exterior</option>
+                        <option value="Atención al Cliente, Call Center y Telemarketing">Atención al Cliente, Call Center y Telemarketing</option>
+                        <option value="Comercial, Ventas y Negocios">Comercial, Ventas y Negocios</option>
+                        <option value="Comunicación, Relaciones Institucionales y Públicas">Comunicación, Relaciones Institucionales y Públicas</option>
+                        <option value="Departamento Técnico">Departamento Técnico</option>
+                        <option value="Diseño">Diseño</option>
+                        <option value="Educación, Docencia e Investigación">Educación, Docencia e Investigación</option>
+                        <option value="Enfermería">Enfermería</option>
+                        <option value="Gastronomía y Turismo">Gastronomía y Turismo</option>
+                        <option value="Gerencia y Dirección General">Gerencia y Dirección General</option>
+                        <option value="Ingeniería Civil y Construcción">Ingeniería Civil y Construcción</option>
+                        <option value="Ingenierías">Ingenierías</option>
+                        <option value="Legales">Legales</option>
+                        <option value="Marketing y Publicidad">Marketing y Publicidad</option>
+                        <option value="Minería, Petróleo y Gas">Minería, Petróleo y Gas</option>
+                        <option value="Navierio, Marítimo, Porutuario">Navierio, Marítimo, Porutuario</option>
+                        <option value="Oficios y Otros">Oficios y Otros</option>
+                        <option value="Producción y Manufactura">Producción y Manufactura</option>
+                        <option value="RRHH  y Capacitación">RRHH  y Capacitación</option>
+                        <option value="Salud, Medicina y Farmacia">Salud, Medicina y Farmacia</option>
+                        <option value="Secretaria y Recepción">Secretaria y Recepción</option>
+                        <option value="Seguros">Seguros</option>
+                        <option value="Sociología / Trabajo Social">Sociología / Trabajo Social</option>
+                        <option value="Tecnologías, Sistemas y Telecomunicaciones">Tecnologías, Sistemas y Telecomunicaciones</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- Botón buscar -->
+                  <div class="col-12 col-md-6 col-lg-1 d-flex align-items-stretch">
+                    <button type="submit" class="theme-btn w-100"><span class="fe-search"></span>Buscar</button>
+                  </div>
                 </div>
+              </form>
             </div>
-            <div class="hero-shape">
-                <img class="hero-shape-1" src="assets/img/shape/03.svg" alt="">
-                <img class="hero-shape-2" src="assets/img/shape/05.svg" alt="">
-                <img class="hero-shape-3" src="assets/img/shape/06.svg" alt="">
-                <img class="hero-shape-4" src="assets/img/shape/07.svg" alt="">
-            </div>
+          </div>
         </div>
 
-        <!-- job list -->
-        <div class="job-list2 py-120">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 col-xl-3 mb-4">
-                        <div class="job-sidebar">
-                            <div class="job-sidebar-item">
-                                <div id="ultimas-busquedas" class="bg-light border rounded px-3 py-2 small shadow-sm">
-                                    <strong class="text-muted d-block mb-1">Últimas búsquedas:</strong>
-                                    <ul class="list-unstyled mb-0" id="lista-busquedas" style="font-size: 0.85rem;"></ul>
-                                </div>
-                            </div>
-                            <div class="job-sidebar-item">
-                                <h4 class="job-sidebar-title">Modalidad</h4>
-                                <div class="job-type">
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-type" type="checkbox" value="3" id="job-type3">
-                                        <label class="form-check-label" for="job-type3">Híbrido <span>(0)</span></label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-type" type="checkbox" value="4" id="job-type4">
-                                        <label class="form-check-label" for="job-type4">Part-Time <span>(0)</span></label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-type" type="checkbox" value="5" id="job-type5">
-                                        <label class="form-check-label" for="job-type5">Full-time <span>(0)</span></label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-type" type="checkbox" value="6" id="job-type6">
-                                        <label class="form-check-label" for="job-type6">Freelance <span>(0)</span></label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-type" type="checkbox" value="7" id="job-type7">
-                                        <label class="form-check-label" for="job-type6">Remoto <span>(0)</span></label>
-                                    </div>
-                                </div>
-                                <button class="btn-filtro w-100" onclick="aplicarFiltro('modalidad')">Aplicar filtro</button>
-                            </div>
-                            <div class="job-sidebar-item">
-                                <h4 class="job-sidebar-title">Salario</h4>
-                                <div class="job-salary">
-                                    <div class="price-range-slider">
-                                        <div class="price-range-info">
-                                            <label for="priceRange1">Desde:</label>
-                                            <input type="text" class="priceRange" id="priceRange1" readonly>
-                                        </div>
-                                        <div id="price-range1" class="price-range slider"></div>
-                                    </div>
-                                </div>
-                                <button class="btn-filtro w-100" onclick="aplicarFiltro('salario')">Aplicar filtro</button>
-                            </div>
-                            <div class="job-sidebar-item">
-                                <h4 class="job-sidebar-title">Nivel de Experiencia</h4>
-                                <div class="job-experience">
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="experience" type="checkbox" value="1" id="experience1">
-                                        <label class="form-check-label" for="experience1">Manager <span>(0)</span></label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="experience" type="checkbox" value="2" id="experience1b">
-                                        <label class="form-check-label" for="experience1b">Lider Técnico / Lead <span>(0)</span></label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="experience" type="checkbox" value="3" id="experience2">
-                                        <label class="form-check-label" for="experience2">Senior <span>(0)</span></label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="experience" type="checkbox" value="4" id="experience2b">
-                                        <label class="form-check-label" for="experience2b">Semi Senior <span>(0)</span></label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="experience" type="checkbox" value="5" id="experience3">
-                                        <label class="form-check-label" for="experience3">Junior <span>(0)</span></label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="experience" type="checkbox" value="6" id="experience4">
-                                        <label class="form-check-label" for="experience4">Trainee <span>(0)</span></label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="experience" type="checkbox" value="7" id="experience5">
-                                        <label class="form-check-label" for="experience5">Practicante <span>(0)</span></label>
-                                    </div>
-                                </div>
-                                <button class="btn-filtro w-100" onclick="aplicarFiltro('experiencia')">Aplicar filtro</button>
-                            </div>
-                            <div class="job-sidebar-item">
-                                <h4 class="job-sidebar-title">Trabajos Publicados</h4>
-                                <div class="job-posted">
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-posted" type="checkbox" value="1" id="job-posted1">
-                                        <label class="form-check-label" for="job-posted1">Todos <span>(0)</span></label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-posted" type="checkbox" value="2" id="job-posted2">
-                                        <label class="form-check-label" for="job-posted2">Recientes <span>(0)</span></label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-posted" type="checkbox" value="3" id="job-posted3">
-                                        <label class="form-check-label" for="job-posted3">Ultimas 24 horas <span>(0)</span></label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-posted" type="checkbox" value="4" id="job-posted4">
-                                        <label class="form-check-label" for="job-posted4">Ultimos 7 días <span>(0)</span></label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-posted" type="checkbox" value="5" id="job-posted5">
-                                        <label class="form-check-label" for="job-posted5">Ultimos 30 días <span>(0)</span></label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-posted" type="checkbox" value="6" id="job-posted6">
-                                        <label class="form-check-label" for="job-posted6">Ultimos 60 días <span>(0)</span></label>
-                                    </div>
-                                </div>
-                                <button class="btn-filtro w-100" onclick="aplicarFiltro('lastjobs')">Aplicar filtro</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-8 col-xl-9">
-                        <div class="col-md-12">
-                            <div class="job-sort">
-                                <h5>Resultados obtenidos</h5>
-                            </div>
-                        </div>
-                        <div id="ofertas-container" class="row g-4">
-                            <!-- Trabajo 1 -->
-                            <div class="col-lg-12">
-                                <div class="job-item" onclick="window.location.href='job-single-2.html'" style="cursor: pointer;">
-                                    <div class="job-img">
-                                        <img src="assets/img/job/01.jpg" alt="">
-                                    </div>
-                                    <a href="job-single-2.html" class="job-bookmark"><i class="fe-bookmark"></i></a>
-                                    <div class="job-content">
-                                        <div class="job-top">
-                                            <div class="job-title">
-                                                <h5>Desarrollador de Aplicaciones</h5>
-                                                <span class="job-employer"><i class="far fa-building"></i> Vertice Call Center</span>
-                                            </div>
-                                        </div>
-                                        <ul class="job-info-list">
-                                            <li><i class="fe-briefcase"></i> Tecnologias, Sistemas y Telecomunicaciones</li>
-                                            <li><i class="fe-check-circle"></i> Full Time</li>
-                                            <li><i class="fe-clock"></i> Hace 2 días</li>
-                                            <li><i class="f -timer"></i> Exp: 30-07-2025 </li>
-                                            <li><i class="fe-dollar-sign"></i> Salario: 500.000 - 850.000</li>
-                                            <li><i class="fe-map-pin"></i> Región Metropolitana de Santiago</li>
-                                        </ul>
-                                        <div class="job-skill">
-                                            <a><span>Office 365</span></a>
-                                            <a><span>Adobe PDF</span></a>
-                                            <a><span>Windows 10</span></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        
-                            <!-- Trabajo 2 -->
-                            <div class="col-lg-12">
-                                <div class="job-item" onclick="window.location.href='gerente-marketing.html'" style="cursor: pointer;">
-                                    <a href="gerente-marketing.html" class="job-bookmark"><i class="fe-bookmark"></i></a>
-                                    <div class="job-img">
-                                        <img src="assets/img/job/03.jpg" alt="">
-                                    </div>
-                                    <div class="job-content">
-                                        <div class="job-top">
-                                            <div class="job-title">
-                                                <h5>Gerente de Marketing</h5>
-                                                <span class="job-employer"><i class="far fa-building"></i> Pacific Network</span>
-                                            </div>
-                                        </div>
-                                        <ul class="job-info-list">
-                                            <li><i class="fe-briefcase"></i> Gerencia y Dirección General</li>
-                                            <li><i class="fe-check-circle"></i> Full Time</li>
-                                            <li><i class="fe-clock"></i> Hace 1 semana</li>
-                                            <li><i class="fas fa-timer"></i> Exp: 12-07-2025 </li>
-                                            <li><i class="fe-dollar-sign"></i> Salario: 1.000.000 - 2.000.000</li>
-                                            <li><i class="fe-map-pin"></i> Región Metropolitana de Santiago</li>
-                                        </ul>
-                                        <div class="job-skill">
-                                            <a><span>Excel</span></a>
-                                            <a><span>Photoshop</span></a>
-                                            <a><span>Adobe Flash Player</span></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        
-                            <!-- Trabajo 3 -->
-                            <div class="col-lg-12">
-                                <div class="job-item" onclick="window.location.href='admin-rrhh.html'" style="cursor: pointer;">
-                                    <a href="admin-rrhh.html" class="job-bookmark"><i class="fe-bookmark"></i></a>
-                                    <div class="job-img">
-                                        <img src="assets/img/job/04.jpg" alt="">
-                                    </div>
-                                    <div class="job-content">
-                                        <div class="job-top">
-                                            <div class="job-title">
-                                                <h5>Administrador de Recursos Humanos</h5>
-                                                <span class="job-employer"><i class="far fa-building"></i> Almacenes Paris</span>
-                                            </div>
-                                        </div>
-                                        <ul class="job-info-list">
-                                            <li><i class="fe-briefcase"></i> Administrador RRHH</li>
-                                            <li><i class="fe-check-circle"></i> Full Time</li>
-                                            <li><i class="fe-clock"></i> Hace 6 Horas</li>
-                                            <li><i class="fe-dollar-sign"></i> Salario: 855.000</li>
-                                            <li><i class="fe-map-pin"></i> Región Metropolitana de Santiago</li>
-                                        </ul>
-                                        <div class="job-skill">
-                                            <a><span>Excel</span></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        
-                            <!-- Trabajo 4 -->
-                            <div class="col-lg-12">
-                                <div class="job-item" onclick="window.location.href='creative-director.html'" style="cursor: pointer;">
-                                    <a href="creative-director.html" class="job-bookmark"><i class="fe-bookmark"></i></a>
-                                    <div class="job-img">
-                                        <img src="assets/img/job/05.jpg" alt="">
-                                    </div>
-                                    <div class="job-content">
-                                        <div class="job-top">
-                                            <div class="job-title">
-                                                <h5>Creative Director</h5>
-                                                <span class="job-employer"><i class="far fa-building"></i> Rubic Corner</span>
-                                            </div>
-                                        </div>
-                                        <ul class="job-info-list">
-                                            <li><i class="fe-briefcase"></i> Development</li>
-                                            <li><i class="fe-check-circle"></i> Full Time</li>
-                                            <li><i class="fe-clock"></i> 2 Hour Ago</li>
-                                            <li><i class="fe-dollar-sign"></i> Salary: 35k - 45k</li>
-                                            <li><i class="fe-map-pin"></i> 25/B Milford, New York</li>
-                                        </ul>
-                                        <div class="job-skill">
-                                            <a><span>Figma</span></a>
-                                            <a><span>Photoshop</span></a>
-                                            <a><span>Adobe XD</span></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        
-                            <!-- Trabajo 5 -->
-                            <div class="col-lg-12">
-                                <div class="job-item" onclick="window.location.href='software-engineer.html'" style="cursor: pointer;">
-                                    <a href="software-engineer.html" class="job-bookmark"><i class="fe-bookmark"></i></a>
-                                    <div class="job-img">
-                                        <img src="assets/img/job/06.jpg" alt="">
-                                    </div>
-                                    <div class="job-content">
-                                        <div class="job-top">
-                                            <div class="job-title">
-                                                <h5>Software Engineer</h5>
-                                                <span class="job-employer"><i class="far fa-building"></i> Mariana Cahaya</span>
-                                            </div>
-                                        </div>
-                                        <ul class="job-info-list">
-                                            <li><i class="fe-briefcase"></i> Development</li>
-                                            <li><i class="fe-check-circle"></i> Full Time</li>
-                                            <li><i class="fe-clock"></i> 2 Hour Ago</li>
-                                            <li><i class="fe-dollar-sign"></i> Salary: 35k - 45k</li>
-                                            <li><i class="fe-map-pin"></i> 25/B Milford, New York</li>
-                                        </ul>
-                                        <div class="job-skill">
-                                            <a><span>Java</span></a>
-                                            <a><span>Python</span></a>
-                                            <a><span>AWS</span></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+      </div>
+      <div class="hero-shape">
+        <img class="hero-shape-1" src="assets/img/shape/03.svg" alt="">
+        <img class="hero-shape-2" src="assets/img/shape/05.svg" alt="">
+        <img class="hero-shape-3" src="assets/img/shape/06.svg" alt="">
+        <img class="hero-shape-4" src="assets/img/shape/07.svg" alt="">
+      </div>
+    </div>
 
-                        <!-- pagination -->
-                        <div class="pagination-area">
-                            <div aria-label="Page navigation example">
-                                <ul class="pagination">
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true"><i class="far fa-angle-double-left"></i></span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true"><i class="far fa-angle-double-right"></i></span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="pagination-showing"> 
-                                <p>Showing 1 - 6 of 24 Jobs</p>
-                            </div>
-                        </div>
-                    </div>
+    <!-- job list -->
+    <div class="job-list2 py-120">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-4 col-xl-3 mb-4">
+            <div class="job-sidebar">
+              <div class="job-sidebar-item">
+                <div id="ultimas-busquedas" class="bg-light border rounded px-3 py-2 small shadow-sm">
+                  <strong class="text-muted d-block mb-1">Últimas búsquedas:</strong>
+                  <ul class="list-unstyled mb-0" id="lista-busquedas" style="font-size: 0.85rem;"></ul>
                 </div>
+              </div>
+
+              <div class="job-sidebar-item">
+                <h4 class="job-sidebar-title">Modalidad</h4>
+                <div class="job-type">
+                  <div class="form-check">
+                    <input class="form-check-input" name="job-type" type="checkbox" value="3" id="job-type3">
+                    <label class="form-check-label" for="job-type3">Híbrido <span>(0)</span></label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" name="job-type" type="checkbox" value="4" id="job-type4">
+                    <label class="form-check-label" for="job-type4">Part-Time <span>(0)</span></label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" name="job-type" type="checkbox" value="5" id="job-type5">
+                    <label class="form-check-label" for="job-type5">Full-time <span>(0)</span></label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" name="job-type" type="checkbox" value="6" id="job-type6">
+                    <label class="form-check-label" for="job-type6">Freelance <span>(0)</span></label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" name="job-type" type="checkbox" value="7" id="job-type7">
+                    <label class="form-check-label" for="job-type7">Remoto <span>(0)</span></label>
+                  </div>
+                </div>
+                <button class="btn-filtro w-100" onclick="aplicarFiltro('modalidad')">Aplicar filtro</button>
+              </div>
+
+              <div class="job-sidebar-item">
+                <h4 class="job-sidebar-title">Salario</h4>
+                <div class="job-salary">
+                  <div class="price-range-slider">
+                    <div class="price-range-info">
+                      <label for="priceRange1">Rango:</label>
+                      <input type="text" class="priceRange" id="priceRange1" readonly>
+                    </div>
+                    <div id="price-range1" class="price-range slider"></div>
+                  </div>
+                  <input type="hidden" id="salary-min" value="">
+                  <input type="hidden" id="salary-max" value="">
+                </div>
+                <button class="btn-filtro w-100" onclick="aplicarFiltro('salario')">Aplicar filtro</button>
+              </div>
+
+              <div class="job-sidebar-item">
+                <h4 class="job-sidebar-title">Trabajos Publicados</h4>
+                <div class="job-posted">
+                  <div class="form-check">
+                    <input class="form-check-input" name="job-posted" type="checkbox" value="1" id="job-posted1">
+                    <label class="form-check-label" for="job-posted1">Todos <span>(0)</span></label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" name="job-posted" type="checkbox" value="2" id="job-posted2">
+                    <label class="form-check-label" for="job-posted2">Recientes <span>(0)</span></label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" name="job-posted" type="checkbox" value="3" id="job-posted3">
+                    <label class="form-check-label" for="job-posted3">Últimas 24 horas <span>(0)</span></label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" name="job-posted" type="checkbox" value="4" id="job-posted4">
+                    <label class="form-check-label" for="job-posted4">Últimos 7 días <span>(0)</span></label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" name="job-posted" type="checkbox" value="5" id="job-posted5">
+                    <label class="form-check-label" for="job-posted5">Últimos 30 días <span>(0)</span></label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" name="job-posted" type="checkbox" value="6" id="job-posted6">
+                    <label class="form-check-label" for="job-posted6">Últimos 60 días <span>(0)</span></label>
+                  </div>
+                </div>
+                <button class="btn-filtro w-100" onclick="aplicarFiltro('lastjobs')">Aplicar filtro</button>
+              </div>
             </div>
+          </div>
+
+          <div class="col-lg-8 col-xl-9">
+            <div class="col-md-12">
+              <div class="job-sort"><h5>Resultados obtenidos</h5></div>
+            </div>
+            <div id="ofertas-container" class="row g-4"></div>
+            <div class="pagination-area">
+              <div aria-label="Page navigation example"><ul class="pagination"></ul></div>
+              <div class="pagination-showing"><p>Sin resultados</p></div>
+            </div>
+          </div>
+
         </div>
-        <!-- job list end -->
-    </main>
+      </div>
+    </div>
+
+  </main>
+
 
     <!-- footer area -->
     <div id="footer-placeholder"></div>
@@ -555,5 +369,7 @@
             console.log('Aplicando filtro:', tipo);
         }
     </script>
+    <script src="assets/js/modules/ofertas/filter-job-lo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

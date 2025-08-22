@@ -1,197 +1,305 @@
-// Obtener el ID del usuario desde los parámetros de la URL (query string)
-function getIdFromUrl() {
-  const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get('id') || urlParams.get('userId') || null;
-}
+// assets/js/modules/postulaciones/detalle-postulante-id.js
+(function () {
+  // ----------------- helpers -----------------
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const S = (v) => (v == null ? '' : String(v));
 
-const idUsuario = getIdFromUrl();
+  function calcularEdad(fechaNacimiento) {
+    if (!fechaNacimiento) return 'No disponible';
+    const birth = new Date(fechaNacimiento);
+    const today = new Date();
+    let edad = today.getFullYear() - birth.getFullYear();
+    const m = today.getMonth() - birth.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) edad--;
+    return Number.isFinite(edad) ? edad : 'No disponible';
+  }
 
-if (!idUsuario) {
-  console.error('❌ ID de usuario no proporcionado en la URL');
-} else {
-  const token = localStorage.getItem('auth_token');
+  function toCLP(n) {
+    const num = Number(n);
+    if (!Number.isFinite(num)) return 'No informado';
+    return `$${num.toLocaleString('es-CL')}`;
+  }
 
-  fetch(`${BASE_URL_API}/postulante/${idUsuario}`, {
-    method: 'GET',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  })
-    .then(res => {
-      if (!res.ok) throw new Error(`Error en la respuesta: ${res.status}`);
-      return res.json();
-    })
-    .then(postulante => {
-      if (!postulante || !postulante.usuario) {
-        console.warn('⚠️ No se encontró el postulante');
-        return;
+  // Limpia solo las claves id/userId de la URL, conservando otros params si hubiese
+  function stripIdFromUrl() {
+    try {
+      const params = new URLSearchParams(location.search);
+      const hadId = params.has('id') || params.has('userId');
+      if (!hadId) return;
+
+      params.delete('id');
+      params.delete('userId');
+      const newQs = params.toString();
+      const newUrl = location.pathname + (newQs ? `?${newQs}` : '') + location.hash;
+      if (newUrl !== location.href) history.replaceState(null, '', newUrl);
+    } catch (_) {}
+  }
+
+  // Resuelve el ID del candidato: primero sessionStorage; luego URL (y limpia)
+  function resolveCandidateId() {
+    const cached = sessionStorage.getItem('sel_cand_id');
+    if (cached) return cached;
+
+    try {
+      const p = new URLSearchParams(location.search);
+      const fromUrl = p.get('id') || p.get('userId');
+      if (fromUrl) {
+        sessionStorage.setItem('sel_cand_id', fromUrl);
+        stripIdFromUrl(); // limpia inmediatamente
+        return fromUrl;
       }
+    } catch (_) {}
+    return null;
+  }
 
-      const usuario = postulante.usuario;
-      const data = postulante.data || {};
-      const personales = data.datos_personales || {};
-      const experiencias = data.experiencias || [];
-      const educacion = personales.educacion || [];
-      const idiomas = data.idiomas || [];
-      const preferencias = data.preferencias || {};
+  // Busca token en varias claves comunes
+  const TOKEN_KEYS = [
+    'auth_token_emp',
+    'auth_token',
+    'empleador_token',
+    'access_token',
+    'token',
+    'jwt',
+    'jwtToken'
+  ];
+  function getAuthToken() {
+    for (const k of TOKEN_KEYS) {
+      const v = localStorage.getItem(k);
+      if (v) return { token: v, key: k };
+    }
+    const anyKey = Object.keys(localStorage || {}).find((x) => /token/i.test(x));
+    return anyKey ? { token: localStorage.getItem(anyKey), key: anyKey } : { token: null, key: null };
+  }
 
-      // Datos básicos
-      const nombre = `${usuario.nombres} ${usuario.apellidos}`;
-      const correo = usuario.email || 'No disponible';
-      const telefono = personales.telefono || 'No disponible';
-      const estadoCivil = personales.estado_civil || 'No informado';
-      const salario = preferencias.salario_esperado
-        ? `$${Number(preferencias.salario_esperado).toLocaleString('es-CL')}`
-        : 'No informado';
-      const categoria = preferencias.categoria_empleo || 'No especificada';
-      const descripcionBio = personales.descripcion_bio || '';
-      const edad = calcularEdad(personales.fecha_nacimiento);
+  async function fetchPostulante(id) {
+    const url = `${BASE_URL_API}/postulante/${id}`;
+    const { token } = getAuthToken();
 
-      // --- Rellenar Nombre y Categoría ---
-      const nombreEl = document.querySelector('.job-single-employer-info h5');
-      if (nombreEl) nombreEl.textContent = nombre;
-
-      const categoriaEl = document.querySelector('.job-single-employer-info p');
-      if (categoriaEl) categoriaEl.textContent = categoria;
-
-      // --- Rellenar lista de datos personales ---
-      const listaItems = document.querySelectorAll('.job-single-list ul > li');
-      // Los li tienen esta estructura:
-      // 0: Correo
-      // 1: Teléfono
-      // 2: Estado Civil
-      // 3: Edad
-      // 4: Expectativa Salarial
-      // 5: Categoría
-      // 6: Curriculum (queda estático, no se toca)
-      // 7: Idiomas (lo vamos a llenar)
-
-      if (listaItems.length >= 8) {
-        const setText = (index, text) => {
-          const p = listaItems[index].querySelector('.job-single-list-info p');
-          if (p) p.textContent = text;
-        };
-
-        setText(0, correo);
-        setText(1, telefono);
-        setText(2, estadoCivil);
-        setText(3, `${edad} Años`);
-        setText(4, salario);
-        setText(5, categoria);
-
-        // --- Idiomas ---
-        const idiomasContainer = listaItems[7].querySelector('.job-single-list-info');
-        if (idiomasContainer) {
-          // Limpio idiomas previos para evitar duplicados
-          idiomasContainer.querySelectorAll('div').forEach(d => d.remove());
-
-          idiomas.forEach(i => {
-            const idiomaDiv = document.createElement('div');
-            idiomaDiv.style.display = 'flex';
-            idiomaDiv.style.alignItems = 'flex-start';
-            idiomaDiv.style.gap = '10px';
-
-            idiomaDiv.innerHTML = `
-              <p style="margin: 0;">${i.idioma} <span style="font-size: 0.9em;">→</span></p>
-              <div style="display: flex; flex-direction: column; margin: 0;">
-                <span><strong>Escrito:</strong> ${i.nivel_escrito}</span>
-                <span><strong>Oral:</strong> ${i.nivel_oral}</span>
-              </div>
-            `;
-
-            idiomasContainer.appendChild(idiomaDiv);
-          });
-        } else {
-          console.warn('No se encontró el contenedor para idiomas');
+    // 1) Con Bearer si hay token
+    if (token) {
+      try {
+        const r = await fetch(url, {
+          headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
+        });
+        if (r.ok) return r.json();
+        // si no es 401/403, lanza error
+        if (r.status !== 401 && r.status !== 403) {
+          const t = await r.text().catch(() => '');
+          throw new Error(`HTTP_${r.status} ${t}`);
         }
-      } else {
-        console.warn('La estructura HTML ha cambiado o faltan elementos en la lista de datos personales');
+      } catch (_) {
+        // sigue con intento por cookies
       }
+    }
 
-      // --- Biografía ---
-      const bioEl = document.querySelector('.profile-bio p');
-      if (bioEl) bioEl.textContent = descripcionBio;
+    // 2) Reintento con cookies (por si la sesión es cookie-based)
+    const r2 = await fetch(url, { credentials: 'include' });
+    if (!r2.ok) {
+      const t = await r2.text().catch(() => '');
+      throw new Error(`HTTP_${r2.status} ${t}`);
+    }
+    return r2.json();
+  }
 
-      // --- Educación ---
-      // El contenedor es: div.user-profile-card h4 con texto "Educación" + .profile-education > .row.g-6
-      // Vamos a buscar el contenedor '.profile-education .row'
-      const eduContainer = document.querySelector('.profile-education .row');
-      if (eduContainer) {
-        eduContainer.innerHTML = ''; // limpio contenido
+  function showInlineError(msg) {
+    const cont = $('.job-single .container') || document.body;
+    const warn = document.createElement('div');
+    warn.className = 'alert alert-danger';
+    warn.textContent = msg;
+    cont.prepend(warn);
+  }
 
+  // ----------------- render -----------------
+  function renderPerfil(postulante) {
+    if (!postulante || !postulante.usuario) {
+      console.warn('⚠️ No se encontró el postulante');
+      showInlineError('No se encontró el postulante.');
+      return;
+    }
+
+    const usuario = postulante.usuario;
+    const data = postulante.data || {};
+    const personales = data.datos_personales || {};
+    const experiencias = data.experiencias || [];
+    const educacion = personales.educacion || [];
+    const idiomas = data.idiomas || [];
+    const preferencias = data.preferencias || {};
+
+    // base
+    const nombre = `${S(usuario.nombres)} ${S(usuario.apellidos)}`.trim() || 'Sin nombre';
+    const correo = usuario.email || 'No disponible';
+    const telefono = personales.telefono || 'No disponible';
+    const estadoCivil = personales.estado_civil || 'No informado';
+    const salario = preferencias.salario_esperado ? toCLP(preferencias.salario_esperado) : 'No informado';
+    const categoria = preferencias.categoria_empleo || 'No especificada';
+    const descripcionBio = personales.descripcion_bio || '';
+    const edad = calcularEdad(personales.fecha_nacimiento);
+
+    // Foto (ruta por defecto relativa a /jobox/empresas/)
+    const fotoUrl = data.foto_url || '../assets/img/job/01.jpg';
+    const fotoEl = $('.job-single-employer img');
+    if (fotoEl) fotoEl.src = fotoUrl;
+
+    // Encabezado (nombre + categoría)
+    const nombreEl = $('.job-single-employer-info h5');
+    if (nombreEl) nombreEl.textContent = nombre;
+    const categoriaEl = $('.job-single-employer-info p');
+    if (categoriaEl) categoriaEl.textContent = categoria;
+
+    // Lateral (lista de 8 items)
+    const items = $$('.job-single-list ul > li');
+    const setItem = (idx, text) => {
+      const p = items[idx]?.querySelector('.job-single-list-info p');
+      if (p) p.textContent = S(text);
+    };
+    if (items.length >= 6) {
+      setItem(0, correo);
+      setItem(1, telefono);
+      setItem(2, estadoCivil);
+      setItem(3, `${edad} Años`);
+      setItem(4, salario);
+      setItem(5, categoria);
+    }
+
+    // CV
+    const cvLink = $('#downloadEmptyPdf');
+    const cvUrl = data.cv_url || data.cv || postulante.cv_url || '';
+    if (cvLink) {
+      if (cvUrl) {
+        cvLink.href = cvUrl;
+        cvLink.target = '_blank';
+        cvLink.rel = 'noopener';
+        cvLink.textContent = 'Descargar CV';
+      } else {
+        cvLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          alert('El candidato no ha subido su CV.');
+        });
+      }
+    }
+
+    // Idiomas (ítem 7)
+    const idiomasContainer = items[7]?.querySelector('.job-single-list-info');
+    if (idiomasContainer) {
+      idiomasContainer.querySelectorAll('div').forEach((d) => d.remove());
+      if (idiomas.length === 0) {
+        const p = idiomasContainer.querySelector('p') || document.createElement('p');
+        p.textContent = 'No informado';
+        if (!idiomasContainer.contains(p)) idiomasContainer.appendChild(p);
+      } else {
+        idiomas.forEach((i) => {
+          const div = document.createElement('div');
+          div.style.display = 'flex';
+          div.style.alignItems = 'flex-start';
+          div.style.gap = '10px';
+          div.innerHTML = `
+            <p style="margin:0;">${S(i.idioma)} <span style="font-size:.9em;">→</span></p>
+            <div style="display:flex;flex-direction:column;margin:0;">
+              <span><strong>Escrito:</strong> ${S(i.nivel_escrito) || '—'}</span>
+              <span><strong>Oral:</strong> ${S(i.nivel_oral) || '—'}</span>
+            </div>`;
+          idiomasContainer.appendChild(div);
+        });
+      }
+    }
+
+    // Bio
+    const bioEl = $('.profile-bio p');
+    if (bioEl) bioEl.textContent = descripcionBio;
+
+    // Educación  (tu HTML usa: <div class="row g-6 profile-education">)
+    const eduContainer = $('.profile-education');
+    if (eduContainer) {
+      eduContainer.innerHTML = '';
+      if (educacion.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'col-lg-12';
+        empty.innerHTML = '<p class="text-muted">Sin registros de educación.</p>';
+        eduContainer.appendChild(empty);
+      } else {
         educacion.forEach((e, index) => {
-          const eduDiv = document.createElement('div');
-          eduDiv.className = 'col-lg-6';
-          eduDiv.style.position = 'relative';
-
-          eduDiv.innerHTML = `
+          const col = document.createElement('div');
+          col.className = 'col-lg-6';
+          col.style.position = 'relative';
+          col.innerHTML = `
             <div class="profile-info-list">
               <ul>
-                <li>Título: <span>${e.titulo}</span></li>
-                <li>Institución: <span>${e.institucion}</span></li>
-                <li>Tipo Estudio: <span>${e.grado}</span></li>
-                <li>Estado: <span>${e.estado}</span></li>
+                <li>Título: <span>${S(e.titulo)}</span></li>
+                <li>Institución: <span>${S(e.institucion)}</span></li>
+                <li>Tipo Estudio: <span>${S(e.grado)}</span></li>
+                <li>Estado: <span>${S(e.estado)}</span></li>
               </ul>
             </div>
-            ${index % 2 === 0 ? `<div style="position: absolute; right: 0; top: 0; bottom: 0; width: 1px; background-color: #ccc;"></div>` : ''}
-          `;
-
-          eduContainer.appendChild(eduDiv);
+            ${index % 2 === 0 ? '<div style="position:absolute;right:0;top:0;bottom:0;width:1px;background:#ddd;"></div>' : ''}`;
+          eduContainer.appendChild(col);
         });
-      } else {
-        console.warn('No se encontró el contenedor para educación');
       }
+    }
 
-      // --- Experiencias ---
-      // Buscamos el .user-profile-card que tiene el título "Experiencias"
-      const expCards = Array.from(document.querySelectorAll('.user-profile-card'));
-      const expContainer = expCards.find(card => {
-        const h4 = card.querySelector('h4.user-profile-card-title');
-        return h4 && h4.textContent.trim().toLowerCase() === 'experiencias';
-      });
-
-      if (expContainer) {
-        expContainer.innerHTML = '<h4 class="user-profile-card-title">Experiencias</h4>';
-
-        experiencias.forEach(exp => {
-          const expHtml = `
-            <div class="row g-12">
-              <div class="col-lg-12">
-                <div class="profile-info-list">
-                  <ul>
-                    <li>Empresa: <span>${exp.empresa}</span></li>
-                    <li>Cargo: <span>${exp.cargo}</span></li>
-                    <li>Nivel Experiencia: <span>${exp.nivel_experiencia || 'No informado'}</span></li>
-                    <li>Mes - Año Inicio: <span>${exp.anno_inicio || 'No informado'}</span></li>
-                    <li>Mes - Año Término: <span>${exp.anno_termino || 'Actualmente'}</span></li>
-                    <li>Descripción Cargo: <span>${exp.descripcion || ''}</span></li>
-                  </ul>
-                </div>
-              </div>
+    // Experiencias  (card con <h4>Experiencias</h4> + <div class="row g-12">)
+    const expTitle = $$('.user-profile-card-title').find(
+      (h) => h.textContent.trim().toLowerCase() === 'experiencias'
+    );
+    const expContainer = expTitle ? expTitle.parentElement.querySelector('.row.g-12') : null;
+    if (expContainer) {
+      expContainer.innerHTML = '';
+      if (experiencias.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'col-lg-12';
+        empty.innerHTML = '<p class="text-muted">Sin experiencias registradas.</p>';
+        expContainer.appendChild(empty);
+      } else {
+        experiencias.forEach((exp, i) => {
+          const wrap = document.createElement('div');
+          wrap.className = 'col-lg-12';
+          wrap.innerHTML = `
+            <div class="profile-info-list">
+              <ul>
+                <li>Empresa: <span>${S(exp.empresa)}</span></li>
+                <li>Cargo: <span>${S(exp.cargo)}</span></li>
+                <li>Nivel Experiencia: <span>${S(exp.nivel_experiencia) || 'No informado'}</span></li>
+                <li>Mes - Año Inicio: <span>${S(exp.anno_inicio) || 'No informado'}</span></li>
+                <li>Mes - Año Término: <span>${S(exp.anno_termino) || 'Actualmente'}</span></li>
+                <li>Descripción Cargo: <span>${S(exp.descripcion) || ''}</span></li>
+              </ul>
             </div>
-            <hr style="opacity: 1; border: 0; border-top: 1px solid #000; margin: 20px 0;">
-          `;
-          expContainer.innerHTML += expHtml;
+            ${i < experiencias.length - 1 ? '<hr style="opacity:1;border:0;border-top:1px solid #e5e7eb;margin:16px 0;">' : ''}`;
+          expContainer.appendChild(wrap);
         });
-      } else {
-        console.warn('No se encontró el contenedor para experiencias');
       }
-    })
-    .catch(err => {
-      console.error('❌ Error al cargar el perfil del postulante:', err);
-    });
-}
-
-// Función auxiliar para calcular la edad desde la fecha de nacimiento
-function calcularEdad(fechaNacimiento) {
-  if (!fechaNacimiento) return 'No disponible';
-  const birthDate = new Date(fechaNacimiento);
-  const today = new Date();
-  let edad = today.getFullYear() - birthDate.getFullYear();
-  const mes = today.getMonth() - birthDate.getMonth();
-  if (mes < 0 || (mes === 0 && today.getDate() < birthDate.getDate())) {
-    edad--;
+    }
   }
-  return edad;
-}
+
+  // ----------------- init -----------------
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Ajusta el botón "Volver a lista de Candidatos" para volver a la misma oferta (si se guardó)
+    const backBtn = document.querySelector('a[href="employer-candidate.html"]');
+    if (backBtn) {
+      const returnTo = sessionStorage.getItem('return_to_offer_page') || 'employer-candidate.html';
+      backBtn.setAttribute('href', returnTo);
+    }
+
+    const id = resolveCandidateId();
+    if (!id) {
+      console.error('❌ ID de postulante no disponible.');
+      showInlineError('ID de postulante no disponible. Abra este perfil desde la lista de candidatos.');
+      return;
+    }
+
+    try {
+      const postulante = await fetchPostulante(id);
+      renderPerfil(postulante);
+    } catch (err) {
+      const msg = String(err && err.message ? err.message : err);
+      console.error('❌ Error al cargar el perfil del postulante:', err);
+
+      if (msg.startsWith('HTTP_401') || msg.startsWith('HTTP_403')) {
+        // No redirigimos: solo mostramos aviso
+        showInlineError('No autorizado para ver este perfil. Verifica tu sesión de empleador.');
+        return;
+      }
+      showInlineError('No se pudo cargar el perfil del postulante.');
+    }
+  });
+})();

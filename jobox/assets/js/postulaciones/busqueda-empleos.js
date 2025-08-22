@@ -1,7 +1,7 @@
 const form = document.getElementById('form-busqueda');
 const listaBusquedas = document.getElementById('lista-busquedas');
 
-// Mapas de región y categoría
+// Mapas (opcionales si te sirven para mostrar nombres bonitos)
 const regiones = {
   "1": "Región de Arica y Parinacota",
   "2": "Región de Tarapacá",
@@ -54,26 +54,30 @@ const categorias = {
   "30": "Gasfitería / Plomería"
 };
 
-form.addEventListener('submit', function (e) {
+// Guarda {keyword, region, categoria} (solo para "Últimas búsquedas")
+form?.addEventListener('submit', function (e) {
   e.preventDefault();
 
-  const keyword = document.getElementById('input-keyword').value.trim();
-  const region = document.getElementById('region-select').value.trim(); // valor numérico
-  const categoria = document.getElementById('categoria-select').value.trim(); // valor numérico
+  const keyword = document.getElementById('input-keyword')?.value.trim() || '';
+  const region = document.getElementById('region-select')?.value.trim() || '';
+  const categoria = document.getElementById('categoria-select')?.value.trim() || '';
 
   const busqueda = { keyword, region, categoria };
   guardarBusqueda(busqueda);
   mostrarBusquedas();
+
+  // Dispara la búsqueda real (el listener en lista-trabajos.js ya hará loadOfertas())
+  form.requestSubmit?.(); // por compatibilidad
 });
 
 function guardarBusqueda(nueva) {
-  let busquedas = JSON.parse(localStorage.getItem('busquedas_recientes')) || [];
+  let busquedas = [];
+  try { busquedas = JSON.parse(localStorage.getItem('busquedas_recientes')) || []; } catch {}
   busquedas.unshift(nueva);
+  // Unicos por triple clave (keyword, region, categoria)
   busquedas = busquedas.filter((b, i, arr) =>
     i === arr.findIndex(x =>
-      x.keyword === b.keyword &&
-      x.region === b.region &&
-      x.categoria === b.categoria
+      x.keyword === b.keyword && x.region === b.region && x.categoria === b.categoria
     )
   );
   if (busquedas.length > 5) busquedas.length = 5;
@@ -81,7 +85,9 @@ function guardarBusqueda(nueva) {
 }
 
 function mostrarBusquedas() {
-  const busquedas = JSON.parse(localStorage.getItem('busquedas_recientes')) || [];
+  let busquedas = [];
+  try { busquedas = JSON.parse(localStorage.getItem('busquedas_recientes')) || []; } catch {}
+  if (!listaBusquedas) return;
   listaBusquedas.innerHTML = '';
 
   if (busquedas.length === 0) {
@@ -94,33 +100,30 @@ function mostrarBusquedas() {
     li.classList.add('mb-1', 'text-primary');
     li.style.cursor = 'pointer';
 
-    const regionNombre = regiones[b.region] || 'Todas';
-    const categoriaNombre = categorias[b.categoria] || 'Todas';
+    const regionNombre = regiones[b.region] || (b.region || 'Todas');
+    const categoriaNombre = categorias[b.categoria] || (b.categoria || 'Todas');
 
     li.textContent = `${b.keyword || '🔎'} · ${regionNombre} · ${categoriaNombre}`;
     li.addEventListener('click', () => {
-      document.getElementById('input-keyword').value = b.keyword;
-      document.getElementById('region-select').value = b.region;
-      document.getElementById('categoria-select').value = b.categoria;
-      form.requestSubmit();
+      // Rellena la UI pero NO se auto-aplica al refrescar; solo al hacer clic aquí
+      const kw = document.getElementById('input-keyword');
+      const rs = document.getElementById('region-select');
+      const cs = document.getElementById('categoria-select');
+
+      if (kw) kw.value = b.keyword || '';
+      if (rs) rs.value = b.region || '';
+      if (cs) cs.value = b.categoria || '';
+
+      // Envía el formulario para aplicar filtros ahora
+      form?.requestSubmit();
     });
     listaBusquedas.appendChild(li);
   });
 }
 
-function precargarUltimaBusqueda() {
-  const busquedas = JSON.parse(localStorage.getItem('busquedas_recientes')) || [];
-  if (busquedas.length === 0) return;
-
-  const ultima = busquedas[0];
-  document.getElementById('input-keyword').value = ultima.keyword;
-  document.getElementById('region-select').value = ultima.region;
-  document.getElementById('categoria-select').value = ultima.categoria;
-
-  form.requestSubmit();
-}
-
 document.addEventListener('DOMContentLoaded', () => {
+  // Mostramos la lista guardada, pero NO precargamos nada ni auto-buscamos.
   mostrarBusquedas();
-  precargarUltimaBusqueda();
+
+  // Importante: NO LLAMAR a "precargarUltimaBusqueda()" ni submit automático.
 });

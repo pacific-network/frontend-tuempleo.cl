@@ -194,12 +194,12 @@
                                 </a>
                             </div>
                       
-                            <div class="item-toggle">
+                            <!--<div class="item-toggle">
                                 <div class="user-profile fade-text" id="estadoDisponibilidad4">Notificación por SMS</div>
                                 <a onclick="toggleDisponibilidad('4')" style="cursor: pointer;">
                                     <i id="toggleIcon4" class="fas fa-toggle-off fa-2x text-secondary toggle-azul"></i>
                                 </a>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                     <div class="col-lg-9">
@@ -410,42 +410,16 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
-                                    <div class="user-profile-card">
-                                        <h4 class="user-profile-card-title">Notifications</h4>
-                                        <div class="user-notification">
-                                            <div class="user-notification-item">
-                                                <a href="#">
-                                                    <div class="user-notification-icon"> 
-                                                        <i class="far fa-briefcase"></i>
-                                                    </div>
-                                                    <div class="user-notification-info">
-                                                        <p>Tienes una nueva propuesta para <b>Diseñador Web</b>!</p>
-                                                        <span>justo ahora</span>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                            <div class="user-notification-item">
-                                                <a href="#">
-                                                    <div class="user-notification-icon"> 
-                                                        <i class="far fa-envelope"></i>
-                                                    </div>
-                                                    <div class="user-notification-info">
-                                                        <p>Tesla Jonsin Te Envió un <b>Mensaje Privado</b>!</p>
-                                                        <span>hace 15 minutos</span>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                            <div class="user-notification-item">
-                                                <a href="#">
-                                                    <div class="user-notification-icon"> 
-                                                        <i class="far fa-comment"></i>
-                                                    </div>
-                                                    <div class="user-notification-info">
-                                                        <p>You Have New Review For <b>#53454</b> This List</p>
-                                                        <span>15 days ago</span>
-                                                    </div>
-                                                </a>
-                                            </div>
+                                    <div class="user-profile-card" id="notificationsCard">
+                                        <h4 class="user-profile-card-title d-flex align-items-center gap-2">
+                                            Notificaciones
+                                            <span class="badge bg-secondary" id="notificationsCount">0</span>
+                                        </h4>
+                                      
+                                        <!-- Aquí el JS inyectará las notificaciones -->
+                                        <div class="user-notification" id="notificationsList">
+                                          <!-- opcional: contenido placeholder si quieres -->
+                                          <!-- <div class="text-muted small px-3 py-2">No tienes notificaciones por ahora.</div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -641,6 +615,8 @@
     <script src="assets/js/logout-button.js" ></script>
     <script src="assets/js/candidate-name-category.js"></script>
     <script src="assets/js/dashboard/estados-button.js"></script>
+    <script src="assets/js/modules/candidatos/candidate-notifications.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
 // Lógica para manejar los tabs
 document.querySelectorAll('.tab-btn').forEach(btn => {

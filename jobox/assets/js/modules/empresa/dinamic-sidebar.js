@@ -13,10 +13,10 @@ function getUserIdFromToken() {
   function renderPerfilEmpresa(empresa) {
     const contenedor = document.querySelector('.user-profile-sidebar-top');
     if (!contenedor) return;
-  
+    
     const nombreFantasia = empresa.nombre_fantasia || 'Nombre no disponible';
-    const descripcion = empresa.data?.descripcion || 'Sin descripción';
-  
+    const actividades = empresa.data?.actividades_economicas?.join(', ') || 'Sin actividades registradas';
+    
     contenedor.innerHTML = `
       <div class="user-profile-img">
         <img src="${empresa.logo_url || '../assets/img/job/04.jpg'}" alt="Logo Empresa">
@@ -24,9 +24,10 @@ function getUserIdFromToken() {
         <input type="file" class="profile-img-file">
       </div>
       <h4>${toTitleCase(nombreFantasia)}</h4>
-      <p>${toTitleCase(descripcion)}</p>
+      <p>${toTitleCase(actividades)}</p>
     `;
   }
+
   
   function toTitleCase(str) {
     if (!str) return 'N/A';

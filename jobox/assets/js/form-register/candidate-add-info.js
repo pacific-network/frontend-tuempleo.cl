@@ -1,366 +1,391 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Verificar autenticación
-    const token = localStorage.getItem('token');
-    if (!token) {
-        alert('No se encontró el token de autenticación. Por favor, inicie sesión.');
-        window.location.href = 'login.html';
-        return;
-    }
+// candidate-add-info.js — usa SOLO /auth/me; sin fallback a sub
+document.addEventListener('DOMContentLoaded', async function () {
+  // ---------- Utils ----------
+  const API = window.BASE_URL_API; // ej: http://localhost:3000/v1
 
-    const rutInput = document.getElementById('rut');
-    if (rutInput) {
-        rutInput.addEventListener('blur', function() {
-            this.value = formatRUT(this.value);
-        });
-    }
-
-    // Decodificar token para obtener userId
-    let userId, userEmail;
+  const b64urlDecode = (b64url) => {
     try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        userId = payload.sub;
-        userEmail = payload.email;
+      const b64 = b64url.replace(/-/g, '+').replace(/_/g, '/');
+      return decodeURIComponent(escape(atob(b64)));
+    } catch { return null; }
+  };
+  const parseJwt = (token) => {
+    try { return JSON.parse(b64urlDecode(token.split('.')[1])); } catch { return null; }
+  };
+  const isExpired = (payload) => {
+    const now = Math.floor(Date.now() / 1000);
+    return !!payload?.exp && payload.exp < now;
+  };
 
-        const emailfield = document.getElementById('correo');
-        if (emailfield) {
-            emailfield.value = userEmail;
-            emailfield.disabled = true; // Deshabilitar campo de correo
-        }
+  const showAuthErrorAndExit = (title, text, { removeToken = true } = {}) => {
+    try { if (removeToken) localStorage.removeItem('token'); } catch {}
+    Swal.fire({
+      title, text, icon: 'warning',
+      confirmButtonText: 'Ir a iniciar sesión',
+      confirmButtonColor: '#3085d6',
+      allowOutsideClick: false
+    }).then(() => { window.location.href = 'login.html'; });
+  };
+
+  const safeFetchJson = async (url, opts) => {
+    const res = await fetch(url, opts);
+    let bodyText = '';
+    try { bodyText = await res.text(); } catch {}
+    let data = null;
+    try { data = bodyText ? JSON.parse(bodyText) : null; } catch {}
+    if (!res.ok) {
+      const msg = (data && (data.message || data.error)) || `HTTP ${res.status}`;
+      const err = new Error(msg);
+      err.status = res.status;
+      err.body = data || bodyText;
+      throw err;
+    }
+    return data;
+  };
+
+  // ---------- Verificar autenticación ----------
+  const token = localStorage.getItem('token');
+  if (!token) {
+    return showAuthErrorAndExit('Sesión requerida', 'No se encontraron datos de autenticación. Por favor, inicia sesión.', { removeToken: false });
+  }
+
+  const payload = parseJwt(token);
+  if (!payload || isExpired(payload)) {
+    return showAuthErrorAndExit('Sesión inválida', 'Tu sesión es inválida o expiró. Inicia sesión nuevamente.', { removeToken: true });
+  }
+
+  // ---------- Resolver /auth/me (id y datos) ----------
+  async function getMeStrict() {
+    try {
+      const me = await safeFetchJson(`${API}/auth/me`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const id = me?.id || me?.user?.id || me?.data?.id;
+      if (!id) throw new Error('Respuesta /auth/me sin id');
+      return { me, id };
     } catch (e) {
-        console.error('Error al decodificar el token:', e);
-        alert('Error al obtener la información del usuario. Por favor, inicie sesión nuevamente.');
-        window.location.href = 'login.html';
-        return;
+      console.warn('[candidate] /auth/me falló:', e.message);
+      if (e.status === 401) {
+        showAuthErrorAndExit('Sesión inválida', 'No pudimos validar tu sesión. Inicia con Google/LinkedIn nuevamente.');
+        return null;
+      }
+      showAuthErrorAndExit('Error de sesión', 'No fue posible validar tu sesión actualmente. Intenta iniciar sesión otra vez.');
+      return null;
     }
+  }
 
-    // Configurar formulario
-    const form = document.getElementById('postulanteForm');
-    setupRequiredFields();
-    setupDynamicFields();
+  const meResp = await getMeStrict();
+  if (!meResp) return;
+  const realUserId = meResp.id;
+  const me = meResp.me || {};
 
-    // Manejar envío del formulario
-    form.addEventListener('submit', async function(e) {
-        e.preventDefault();
+  // ---------- Prefill de email/nombre/apellido ----------
+  const emailfield = document.getElementById('correo');
+  if (emailfield) {
+    const meEmail = (me.email || '').trim().toLowerCase();
+    const oauthEmail = (localStorage.getItem('oauth_email') || '').trim().toLowerCase(); // fallback
+    emailfield.value = meEmail || oauthEmail || '';
+    emailfield.disabled = true; // correo viene del backend/IdP
+  }
 
-        if (!validateForm()) {
-            return;
+  const nombreEl = document.getElementById('nombre');
+  const apellidoEl = document.getElementById('apellido');
+
+  const meNombre = (me.nombres || '').trim();
+  const meApellido = (me.apellidos || '').trim();
+
+  let fallbackFull = (localStorage.getItem('oauth_name_full') || '').trim();
+  if (!meNombre && !meApellido && fallbackFull) {
+    const i = fallbackFull.lastIndexOf(' ');
+    if (i > 0) {
+      if (nombreEl && !nombreEl.value)  nombreEl.value  = fallbackFull.slice(0, i);
+      if (apellidoEl && !apellidoEl.value) apellidoEl.value = fallbackFull.slice(i + 1);
+    } else {
+      if (nombreEl && !nombreEl.value) nombreEl.value = fallbackFull;
+    }
+  } else {
+    if (nombreEl && !nombreEl.value && meNombre)   nombreEl.value = meNombre;
+    if (apellidoEl && !apellidoEl.value && meApellido) apellidoEl.value = meApellido;
+  }
+
+  // ---------- RUT formateo ----------
+  const rutInput = document.getElementById('rut');
+  if (rutInput) {
+    rutInput.addEventListener('blur', function () { this.value = formatRUT(this.value); });
+  }
+
+  // ---------- Configurar formulario ----------
+  const form = document.getElementById('postulanteForm');
+  setupRequiredFields();
+  setupDynamicFields();
+
+  // ⚠️ Actualiza SIEMPRE nombres/apellidos en /auth/me ANTES de crear Postulante
+  async function actualizarNombreEnUsuario(nombres, apellidos) {
+    try {
+      // tu AuthService expone updateMe(userId, dto) → controller suele ser PATCH /auth/me
+      await safeFetchJson(`${API}/auth/me`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ nombres, apellidos })
+      });
+    } catch (e) {
+      console.warn('[candidate] PATCH /auth/me falló (continuo igual):', e.message);
+      // No interrumpe el flujo; el servicio de Postulante también intentará setear nombres/apellidos.
+    }
+  }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    try {
+      const formData = prepareFormData();
+
+      // 0) Forzar que el nombre/apellido del formulario queden en la tabla usuario
+      await actualizarNombreEnUsuario(formData.nombre, formData.apellido);
+
+      // 1) Crear postulante (+ CV)
+      const response = await crearPostulanteYCV(realUserId, formData, token);
+
+      if (response && response.postulante && response.curriculum) {
+        await Swal.fire({
+          title: '¡Registro exitoso!',
+          text: 'Te has registrado correctamente.',
+          icon: 'success',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: '#3085d6',
+          allowOutsideClick: false
+        });
+        window.location.href = 'candidate-dashboard.html';
+      } else {
+        throw new Error('Respuesta inesperada del servidor');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      let errorMessage = 'Error al enviar los datos';
+      const msg = String(error.message || '').toLowerCase();
+      if (msg.includes('usuario no encontrado')) {
+        errorMessage = 'Tu sesión no es válida o tu usuario no existe. Cierra sesión e inicia de nuevo con Google/LinkedIn.';
+      } else if (msg.includes('rut')) {
+        errorMessage = 'El RUT ingresado ya está asociado a otro usuario.';
+      }
+      Swal.fire({ title: 'Error', text: errorMessage, icon: 'error', confirmButtonText: 'Aceptar' });
+    }
+  });
+
+  // ---------- Reglas de required ----------
+  function setupRequiredFields() {
+    const requiredFields = [
+      'rut','nombre','apellido','correo','numero_telefono',
+      'genero','fecha_nacimiento','estado_civil','region',
+      'comuna','nacionalidad','descripcion_bio',
+      'categoria_empleo','salario_esperado','modalidad'
+    ];
+
+    requiredFields.forEach(fieldId => {
+      const input = document.getElementById(fieldId);
+      if (input) {
+        input.required = true;
+        const label = input.closest('.form-group')?.querySelector('label');
+        if (label && !label.classList.contains('required-field')) label.classList.add('required-field');
+
+        if (!input.nextElementSibling?.classList.contains('invalid-feedback')) {
+          const errorDiv = document.createElement('div');
+          errorDiv.className = 'invalid-feedback';
+          errorDiv.textContent = 'Este campo es obligatorio';
+          input.insertAdjacentElement('afterend', errorDiv);
         }
-
-        try {
-            const formData = prepareFormData();
-            const response = await crearPostulanteYCV(userId, formData, token);
-
-            if (response && response.postulante && response.curriculum) {
-                await Swal.fire({
-                    title: '¡Registro exitoso!',
-                    text: 'Te has registrado correctamente.',
-                    icon: 'success',
-                    confirmButtonText: 'Aceptar',
-                    confirmButtonColor: '#3085d6',
-                    allowOutsideClick: false
-                });
-
-                window.location.href = 'candidate-dashboard.html';
-            } else {
-                throw new Error('Respuesta inesperada del servidor');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            let errorMessage = 'Error al enviar los datos';
-
-            if (error instanceof TypeError && error.message.includes('.json is not a function')) {
-                errorMessage += ': El servidor devolvió una respuesta no válida';
-            } else if (error.message) {
-                errorMessage += ': ' + error.message;
-            }
-
-            Swal.fire({
-                title: 'Error',
-                text: errorMessage,
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
-            });
-        }
+        input.addEventListener('blur', function () { validateField(this); });
+      }
     });
-    // Configurar campos obligatorios
-    function setupRequiredFields() {
-        // Lista de IDs de campos obligatorios
-        const requiredFields = [
-            'rut', 'nombre', 'apellido', 'correo', 'numero_telefono',
-            'genero', 'fecha_nacimiento', 'estado_civil', 'region',
-            'comuna', 'nacionalidad', 'descripcion_bio',
-            'categoria_empleo', 'salario_esperado', 'modalidad'
-        ];
 
-        requiredFields.forEach(fieldId => {
-            const input = document.getElementById(fieldId);
-            if (input) {
-                input.required = true;
-                const label = input.closest('.form-group')?.querySelector('label');
-                if (label && !label.classList.contains('required-field')) {
-                    label.classList.add('required-field');
-                }
+    document.querySelectorAll('.formacion-entry [required]').forEach(input => {
+      input.addEventListener('blur', function () { validateField(this); });
+    });
 
-                if (!input.nextElementSibling?.classList.contains('invalid-feedback')) {
-                    const errorDiv = document.createElement('div');
-                    errorDiv.className = 'invalid-feedback';
-                    errorDiv.textContent = 'Este campo es obligatorio';
-                    input.insertAdjacentElement('afterend', errorDiv);
-                }
+    document.querySelectorAll('.exp-entry input, .exp-entry select, .exp-entry textarea').forEach(i => { i.required = false; });
+    document.querySelectorAll('.idioma-entry input, .idioma-entry select').forEach(i => { i.required = false; });
+    const li = document.getElementById('linkedin_url'); if (li) li.required = false;
+  }
 
-                input.addEventListener('blur', function() {
-                    validateField(this);
-                });
-            }
-        });
-
-        // Configurar campos de educación como obligatorios
-        document.querySelectorAll('.formacion-entry [required]').forEach(input => {
-            input.addEventListener('blur', function() {
-                validateField(this);
-            });
-        });
-
-        // Remover required de campos opcionales
-        document.querySelectorAll('.exp-entry input, .exp-entry select, .exp-entry textarea').forEach(input => {
-            input.required = false;
-        });
-
-        document.querySelectorAll('.idioma-entry input, .idioma-entry select').forEach(input => {
-            input.required = false;
-        });
-
-        document.getElementById('linkedin_url').required = false;
-    }
-
-    // Configurar campos dinámicos
-    function setupDynamicFields() {
-        document.getElementById('addFormacionBtn').addEventListener('click', addFormacion);
-        document.getElementById('addExpBtn').addEventListener('click', addExperiencia);
-        document.getElementById('addIdiomaBtn').addEventListener('click', addIdioma);
-    }
+  function setupDynamicFields() {
+    document.getElementById('addFormacionBtn')?.addEventListener('click', addFormacion);
+    document.getElementById('addExpBtn')?.addEventListener('click', addExperiencia);
+    document.getElementById('addIdiomaBtn')?.addEventListener('click', addIdioma);
+  }
 });
 
-// Función para validar campo individual
+// ---------- Validaciones ----------
 function validateField(field) {
-    const isValid = !field.required || (field.value && field.value.trim() !== '');
-    field.classList.toggle('is-invalid', !isValid);
-    return isValid;
+  const isValid = !field.required || (field.value && field.value.trim() !== '');
+  field.classList.toggle('is-invalid', !isValid);
+  return isValid;
 }
-
-// Función para validar formulario completo
 function validateForm() {
-    let isValid = true;
-    let firstInvalidField = null;
+  let isValid = true, firstInvalidField = null;
+  document.querySelectorAll('[required]').forEach(field => {
+    if (!validateField(field)) { if (isValid) firstInvalidField = field; isValid = false; }
+  });
 
-    // Validar campos requeridos estáticos
-    document.querySelectorAll('[required]').forEach(field => {
-        if (!validateField(field)) {
-            if (isValid) {
-                firstInvalidField = field;
-            }
-            isValid = false;
-        }
+  const formacionEntries = document.querySelectorAll('.formacion-entry');
+  if (formacionEntries.length === 0) {
+    Swal.fire({ title: 'Educación requerida', text: 'Debes agregar al menos un registro de educación.', icon: 'warning', confirmButtonText: 'Aceptar' });
+    isValid = false;
+  } else {
+    let hasValidEducation = false;
+    formacionEntries.forEach(entry => {
+      let entryIsValid = true;
+      entry.querySelectorAll('[required]').forEach(field => {
+        if (!validateField(field)) { if (isValid && !firstInvalidField) firstInvalidField = field; entryIsValid = false; isValid = false; }
+      });
+      if (entryIsValid) hasValidEducation = true;
     });
-
-    // Validar al menos un registro de educación completo
-    const formacionEntries = document.querySelectorAll('.formacion-entry');
-    if (formacionEntries.length === 0) {
-        alert('Debe agregar al menos un registro de educación.');
-        isValid = false;
-    } else {
-        // Validar que al menos un registro de educación esté completo
-        let hasValidEducation = false;
-        formacionEntries.forEach(entry => {
-            let entryIsValid = true;
-            entry.querySelectorAll('[required]').forEach(field => {
-                if (!validateField(field)) {
-                    if (isValid) {
-                        firstInvalidField = firstInvalidField || field;
-                    }
-                    entryIsValid = false;
-                    isValid = false;
-                }
-            });
-            
-            if (entryIsValid) {
-                hasValidEducation = true;
-            }
-        });
-
-        if (!hasValidEducation) {
-            alert('Debe completar al menos un registro de educación.');
-            isValid = false;
-        }
+    if (!hasValidEducation) {
+      Swal.fire({ title: 'Educación incompleta', text: 'Debes completar al menos un registro de educación.', icon: 'warning', confirmButtonText: 'Aceptar' });
+      isValid = false;
     }
+  }
 
-    if (!isValid && firstInvalidField) {
-        firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        firstInvalidField.focus();
-    }
-
-    return isValid;
+  if (!isValid && firstInvalidField) {
+    Swal.fire({ title: 'Campos incompletos', text: 'Revisa los campos marcados en rojo.', icon: 'warning', confirmButtonText: 'Ir al primer error' })
+      .then(() => { firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' }); firstInvalidField.focus(); });
+  }
+  return isValid;
 }
 
+// ---------- Helpers RUT ----------
 function formatRUT(rut) {
-    // Limpiar RUT
-    rut = rut.replace(/[^0-9kK]/g, '').toUpperCase();
-    if (rut.length < 2) return rut;
-
-    const cuerpo = rut.slice(0, -1);
-    const dv = rut.slice(-1);
-
-    // Validar dígito verificador
-    if (!validateDV(cuerpo, dv)) {
-        alert('RUT inválido');
-        return '';
-    }
-
-    // Formatear
-    let formatted = '';
-    let i = cuerpo.length;
-    while (i > 3) {
-        formatted = '.' + cuerpo.slice(i - 3, i) + formatted;
-        i -= 3;
-    }
-    formatted = cuerpo.slice(0, i) + formatted;
-
-    return `${formatted}-${dv}`;
+  rut = rut.replace(/[^0-9kK]/g, '').toUpperCase();
+  if (rut.length < 2) return rut;
+  const cuerpo = rut.slice(0, -1), dv = rut.slice(-1);
+  if (!validateDV(cuerpo, dv)) {
+    Swal.fire({ title: 'RUT inválido', text: 'Revisa el dígito verificador.', icon: 'error', confirmButtonText: 'Aceptar', confirmButtonColor: '#3085d6', allowOutsideClick: false });
+    return '';
+  }
+  let formatted = '', i = cuerpo.length;
+  while (i > 3) { formatted = '.' + cuerpo.slice(i - 3, i) + formatted; i -= 3; }
+  formatted = cuerpo.slice(0, i) + formatted;
+  return `${formatted}-${dv}`;
 }
-
-// Función para limpiar el RUT (asegurar formato correcto)
 function cleanRUT(rut) {
-    if (!rut) return '';
-    // Eliminar todos los caracteres no numéricos excepto K/k
-    let clean = rut.toString().replace(/[^0-9kK]/g, '').toUpperCase();
-    if (clean.length < 2) return '';
-    // Separar cuerpo y dígito verificador
-    const cuerpo = clean.slice(0, -1);
-    const dv = clean.slice(-1);
-    // Reconstruir en formato xxxxxxxx-x
-    return `${cuerpo}-${dv}`;
+  if (!rut) return '';
+  let clean = rut.toString().replace(/[^0-9kK]/g, '').toUpperCase();
+  if (clean.length < 2) return '';
+  const cuerpo = clean.slice(0, -1), dv = clean.slice(-1);
+  return `${cuerpo}-${dv}`;
 }
-
 function validateDV(cuerpo, dv) {
-    let suma = 0;
-    let multiplo = 2;
-
-    for (let i = cuerpo.length - 1; i >= 0; i--) {
-        suma += parseInt(cuerpo[i]) * multiplo;
-        multiplo = multiplo === 7 ? 2 : multiplo + 1;
-    }
-
-    const resto = 11 - (suma % 11);
-    let dvEsperado = resto === 11 ? '0' : resto === 10 ? 'K' : resto.toString();
-
-    return dv.toUpperCase() === dvEsperado;
+  let suma = 0, multiplo = 2;
+  for (let i = cuerpo.length - 1; i >= 0; i--) {
+    suma += parseInt(cuerpo[i]) * multiplo;
+    multiplo = multiplo === 7 ? 2 : multiplo + 1;
+  }
+  const resto = 11 - (suma % 11);
+  const dvEsp = resto === 11 ? '0' : resto === 10 ? 'K' : resto.toString();
+  return dv.toUpperCase() === dvEsp;
 }
+function validateRUTFormat(rut) { return /^[0-9]+-[0-9kK]{1}$/.test(rut); }
 
-function validateRUTFormat(rut) {
-    return /^[0-9]+-[0-9kK]{1}$/.test(rut);
-}
-
-// Preparar datos del formulario para envío
+// ---------- Preparar payload ----------
 function prepareFormData() {
-    // Datos personales obligatorios
-    const datosPersonales = {
-        telefono: document.getElementById('codigo_pais').value + document.getElementById('numero_telefono').value,
-        genero: document.getElementById('genero').value,
-        fecha_nacimiento: document.getElementById('fecha_nacimiento').value,
-        estado_civil: document.getElementById('estado_civil').value,
-        region: document.getElementById('region').value,
-        comuna: document.getElementById('comuna').value,
-        nacionalidad: document.getElementById('nacionalidad').value,
-        descripcion_bio: document.getElementById('descripcion_bio').value
-    };
+  const nombreVal   = document.getElementById('nombre').value;
+  const apellidoVal = document.getElementById('apellido').value;
 
-    // Educación (obligatoria, al menos un registro completo)
-    const educacion = Array.from(document.querySelectorAll('.formacion-entry'))
-        .filter(entry => {
-            // Solo incluir registros completos
-            return Array.from(entry.querySelectorAll('[required]')).every(field => 
-                field.value && field.value.trim() !== ''
-            );
-        })
-        .map(entry => ({
-            titulo: entry.querySelector('[name="titulo[]"]').value,
-            institucion: entry.querySelector('[name="institucion[]"]').value,
-            grado: entry.querySelector('[name="tipo_estudio[]"]').value,
-            estado: entry.querySelector('[name="estado_estudio[]"]').value,
-            anio_inicio: entry.querySelector('[name="anio_inicio[]"]').value,
-            anio_finalizacion: entry.querySelector('[name="estado_estudio[]"]').value === 'En Curso' ? 
-                null : entry.querySelector('[name="anio_finalizacion[]"]')?.value
-        }));
+  const datosPersonales = {
+    telefono: document.getElementById('codigo_pais').value + document.getElementById('numero_telefono').value,
+    genero: document.getElementById('genero').value,
+    fecha_nacimiento: document.getElementById('fecha_nacimiento').value,
+    estado_civil: document.getElementById('estado_civil').value,
+    region: document.getElementById('region').value,
+    comuna: document.getElementById('comuna').value,
+    nacionalidad: document.getElementById('nacionalidad').value,
+    descripcion_bio: document.getElementById('descripcion_bio').value,
+    // también por si lees desde datos_personales
+    nombre: nombreVal,
+    apellido: apellidoVal,
+  };
 
-    // Experiencia (opcional, solo registros con empresa)
-    const experiencias = Array.from(document.querySelectorAll('.exp-entry'))
-        .filter(entry => entry.querySelector('[name="empresa[]"]').value)
-        .map(entry => ({
-            empresa: entry.querySelector('[name="empresa[]"]').value,
-            cargo: entry.querySelector('[name="cargo[]"]').value,
-            actividad_empresa: entry.querySelector('[name="actividad_empresa[]"]').value,
-            nivel_experiencia: entry.querySelector('[name="nivel_experiencia[]"]').value,
-            area_cargo: entry.querySelector('[name="area_cargo[]"]').value,
-            anno_inicio: entry.querySelector('[name="anno_inicio[]"]').value,
-            anno_termino: entry.querySelector('[name="anno_termino[]"]').value,
-            descripcion: entry.querySelector('[name="descripcion_cargo[]"]').value
-        }));
+  const educacion = Array.from(document.querySelectorAll('.formacion-entry'))
+    .filter(entry => Array.from(entry.querySelectorAll('[required]')).every(f => f.value && f.value.trim() !== ''))
+    .map(entry => ({
+      titulo: entry.querySelector('[name="titulo[]"]').value,
+      institucion: entry.querySelector('[name="institucion[]"]').value,
+      grado: entry.querySelector('[name="tipo_estudio[]"]').value,
+      estado: entry.querySelector('[name="estado_estudio[]"]').value,
+      anio_inicio: entry.querySelector('[name="anio_inicio[]"]').value,
+      anio_finalizacion: entry.querySelector('[name="estado_estudio[]"]').value === 'En Curso'
+        ? null
+        : entry.querySelector('[name="anio_finalizacion[]"]')?.value
+    }));
 
-    // Idiomas (opcional, solo registros con idioma)
-    const idiomas = Array.from(document.querySelectorAll('.idioma-entry'))
-        .filter(entry => entry.querySelector('[name="idioma[]"]').value)
-        .map(entry => ({
-            idioma: entry.querySelector('[name="idioma[]"]').value,
-            nivel_escrito: entry.querySelector('[name="nivel_escrito[]"]').value,
-            nivel_oral: entry.querySelector('[name="nivel_oral[]"]').value
-        }));
+  const experiencias = Array.from(document.querySelectorAll('.exp-entry'))
+    .filter(entry => entry.querySelector('[name="empresa[]"]').value)
+    .map(entry => ({
+      empresa: entry.querySelector('[name="empresa[]"]').value,
+      cargo: entry.querySelector('[name="cargo[]"]').value,
+      actividad_empresa: entry.querySelector('[name="actividad_empresa[]"]').value,
+      nivel_experiencia: entry.querySelector('[name="nivel_experiencia[]"]').value,
+      area_cargo: entry.querySelector('[name="area_cargo[]"]').value,
+      anno_inicio: entry.querySelector('[name="anno_inicio[]"]').value,
+      anno_termino: entry.querySelector('[name="anno_termino[]"]').value,
+      descripcion: entry.querySelector('[name="descripcion_cargo[]"]').value
+    }));
 
-    // Redes sociales (opcional)
-    const redesSociales = [
-        { id: 'facebook_url', nombre: 'Facebook' },
-        { id: 'twitter_url', nombre: 'Twitter' },
-        { id: 'linkedin_url', nombre: 'LinkedIn' },
-        { id: 'instagram_url', nombre: 'Instagram' }
-    ].map(social => {
-        const url = document.getElementById(social.id).value;
-        return url ? { red_social: social.nombre, url } : null;
-    }).filter(Boolean);
+  const idiomas = Array.from(document.querySelectorAll('.idioma-entry'))
+    .filter(entry => entry.querySelector('[name="idioma[]"]').value)
+    .map(entry => ({
+      idioma: entry.querySelector('[name="idioma[]"]').value,
+      nivel_escrito: entry.querySelector('[name="nivel_escrito[]"]').value,
+      nivel_oral: entry.querySelector('[name="nivel_oral[]"]').value
+    }));
 
-    // Herramientas (opcional)
-    const herramientasInput = document.getElementById('herramientas').value;
-    const herramientas = herramientasInput ? herramientasInput.split(' - ') : [];
+  const redesSociales = [
+    { id: 'facebook_url',  nombre: 'Facebook'  },
+    { id: 'twitter_url',   nombre: 'Twitter'   },
+    { id: 'linkedin_url',  nombre: 'LinkedIn'  },
+    { id: 'instagram_url', nombre: 'Instagram' }
+  ].map(s => {
+    const url = document.getElementById(s.id)?.value;
+    return url ? { red_social: s.nombre, url } : null;
+  }).filter(Boolean);
 
-    return {
-        rut: cleanRUT(document.getElementById('rut').value),
-        nombre: document.getElementById('nombre').value,
-        apellido: document.getElementById('apellido').value,
-        email: document.getElementById('correo').value,
-        data: {
-            datos_personales: datosPersonales,
-            educacion,
-            experiencias,
-            idiomas,
-            preferencias: {
-                categoria_empleo: document.getElementById('categoria_empleo').value,
-                salario_esperado: document.getElementById('salario_esperado').value,
-                modalidad: document.getElementById('modalidad').value
-            },
-            redes_sociales: redesSociales,
-            herramientas
-        }
-    };
+  const herramientasInput = document.getElementById('herramientas')?.value || '';
+  const herramientas = herramientasInput ? herramientasInput.split(' - ') : [];
+
+  return {
+    rut: cleanRUT(document.getElementById('rut').value),
+    nombre: nombreVal,
+    apellido: apellidoVal,
+    email: document.getElementById('correo').value,
+    data: {
+      nombre: nombreVal,
+      apellido: apellidoVal,
+      datos_personales: datosPersonales,
+      educacion,
+      experiencias,
+      idiomas,
+      preferencias: {
+        categoria_empleo: document.getElementById('categoria_empleo').value,
+        salario_esperado: document.getElementById('salario_esperado').value,
+        modalidad: document.getElementById('modalidad').value
+      },
+      redes_sociales: redesSociales,
+      herramientas
+    }
+  };
 }
 
-// Función para transformar datos del postulante al formato esperado por curriculum
+// ---------- Transformación a CV ----------
 function transformarDatosParaCV(dataPostulante) {
-  // Extraemos los datos desde la estructura de postulante
   const datosPersonales = dataPostulante.datos_personales || {};
   const experiencias = dataPostulante.experiencias || [];
   const idiomas = dataPostulante.idiomas || [];
   const preferencias = dataPostulante.preferencias || {};
   const redes_sociales = dataPostulante.redes_sociales || [];
 
-  // Formatear experiencias para CV
   const experienciaCV = experiencias.map(exp => ({
     titulo: exp.cargo || '',
     grado: exp.nivel_experiencia || '',
@@ -369,37 +394,33 @@ function transformarDatosParaCV(dataPostulante) {
     descripcion: exp.descripcion || ''
   }));
 
-  // Formatear educación para CV
-  const educacionCV = (datosPersonales.educacion || []).map(edu => ({
+  const educacionCV = (dataPostulante.educacion || []).map(edu => ({
     titulo: edu.titulo || '',
     grado: edu.grado || '',
     institucion: edu.institucion || '',
-    ano: "", // No viene año en la data postulante, puedes adaptar si tienes info
-    descripcion: "" // Tampoco hay descripción, puedes agregar si existe
+    ano: '',
+    descripcion: ''
   }));
 
-  // Formatear idiomas para CV
   const idiomasCV = idiomas.map(idioma => idioma.idioma || '');
 
-  // Formatear enlaces sociales para CV
   const enlacesSocialesCV = {};
   redes_sociales.forEach(red => {
-    const key = red.red_social.toLowerCase();
+    const key = (red.red_social || '').toLowerCase();
     enlacesSocialesCV[key] = red.url || '';
   });
 
-  // Construir el objeto final para el CV
   return {
     data: {
-      habilidades_clave: [], // No viene en postulante, dejar vacío o agregar si tienes
+      habilidades_clave: [],
       preferencias_laborales: {
         categoria_empleo: preferencias.categoria_empleo || '',
-        tipo_empleo: preferencias.modalidad || '', // asumí modalidad como tipo empleo
-        nivel_empleo: '', // no está en postulante, dejar vacío
-        salario_actual: '', // no está, dejar vacío
+        tipo_empleo: preferencias.modalidad || '',
+        nivel_empleo: '',
+        salario_actual: '',
         salario_esperado: preferencias.salario_esperado || '',
-        edad: "", // No viene edad, podrías calcular con fecha nacimiento si quieres
-        experiencia: experiencias.length, // cantidad de experiencias
+        edad: '',
+        experiencia: experiencias.length,
         genero: datosPersonales.genero || '',
         idiomas: idiomasCV,
         fecha_nacimiento: datosPersonales.fecha_nacimiento || '',
@@ -410,158 +431,112 @@ function transformarDatosParaCV(dataPostulante) {
       experiencia: experienciaCV,
       enlaces_sociales: enlacesSocialesCV
     },
-    cv_file: "" // Si tienes ruta o archivo CV, agregar aquí, sino dejar vacío
+    cv_file: ''
   };
 }
 
-// Enviar datos al servidor
-async function crearPostulanteYCV(userId, dataPostulante, token) {
-    const rut = dataPostulante.rut;
+// ---------- Envíos al servidor ----------
+async function crearPostulanteYCV(realUserId, dataPostulante, token) {
+  const rut = dataPostulante.rut;
 
-    try {
-        // 1) Crear postulante
-        const postulanteResponse = await fetch(`${BASE_URL_API}/postulante/${userId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify(dataPostulante),
-        });
+  // 1) Crear postulante
+  const postulanteResponse = await fetch(`${window.BASE_URL_API}/postulante/${realUserId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify(dataPostulante),
+  });
 
-        if (!postulanteResponse.ok) {
-            let errorData;
-            try {
-                errorData = await postulanteResponse.json();
-            } catch (e) {
-                throw new Error(`Error ${postulanteResponse.status}: ${postulanteResponse.statusText}`);
-            }
-            throw new Error(errorData.message || 'Error al crear postulante');
-        }
+  if (!postulanteResponse.ok) {
+    let body = null; try { body = await postulanteResponse.json(); } catch {}
+    const msg = body?.message || `Error ${postulanteResponse.status}: ${postulanteResponse.statusText}`;
+    throw new Error(msg);
+  }
 
-        const postulanteData = await postulanteResponse.json();
+  const postulanteData = await postulanteResponse.json();
 
-        // 2) Transformar data para CV
-        const dataParaCV = transformarDatosParaCV(dataPostulante.data);
+  // 2) Crear CV
+  const dataParaCV = transformarDatosParaCV(dataPostulante.data);
+  const cvResponse = await fetch(`${window.BASE_URL_API}/curriculum/${rut}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify(dataParaCV),
+  });
 
-        // 3) Crear CV
-        const cvResponse = await fetch(`${BASE_URL_API}/curriculum/${rut}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify(dataParaCV),
-        });
+  if (!cvResponse.ok) {
+    let body = null; try { body = await cvResponse.json(); } catch {}
+    const msg = body?.message || `Error ${cvResponse.status}: ${cvResponse.statusText}`;
+    throw new Error(msg);
+  }
 
-        if (!cvResponse.ok) {
-            let errorData;
-            try {
-                errorData = await cvResponse.json();
-            } catch (e) {
-                throw new Error(`Error ${cvResponse.status}: ${cvResponse.statusText}`);
-            }
-            throw new Error(errorData.message || 'Error al crear CV');
-        }
-
-        const cvData = await cvResponse.json();
-
-        return {
-            postulante: postulanteData,
-            curriculum: cvData
-        };
-    } catch (error) {
-        console.error('Error en crearPostulanteYCV:', error);
-        throw error; // Re-throw the error for the calling function to handle
-    }
+  const cvData = await cvResponse.json();
+  return { postulante: postulanteData, curriculum: cvData };
 }
 
-// Funciones para campos dinámicos
+// ---------- Campos dinámicos ----------
 function addFormacion() {
-    const newEntry = document.querySelector('.formacion-entry').cloneNode(true);
-    resetDynamicEntry(newEntry);
-    newEntry.querySelector('.anio-finalizacion-group').style.display = 'none';
-    newEntry.querySelector('[name="estado_estudio[]"]').addEventListener('change', function() {
-        toggleAnioFinalizacion(this);
-    });
-    document.getElementById('formacion-container').appendChild(newEntry);
+  const original = document.querySelector('.formacion-entry');
+  if (!original) return;
+  const n = original.cloneNode(true);
+  resetDynamicEntry(n);
+  n.querySelector('.anio-finalizacion-group')?.style && (n.querySelector('.anio-finalizacion-group').style.display = 'none');
+  n.querySelector('[name="estado_estudio[]"]')?.addEventListener('change', function () { toggleAnioFinalizacion(this); });
+  document.getElementById('formacion-container')?.appendChild(n);
 }
-
 function addExperiencia() {
-    const newEntry = document.querySelector('.exp-entry').cloneNode(true);
-    resetDynamicEntry(newEntry);
-    
-    // Quitar required de los campos de experiencia
-    newEntry.querySelectorAll('input, select, textarea').forEach(input => {
-        input.required = false;
-    });
-    
-    document.getElementById('experiencia-container').appendChild(newEntry);
+  const original = document.querySelector('.exp-entry');
+  if (!original) return;
+  const n = original.cloneNode(true);
+  resetDynamicEntry(n);
+  n.querySelectorAll('input, select, textarea').forEach(i => { i.required = false; });
+  document.getElementById('experiencia-container')?.appendChild(n);
 }
-
 function addIdioma() {
-    const newEntry = document.querySelector('.idioma-entry').cloneNode(true);
-    resetDynamicEntry(newEntry);
-    
-    // Quitar required de los campos de idiomas
-    newEntry.querySelectorAll('input, select').forEach(input => {
-        input.required = false;
-    });
-    
-    document.getElementById('idiomas-container').appendChild(newEntry);
+  const original = document.querySelector('.idioma-entry');
+  if (!original) return;
+  const n = original.cloneNode(true);
+  resetDynamicEntry(n);
+  n.querySelectorAll('input, select').forEach(i => { i.required = false; });
+  document.getElementById('idiomas-container')?.appendChild(n);
 }
-
 function resetDynamicEntry(entry) {
-    entry.querySelectorAll('input, select, textarea').forEach(input => {
-        if (input.type !== 'button') {
-            input.value = '';
-            input.classList.remove('is-invalid');
-        }
-    });
+  entry.querySelectorAll('input, select, textarea').forEach(i => {
+    if (i.type !== 'button') { i.value = ''; i.classList.remove('is-invalid'); }
+  });
 }
-
 function removeFormacion(button) {
-    const entries = document.querySelectorAll('.formacion-entry');
-    if (entries.length > 1) {
-        button.closest('.formacion-entry').remove();
-    } else {
-        alert('Debe mantener al menos un registro de formación.');
-    }
+  const entries = document.querySelectorAll('.formacion-entry');
+  if (entries.length > 1) button.closest('.formacion-entry').remove();
+  else Swal.fire({ title: 'Acción no permitida', text: 'Debes mantener al menos un registro de formación.', icon: 'info', confirmButtonText: 'Aceptar' });
 }
-
 function removeExperience(button) {
-    const entries = document.querySelectorAll('.exp-entry');
-    if (entries.length > 1) {
-        button.closest('.exp-entry').remove();
-    } else {
-        alert('Debe mantener al menos un registro de experiencia.');
-    }
+  const entries = document.querySelectorAll('.exp-entry');
+  if (entries.length > 1) button.closest('.exp-entry').remove();
+  else Swal.fire({ title: 'Acción no permitida', text: 'Debes mantener al menos un registro de experiencia.', icon: 'info', confirmButtonText: 'Aceptar' });
 }
-
 function removeIdioma(button) {
-    const entries = document.querySelectorAll('.idioma-entry');
-    if (entries.length > 1) {
-        button.closest('.idioma-entry').remove();
-    } else {
-        alert('Debe mantener al menos un registro de idioma.');
-    }
+  const entries = document.querySelectorAll('.idioma-entry');
+  if (entries.length > 1) button.closest('.idioma-entry').remove();
+  else Swal.fire({ title: 'Acción no permitida', text: 'Debes mantener al menos un registro de idioma.', icon: 'info', confirmButtonText: 'Aceptar' });
 }
-
 function toggleAnioFinalizacion(select) {
-    const entry = select.closest('.formacion-entry');
-    const anioGroup = entry.querySelector('.anio-finalizacion-group');
-    const anioInput = anioGroup.querySelector('input');
-    
-    if (select.value === 'En Curso') {
-        anioGroup.style.display = 'none';
-        anioInput.removeAttribute('required');
-        anioInput.classList.remove('is-invalid');
-    } else {
-        anioGroup.style.display = 'block';
-        anioInput.setAttribute('required', 'required');
-        const label = anioGroup.querySelector('label');
-        if (label && !label.classList.contains('required-field')) {
-            label.classList.add('required-field');
-        }
-    }
+  const entry = select.closest('.formacion-entry');
+  const anioGroup = entry.querySelector('.anio-finalizacion-group');
+  const anioInput = anioGroup?.querySelector('input');
+  if (!anioGroup || !anioInput) return;
+  if (select.value === 'En Curso') {
+    anioGroup.style.display = 'none';
+    anioInput.removeAttribute('required');
+    anioInput.classList.remove('is-invalid');
+  } else {
+    anioGroup.style.display = 'block';
+    anioInput.setAttribute('required', 'required');
+    const label = anioGroup.querySelector('label');
+    if (label && !label.classList.contains('required-field')) label.classList.add('required-field');
+  }
 }
