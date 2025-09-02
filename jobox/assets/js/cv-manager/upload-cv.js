@@ -1,135 +1,138 @@
+// assets/js/cv-manager/upload-cv.js
 document.addEventListener("DOMContentLoaded", function () {
-            const uploadButton = document.getElementById("uploadBtn");
-            const fileInput = document.getElementById("fileInput");
-            const filePreview = document.getElementById("filePreview");
-            const customFileButton = document.getElementById("customFileButton");
-            const toastContainer = document.getElementById("toastContainer");
+  const uploadButton = document.getElementById("uploadBtn");
+  const fileInput = document.getElementById("fileInput");
+  const customFileButton = document.getElementById("customFileButton");
+  const toastContainer = document.getElementById("toastContainer");
+  const previewContainer = document.getElementById("previewContainer");
+  const miniPreview = document.getElementById("pdfMiniPreview");
+  const uploadInstructions = document.getElementById("uploadInstructions");
+  const verBtn = document.getElementById("verPdfBtn");
 
-            // Abre el selector de archivo cuando se clickea el botón personalizado
-            customFileButton.addEventListener("click", () => {
-                fileInput.click();
-            });
+  customFileButton.addEventListener("click", () => fileInput.click());
 
-            // Actualiza la vista cuando se selecciona archivo
-            fileInput.addEventListener("change", () => {
-                const file = fileInput.files[0];
-                const previewContainer = document.getElementById("previewContainer");
-                const miniPreview = document.getElementById("pdfMiniPreview");
-                const uploadInstructions = document.getElementById("uploadInstructions");
-            
-                if (file && file.type === "application/pdf") {
-                    uploadButton.disabled = false;
-            
-                    const fileURL = URL.createObjectURL(file);
-                    miniPreview.src = fileURL;
-            
-                    uploadInstructions.style.display = "none";     // Oculta texto inicial
-                    previewContainer.style.display = "block";      // Muestra el preview
-                } else {
-                    uploadButton.disabled = true;
-                    miniPreview.src = "";
-                    previewContainer.style.display = "none";
-                    uploadInstructions.style.display = "block";    // Muestra texto otra vez
-                    showToast("Por favor, selecciona un archivo PDF válido.", "warning");
-                }
-            });
+  fileInput.addEventListener("change", () => {
+    const file = fileInput.files?.[0];
+    if (file && file.type === "application/pdf") {
+      uploadButton.disabled = false;
+      const blobUrl = URL.createObjectURL(file);
+      miniPreview.src = blobUrl;
+      uploadInstructions.style.display = "none";
+      previewContainer.style.display = "block";
+      verBtn.style.display = "none"; // aún no hay URL pública
+    } else {
+      uploadButton.disabled = true;
+      miniPreview.src = "";
+      previewContainer.style.display = "none";
+      uploadInstructions.style.display = "block";
+      showToast("Por favor, selecciona un archivo PDF válido.", "warning");
+    }
+  });
 
+  uploadButton.addEventListener("click", onUpload);
 
-            // Función para mostrar toast
-            function showToast(message, type = "success") {
-                const toastId = "toast" + Date.now();
-                const toastHtml = `
-                    <div id="${toastId}" class="toast align-items-center text-bg-${type} border-0" role="alert" aria-live="assertive" aria-atomic="true">
-                      <div class="d-flex">
-                        <div class="toast-body">
-                          ${message}
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                      </div>
-                    </div>
-                `;
-                toastContainer.insertAdjacentHTML("beforeend", toastHtml);
-                const toastElement = document.getElementById(toastId);
-                const bsToast = new bootstrap.Toast(toastElement, { delay: 5000 });
-                bsToast.show();
+  async function onUpload() {
+    const token = localStorage.getItem("token");
+    if (!token) return showToast("Inicia sesión para continuar.", "danger");
 
-                // Remover toast del DOM cuando desaparezca
-                toastElement.addEventListener("hidden.bs.toast", () => {
-                    toastElement.remove();
-                });
-            }
+    const payload = parseJwt(token);
+    const userId = payload?.sub;
+    if (!userId) return showToast("Token inválido.", "danger");
 
-            function parseJwt(token) {
-                try {
-                    const base64Url = token.split('.')[1];
-                    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-                        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-                    }).join(''));
-                    return JSON.parse(jsonPayload);
-                } catch (e) {
-                    return null;
-                }
-            }
+    const file = fileInput.files?.[0];
+    if (!file) return showToast("Selecciona un PDF antes de subir.", "warning");
 
-            uploadButton.addEventListener("click", async function () {
-                const token = localStorage.getItem("token");
-                if (!token) {
-                    showToast("Token no encontrado. Por favor inicia sesión.", "danger");
-                    return;
-                }
+    try {
+      // 1) obtener rut
+      const res = await fetch(`${BASE_URL_API}/postulante/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error("No se pudo obtener el RUT del usuario");
+      const data = await res.json();
+      const rut = data?.usuario?.rut;
+      if (!rut) throw new Error("RUT no disponible");
 
-                const payload = parseJwt(token);
-                if (!payload || !payload.sub) {
-                    showToast("Token inválido, no se pudo obtener el id de usuario.", "danger");
-                    return;
-                }
+      // 2) subir
+      const formData = new FormData();
+      formData.append("file", file);
+      const up = await fetch(`${BASE_URL_API}/curriculum/upload/${rut}`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
 
-                const userId = payload.sub;
-                const file = fileInput.files[0];
-                if (!file) {
-                    showToast("Por favor selecciona un archivo PDF antes de subir.", "warning");
-                    return;
-                }
+      if (!up.ok) {
+        let msg = "Error al subir archivo";
+        try {
+          const t = await up.text();
+          if (t) msg = t;
+        } catch {}
+        throw new Error(msg);
+      }
 
-                try {
-                    const response = await fetch(`${BASE_URL_API}/postulante/${userId}`, {
-                        method: "GET",
-                        headers: {
-                            "Authorization": `Bearer ${token}`
-                        }
-                    });
+      // 3) respuesta con URL pública (siempre que uses el controller que te pasé)
+      let json = {};
+      try {
+        json = await up.json(); // { message, cv_path, url }
+      } catch {}
 
-                    if (!response.ok) throw new Error("Error al obtener el RUT del usuario");
+      const publicUrl =
+        json?.url ||
+        (json?.cv_path
+          ? `${BASE_URL_API}${json.cv_path.replace("/var/www/html", "")}`
+          : null);
 
-                    const data = await response.json();
-                    const rut = data.usuario.rut;
+      showToast("¡CV subido correctamente!", "success");
 
-                    const formData = new FormData();
-                    formData.append("file", file);
+      // 4) refrescar preview con URL pública
+      if (publicUrl) {
+        miniPreview.src = publicUrl;
+        verBtn.style.display = "inline-block";
+        verBtn.onclick = () => window.open(publicUrl, "_blank");
+      } else if (typeof window.reloadCvPreview === "function") {
+        // Si no vino url en la respuesta, pedimos al backend que nos redirija (/view)
+        await window.reloadCvPreview();
+      }
 
-                    const uploadResponse = await fetch(`${BASE_URL_API}/curriculum/upload/${rut}`, {
-                        method: "POST",
-                        headers: {
-                            "Authorization": `Bearer ${token}`
-                        },
-                        body: formData
-                    });
+      // limpiar estado
+      fileInput.value = "";
+      uploadButton.disabled = true;
+    } catch (err) {
+      console.error(err);
+      showToast("Ocurrió un error al subir el CV: " + (err.message || "Error"), "danger");
+    }
+  }
 
-                    if (!uploadResponse.ok) {
-                        const errorText = await uploadResponse.text();
-                        throw new Error(`Error al subir archivo: ${errorText}`);
-                    }
+  // utilidades
+  function showToast(message, type = "success") {
+    const toastId = "toast" + Date.now();
+    const toastHtml = `
+      <div id="${toastId}" class="toast align-items-center text-bg-${type} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">${message}</div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+      </div>`;
+    toastContainer.insertAdjacentHTML("beforeend", toastHtml);
+    const el = document.getElementById(toastId);
+    const t = new bootstrap.Toast(el, { delay: 4500 });
+    t.show();
+    el.addEventListener("hidden.bs.toast", () => el.remove());
+  }
 
-                    showToast("¡CV subido correctamente!", "success");
-
-                    // Limpiar input y deshabilitar botón para evitar doble envío
-                    fileInput.value = "";
-                    uploadButton.disabled = true;
-                    filePreview.textContent = "";
-                } catch (error) {
-                    console.error(error);
-                    showToast("Ocurrió un error al subir el CV: " + error.message, "danger");
-                }
-            });
-        });
+  function parseJwt(token) {
+    try {
+      const base64Url = token.split(".")[1];
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split("")
+          .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+          .join("")
+      );
+      return JSON.parse(jsonPayload);
+    } catch {
+      return null;
+    }
+  }
+});

@@ -246,15 +246,16 @@ document.addEventListener('DOMContentLoaded', function() {
         function updateExperienceSection(experiences) {
             const container = document.getElementById('experiences-container');
             container.innerHTML = '';
-            
+
             if (experiences.length === 0) {
                 container.innerHTML = '<div class="col-12"><p>No hay información de experiencias disponibles</p></div>';
                 return;
             }
-            
+      
             experiences.forEach((exp, index) => {
                 const expElement = document.createElement('div');
-                expElement.className = 'row g-12';
+                expElement.className = 'row g-3'; // g-12 no existe en Bootstrap, usa g-3 o g-4
+        
                 expElement.innerHTML = `
                     <div class="col-lg-6">
                         <div class="profile-info-list">
@@ -266,6 +267,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             </ul>
                         </div>
                     </div>
+        
                     <div class="col-lg-6">
                         <div class="profile-info-list">
                             <ul>
@@ -275,18 +277,20 @@ document.addEventListener('DOMContentLoaded', function() {
                             </ul>
                         </div>
                     </div>
-                    <div class="col-lg-12">
+        
+                    <div class="col-12">
                         <div class="profile-info-list">
                             <ul>
-                                <li data-label="Descrición Cargo:"><span>${exp.descripcion || 'No hay descripción disponible'}</span></li>
+                                <li class="li-full" data-label="Descripción Cargo:">
+                                    <span class="exp-justify">${exp.descripcion || 'No hay descripción disponible'}</span>
+                                </li>
                             </ul>
                         </div>
                     </div>
                 `;
-                
+        
                 container.appendChild(expElement);
-                
-                // Agregar separador si no es el último elemento
+        
                 if (index < experiences.length - 1) {
                     const separator = document.createElement('hr');
                     separator.style.opacity = '1';
@@ -297,6 +301,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
+
         
         // Función para actualizar la sección de idiomas
         function updateLanguagesSection(languages) {

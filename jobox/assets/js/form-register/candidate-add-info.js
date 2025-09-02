@@ -1,8 +1,9 @@
-// candidate-add-info.js — usa SOLO /auth/me; sin fallback a sub
+// candidate-add-info.js — usa /auth/me y fallback a sub del JWT (sin borrar token)
 document.addEventListener('DOMContentLoaded', async function () {
-  // ---------- Utils ----------
+  // ---------- Config ----------
   const API = window.BASE_URL_API; // ej: http://localhost:3000/v1
 
+  // ---------- Helpers JWT ----------
   const b64urlDecode = (b64url) => {
     try {
       const b64 = b64url.replace(/-/g, '+').replace(/_/g, '/');
@@ -17,7 +18,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     return !!payload?.exp && payload.exp < now;
   };
 
-  const showAuthErrorAndExit = (title, text, { removeToken = true } = {}) => {
+  // ---------- UX helpers ----------
+  const showAuthErrorAndExit = (title, text, { removeToken = false } = {}) => {
     try { if (removeToken) localStorage.removeItem('token'); } catch {}
     Swal.fire({
       title, text, icon: 'warning',
@@ -48,33 +50,37 @@ document.addEventListener('DOMContentLoaded', async function () {
   if (!token) {
     return showAuthErrorAndExit('Sesión requerida', 'No se encontraron datos de autenticación. Por favor, inicia sesión.', { removeToken: false });
   }
-
   const payload = parseJwt(token);
   if (!payload || isExpired(payload)) {
     return showAuthErrorAndExit('Sesión inválida', 'Tu sesión es inválida o expiró. Inicia sesión nuevamente.', { removeToken: true });
   }
 
-  // ---------- Resolver /auth/me (id y datos) ----------
-  async function getMeStrict() {
+  // ---------- Resolver /auth/me (id y datos) con fallback a sub ----------
+  async function getMeWithFallback() {
+    let me = {};
+    let id = null;
     try {
-      const me = await safeFetchJson(`${API}/auth/me`, {
+      me = await safeFetchJson(`${API}/auth/me`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      const id = me?.id || me?.user?.id || me?.data?.id;
+      id = me?.id || me?.user?.id || me?.data?.id || null;
       if (!id) throw new Error('Respuesta /auth/me sin id');
-      return { me, id };
+      return { me, id, source: 'me' };
     } catch (e) {
-      console.warn('[candidate] /auth/me falló:', e.message);
-      if (e.status === 401) {
-        showAuthErrorAndExit('Sesión inválida', 'No pudimos validar tu sesión. Inicia con Google/LinkedIn nuevamente.');
-        return null;
+      console.warn('[candidate] /auth/me fallo:', e.message);
+      // NO eliminamos token. Usamos sub del JWT para continuar.
+      const sub = Number(payload?.sub);
+      if (Number.isFinite(sub)) {
+        console.warn('[candidate] usando JWT.sub como userId:', sub);
+        return { me: {}, id: sub, source: 'sub' };
       }
-      showAuthErrorAndExit('Error de sesión', 'No fue posible validar tu sesión actualmente. Intenta iniciar sesión otra vez.');
+      // Si ni /me ni sub sirven, recién ahí enviamos al login
+      showAuthErrorAndExit('Sesión inválida', 'No pudimos identificar tu usuario. Inicia sesión nuevamente.', { removeToken: true });
       return null;
     }
   }
 
-  const meResp = await getMeStrict();
+  const meResp = await getMeWithFallback();
   if (!meResp) return;
   const realUserId = meResp.id;
   const me = meResp.me || {};
@@ -83,9 +89,9 @@ document.addEventListener('DOMContentLoaded', async function () {
   const emailfield = document.getElementById('correo');
   if (emailfield) {
     const meEmail = (me.email || '').trim().toLowerCase();
-    const oauthEmail = (localStorage.getItem('oauth_email') || '').trim().toLowerCase(); // fallback
+    const oauthEmail = (localStorage.getItem('oauth_email') || '').trim().toLowerCase();
     emailfield.value = meEmail || oauthEmail || '';
-    emailfield.disabled = true; // correo viene del backend/IdP
+    emailfield.disabled = true;
   }
 
   const nombreEl = document.getElementById('nombre');
@@ -94,7 +100,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   const meNombre = (me.nombres || '').trim();
   const meApellido = (me.apellidos || '').trim();
 
-  let fallbackFull = (localStorage.getItem('oauth_name_full') || '').trim();
+  const fallbackFull = (localStorage.getItem('oauth_name_full') || '').trim();
   if (!meNombre && !meApellido && fallbackFull) {
     const i = fallbackFull.lastIndexOf(' ');
     if (i > 0) {
@@ -119,10 +125,9 @@ document.addEventListener('DOMContentLoaded', async function () {
   setupRequiredFields();
   setupDynamicFields();
 
-  // ⚠️ Actualiza SIEMPRE nombres/apellidos en /auth/me ANTES de crear Postulante
+  // Actualiza nombres en /auth/me si existe; si 401/404, sigue igual.
   async function actualizarNombreEnUsuario(nombres, apellidos) {
     try {
-      // tu AuthService expone updateMe(userId, dto) → controller suele ser PATCH /auth/me
       await safeFetchJson(`${API}/auth/me`, {
         method: 'PATCH',
         headers: {
@@ -132,8 +137,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         body: JSON.stringify({ nombres, apellidos })
       });
     } catch (e) {
-      console.warn('[candidate] PATCH /auth/me falló (continuo igual):', e.message);
-      // No interrumpe el flujo; el servicio de Postulante también intentará setear nombres/apellidos.
+      console.warn('[candidate] PATCH /auth/me no crítico:', e.message);
     }
   }
 
@@ -143,12 +147,15 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     try {
       const formData = prepareFormData();
-
-      // 0) Forzar que el nombre/apellido del formulario queden en la tabla usuario
       await actualizarNombreEnUsuario(formData.nombre, formData.apellido);
 
-      // 1) Crear postulante (+ CV)
-      const response = await crearPostulanteYCV(realUserId, formData, token);
+      // --- Asegurar que tenemos un userId numérico válido ---
+      const uid = Number(realUserId);
+      if (!Number.isFinite(uid) || uid <= 0) {
+        throw new Error('No pudimos determinar tu usuario (id inválido). Vuelve a iniciar sesión.');
+      }
+
+      const response = await crearPostulanteYCV(uid, formData, token);
 
       if (response && response.postulante && response.curriculum) {
         await Swal.fire({
@@ -167,8 +174,8 @@ document.addEventListener('DOMContentLoaded', async function () {
       console.error('Error:', error);
       let errorMessage = 'Error al enviar los datos';
       const msg = String(error.message || '').toLowerCase();
-      if (msg.includes('usuario no encontrado')) {
-        errorMessage = 'Tu sesión no es válida o tu usuario no existe. Cierra sesión e inicia de nuevo con Google/LinkedIn.';
+      if (msg.includes('usuario no encontrado') || msg.includes('id inválido')) {
+        errorMessage = 'Tu sesión no es válida. Cierra sesión e inicia nuevamente con Google/LinkedIn.';
       } else if (msg.includes('rut')) {
         errorMessage = 'El RUT ingresado ya está asociado a otro usuario.';
       }
@@ -303,7 +310,6 @@ function prepareFormData() {
     comuna: document.getElementById('comuna').value,
     nacionalidad: document.getElementById('nacionalidad').value,
     descripcion_bio: document.getElementById('descripcion_bio').value,
-    // también por si lees desde datos_personales
     nombre: nombreVal,
     apellido: apellidoVal,
   };
@@ -378,7 +384,7 @@ function prepareFormData() {
   };
 }
 
-// ---------- Transformación a CV ----------
+// ---------- Transformar a CV ----------
 function transformarDatosParaCV(dataPostulante) {
   const datosPersonales = dataPostulante.datos_personales || {};
   const experiencias = dataPostulante.experiencias || [];
