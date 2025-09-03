@@ -1,65 +1,179 @@
-document.addEventListener("DOMContentLoaded", function() {
-            const formTipo = document.getElementById("seleccionTipoForm");
-            const formTrabajador = document.getElementById("formTrabajador");
-            const formNoTrabajador = document.getElementById("formNoTrabajador");
+// assets/js/form-opinion.js
+document.addEventListener("DOMContentLoaded", function () {
+  const $ = (sel) => document.querySelector(sel);
 
-            formTipo.addEventListener("change", () => {
-                const tipo = formTipo.tipoUsuario.value;
-                formTrabajador.style.display = tipo === "trabajo" ? "block" : "none";
-                formNoTrabajador.style.display = tipo === "noTrabajo" ? "block" : "none";
-            });
+  const formTipo = $("#seleccionTipoForm");
+  const formTrabajador = $("#formTrabajador");
+  const formNoTrabajador = $("#formNoTrabajador");
 
-            document.querySelectorAll('.star-rating').forEach(container => {
-                for (let i = 1;i <= 5; i++) {
-                    const star = document.createElement("i");
-                    star.className = "fa fa-star";
-                    star.dataset.value = i;
+  const qs = new URLSearchParams(location.search);
+  const jobId = qs.get("id") || null;
+  let rut = qs.get("rut") || sessionStorage.getItem("selectedEmployerRut") || null;
 
-                    star.addEventListener("mouseover", () => highlight(container, i));
-                    star.addEventListener("mouseout", () => reset(container));
-                    star.addEventListener("click", () => {
-                        container.setAttribute("data-selected", i);
-                        highlight(container, i);
-                    });
+  const BASE = typeof BASE_URL_API !== "undefined" ? BASE_URL_API : "http://localhost:3000";
 
-                    container.appendChild(star);
-                }
-            });
+  async function j(url) {
+    const r = await fetch(url);
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    return r.json();
+  }
+  async function getOferta(id) {
+    const urls = [
+      `${BASE}/ofertas/${encodeURIComponent(id)}`,
+      `${BASE}/ofertas/${encodeURIComponent(id)}`
+    ];
+    for (const u of urls) { try { return await j(u); } catch {} }
+    return null;
+  }
 
-            function highlight(container, val) {
-                container.querySelectorAll(".fa-star").forEach((s, i) => {
-                    s.classList.toggle("checked", i < val);
-                });
-            }
+  // Si no vino rut, intenta resolverlo por id oferta
+  (async function ensureRut() {
+    if (!rut && jobId) {
+      const oferta = await getOferta(jobId);
+      rut = oferta?.empresa?.rut || oferta?.empleador?.rut || oferta?.rutEmpresa || null;
+      if (rut) sessionStorage.setItem("selectedEmployerRut", rut);
+    }
+    if (!rut) {
+      Swal.fire({
+        icon: "warning",
+        title: "Empresa no resuelta",
+        text: 'No se pudo identificar la empresa. Abre esta página desde el detalle de una oferta (con ?id=<oferta>) o pasa "rut" en la URL.',
+      });
+    }
+  })();
 
-            function reset(container) {
-                const selected = container.getAttribute("data-selected") || 0;
-                highlight(container, selected);
-            }
+  // Toggle tipo
+  formTipo.addEventListener("change", () => {
+    const tipo = formTipo.tipoUsuario.value;
+    formTrabajador.style.display = tipo === "trabajo" ? "block" : "none";
+    formNoTrabajador.style.display = tipo === "noTrabajo" ? "block" : "none";
+  });
 
-            [formTrabajador, formNoTrabajador].forEach(form => {
-                form.addEvenetListener("submit", function (e) {
-                    e.preventDefault();
+  // UI estrellas
+  document.querySelectorAll(".star-rating").forEach((container) => {
+    for (let i = 1; i <= 5; i++) {
+      const star = document.createElement("i");
+      star.className = "fa fa-star";
+      star.dataset.value = i;
 
-                    const data = {};
-                    form.querySelectorAll(".star-rating").forEach(container => {
-                        const key = container.getAttribute("data-name");
-                        const val = container.getAttribute("data-selected");
-                        if (!val) return alert("Por favor completa todas las estrellas");
-                        data[key] = parseInt(val);
-                    });
+      star.addEventListener("mouseover", () => highlight(container, i));
+      star.addEventListener("mouseout", () => reset(container));
+      star.addEventListener("click", () => {
+        container.setAttribute("data-selected", i);
+        highlight(container, i);
+      });
 
-                    const comentario = form.querySelector("textarea")?.value.trim();
-                    if (comentario) data.comentario = comentario;
+      container.appendChild(star);
+    }
+  });
+  function highlight(container, val) {
+    container.querySelectorAll(".fa-star").forEach((s, i) => {
+      s.classList.toggle("checked", i < val);
+    });
+  }
+  function reset(container) {
+    const selected = Number(container.getAttribute("data-selected") || 0);
+    highlight(container, selected);
+  }
 
-                    console.log("Enviado:", data);
-                    alert("Gracias por tu evaluación. Tu opinión es muy importante para nosotros.");
+  // Mostrar/ocultar "motivo_extra" al elegir "otro"
+  [formTrabajador, formNoTrabajador].forEach((form) => {
+    form.addEventListener('change', (e) => {
+      if (e.target?.name === 'motivo') {
+        const scope = e.target.getAttribute('data-scope'); // 'trabajo' | 'postulacion'
+        const box = form.querySelector(`[data-extra="${scope}"]`);
+        if (!box) return;
+        if (e.target.value === 'otro') {
+          box.classList.remove('d-none');
+        } else {
+          box.classList.add('d-none');
+          const i = box.querySelector('input'); if (i) i.value = '';
+        }
+      }
+    });
+  });
 
-                    form.reset();
-                    form.querySelectorAll(".star-rating").forEach(c => {
-                        c.removeAttribute("data-selected");
-                        highlight(c, 0);
-                    });
-                });
-            });
+  // Envío (por RUT siempre)
+  [formTrabajador, formNoTrabajador].forEach((form) => {
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      if (!rut) {
+        Swal.fire({
+          icon: "warning",
+          title: "Empresa no resuelta",
+          text: 'No se pudo identificar la empresa. Abre esta página desde el detalle de una oferta (con ?id=<oferta>) o pasa "rut" en la URL.',
         });
+        return;
+      }
+
+      const type = form === formTrabajador ? "trabajo" : "postulacion";
+      const data = {};
+      let incompleto = false;
+
+      // estrellas (3 claves obligatorias)
+      form.querySelectorAll(".star-rating").forEach((container) => {
+        const key = container.getAttribute("data-name");
+        const val = Number(container.getAttribute("data-selected"));
+        if (!val) incompleto = true; else data[key] = val;
+      });
+      if (incompleto || Object.keys(data).length < 3) {
+        Swal.fire({ icon: "info", title: "Faltan estrellas", text: "Completa todas las calificaciones." });
+        return;
+      }
+
+      // motivo
+      const selectMotivo = form.querySelector('select[name="motivo"]');
+      const motivo = selectMotivo?.value || "";
+      if (!motivo) {
+        Swal.fire({ icon: "info", title: "Selecciona un motivo", text: "El motivo es obligatorio." });
+        return;
+      }
+      const extraBox = form.querySelector(`[data-extra="${type}"]`);
+      const extraInput = extraBox?.querySelector('input');
+      const motivo_extra = (motivo === 'otro' && extraInput) ? extraInput.value.trim() : undefined;
+
+      // comentario
+      const comentario = form.querySelector("textarea")?.value.trim();
+
+      const payload = { type, data, motivo };
+      if (motivo === 'otro' && motivo_extra) payload.motivo_extra = motivo_extra;
+      if (comentario) payload.comentario = comentario;
+
+      const token = localStorage.getItem("token");
+      const headers = {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      };
+
+      try {
+        const res = await fetch(`${BASE}/v1/empresas/${encodeURIComponent(rut)}/reviews`, {
+          method: "POST",
+          headers,
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) {
+          let msg = `HTTP ${res.status}`;
+          try { const err = await res.json(); if (err?.message) msg = err.message; } catch {}
+          throw new Error(msg);
+        }
+
+        Swal.fire({ icon: "success", title: "¡Gracias!", text: "Tu opinión fue enviada." });
+
+        // reset UI
+        form.reset();
+        form.querySelectorAll(".star-rating").forEach((c) => {
+          c.removeAttribute("data-selected");
+          c.querySelectorAll(".fa-star").forEach(s => s.classList.remove('checked'));
+        });
+        const extra = form.querySelector(`[data-extra="${type}"]`);
+        if (extra) { extra.classList.add('d-none'); const i = extra.querySelector('input'); if (i) i.value = ''; }
+
+        if (jobId) setTimeout(() => {
+          location.href = `job-single-2-si.html?id=${encodeURIComponent(jobId)}`;
+        }, 1200);
+      } catch (err) {
+        Swal.fire({ icon: "error", title: "No se pudo enviar", text: err.message || "Error desconocido" });
+      }
+    });
+  });
+});
