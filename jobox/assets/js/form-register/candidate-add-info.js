@@ -48,7 +48,6 @@ document.addEventListener('DOMContentLoaded', async function () {
   if (!token) {
     return showAuthErrorAndExit('Sesión requerida', 'No se encontraron datos de autenticación. Por favor, inicia sesión.', { removeToken: false });
   }
-
   const payload = parseJwt(token);
   if (!payload || isExpired(payload)) {
     return showAuthErrorAndExit('Sesión inválida', 'Tu sesión es inválida o expiró. Inicia sesión nuevamente.', { removeToken: true });

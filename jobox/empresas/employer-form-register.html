@@ -74,7 +74,7 @@
                                                         name="rutInput" 
                                                         class="form-control required-field" 
                                                         placeholder="Ingrese el RUT de la Empresa" 
-                                                        pattern="[0-9]{7,8}-[0-9kK]" 
+                                                        pattern="^(\d{7,8}-[\dkK]|\d{1,3}(?:\.\d{3}){2,3}-[\dkK])$"
                                                         data-bs-toggle="tooltip" 
                                                         data-bs-placement="bottom" 
                                                         title="Formato válido: 12345678-9 o 12345678-K"

@@ -229,7 +229,14 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="todas_carreras_chile">Título</label>
-                                            <select type="text" class="form-control" name="titulo[]" id="todas_carreras_chile" required></select>
+                                            <select type="text"
+                                                class="form-control select2-carreras"
+                                                name="titulo[]"
+                                                id="todas_carreras_chile"
+                                                data-ignore-nice="1"
+                                                data-placeholder="-- Selecciona una carrera --"
+                                                required>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -504,6 +511,9 @@
     <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
 
     <script src="assets/js/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"> 
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css">
     <script src="assets/js/modernizr.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/imagesloaded.pkgd.min.js"></script>
