@@ -3,13 +3,21 @@ document.getElementById('confirmarBtn').addEventListener('click', async () => {
   const ofertaId = params.get('id');
   
   if (!ofertaId) {
-    alert('ID de oferta no encontrado en la URL.');
+    Swal.fire({
+      icon: 'warning',
+      title: 'ID no encontrado',
+      text: 'ID de oferta no encontrado en la URL.'
+    });
     return;
   }
 
   const token = localStorage.getItem('token');
   if (!token) {
-    alert('No se encontró token de autenticación.');
+    Swal.fire({
+      icon: 'warning',
+      title: 'Sesión requerida',
+      text: 'No se encontró token de autenticación.'
+    });
     return;
   }
 
@@ -25,25 +33,19 @@ document.getElementById('confirmarBtn').addEventListener('click', async () => {
 
   // Textareas multilinea a array
   const responsabilidades = document.getElementById('responsabilidades').value
-    .split('\n')
-    .map(line => line.trim())
-    .filter(line => line !== '');
+    .split('\n').map(line => line.trim()).filter(line => line !== '');
 
   const requisitos_minimos = document.getElementById('requisitos').value
-    .split('\n')
-    .map(line => line.trim())
-    .filter(line => line !== '');
+    .split('\n').map(line => line.trim()).filter(line => line !== '');
 
   const beneficios = document.getElementById('beneficios').value
-    .split('\n')
-    .map(line => line.trim())
-    .filter(line => line !== '');
+    .split('\n').map(line => line.trim()).filter(line => line !== '');
 
   // Renta salarial limpiando números
   const renta_salarial = {
     desde: document.getElementById('salaryFrom').value.replace(/[^\d]/g, ''),
     hasta: document.getElementById('salaryTo').value.replace(/[^\d]/g, ''),
-    de_acuerdo_al_mercado: true // si quieres agregar lógica para este campo, puedes
+    de_acuerdo_al_mercado: true
   };
 
   // Leer herramientas básicas seleccionadas (checkboxes)
@@ -77,6 +79,14 @@ document.getElementById('confirmarBtn').addEventListener('click', async () => {
     data: JSON.stringify(data)
   };
 
+  // Mostrar loading mientras se actualiza
+  Swal.fire({
+    title: 'Actualizando oferta…',
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    didOpen: () => { Swal.showLoading(); }
+  });
+
   try {
     const res = await fetch(`${BASE_URL_API}/ofertas/${ofertaId}`, {
       method: 'PATCH',
@@ -88,16 +98,36 @@ document.getElementById('confirmarBtn').addEventListener('click', async () => {
     });
 
     if (!res.ok) {
-      const err = await res.text();
-      alert(`Error al actualizar: ${err}`);
+      let msg = await res.text();
+      try {
+        const asJson = JSON.parse(msg);
+        if (asJson?.message) msg = asJson.message;
+      } catch {}
+      Swal.fire({
+        icon: 'error',
+        title: 'Error al actualizar',
+        text: msg || `HTTP ${res.status}`
+      });
       return;
     }
 
-    alert('Oferta actualizada correctamente');
-    location.href = 'employer-manage-job.html'; // redirección opcional
+    Swal.fire({
+      icon: 'success',
+      title: 'Oferta actualizada correctamente',
+      showConfirmButton: false,
+      timer: 1300,
+      timerProgressBar: true
+    }).then(() => {
+      // redirección opcional
+      location.href = 'employer-manage-job.html';
+    });
 
   } catch (err) {
     console.error('Error al actualizar oferta:', err);
-    alert('Error inesperado al actualizar');
+    Swal.fire({
+      icon: 'error',
+      title: 'Error inesperado',
+      text: err?.message || 'Ocurrió un error al actualizar.'
+    });
   }
 });

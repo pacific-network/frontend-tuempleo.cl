@@ -7,14 +7,18 @@ if (!window.__companyRatingInit) {
     const idOferta = qs.get('id');
     if (!idOferta) return;
 
-    const BASE = typeof BASE_URL_API !== 'undefined' ? BASE_URL_API : 'http://localhost:3000';
+    // ✅ Usar SOLO la BASE_URL_API definida en main.js
+    if (typeof BASE_URL_API === 'undefined' || !BASE_URL_API) {
+      console.error('[company-rating] BASE_URL_API no está definida en main.js');
+      return;
+    }
+
+    const BASE = BASE_URL_API.replace(/\/$/, '');      // sin slash final
+    const api  = (p) => `${BASE}${p}`;                 // no añadimos /v1 automáticamente
+
     const headers = { Accept: 'application/json' };
     const token = localStorage.getItem('token');
     if (token) headers['Authorization'] = `Bearer ${token}`;
-
-    const baseNoSlash = BASE.replace(/\/$/, '');
-    const hasV1 = /\/v1(\/|$)/.test(baseNoSlash);
-    const v1 = (p) => `${baseNoSlash}${hasV1 ? '' : '/v1'}${p}`;
 
     const $ = (sel) => document.querySelector(sel);
 
@@ -27,25 +31,18 @@ if (!window.__companyRatingInit) {
     }
 
     async function getOferta(id) {
-      const urls = [
-        v1(`/ofertas/${encodeURIComponent(id)}`),                 // prefer /v1
-        `${baseNoSlash}/ofertas/${encodeURIComponent(id)}`,      // fallback legacy
-      ];
-      for (const u of urls) {
-        try { return await j(u); }
-        catch (e) { console.warn('[company-rating] oferta fallback', e.message); }
-      }
-      return null;
+      // ✅ Un solo endpoint, basado en BASE_URL_API
+      return j(api(`/ofertas/${encodeURIComponent(id)}`));
     }
 
     async function getEmpresaByRut(rut) {
-      return j(v1(`/empresas/${encodeURIComponent(rut)}`));
+      return j(api(`/empresas/${encodeURIComponent(rut)}`));
     }
 
     async function getSummarySmartByRut(rut) {
       // 1) summary por RUT
       try {
-        return await j(v1(`/empresas/${encodeURIComponent(rut)}/reviews/summary`));
+        return await j(api(`/empresas/${encodeURIComponent(rut)}/reviews/summary`));
       } catch (e1) {
         console.warn('[company-rating] summary por RUT falló, probando por ID…', e1.message);
       }
@@ -53,7 +50,7 @@ if (!window.__companyRatingInit) {
       try {
         const emp = await getEmpresaByRut(rut);
         if (emp?.id) {
-          return await j(v1(`/companies/${emp.id}/reviews/summary`));
+          return await j(api(`/companies/${emp.id}/reviews/summary`));
         }
       } catch (e2) {
         console.error('[company-rating] summary por ID también falló', e2.message);
@@ -68,9 +65,9 @@ if (!window.__companyRatingInit) {
       const half = avg - full >= 0.5;
       for (let i = 1; i <= 5; i++) {
         const icon = document.createElement('i');
-        if (i <= full)               icon.className = 'fa fa-star';
+        if (i <= full)                 icon.className = 'fa fa-star';
         else if (i === full+1 && half) icon.className = 'fa fa-star-half-alt';
-        else                         icon.className = 'fa fa-star';
+        else                           icon.className = 'fa fa-star';
         icon.style.color = (i <= full || (i === full+1 && half)) ? '#f4c150' : '#ccc';
         el.appendChild(icon);
       }

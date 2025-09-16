@@ -6,53 +6,105 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
+  // Helper: selecciona valor; si la opción no existe, la crea y la selecciona
+  function selectOptionByValue(selectEl, value, placeholderText) {
+    if (!selectEl) return;
+    const val = value == null ? '' : String(value);
+
+    // Si aún no hay opciones (o solo el placeholder) y conocemos un catálogo global, lo re-llenamos
+    if (selectEl.id === 'region-select' && window.regionesDeChile && selectEl.options.length <= 1) {
+      const placeholder = placeholderText || '-- Seleccione una región --';
+      selectEl.innerHTML = `<option value="">${placeholder}</option>`;
+      window.regionesDeChile.forEach(r => {
+        const opt = document.createElement('option');
+        opt.value = String(r.numero);
+        opt.textContent = r.nombre;
+        selectEl.appendChild(opt);
+      });
+    }
+
+    // Intentar marcar la opción
+    selectEl.value = val;
+
+    // Si no existe en la lista, la añadimos temporalmente para que quede seleccionada
+    if (selectEl.value !== val && val !== '') {
+      const opt = document.createElement('option');
+      opt.value = val;
+      opt.textContent = val; // texto de respaldo por si no hay catálogo
+      opt.selected = true;
+      selectEl.appendChild(opt);
+      selectEl.value = val;
+    }
+  }
+
   try {
-    const res = await fetch(`${BASE_URL_API}/ofertas/${ofertaId}`);
+    const res = await fetch(`${BASE_URL_API}/ofertas/${ofertaId}`, { cache: 'no-store' });
     if (!res.ok) throw new Error('Error al obtener los datos');
 
     const oferta = await res.json();
 
-    // Mostrar datos de empresa en sidebar
+    // Sidebar empresa
     document.getElementById('empresa-nombre').textContent =
       oferta.empresa?.nombre_fantasia || 'Sin nombre';
     document.getElementById('empresa-rubro').textContent =
       (oferta.empresa?.data?.actividades_economicas?.[0]) || 'Sin rubro';
-    if (oferta.empresa?.logo_url) {
-      document.getElementById('empresa-logo').src = oferta.empresa.logo_url;
-    } else {
-      document.getElementById('empresa-logo').src = 'assets/img/job/default-logo.png'; // Imagen por defecto
-    }
+    document.getElementById('empresa-logo').src =
+      oferta.empresa?.logo_url || 'assets/img/job/default-logo.png';
 
-    // Poner titulo directamente desde oferta.titulo
+    // Título
     document.getElementById('titulo-trabajo').value = oferta.titulo || '';
 
-    // Parsear data que viene en JSON string
-    const data = typeof oferta.data === 'string' ? JSON.parse(oferta.data) : oferta.data;
+    // Parsear data (puede venir como string)
+    const data = typeof oferta.data === 'string' ? JSON.parse(oferta.data) : oferta.data || {};
 
-    // Rellenar inputs del formulario con el resto de campos
-    document.getElementById('area_cargo_select').value = data.area_trabajo || '';
+    // Área de trabajo (si usas js/form-register/area_cargo.js, también puedes setear data-attribute)
+    const areaEl = document.getElementById('area_cargo_select');
+    if (areaEl) {
+      // Si ya están las opciones, marcamos; si el script externo rellena luego, igual persistirá
+      selectOptionByValue(areaEl, data.area_trabajo || '', '-- Seleccione Área --');
+    }
+
+    // Años experiencia
     document.getElementById('anios-experiencia').value = data.anios_experiencia || '';
-    document.getElementById('region-select').value = data.region || '';
-    document.getElementById('educacion-requerida').value = data.educacion_requerida || '';
-    document.getElementById('tipo-contrato').value = data.tipo_contrato || '';
-    document.getElementById('modalidad').value = data.modalidad || '';
+
+    // Región (usa js/form-register/regiones.js si está cargado)
+    const regionEl = document.getElementById('region-select');
+    if (regionEl) {
+      // Guardamos también en data-attribute por si tu script de regiones lo usa
+      if (data.region) regionEl.setAttribute('data-region-seleccionada', String(data.region));
+      selectOptionByValue(regionEl, data.region || '', '-- Seleccione una región --');
+    }
+
+    // Educación requerida (opciones están en el HTML)
+    const eduEl = document.getElementById('educacion-requerida');
+    if (eduEl) {
+      selectOptionByValue(eduEl, data.educacion_requerida || '', '-- Selecciona Educación --');
+    }
+
+    // Tipo contrato
+    selectOptionByValue(document.getElementById('tipo-contrato'), data.tipo_contrato || '', '-- Seleccione tipo Contrato --');
+
+    // Modalidad
+    selectOptionByValue(document.getElementById('modalidad'), data.modalidad || '', '-- Seleccione Modalidad --');
+
+    // Descripción
     document.getElementById('descripcion').value = data.descripcion_puesto || '';
 
-    // Textareas multilinea, convertir array a texto con saltos de línea
+    // Textareas multilinea
     document.getElementById('responsabilidades').value = (data.responsabilidades || []).join('\n');
-    document.getElementById('requisitos').value = (data.requisitos_minimos || []).join('\n');
-    document.getElementById('beneficios').value = (data.beneficios || []).join('\n');
+    document.getElementById('requisitos').value        = (data.requisitos_minimos || []).join('\n');
+    document.getElementById('beneficios').value        = (data.beneficios || []).join('\n');
 
     // Renta salarial
     if (data.renta_salarial) {
       document.getElementById('salaryFrom').value = data.renta_salarial.desde || '';
-      document.getElementById('salaryTo').value = data.renta_salarial.hasta || '';
+      document.getElementById('salaryTo').value   = data.renta_salarial.hasta || '';
     }
 
-    // Herramientas básicas (checkboxes) — AHORA EDITABLES
+    // Herramientas básicas (checkboxes)
     const cont = document.getElementById('checkbox-container');
     cont.innerHTML = '';
-    if (data.herramientas_basicas && data.herramientas_basicas.length) {
+    if (Array.isArray(data.herramientas_basicas) && data.herramientas_basicas.length) {
       data.herramientas_basicas.forEach((herr) => {
         const id = `herr_${herr.replace(/\s+/g, '_').toLowerCase()}`;
         const div = document.createElement('div');
