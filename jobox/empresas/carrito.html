@@ -151,9 +151,23 @@
       <div class="line total"><span>Total</span><strong id="cartTotal">$0</strong></div>
     </div>
 
-    <div class="cart-footer">
-      <button class="btn-checkout" id="checkoutBtn">Pagar Ahora</button>
-    </div>
+    <div class="cart-footer" style="justify-content:space-between; flex-wrap:wrap; gap:12px">
+  <div class="discount-wrap" style="display:flex; gap:8px; align-items:center; flex:1 1 340px">
+    <input
+      id="discountCode"
+      class="form-control"
+      placeholder="Código de descuento"
+      style="max-width:260px; text-transform:uppercase"
+      minlength="20" maxlength="20"
+      pattern="^[A-Z0-9]{20}$"
+      inputmode="latin"
+      autocomplete="off" />
+    <button class="btn btn-outline-primary" id="btnCheckCode" type="button">Validar</button>
+    <span id="discountStatus" style="font-size:.9rem; color:var(--muted)"></span>
+  </div>
+
+  <button class="btn-checkout" id="checkoutBtn">Pagar Ahora</button>
+</div>
   </div>
 
   <!-- Mensaje vacío -->
