@@ -22,8 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Base de API (con /v1) y base pública (sin /v1) con fallbacks
-  const API_BASE = getApiBase();          // ej: http://localhost:3000/v1
-  const PUBLIC_BASE = getPublicBase();    // ej: http://localhost:3000
+  const API_BASE = getApiBase();          
+  const PUBLIC_BASE = getPublicBase();    
 
   // expone un refresco global para que upload-cv.js lo pueda invocar tras subir
   window.reloadCvPreview = async function () {
