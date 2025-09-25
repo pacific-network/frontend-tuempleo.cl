@@ -1,243 +1,377 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Planes y Carrito</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap" />
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../assets/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="../assets/css/style.css" />
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #f7f9fc;
-            margin: 0;
-            padding: 40px 20px;
-            color: #05264E;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Planes y Carrito</title>
 
-        h1 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 40px;
-        }
+  <!-- CSS base del proyecto -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap" />
+  <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../assets/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
 
-        .pricing-area {
-            position: relative;
-        }
+  <style>
+    :root {
+      --brand:#3C65F5; --brand-dark:#1f3fa4; --ink:#05264E; --muted:#667085;
+      --surface:#ffffff; --panel:#F1F6FC; --ok:#e67e22; --ok-dark:#d35400;
+      --ring: 0 12px 24px rgba(60,101,245,.18); --ring-ghost: 0 8px 24px rgba(0,0,0,.06);
+      --border:#e9eef7; --line:#e6ecf6;
+    }
+    body{
+      font-family:'Segoe UI',sans-serif;
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(60,101,245,.08), transparent 60%),
+        radial-gradient(900px 500px at 110% 10%, rgba(12,115,255,.06), transparent 55%),
+        #f7f9fc;
+      margin:0; padding:40px 16px 40px; color:var(--ink);
+    }
+    h1{ text-align:center; font-size:clamp(1.8rem,1.2rem + 2vw,2.6rem); margin:0 0 28px 0; letter-spacing:.2px; }
+    .pricing-wrapper{ background:var(--panel); border-radius:28px; padding:clamp(18px,3vw,40px); max-width:1200px; margin:auto; box-shadow:var(--ring-ghost); }
+    .pricing-grid{ display:grid; gap:clamp(16px,2.2vw,28px); grid-template-columns:repeat(4,1fr); }
+    @media (max-width:1200px){.pricing-grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:640px){.pricing-grid{grid-template-columns:1fr}}
+    .pricing-item{ position:relative; overflow:hidden; padding:26px 24px; border-radius:18px; background:var(--surface); border:1px solid var(--border); box-shadow:var(--ring-ghost); transition:.18s ease; display:grid; grid-template-rows:auto 1fr auto; gap:16px; }
+    .pricing-item:hover{ transform:translateY(-3px); box-shadow:0 14px 32px rgba(0,0,0,.08); border-color:#dde6f3 }
+    .pricing-item.active{ background:linear-gradient(180deg,var(--brand) 0%, #5b7cff 100%); color:#fff; border:none; box-shadow:var(--ring); }
+    .pricing-popular{ position:absolute; right:16px; top:16px; padding:6px 12px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; border-radius:999px; background:#fff; color:var(--brand); box-shadow:0 10px 20px rgba(255,255,255,.35); border:1px solid rgba(255,255,255,.7); }
+    .pricing-content h4{ margin:0 0 6px 0; font-size:clamp(1.1rem,.9rem + .6vw,1.3rem) }
+    .pricing-amount{ font-size:clamp(1.8rem,1.4rem + 1.2vw,2.1rem); font-weight:800; margin:0; }
+    .pricing-feature ul{ margin:4px 0 6px 0; padding:0; list-style:none; display:grid; gap:10px; }
+    .pricing-feature ul li{ position:relative; padding-left:26px; line-height:1.25rem }
+    .pricing-feature ul li::before{ content:"\f00c"; font:normal normal normal 14px/1 FontAwesome; position:absolute; left:0; top:0; width:18px; height:18px; border-radius:50%; display:grid; place-items:center; background:rgba(60,101,245,.12); color:var(--brand); }
+    .theme-btn{ background:var(--brand); color:#fff; border:none; padding:12px 16px; border-radius:10px; font-weight:800; cursor:pointer; transition:background .2s, transform .08s, box-shadow .2s; box-shadow:0 10px 18px rgba(60,101,245,.22); width:100%; }
+    .theme-btn:hover{ background:var(--brand-dark) }
 
-        .pricing-wrapper {
-            background: #F1F6FC;
-            border-radius: 30px;
-            padding: 40px;
-            max-width: 1100px;
-            margin: auto;
-        }
+    /* ===== Carrito ===== */
+    .cart-summary{ position:fixed; right:24px; top:120px; width:360px; background:#fff; border:1px solid var(--border); border-radius:14px; box-shadow:0 18px 38px rgba(0,0,0,.12); display:none; flex-direction:column; z-index:100; overflow:hidden; }
+    .cart-head{ display:flex; align-items:center; justify-content:space-between; padding:14px 16px; background:#f8fbff; border-bottom:1px solid var(--border); }
+    .cart-table{ padding:12px 16px; }
+    .cart-table .row{ display:grid; grid-template-columns:1fr 90px 120px; gap:12px; align-items:center; padding:10px 0; border-bottom:1px dashed var(--line); font-size:.95rem; }
+    .qty{display:flex; align-items:center; gap:6px}
+    .btn-remove{
+      width:32px; height:32px;
+      border-radius:8px;
+      border:0;
+      background:#ef4444;           
+      color:#fff;                   
+      cursor:pointer;
+      display:inline-flex; align-items:center; justify-content:center;
+      box-shadow:0 6px 14px rgba(239,68,68,.25);
+      transition:transform .08s ease, background .18s ease, box-shadow .18s ease;
+    }
+    .btn-remove:hover{ background:#dc2626; box-shadow:0 8px 18px rgba(239,68,68,.35) }
+    .btn-remove:active{ transform:translateY(1px) }
+    .btn-remove i{ font-size:14px; line-height:1 }
+    /* tamaño del ícono SVG del basurero */
+    .btn-remove svg{ width:14px; height:14px; display:block; }
+    .totals{ padding:12px 16px; border-top:1px solid var(--line); }
+    .totals .line{ display:flex; justify-content:space-between; padding:6px 0; }
+    .totals .line.total{ border-top:1px solid var(--line); margin-top:6px; padding-top:10px; font-weight:800; font-size:1.05rem }
+    .cart-footer{ padding:14px 16px; display:flex; align-items:center; justify-content:flex-end; gap:10px; background:#fff; border-top:1px solid var(--border); }
+    .btn-checkout{ background:var(--ok); color:#fff; border:none; padding:12px 16px; border-radius:10px; font-size:.98rem; font-weight:800; cursor:pointer; }
+    .empty-cart{ position:fixed; right:24px; top:120px; width:360px; padding:18px; background:#fff; border:1px solid var(--border); border-radius:14px; box-shadow:0 18px 38px rgba(0,0,0,.08); color:var(--muted); }
 
-        .pricing-grid {
-            display: grid;
-            gap: 30px;
-            grid-template-columns: repeat(4, 1fr);
-        }
+    @media (max-width:768px){
+      .cart-summary,.empty-cart{ left:50%; right:auto; transform:translateX(-50%); bottom:18px; top:auto; width:min(720px,92vw); }
+      .cart-head{display:none}
+    }
+    /* Topbar + botón volver */
+    .topbar{
+      max-width:1200px;
+      margin:0 auto 18px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .btn-back{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 14px; border-radius:10px;
+      background:#fff; color:var(--brand);
+      border:1px solid var(--border);
+      font-weight:800; text-decoration:none;
+      box-shadow:var(--ring-ghost);
+      transition:transform .08s ease, background .18s ease, box-shadow .18s ease, color .18s ease, border-color .18s ease;
+    }
+    .btn-back:hover{
+      background:#f8fbff;
+      color:var(--brand-dark);
+      border-color:#dbe7ff;
+      transform:translateY(-1px);
+      box-shadow:0 10px 22px rgba(60,101,245,.12);
+    }
+    .btn-back i{ font-size:14px; }
 
-        .pricing-item {
-            position: relative;
-            overflow: hidden;
-            padding: 40px;
-            border-radius: 20px;
-            z-index: 1;
-            background: white;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-        }
-
-        .pricing-item.active {
-            background: #3C65F5;
-            color: white;
-        }
-
-        .pricing-popular {
-            position: absolute;
-            padding: 3px 15px;
-            background: white;
-            color: #3C65F5;
-            text-transform: uppercase;
-            font-size: 12px;
-            font-weight: 600;
-            border-radius: 50px;
-            right: 15px;
-            top: 15px;
-        }
-
-        .pricing-content h4 {
-            margin-bottom: 10px;
-            color: inherit;
-        }
-
-        .pricing-amount {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: inherit;
-        }
-
-        .pricing-amount span {
-            font-size: 1rem;
-            font-weight: 600;
-        }
-
-        .pricing-content p {
-            font-size: 0.95rem;
-            color: inherit;
-        }
-
-        .pricing-feature ul {
-            margin: 20px 0 30px 0;
-            padding-left: 0;
-            list-style: none;
-            color: inherit;
-        }
-
-        .pricing-feature ul li {
-            margin: 10px 0;
-            padding-left: 25px;
-            position: relative;
-        }
-
-        .pricing-feature ul li::before {
-            content: "";
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            border: 3px solid currentColor;
-            border-radius: 50px;
-            left: 0;
-            top: 8px;
-        }
-
-        .theme-btn {
-            background: #3C65F5;
-            color: #fff;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .theme-btn:hover {
-            background: #05264E;
-        }
-
-        .pricing-item.active .theme-btn {
-            background: #fff;
-            color: #3C65F5;
-        }
-
-        .pricing-item.active .theme-btn:hover {
-            color: #fff;
-            background: #1f3fa4;
-        }
-
-        .cart-summary {
-            max-width: 600px;
-            margin: 50px auto 0 auto;
-            padding: 25px 30px;
-            background: #fff;
-            border-radius: 15px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            display: none;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-checkout {
-            background: #e67e22;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 10px;
-            font-size: 1rem;
-            cursor: pointer;
-        }
-
-        .btn-checkout:hover {
-            background-color: #d35400;
-        }
-
-        .empty-cart {
-            text-align: center;
-            margin-top: 40px;
-            color: #999;
-        }
-
-        @media (max-width: 991px) {
-            .pricing-item.active {
-                margin-top: 0;
-            }
-        }
-    </style>
+  </style>
 </head>
 
 <body>
 
-    <!-- preloader -->
-    <div class="preloader">
-        <div class="loader">
-            <span></span>
-            <span></span>
-            <span></span>
+  <!-- preloader -->
+  <div class="preloader">
+    <div class="loader"><span></span><span></span><span></span></div>
+  </div>
+  <div class="topbar">
+    <a href="employer-dashboard.html" class="btn-back" aria-label="Volver al panel de empresa">
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+      Volver al panel
+    </a>
+  </div>
+
+
+  <!-- header -->
+  <div id="header-placeholder"></div>
+
+  <h1>Selecciona un Plan</h1>
+
+  <div class="pricing-area">
+    <div class="pricing-wrapper">
+      <div class="pricing-grid" id="planGrid"></div>
+    </div>
+  </div>
+
+  <!-- Panel del carrito -->
+  <div class="cart-summary" id="cartSummary">
+    <div class="cart-head">
+      <h3><i class="fa fa-shopping-cart"></i> Tu Carrito</h3>
+    </div>
+
+    <div class="cart-table">
+      <div class="row header">
+        <div>Producto</div>
+        <div>Cant.</div>
+        <div>Monto (CLP)</div>
+      </div>
+      <div id="cartItems"></div>
+    </div>
+
+    <!-- DESGLOSE -->
+    <div class="totals">
+      <div class="line"><span>Subtotal</span><strong id="cartSubtotal">$0</strong></div>
+      <div class="line"><span>IVA (19%)</span><strong id="cartIva">$0</strong></div>
+      <div class="line"><span>Descuento</span><strong id="cartDiscount">$0</strong></div>
+      <div class="line total"><span>Total</span><strong id="cartTotal">$0</strong></div>
+    </div>
+
+    <div class="cart-footer" style="justify-content:space-between; flex-wrap:wrap; gap:12px">
+  <div class="discount-wrap" style="display:flex; gap:8px; align-items:center; flex:1 1 340px">
+    <input
+      id="discountCode"
+      class="form-control"
+      placeholder="Código de descuento"
+      style="max-width:260px; text-transform:uppercase"
+      minlength="20" maxlength="20"
+      pattern="^[A-Z0-9]{20}$"
+      inputmode="latin"
+      autocomplete="off" />
+    <button class="btn btn-outline-primary" id="btnCheckCode" type="button">Validar</button>
+    <span id="discountStatus" style="font-size:.9rem; color:var(--muted)"></span>
+  </div>
+
+  <button class="btn-checkout" id="checkoutBtn">Pagar Ahora</button>
+</div>
+  </div>
+
+  <!-- Mensaje vacío -->
+  <p class="empty-cart" id="emptyCartMsg">El carrito está vacío.</p>
+
+  <!-- libs -->
+  <script src="../assets/js/jquery-3.6.0.min.js"></script>
+  <script src="../assets/js/modernizr.min.js"></script>
+  <script src="../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/imagesloaded.pkgd.min.js"></script>
+  <script src="../assets/js/jquery.magnific-popup.min.js"></script>
+  <script src="../assets/js/isotope.pkgd.min.js"></script>
+  <script src="../assets/js/jquery.appear.min.js"></script>
+  <script src="../assets/js/jquery.easing.min.js"></script>
+  <script src="../assets/js/owl.carousel.min.js"></script>
+  <script src="../assets/js/counter-up.js"></script>
+  <script src="../assets/js/masonry.pkgd.min.js"></script>
+  <script src="../assets/js/wow.min.js"></script>
+  <script src="../assets/js/nice-select.min.js"></script>
+  <script src="../assets/js/config/config.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/header-footer/loadHeaderFooter.js" defer></script>
+
+  <!-- Tu JS del carrito -->
+  <script>
+  const planes = [
+    { id:1, nombre:"Publicación Gratis",  precio:0,     descripcion:"Ideal para pequeñas empresas.", caracteristicas:["Hasta 2 publicaciones","Duración: 7 días","Soporte básico"], popular:false },
+    { id:2, nombre:"Publicación Básica",  precio:80000, descripcion:"Ideal para pequeñas empresas.", caracteristicas:["Hasta 2 publicaciones","Duración: 7 días","Soporte básico"], popular:false },
+    { id:3, nombre:"Publicación Estándar",       precio:140000, descripcion:"Para empresas medianas.",      caracteristicas:["Hasta 5 publicaciones","Duración: 30 días","Soporte prioritario","Reportes básicos"], popular:true },
+    { id:4, nombre:"Publicación Premium",        precio:170000, descripcion:"Para alto volumen de contratación.", caracteristicas:["Publicaciones ilimitadas","Duración: 60 días","Soporte 24/7","Consultoría avanzada"], popular:false }
+  ];
+  let carrito = [];
+
+  const planGrid     = document.getElementById("planGrid");
+  const cartSummary  = document.getElementById("cartSummary");
+  const emptyCartMsg = document.getElementById("emptyCartMsg");
+
+  const cartItemsBox = document.getElementById("cartItems");
+  const elSubtotal = document.getElementById("cartSubtotal");
+  const elIva      = document.getElementById("cartIva");
+  const elDiscount = document.getElementById("cartDiscount");
+  const elTotal    = document.getElementById("cartTotal");
+  const checkoutBtn= document.getElementById("checkoutBtn");
+
+  const fmtCLP = n => Number(n||0).toLocaleString('es-CL', { style:'currency', currency:'CLP', maximumFractionDigits:0 });
+
+  function generarOrderId(longitud = 12) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let out = '';
+    for (let i=0;i<longitud;i++) out += chars.charAt(Math.floor(Math.random()*chars.length));
+    return out;
+  }
+
+  function renderPlanes() {
+    planGrid.innerHTML = planes.map(plan => `
+      <div class="pricing-item ${plan.popular ? 'active' : ''}">
+        ${plan.popular ? `<div class="pricing-popular">Más popular</div>` : ''}
+        <div class="pricing-content">
+          <h4>${plan.nombre}</h4>
+          <div class="pricing-amount">${fmtCLP(plan.precio)} <span>CLP</span></div>
+          <p>${plan.descripcion}</p>
         </div>
-    </div>
-    <!-- preloader end -->
-
-
-
-    <!-- header area -->
-    <div id="header-placeholder"></div>
-    <!-- header area end -->
-
-    <h1>Selecciona un Plan</h1>
-
-    <div class="pricing-area">
-        <div class="pricing-wrapper">
-            <div class="pricing-grid" id="planGrid"></div>
+        <div class="pricing-feature">
+          <ul>${plan.caracteristicas.map(c => `<li>${c}</li>`).join('')}</ul>
         </div>
-    </div>
+        ${plan.id !== 1 ? `<button class="theme-btn" data-id="${plan.id}">Agregar al carrito</button>` : ''}
+      </div>
+    `).join('');
+  }
 
-    <div class="cart-summary" id="cartSummary">
-        <span>Total: $<strong id="cartTotal">0</strong></span>
-        <button class="btn-checkout" id="checkoutBtn">Pagar Ahora</button>
-    </div>
+  function calcularTotales() {
+    const total = carrito.reduce((sum, item) => sum + item.precio * item.cantidad, 0); // total con IVA
+    const descuento = 0;
+    const subtotal  = Math.round((total - descuento) / 1.19);
+    const iva       = (total - descuento) - subtotal;
+    return { subtotal, descuento, iva, total };
+  }
 
-    <p class="empty-cart" id="emptyCartMsg">El carrito está vacío.</p>
+  function renderRows(){
+    cartItemsBox.innerHTML = carrito.map(item => `
+      <div class="row">
+        <div>${item.nombre}</div>
+        <div class="qty">
+          <span>x${item.cantidad}</span>
+          <button class="btn-remove" title="Eliminar este producto" aria-label="Eliminar ${item.nombre}" data-id="${item.id}">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M16.5 4.5V6h3.75a.75.75 0 010 1.5H3.75a.75.75 0 010-1.5H7.5V4.5A2.25 2.25 0 019.75 2.25h4.5A2.25 2.25 0 0116.5 4.5zM17.25 9v9a2.25 2.25 0 01-2.25 2.25h-6A2.25 2.25 0 016.75 18V9h10.5z" clip-rule="evenodd"/>
+            </svg>
+          </button>
+        </div>
+        <div>${fmtCLP(item.precio * item.cantidad)}</div>
+      </div>
+    `).join('');
+  }
 
+  function renderCarrito() {
+    if (carrito.length === 0) {
+      cartSummary.style.display = "none";
+      emptyCartMsg.style.display = "block";
+    } else {
+      cartSummary.style.display = "flex";
+      emptyCartMsg.style.display = "none";
+      renderRows();
+      const { subtotal, descuento, iva, total } = calcularTotales();
+      elSubtotal.textContent = fmtCLP(subtotal);
+      elIva.textContent      = fmtCLP(iva);
+      elDiscount.textContent = fmtCLP(descuento);
+      elTotal.textContent    = fmtCLP(total);
+    }
+  }
 
-    <script src="../assets/js/jquery-3.6.0.min.js"></script>
-    <script src="../assets/js/modernizr.min.js"></script>
-    <script src="../assets/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/imagesloaded.pkgd.min.js"></script>
-    <script src="../assets/js/jquery.magnific-popup.min.js"></script>
-    <script src="../assets/js/isotope.pkgd.min.js"></script>
-    <script src="../assets/js/jquery.appear.min.js"></script>
-    <script src="../assets/js/jquery.easing.min.js"></script>
-    <script src="../assets/js/owl.carousel.min.js"></script>
-    <script src="../assets/js/counter-up.js"></script>
-    <script src="../assets/js/masonry.pkgd.min.js"></script>
-    <script src="../assets/js/wow.min.js"></script>
-    <script src="../assets/js/nice-select.min.js"></script>
-    <script src="../assets/js/config/config.js"></script>
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/header-footer/loadHeaderFooter.js" defer></script>
-    <script src="../assets/js/modules/carrito-compras/carrito-compras.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  function agregarAlCarrito(id) {
+    const plan = planes.find(p => p.id === id);
+    if (!plan || plan.id === 1) return;
+    const existente = carrito.find(p => p.id === id);
+    if (existente) existente.cantidad++;
+    else carrito.push({ ...plan, cantidad: 1 });
+    alert(`"${plan.nombre}" agregado al carrito.`);
+    renderCarrito();
+  }
 
+  // Delegación: quitar 1 unidad
+  document.querySelector('.cart-table').addEventListener('click', (e)=>{
+    const btn = e.target.closest('.btn-remove');
+    if(!btn) return;
+    const id = parseInt(btn.dataset.id,10);
+    const item = carrito.find(x=>x.id===id);
+    if(!item) return;
+    item.cantidad--;
+    if(item.cantidad<=0){
+      carrito = carrito.filter(x=>x.id!==id);
+      alert('Producto eliminado del carrito.');
+    }else{
+      alert('Se quitó 1 unidad.');
+    }
+    renderCarrito();
+  });
 
+  planGrid.addEventListener("click", (e) => {
+    if (e.target.classList.contains("theme-btn")) {
+      const id = parseInt(e.target.dataset.id);
+      agregarAlCarrito(id);
+    }
+  });
+
+  checkoutBtn.addEventListener("click", async () => {
+    const { total } = calcularTotales();
+    if (total <= 0) { alert("El carrito está vacío o el monto no es válido."); return; }
+
+    const orderId = generarOrderId();
+    const token = localStorage.getItem('token');
+    if (!token) { alert('Debes iniciar sesión para proceder con el pago.'); return; }
+
+    try {
+      // Guardar items para mostrarlos en el comprobante
+      localStorage.setItem('cart_items', JSON.stringify(carrito));
+
+      const response = await fetch(`${BASE_URL_API}/webpay/create`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ amount: total, orderId })
+      });
+
+      const data = await response.json();
+      if (response.ok && data.url && data.token) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = data.url;
+        const tokenInput = document.createElement('input');
+        tokenInput.type = 'hidden';
+        tokenInput.name = 'token_ws';
+        tokenInput.value = data.token;
+        form.appendChild(tokenInput);
+        document.body.appendChild(form);
+        form.submit();
+
+        carrito = [];
+        renderCarrito();
+      } else {
+        alert('Error al iniciar el proceso de pago.');
+        console.error('Respuesta inesperada:', data);
+      }
+    } catch (error) {
+      console.error('Error al conectar con el backend:', error);
+      alert('Ocurrió un error al procesar el pago.');
+    }
+  });
+
+  renderPlanes();
+  renderCarrito();
+  </script>
+
+  <!-- SweetAlert como “polyfill” de alert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    (function () {
+      if (!window.Swal) return;
+      const nativeAlert = window.alert.bind(window);
+      window.alert = function (msg) {
+        try {
+          Swal.fire({ toast:true, icon:'success', title: typeof msg === 'string' ? msg : JSON.stringify(msg), position:'top-end', showConfirmButton:false, timer:1500, timerProgressBar:true });
+        } catch { nativeAlert(msg); }
+      };
+    })();
+  </script>
 </body>
-
 </html>

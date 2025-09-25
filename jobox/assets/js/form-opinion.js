@@ -10,7 +10,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const jobId = qs.get("id") || null;
   let rut = qs.get("rut") || sessionStorage.getItem("selectedEmployerRut") || null;
 
-  const BASE = typeof BASE_URL_API !== "undefined" ? BASE_URL_API : "http://localhost:3000";
+  // ✅ Usar SOLO la BASE_URL_API definida en main.js
+  if (typeof BASE_URL_API === "undefined" || !BASE_URL_API) {
+    console.error("[form-opinion] BASE_URL_API no está definida en main.js");
+    return;
+  }
+  const BASE = BASE_URL_API.replace(/\/$/, "");
+  const api = (p) => `${BASE}${p}`;
 
   async function j(url) {
     const r = await fetch(url);
@@ -18,12 +24,8 @@ document.addEventListener("DOMContentLoaded", function () {
     return r.json();
   }
   async function getOferta(id) {
-    const urls = [
-      `${BASE}/ofertas/${encodeURIComponent(id)}`,
-      `${BASE}/ofertas/${encodeURIComponent(id)}`
-    ];
-    for (const u of urls) { try { return await j(u); } catch {} }
-    return null;
+    // ✅ Un único endpoint basado en BASE_URL_API
+    return j(api(`/ofertas/${encodeURIComponent(id)}`));
   }
 
   // Si no vino rut, intenta resolverlo por id oferta
@@ -146,7 +148,8 @@ document.addEventListener("DOMContentLoaded", function () {
       };
 
       try {
-        const res = await fetch(`${BASE}/v1/empresas/${encodeURIComponent(rut)}/reviews`, {
+        // ✅ Sin “/v1” automático. Si tu BASE_URL_API ya lo trae, perfecto.
+        const res = await fetch(api(`/empresas/${encodeURIComponent(rut)}/reviews`), {
           method: "POST",
           headers,
           body: JSON.stringify(payload),

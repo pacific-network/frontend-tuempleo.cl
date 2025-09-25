@@ -1,7 +1,7 @@
 // candidate-add-info.js — usa SOLO /auth/me; sin fallback a sub
 document.addEventListener('DOMContentLoaded', async function () {
   // ---------- Utils ----------
-  const API = window.BASE_URL_API; // ej: http://localhost:3000/v1
+  const API = window.BASE_URL_API; 
 
   const b64urlDecode = (b64url) => {
     try {
