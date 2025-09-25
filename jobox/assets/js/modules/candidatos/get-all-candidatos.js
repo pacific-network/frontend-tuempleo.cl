@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
     if (!token) {
       console.warn("No hay token. Redirigiendo al login...");
-      window.location.href = "login.html";
+      window.location.href = "../login.html";
       return;
     }
   
