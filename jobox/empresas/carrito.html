@@ -62,8 +62,6 @@
     }
     .btn-remove:hover{ background:#dc2626; box-shadow:0 8px 18px rgba(239,68,68,.35) }
     .btn-remove:active{ transform:translateY(1px) }
-    .btn-remove i{ font-size:14px; line-height:1 }
-    /* tamaño del ícono SVG del basurero */
     .btn-remove svg{ width:14px; height:14px; display:block; }
     .totals{ padding:12px 16px; border-top:1px solid var(--line); }
     .totals .line{ display:flex; justify-content:space-between; padding:6px 0; }
@@ -100,6 +98,33 @@
     }
     .btn-back i{ font-size:14px; }
 
+    /* ====== Precio lista con X roja ======
+       - Los NÚMEROS heredan el color del precio principal (negro/blanco)
+       - La X se mantiene roja                                           */
+    .pricing-amount .price-list{
+      position: relative;
+      display: inline-block;
+      vertical-align: baseline;
+      margin-right: 12px;
+      padding: 0 .25em;
+
+      color: inherit !important;      /* <- mismo color que el número del plan */
+      font-size: 1em !important;      /* <- mismo tamaño que el número grande  */
+      font-weight: 800;
+      line-height: 1.1;
+    }
+    .pricing-amount .price-list::before,
+    .pricing-amount .price-list::after{
+      content: "";
+      position: absolute;
+      left: -8%;
+      right: -8%;
+      top: 50%;
+      height: 3px;
+      background: #ef4444;            /* <- la X siempre roja */
+      transform: rotate(18deg);
+    }
+    .pricing-amount .price-list::after{ transform: rotate(-18deg); }
   </style>
 </head>
 
@@ -116,11 +141,10 @@
     </a>
   </div>
 
-
   <!-- header -->
   <div id="header-placeholder"></div>
 
-  <h1>Selecciona un Plan</h1>
+  <h1>Selecciona un Aviso</h1>
 
   <div class="pricing-area">
     <div class="pricing-wrapper">
@@ -152,22 +176,22 @@
     </div>
 
     <div class="cart-footer" style="justify-content:space-between; flex-wrap:wrap; gap:12px">
-  <div class="discount-wrap" style="display:flex; gap:8px; align-items:center; flex:1 1 340px">
-    <input
-      id="discountCode"
-      class="form-control"
-      placeholder="Código de descuento"
-      style="max-width:260px; text-transform:uppercase"
-      minlength="20" maxlength="20"
-      pattern="^[A-Z0-9]{20}$"
-      inputmode="latin"
-      autocomplete="off" />
-    <button class="btn btn-outline-primary" id="btnCheckCode" type="button">Validar</button>
-    <span id="discountStatus" style="font-size:.9rem; color:var(--muted)"></span>
-  </div>
+      <div class="discount-wrap" style="display:flex; gap:8px; align-items:center; flex:1 1 340px">
+        <input
+          id="discountCode"
+          class="form-control"
+          placeholder="Código de descuento"
+          style="max-width:260px; text-transform:uppercase"
+          minlength="20" maxlength="20"
+          pattern="^[A-Z0-9]{20}$"
+          inputmode="latin"
+          autocomplete="off" />
+        <button class="btn btn-outline-primary" id="btnCheckCode" type="button">Validar</button>
+        <span id="discountStatus" style="font-size:.9rem; color:var(--muted)"></span>
+      </div>
 
-  <button class="btn-checkout" id="checkoutBtn">Pagar Ahora</button>
-</div>
+      <button class="btn-checkout" id="checkoutBtn">Pagar Ahora</button>
+    </div>
   </div>
 
   <!-- Mensaje vacío -->
@@ -192,13 +216,13 @@
   <script src="../assets/js/header-footer/loadHeaderFooter.js" defer></script>
   <script src="../assets/js/modules/carrito-compras/carrito-integration.js"></script>
 
-  <!-- Tu JS del carrito -->
+  <!-- JS del carrito -->
   <script>
   const planes = [
-    { id:1, nombre:"Publicación Gratis",  precio:0,     descripcion:"Ideal para pequeñas empresas.", caracteristicas:["Hasta 2 publicaciones","Duración: 7 días","Soporte básico"], popular:false },
-    { id:2, nombre:"Publicación Básica",  precio:80000, descripcion:"Ideal para pequeñas empresas.", caracteristicas:["Hasta 2 publicaciones","Duración: 7 días","Soporte básico"], popular:false },
-    { id:3, nombre:"Publicación Estándar",       precio:140000, descripcion:"Para empresas medianas.",      caracteristicas:["Hasta 5 publicaciones","Duración: 30 días","Soporte prioritario","Reportes básicos"], popular:true },
-    { id:4, nombre:"Publicación Premium",        precio:170000, descripcion:"Para alto volumen de contratación.", caracteristicas:["Publicaciones ilimitadas","Duración: 60 días","Soporte 24/7","Consultoría avanzada"], popular:false }
+    { id:1, nombre:"Publicación Gratis",   precio:0,      descripcion:"Ideal para pequeñas empresas.", caracteristicas:["Hasta 2 publicaciones","Duración: 7 días","Soporte básico"], popular:false },
+    { id:2, nombre:"Publicación Básica",   precio:80000,  precioLista:100000, descripcion:"Ideal para pequeñas empresas.", caracteristicas:["Hasta 2 publicaciones","Duración: 7 días","Soporte básico"], popular:false },
+    { id:3, nombre:"Publicación Estándar", precio:140000, precioLista:170000, descripcion:"Para empresas medianas.", caracteristicas:["Hasta 5 publicaciones","Duración: 30 días","Soporte prioritario","Reportes básicos"], popular:true },
+    { id:4, nombre:"Publicación Premium",  precio:170000, precioLista:200000, descripcion:"Para alto volumen de contratación.", caracteristicas:["Publicaciones ilimitadas","Duración: 60 días","Soporte 24/7","Consultoría avanzada"], popular:false }
   ];
   let carrito = [];
 
@@ -228,7 +252,10 @@
         ${plan.popular ? `<div class="pricing-popular">Más popular</div>` : ''}
         <div class="pricing-content">
           <h4>${plan.nombre}</h4>
-          <div class="pricing-amount">${fmtCLP(plan.precio)} <span>CLP</span></div>
+          <div class="pricing-amount">
+            ${plan.precioLista ? `<span class="price-list">${fmtCLP(plan.precioLista)}</span>` : ''}
+            ${fmtCLP(plan.precio)} <span>CLP</span>
+          </div>
           <p>${plan.descripcion}</p>
         </div>
         <div class="pricing-feature">
