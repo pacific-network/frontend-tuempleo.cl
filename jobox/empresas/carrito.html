@@ -27,11 +27,28 @@
       margin:0; padding:40px 16px 40px; color:var(--ink);
     }
     h1{ text-align:center; font-size:clamp(1.8rem,1.2rem + 2vw,2.6rem); margin:0 0 28px 0; letter-spacing:.2px; }
-    .pricing-wrapper{ background:var(--panel); border-radius:28px; padding:clamp(18px,3vw,40px); max-width:1200px; margin:auto; box-shadow:var(--ring-ghost); }
+
+    /* Contenedor central reducido */
+    .pricing-wrapper{
+      background:var(--panel);
+      border-radius:28px;
+      padding:clamp(18px,3vw,40px);
+      width:80%;
+      max-width:960px;      /* <-- antes 1200, ahora 20% más reducido */
+      margin:auto;
+      box-shadow:var(--ring-ghost);
+    }
+
+    /* Estado base (se sobreescribe abajo en breakpoints) */
     .pricing-grid{ display:grid; gap:clamp(16px,2.2vw,28px); grid-template-columns:repeat(4,1fr); }
     @media (max-width:1200px){.pricing-grid{grid-template-columns:repeat(2,1fr)}}
     @media (max-width:640px){.pricing-grid{grid-template-columns:1fr}}
-    .pricing-item{ position:relative; overflow:hidden; padding:26px 24px; border-radius:18px; background:var(--surface); border:1px solid var(--border); box-shadow:var(--ring-ghost); transition:.18s ease; display:grid; grid-template-rows:auto 1fr auto; gap:16px; }
+
+    .pricing-item{
+      position:relative; overflow:hidden; padding:26px 24px; border-radius:18px;
+      background:var(--surface); border:1px solid var(--border); box-shadow:var(--ring-ghost);
+      transition:.18s ease; display:grid; grid-template-rows:auto 1fr auto; gap:16px;
+    }
     .pricing-item:hover{ transform:translateY(-3px); box-shadow:0 14px 32px rgba(0,0,0,.08); border-color:#dde6f3 }
     .pricing-item.active{ background:linear-gradient(180deg,var(--brand) 0%, #5b7cff 100%); color:#fff; border:none; box-shadow:var(--ring); }
     .pricing-popular{ position:absolute; right:16px; top:16px; padding:6px 12px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; border-radius:999px; background:#fff; color:var(--brand); box-shadow:0 10px 20px rgba(255,255,255,.35); border:1px solid rgba(255,255,255,.7); }
@@ -40,8 +57,10 @@
     .pricing-feature ul{ margin:4px 0 6px 0; padding:0; list-style:none; display:grid; gap:10px; }
     .pricing-feature ul li{ position:relative; padding-left:26px; line-height:1.25rem }
     .pricing-feature ul li::before{ content:"\f00c"; font:normal normal normal 14px/1 FontAwesome; position:absolute; left:0; top:0; width:18px; height:18px; border-radius:50%; display:grid; place-items:center; background:rgba(60,101,245,.12); color:var(--brand); }
+
     .theme-btn{ background:var(--brand); color:#fff; border:none; padding:12px 16px; border-radius:10px; font-weight:800; cursor:pointer; transition:background .2s, transform .08s, box-shadow .2s; box-shadow:0 10px 18px rgba(60,101,245,.22); width:100%; }
     .theme-btn:hover{ background:var(--brand-dark) }
+    .theme-btn[disabled]{ opacity:.55; cursor:not-allowed; box-shadow:none; }
 
     /* ===== Carrito ===== */
     .cart-summary{ position:fixed; right:24px; top:120px; width:360px; background:#fff; border:1px solid var(--border); border-radius:14px; box-shadow:0 18px 38px rgba(0,0,0,.12); display:none; flex-direction:column; z-index:100; overflow:hidden; }
@@ -53,8 +72,8 @@
       width:32px; height:32px;
       border-radius:8px;
       border:0;
-      background:#ef4444;           
-      color:#fff;                   
+      background:#ef4444;
+      color:#fff;
       cursor:pointer;
       display:inline-flex; align-items:center; justify-content:center;
       box-shadow:0 6px 14px rgba(239,68,68,.25);
@@ -98,18 +117,15 @@
     }
     .btn-back i{ font-size:14px; }
 
-    /* ====== Precio lista con X roja ======
-       - Los NÚMEROS heredan el color del precio principal (negro/blanco)
-       - La X se mantiene roja                                           */
+    /* ====== Precio lista con X roja ====== (20% más pequeño) */
     .pricing-amount .price-list{
       position: relative;
       display: inline-block;
       vertical-align: baseline;
       margin-right: 12px;
       padding: 0 .25em;
-
-      color: inherit !important;      /* <- mismo color que el número del plan */
-      font-size: 1em !important;      /* <- mismo tamaño que el número grande  */
+      color: inherit !important;
+      font-size: 0.8em !important;
       font-weight: 800;
       line-height: 1.1;
     }
@@ -121,10 +137,39 @@
       right: -8%;
       top: 50%;
       height: 3px;
-      background: #ef4444;            /* <- la X siempre roja */
+      background: #ef4444;
       transform: rotate(18deg);
     }
     .pricing-amount .price-list::after{ transform: rotate(-18deg); }
+
+    /* Badge contador gratis */
+    .free-badge{
+      display:inline-flex; align-items:center; gap:6px;
+      padding:6px 10px; border-radius:999px;
+      font-size:.8rem; font-weight:800;
+      background:#f1f6ff; color:#1f3fa4; border:1px solid #dbe7ff;
+      margin-top:6px;
+    }
+    .free-badge i{ font-size:.9rem }
+
+    /* ====== Layout como en el mock (centrado y ancho fijo por card) ====== */
+    @media (min-width: 992px){
+      .pricing-grid{
+        display:flex; flex-wrap:wrap; gap:24px; justify-content:center;
+      }
+      .pricing-item{
+        flex:0 0 calc((100% - 72px) / 4); /* 4 columnas, 3 gaps de 24px */
+        max-width:300px;
+      }
+    }
+    @media (min-width: 640px) and (max-width: 991.98px){
+      .pricing-grid{ display:flex; flex-wrap:wrap; gap:20px; justify-content:center; }
+      .pricing-item{ flex:0 0 calc((100% - 20px) / 2); max-width:420px; }
+    }
+    @media (max-width: 639.98px){
+      .pricing-grid{ display:flex; flex-wrap:wrap; gap:16px; justify-content:center; }
+      .pricing-item{ flex:1 1 100%; }
+    }
   </style>
 </head>
 
@@ -239,6 +284,42 @@
 
   const fmtCLP = n => Number(n||0).toLocaleString('es-CL', { style:'currency', currency:'CLP', maximumFractionDigits:0 });
 
+  /** ========= Helpers Free mensual ========= **/
+  function decodeJwt (token) {
+    try {
+      const payload = token.split('.')[1];
+      return JSON.parse(atob(payload.replace(/-/g,'+').replace(/_/g,'/')));
+    } catch { return null; }
+  }
+  function getUserIdFromToken(){
+    const token = localStorage.getItem('token');
+    if(!token) return 'anon';
+    const data = decodeJwt(token);
+    return (data && (data.sub || data.userId || data.id)) ? (data.sub || data.userId || data.id) : 'anon';
+  }
+  function getPeriodKey(date = new Date()){
+    const y = date.getFullYear();
+    const m = String(date.getMonth()+1).padStart(2,'0'); // YYYYMM
+    return `${y}${m}`;
+  }
+  const FREE_MONTHLY_LIMIT = 3;
+
+  function getFreeRemaining(){
+    const uid = getUserIdFromToken();
+    const key = `free_pub_remaining_${uid}_${getPeriodKey()}`;
+    const val = localStorage.getItem(key);
+    if (val === null || isNaN(+val)) {
+      localStorage.setItem(key, String(FREE_MONTHLY_LIMIT));
+      return FREE_MONTHLY_LIMIT;
+    }
+    return Math.max(0, parseInt(val,10));
+  }
+  function setFreeRemaining(newVal){
+    const uid = getUserIdFromToken();
+    const key = `free_pub_remaining_${uid}_${getPeriodKey()}`;
+    localStorage.setItem(key, String(Math.max(0, newVal)));
+  }
+
   function generarOrderId(longitud = 12) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let out = '';
@@ -247,7 +328,14 @@
   }
 
   function renderPlanes() {
-    planGrid.innerHTML = planes.map(plan => `
+    const freeLeft = getFreeRemaining();
+
+    planGrid.innerHTML = planes.map(plan => {
+      const isFree = plan.id === 1;
+      const btnDisabled = isFree && freeLeft <= 0;
+      const btnText = isFree && freeLeft <= 0 ? 'Agotado este mes' : 'Agregar al carrito';
+
+      return `
       <div class="pricing-item ${plan.popular ? 'active' : ''}">
         ${plan.popular ? `<div class="pricing-popular">Más popular</div>` : ''}
         <div class="pricing-content">
@@ -257,13 +345,20 @@
             ${fmtCLP(plan.precio)} <span>CLP</span>
           </div>
           <p>${plan.descripcion}</p>
+          ${isFree ? `
+            <div class="free-badge" title="Cupos gratis mensuales. Se reinician cada mes.">
+              <i class="fa fa-gift" aria-hidden="true"></i>
+              Gratis disponibles: <strong>${freeLeft}/${FREE_MONTHLY_LIMIT}</strong> este mes
+            </div>
+          ` : ''}
         </div>
         <div class="pricing-feature">
           <ul>${plan.caracteristicas.map(c => `<li>${c}</li>`).join('')}</ul>
         </div>
-        ${plan.id !== 1 ? `<button class="theme-btn" data-id="${plan.id}">Agregar al carrito</button>` : ''}
+        <button class="theme-btn" data-id="${plan.id}" ${btnDisabled ? 'disabled' : ''}>${btnText}</button>
       </div>
-    `).join('');
+      `;
+    }).join('');
   }
 
   function calcularTotales() {
@@ -309,10 +404,32 @@
 
   function agregarAlCarrito(id) {
     const plan = planes.find(p => p.id === id);
-    if (!plan || plan.id === 1) return;
-    const existente = carrito.find(p => p.id === id);
-    if (existente) existente.cantidad++;
-    else carrito.push({ ...plan, cantidad: 1 });
+    if (!plan) return;
+
+    // Reglas para GRATIS: respeta cupo mensual
+    if (plan.id === 1) {
+      const freeLeft = getFreeRemaining();
+      if (freeLeft <= 0) {
+        alert('Ya usaste tus 3 publicaciones gratis de este mes.');
+        return;
+      }
+      const existente = carrito.find(p => p.id === id);
+      if (existente) {
+        const posible = Math.min(existente.cantidad + 1, freeLeft);
+        if (posible === existente.cantidad) {
+          alert(`Te quedan ${freeLeft} gratis este mes. No puedes agregar más.`);
+          return;
+        }
+        existente.cantidad = posible;
+      } else {
+        carrito.push({ ...plan, cantidad: 1 });
+      }
+    } else {
+      const existente = carrito.find(p => p.id === id);
+      if (existente) existente.cantidad++;
+      else carrito.push({ ...plan, cantidad: 1 });
+    }
+
     alert(`"${plan.nombre}" agregado al carrito.`);
     renderCarrito();
   }
@@ -335,22 +452,46 @@
   });
 
   planGrid.addEventListener("click", (e) => {
-    if (e.target.classList.contains("theme-btn")) {
-      const id = parseInt(e.target.dataset.id);
-      agregarAlCarrito(id);
-    }
+    const btn = e.target.closest(".theme-btn");
+    if (!btn || btn.disabled) return;
+    const id = parseInt(btn.dataset.id);
+    agregarAlCarrito(id);
   });
 
   checkoutBtn.addEventListener("click", async () => {
     const { total } = calcularTotales();
-    if (total <= 0) { alert("El carrito está vacío o el monto no es válido."); return; }
+    if (carrito.length === 0) { alert("El carrito está vacío."); return; }
 
+    // === Flujo $0: sólo GRATIS ===
+    if (total === 0) {
+      const freeItem = carrito.find(i => i.id === 1);
+      if (!freeItem) {
+        alert("No hay ítems válidos de $0 para procesar.");
+        return;
+      }
+      const freeLeft = getFreeRemaining();
+      if (freeItem.cantidad > freeLeft) {
+        alert(`Solo te quedan ${freeLeft} publicaciones gratis este mes.`);
+        return;
+      }
+
+      const token = localStorage.getItem('token');
+      if (!token) { alert('Debes iniciar sesión para usar la publicación gratis.'); return; }
+
+      setFreeRemaining(freeLeft - freeItem.cantidad);
+      carrito = [];
+      renderCarrito();
+      renderPlanes();
+      window.location.href = 'employer-post-job.html';
+      return;
+    }
+
+    // === Flujo Webpay normal para pagos > 0 ===
     const orderId = generarOrderId();
     const token = localStorage.getItem('token');
     if (!token) { alert('Debes iniciar sesión para proceder con el pago.'); return; }
 
     try {
-      // Guardar items para mostrarlos en el comprobante
       localStorage.setItem('cart_items', JSON.stringify(carrito));
 
       const response = await fetch(`${BASE_URL_API}/webpay/create`, {
@@ -384,6 +525,7 @@
     }
   });
 
+  // Init
   renderPlanes();
   renderCarrito();
   </script>
@@ -401,5 +543,42 @@
       };
     })();
   </script>
+  <script type="module">
+  const BASE_URL_API = "http://localhost:3000/v1";
+  const PAY_BASE = BASE_URL_API.replace(/\/$/, "") + "/payments";
+
+  async function lookup(orderId){
+    const r = await fetch(PAY_BASE + "/lookup?orderId=" + encodeURIComponent(orderId));
+    const j = await r.json();
+    if(!r.ok) throw new Error(j?.message || ("HTTP " + r.status));
+    return j; // {status, planKey?, amount?, ledgerId?, orderId?}
+  }
+
+  function persistAuthorized(planKey, orderId){
+    if(!planKey || !orderId) return;
+    const payload = JSON.stringify({ planKey, orderId });
+    sessionStorage.setItem("tuempleo_lastAuthorizedPlan", payload);
+    localStorage.setItem("tuempleo_lastAuthorizedPlan", payload);
+  }
+
+  document.addEventListener("DOMContentLoaded", async ()=>{
+    const url = new URL(window.location.href);
+    const orderId = url.searchParams.get("orderId");
+    if(!orderId) return;
+    try{
+      const res = await lookup(orderId);
+      const statusEl = document.querySelector("#pago-estado");
+      if(res.status === "AUTHORIZED"){
+        // Usa planKey del backend o mapea por monto
+        const planKey = (res.planKey || "").toUpperCase() || (res.amount === 80000 ? "BASICA" : res.amount === 140000 ? "ESTANDAR" : res.amount === 170000 ? "PREMIUM" : "");
+        if(statusEl){ statusEl.textContent = "Pago AUTORIZADO"; statusEl.classList.add("text-success","fw-bold"); }
+        persistAuthorized(planKey, res.orderId || orderId);
+      }else{
+        if(statusEl){ statusEl.textContent = "Pago no autorizado"; statusEl.classList.add("text-danger","fw-bold"); }
+      }
+    }catch(e){ console.error(e); }
+  });
+</script>
+
 </body>
 </html>

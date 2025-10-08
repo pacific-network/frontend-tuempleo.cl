@@ -1,63 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
-  <!-- meta tags -->
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="">
-  <meta name="keywords" content="">
-  <!-- meta tags -->
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="">
-  <meta name="keywords" content="">
-
-  <!-- title -->
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Publicar Trabajo</title>
 
-  <!-- favicon -->
-  <link rel="icon" type="image/x-icon" href="../assets/img/logo/favicon.png">
+  <link rel="icon" type="image/x-icon" href="../assets/img/logo/favicon.png" />
+  <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../assets/css/all-fontawesome.min.css" />
+  <link rel="stylesheet" href="../assets/css/feather.min.css" />
+  <link rel="stylesheet" href="../assets/css/flaticon.css" />
+  <link rel="stylesheet" href="../assets/css/animate.min.css" />
+  <link rel="stylesheet" href="../assets/css/magnific-popup.min.css" />
+  <link rel="stylesheet" href="../assets/css/owl.carousel.min.css" />
+  <link rel="stylesheet" href="../assets/css/nice-select.min.css" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
 
-  <!-- css -->
-  <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../assets/css/all-fontawesome.min.css">
-  <link rel="stylesheet" href="../assets/css/feather.min.css">
-  <link rel="stylesheet" href="../assets/css/flaticon.css">
-  <link rel="stylesheet" href="../assets/css/animate.min.css">
-  <link rel="stylesheet" href="../assets/css/magnific-popup.min.css">
-  <link rel="stylesheet" href="../assets/css/owl.carousel.min.css">
-  <link rel="stylesheet" href="../assets/css/nice-select.min.css">
-  <link rel="stylesheet" href="../assets/css/style.css">
-
-
+  <style>
+    .tu-plan-grid{display:grid;grid-template-columns:repeat(4,minmax(180px,1fr));gap:12px;margin:8px 0 16px}
+    .tu-card-plan{border:2px solid #e6e8f0;border-radius:12px;padding:14px;background:#fff;cursor:pointer;user-select:none;box-shadow:0 1px 2px rgba(0,0,0,.04);text-align:left}
+    .tu-card-plan.disabled{opacity:.5;pointer-events:none;filter:grayscale(1)}
+    .tu-card-plan.active{border-color:#3C65F5;box-shadow:0 0 0 3px rgba(60,101,245,.2)}
+    .tu-card-title{font-weight:700;margin-bottom:2px}
+    .tu-card-badge{font-size:22px;font-weight:800;margin:4px 0}
+    .tu-card-info{font-size:12px;color:#666}
+    .tu-blocked{opacity:.6;pointer-events:none}
+  </style>
 </head>
 
-<body>
-
-  <!-- preloader -->
-  <div class="preloader">
-    <div class="loader">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-  </div>
-  <!-- preloader end -->
-
-  <!-- header area -->
+<!-- Define data-employer-id / data-empresa-id o expón window.currentEmployerId / window.currentEmpresaId -->
+<body data-employer-id="" data-empresa-id="">
+  <div class="preloader"><div class="loader"><span></span><span></span><span></span></div></div>
   <div id="header-placeholder"></div>
-  <!-- header area end -->
 
   <main class="main">
-
-    <!-- breadcrumb -->
     <div class="site-breadcrumb">
-      <div class="container">
-        <h2 class="breadcrumb-title">Publicar un Trabajo</h2>
-      </div>
+      <div class="container"><h2 class="breadcrumb-title">Publicar un Trabajo</h2></div>
       <div class="hero-shape">
         <img class="hero-shape-1" src="../assets/img/shape/03.svg" alt="">
         <img class="hero-shape-2" src="../assets/img/shape/05.svg" alt="">
@@ -65,23 +44,16 @@
       </div>
     </div>
 
-
-
-
-    <!-- employer-post-job -->
     <div class="user-profile py-120">
       <div class="container">
         <div class="row">
           <div class="col-lg-3">
             <div class="user-profile-sidebar">
-              <div class="user-profile-sidebar-top">
-
-              </div>
+              <div class="user-profile-sidebar-top"></div>
               <ul class="user-profile-sidebar-list">
                 <li><a href="employer-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a></li>
                 <li><a href="employer-profile.html"><i class="far fa-user-tie"></i> Perfil de Empresa</a></li>
-                <li><a class="active" href="employer-post-job.html"><i class="far fa-paper-plane"></i> Publicar un
-                    Trabajo</a></li>
+                <li><a class="active" href="employer-post-job.html"><i class="far fa-paper-plane"></i> Publicar un Trabajo</a></li>
                 <li><a href="employer-manage-job.html"><i class="far fa-briefcase"></i> Gestionar Avisos</a></li>
                 <li><a href="employer-transaction.html"><i class="far fa-coins"></i> Transacción</a></li>
                 <li><a href="employer-settings.html"><i class="far fa-cog"></i> Cambiar Contraseña</a></li>
@@ -96,10 +68,23 @@
               </div>
             </div>
           </div>
+
           <div class="col-lg-9">
             <div class="user-profile-wrapper">
               <div class="user-profile-card">
                 <h4 class="user-profile-card-title">Publicar Trabajo</h4>
+
+                <!-- Picker tipo de aviso -->
+                <div class="card mb-3">
+                  <div class="card-body">
+                    <h5 class="mb-2">1) Selecciona el tipo de aviso</h5>
+                    <div id="plan-picker" class="tu-plan-grid"></div>
+                    <div id="no-cupos-alert" class="alert alert-warning d-none mt-2">
+                      No tienes cupos disponibles para publicar. Compra en <a href="carrito.html">Carrito</a>.
+                    </div>
+                  </div>
+                </div>
+
                 <div class="profile-resume">
                   <div class="profile-form">
                     <form id="formulario-publicar">
@@ -107,8 +92,7 @@
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="titulo">Título del Trabajo</label>
-                            <input type="text" id="titulo" name="titulo" class="form-control"
-                              placeholder="Ingrese el título del trabajo" />
+                            <input id="titulo" name="titulo" class="form-control" placeholder="Ingrese el título del trabajo" required />
                           </div>
                         </div>
                         <div class="col-md-6">
@@ -117,18 +101,17 @@
                             <select class="form-control" name="area_cargo" id="area_cargo_select"></select>
                           </div>
                         </div>
+
                         <div class="col-md-3">
                           <div class="form-group">
                             <label for="anios_experiencia">Años de Experiencia</label>
-                            <input type="text" id="anios_experiencia" name="anios_experiencia" class="form-control"
-                              placeholder="Ingresa Exp..." />
+                            <input id="anios_experiencia" name="anios_experiencia" class="form-control" placeholder="Ingresa Exp..." />
                           </div>
                         </div>
                         <div class="col-md-5">
                           <div class="form-group">
                             <label for="region-select">Región</label>
-                            <select id="region-select" name="region" class="form-control" data-region-seleccionada="">
-
+                            <select id="region-select" name="region" class="form-control">
                               <option value="">-- Seleccione una región --</option>
                             </select>
                           </div>
@@ -148,6 +131,7 @@
                             </select>
                           </div>
                         </div>
+
                         <div class="col-md-5">
                           <div class="form-group">
                             <label for="tipo_contrato">Tipo de Contratación</label>
@@ -162,6 +146,7 @@
                             </select>
                           </div>
                         </div>
+
                         <div class="col-md-5">
                           <div class="form-group">
                             <label for="modalidad">Modalidad</label>
@@ -177,41 +162,31 @@
                         </div>
 
                         <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="descripcion">Descripción del puesto</label>
-                                <textarea id="descripcion" 
-                                          name="descripcion_puesto" 
-                                          class="form-control" 
-                                          rows="4"
-                                          maxlength="500"
-                                          placeholder="Escribe una descripción del trabajo"></textarea>
-                                <small id="contadorDescripcionPuesto" class="form-text text-muted">
-                                    0 / 500 caracteres
-                                </small>
-                            </div>
+                          <div class="form-group">
+                            <label for="descripcion">Descripción del puesto</label>
+                            <textarea id="descripcion" name="descripcion_puesto" class="form-control" rows="4" maxlength="500" placeholder="Escribe una descripción del trabajo"></textarea>
+                            <small id="contadorDescripcionPuesto" class="form-text text-muted">0 / 500 caracteres</small>
+                          </div>
                         </div>
 
                         <div class="col-md-12">
                           <div class="form-group">
                             <label for="responsabilidades">Responsabilidades (una por línea)</label>
-                            <textarea id="responsabilidades" name="responsabilidades" class="form-control" rows="3"
-                              placeholder="Ej: Desarrollar interfaces con React&#10;Crear APIs con Node.js"></textarea>
+                            <textarea id="responsabilidades" name="responsabilidades" class="form-control" rows="3" placeholder="Ej: Desarrollar interfaces con React&#10;Crear APIs con Node.js"></textarea>
                           </div>
                         </div>
 
                         <div class="col-md-12">
                           <div class="form-group">
                             <label for="requisitos">Requisitos mínimos (uno por línea)</label>
-                            <textarea id="requisitos" name="requisitos_minimos" class="form-control" rows="3"
-                              placeholder="Ej: 3+ años de experiencia en desarrollo&#10;Conocimiento de metodologías ágiles"></textarea>
+                            <textarea id="requisitos" name="requisitos_minimos" class="form-control" rows="3" placeholder="Ej: 3+ años de experiencia en desarrollo&#10;Conocimiento de metodologías ágiles"></textarea>
                           </div>
                         </div>
 
                         <div class="col-md-12">
                           <div class="form-group">
                             <label for="beneficios">Beneficios (uno por línea)</label>
-                            <textarea id="beneficios" name="beneficios" class="form-control" rows="3"
-                              placeholder="Ej: Modalidad híbrida&#10;Capacitaciones constantes"></textarea>
+                            <textarea id="beneficios" name="beneficios" class="form-control" rows="3" placeholder="Ej: Modalidad híbrida&#10;Capacitaciones constantes"></textarea>
                           </div>
                         </div>
 
@@ -220,13 +195,11 @@
                             <label class="font-weight-bold d-block mb-2">Renta Salarial</label>
                             <div class="mb-2">
                               <label for="salaryFrom" class="small mb-1">Desde:</label>
-                              <input type="text" class="form-control form-control-sm" id="salaryFrom" name="renta_desde"
-                                placeholder="Ej: $900.000" />
+                              <input class="form-control form-control-sm" id="salaryFrom" name="renta_desde" placeholder="Ej: $900.000" />
                             </div>
                             <div class="mb-2">
                               <label for="salaryTo" class="small mb-1">Hasta:</label>
-                              <input type="text" class="form-control form-control-sm" id="salaryTo" name="renta_hasta"
-                                placeholder="Ej: $1.200.000" />
+                              <input class="form-control form-control-sm" id="salaryTo" name="renta_hasta" placeholder="Ej: $1.200.000" />
                             </div>
                             <small class="text-muted">De acuerdo al mercado</small>
                           </div>
@@ -235,11 +208,8 @@
                         <div class="col-md-8">
                           <div class="form-group border p-3 rounded shadow-sm">
                             <label>Herramientas básicas</label>
-                            <div id="checkbox-container" class="row">
-                              <!-- Checkboxes dinámicos aquí -->
-                            </div>
-                            <input type="text" id="otras_herramientas" name="otras_herramientas"
-                              class="form-control mt-2" placeholder="Escribe otras herramientas separadas por coma" />
+                            <div id="checkbox-container" class="row"></div>
+                            <input id="otras_herramientas" name="otras_herramientas" class="form-control mt-2" placeholder="Escribe otras herramientas separadas por coma" />
                           </div>
                         </div>
 
@@ -247,34 +217,28 @@
                           <div class="form-group">
                             <label for="preguntas">Preguntas personalizadas (máximo 5)</label>
                             <div id="preguntas-container"></div>
-
-                            <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="agregar-pregunta">
-                              + Agregar pregunta
-                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="agregar-pregunta">+ Agregar pregunta</button>
                           </div>
                         </div>
 
-
-
-
                         <div class="col-md-12">
                           <div class="form-group mt-3">
-                            <button type="submit" class="theme-btn"><span class="far fa-check-circle"></span> Publica Tu
-                              Empleo</button>
+                            <button type="submit" class="theme-btn"><span class="far fa-check-circle"></span> Publica Tu Empleo</button>
                           </div>
                         </div>
                       </div>
                     </form>
-
                   </div>
                 </div>
+
               </div>
             </div>
-          </div>
+          </div> <!-- /col-lg-9 -->
         </div>
       </div>
     </div>
-    <!-- employer-post-job end -->
+
+    <!-- Logout modal & toast -->
     <div class="modal fade" id="logoutModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -282,9 +246,7 @@
             <h5 class="modal-title">¿Cerrar sesión?</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
           </div>
-          <div class="modal-body">
-            ¿Estás seguro de que deseas cerrar sesión?
-          </div>
+          <div class="modal-body">¿Estás seguro de que deseas cerrar sesión?</div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
             <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar Sesión</button>
@@ -292,32 +254,22 @@
         </div>
       </div>
     </div>
-    <!-- Toast container fixed abajo a la derecha -->
-    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100; min-width: 300px;">
+
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index:1100;min-width:300px;">
       <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header" style="background-color: #3D6AF2; color: white;">
+        <div class="toast-header" style="background-color:#3D6AF2;color:#fff;">
           <strong class="me-auto" id="toastTitle">Mensaje</strong>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Cerrar"></button>
         </div>
-        <div class="toast-body" id="toastBody" style="background-color: #C2D7F2; color: #083359;">
-          Texto de ejemplo
-        </div>
+        <div class="toast-body" id="toastBody" style="background-color:#C2D7F2;color:#083359;">Texto de ejemplo</div>
       </div>
     </div>
-
-
   </main>
 
-  <!-- footer area -->
   <div id="footer-placeholder"></div>
-  <!-- footer area end -->
-
-  <!-- scroll-top -->
   <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
-  <!-- scroll-top end -->
 
-
-  <!-- js -->
+  <!-- libs -->
   <script src="../assets/js/jquery-3.6.0.min.js"></script>
   <script src="../assets/js/modernizr.min.js"></script>
   <script src="../assets/js/bootstrap.bundle.min.js"></script>
@@ -332,9 +284,10 @@
   <script src="../assets/js/wow.min.js"></script>
   <script src="../assets/js/nice-select.min.js"></script>
   <script src="../assets/js/main.js"></script>
-  <script src="../assets/js/config/config.js"></script>x
+
+  <!-- módulos existentes -->
+  <script src="../assets/js/config/config.js"></script>
   <script src="../assets/js/header-footer/loadHeaderFooterEmpLi.js"></script>
-  <script src="../assets/js/modules/empresa/publicar-oferta.js"></script>
   <script src="../assets/js/form-register/area_cargo.js"></script>
   <script src="../assets/js/modules/utils/dinamic-checkboxes.js"></script>
   <script src="../assets/js/form-register/regiones.js"></script>
@@ -344,7 +297,259 @@
   <script src="../assets/js/modules/empresa/max-char-postjob.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+  <!-- Picker + Publicación (con fusión de AUTHORIZED) -->
+  <script type="module">
+    const BASE_URL_API = "http://localhost:3000/v1";
+    const PUB_BASE = BASE_URL_API.replace(/\/$/, "") + "/publication";
+    const PAY_BASE = BASE_URL_API.replace(/\/$/, "") + "/payments"; // usaremos varios endpoints *opcionales*
 
+    function $(sel, root){ return (root || document).querySelector(sel); }
+    function $all(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+
+    function ctxIds(){
+      const b = document.body || document.documentElement;
+      return {
+        employerId: Number(b.getAttribute("data-employer-id") || window.currentEmployerId || 0),
+        empresaId: Number(b.getAttribute("data-empresa-id") || window.currentEmpresaId || 0)
+      };
+    }
+
+    async function getJSON(url, opts){
+      const r = await fetch(url, opts);
+      const isJson = (r.headers.get("content-type") || "").includes("application/json");
+      const body = isJson ? await r.json() : null;
+      if(!r.ok){ throw new Error((body && (body.error || body.message)) || ("HTTP " + r.status)); }
+      return body;
+    }
+
+    // ====== estado de disponibilidad ======
+    var AVAIL = { FREE: 0, PAID: { BASICA: { ledgerIds: [] }, ESTANDAR: { ledgerIds: [] }, PREMIUM: { ledgerIds: [] } } };
+    // pagos autorizados detectados (sin ledger): {planKey, orderId}
+    var AUTHZ_ORDERS = { BASICA: [], ESTANDAR: [], PREMIUM: [] };
+    var selection = null; // { planKey:'FREE' } o { planKey:'BASICA', ledgerId? , orderId? }
+
+    // Mapea por monto si el endpoint no devuelve el plan explícito (evita tocar backend)
+    function mapAmountToPlan(amount){
+      const x = Number(amount || 0);
+      if (x === 80000) return "BASICA";
+      if (x === 140000) return "ESTANDAR";
+      if (x === 170000) return "PREMIUM";
+      return null;
+    }
+
+    async function detectAuthorizedPayments(empresaId){
+      AUTHZ_ORDERS = { BASICA: [], ESTANDAR: [], PREMIUM: [] };
+
+      // lista de endpoints candidatos (probamos en orden, el primero que responda bien aporta datos)
+      const candidates = [
+        `${PAY_BASE}/authorized?empresaId=${empresaId}`,
+        `${PAY_BASE}/empresa/${empresaId}?status=AUTHORIZED`,
+        `${PAY_BASE}?empresaId=${empresaId}&status=AUTHORIZED`,
+        `${BASE_URL_API.replace(/\/$/, "")}/transaction/empresa/${empresaId}`
+      ];
+
+      for (const url of candidates){
+        try{
+          const data = await getJSON(url);
+          // Normalizamos posibles formas:
+          const items = Array.isArray(data) ? data : (Array.isArray(data.items) ? data.items : (Array.isArray(data.data) ? data.data : []));
+          items.forEach(it=>{
+            const status = (it.status || it.estado || "").toUpperCase();
+            if(status !== "AUTHORIZED") return;
+            const orderId = it.orderId || it.buy_order || it.buyOrder || it.id || it.uuid;
+            const planKey = (it.planKey || it.plan || mapAmountToPlan(it.amount || it.monto) || "").toUpperCase();
+            if(!orderId || !planKey || !AUTHZ_ORDERS[planKey]) return;
+            // Evita duplicados
+            if(!AUTHZ_ORDERS[planKey].some(x=>x.orderId===orderId)){
+              AUTHZ_ORDERS[planKey].push({ orderId });
+            }
+          });
+          // con un endpoint que responda nos basta (el resto es opcional)
+        }catch(_e){
+          // ignoramos si no existe
+        }
+      }
+
+      // añade también el "último autorizado" almacenado localmente (carrito.html lo guarda)
+      const lastSess = sessionStorage.getItem("tuempleo_lastAuthorizedPlan");
+      const lastLocal = localStorage.getItem("tuempleo_lastAuthorizedPlan");
+      [lastSess, lastLocal].forEach(src=>{
+        if(!src) return;
+        try{
+          const { planKey, orderId } = JSON.parse(src);
+          if(planKey && orderId && AUTHZ_ORDERS[planKey] && !AUTHZ_ORDERS[planKey].some(x=>x.orderId===orderId)){
+            AUTHZ_ORDERS[planKey].push({ orderId });
+          }
+        }catch(_){}
+      });
+    }
+
+    function mergeAvailabilityForUI(){
+      // copiamos para no mutar referencias
+      const merged = JSON.parse(JSON.stringify(AVAIL));
+      // a cada plan pagado le sumamos la cantidad de pagos autorizados sin ledger (como “slots virtuales”)
+      (["BASICA","ESTANDAR","PREMIUM"]).forEach(pk=>{
+        const baseCount = (merged.PAID[pk]?.ledgerIds?.length || 0);
+        const extra = AUTHZ_ORDERS[pk].length;
+        merged.PAID[pk].uiCount = baseCount + extra; // mostramos conteo total
+      });
+      return merged;
+    }
+
+    function renderPicker(){
+      const root = $("#plan-picker");
+      if(!root) return;
+
+      const merged = mergeAvailabilityForUI();
+      const paid = merged.PAID || {};
+      const variants = [
+        { key: "FREE",     title: "Gratis",   badge: Number(merged.FREE || 0),                         info: "3 por mes / empresa", disabled: Number(merged.FREE || 0) <= 0 },
+        { key: "BASICA",   title: "Básica",   badge: (paid.BASICA?.uiCount || 0),   info: "Autorizado", disabled: !(paid.BASICA?.uiCount) },
+        { key: "ESTANDAR", title: "Estándar", badge: (paid.ESTANDAR?.uiCount || 0), info: "Autorizado", disabled: !(paid.ESTANDAR?.uiCount) },
+        { key: "PREMIUM",  title: "Premium",  badge: (paid.PREMIUM?.uiCount || 0),  info: "Autorizado", disabled: !(paid.PREMIUM?.uiCount) }
+      ];
+
+      root.innerHTML = "";
+      variants.forEach(v=>{
+        const el = document.createElement("button");
+        el.type = "button";
+        el.className = "tu-card-plan" + (v.disabled ? " disabled" : "");
+        el.setAttribute("data-plan", v.key);
+        el.innerHTML =
+          '<div class="tu-card-title">'+v.title+'</div>' +
+          '<div class="tu-card-badge">'+v.badge+'</div>' +
+          '<div class="tu-card-info">'+v.info+'</div>';
+        el.addEventListener("click",()=>choosePlan(v.key));
+        root.appendChild(el);
+      });
+
+      const any = variants.some(x=>!x.disabled);
+      setFormBlocked(!any);
+    }
+
+    function choosePlan(planKey){
+      $all(".tu-card-plan").forEach(n=>n.classList.remove("active"));
+      const btn = document.querySelector('.tu-card-plan[data-plan="'+planKey+'"]');
+      if(btn) btn.classList.add("active");
+
+      if(planKey === "FREE"){
+        if((AVAIL.FREE||0) <= 0) return;
+        selection = { planKey: "FREE" };
+        return;
+      }
+
+      // 1) intentamos usar ledgerId real
+      const ids = AVAIL.PAID?.[planKey]?.ledgerIds || [];
+      if(ids.length){
+        selection = { planKey, ledgerId: ids[0] };
+        return;
+      }
+      // 2) si no hay ledger pero sí pagos autorizados detectados, usamos orderId
+      const ord = AUTHZ_ORDERS[planKey]?.[0];
+      if(ord){
+        selection = { planKey, orderId: ord.orderId };
+      }
+    }
+
+    function setFormBlocked(blocked){
+      const form = $("#formulario-publicar");
+      const btn = form ? form.querySelector('[type="submit"]') : null;
+      const alertBox = $("#no-cupos-alert");
+      if(blocked){
+        alertBox?.classList.remove("d-none");
+        form?.classList.add("tu-blocked");
+        if(btn) btn.disabled = true;
+      }else{
+        alertBox?.classList.add("d-none");
+        form?.classList.remove("tu-blocked");
+        if(btn) btn.disabled = false;
+      }
+    }
+
+    function splitLines(val){
+      return String(val||"").split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+    }
+
+    function collectOffer(){
+      const form = $("#formulario-publicar");
+      const fd = new FormData(form);
+      const titulo = String(fd.get("titulo") || "Aviso").slice(0,255);
+      const data = {
+        area_trabajo: fd.get("area_cargo") || "",
+        anios_experiencia: fd.get("anios_experiencia") || "",
+        region: fd.get("region") || "",
+        educacion_requerida: fd.get("educacion_requerida") || "",
+        tipo_contrato: fd.get("tipo_contrato") || "",
+        modalidad: fd.get("modalidad") || "",
+        descripcion_puesto: fd.get("descripcion_puesto") || "",
+        responsabilidades: splitLines(fd.get("responsabilidades")),
+        requisitos_minimos: splitLines(fd.get("requisitos")),
+        beneficios: splitLines(fd.get("beneficios")),
+        renta_salarial: { desde: fd.get("renta_desde")||"", hasta: fd.get("renta_hasta")||"", de_acuerdo_al_mercado:true },
+        herramientas_basicas: Array.from(document.querySelectorAll('#checkbox-container input[type="checkbox"]:checked')).map(x=>x.value),
+        preguntas_personalizadas: Array.from(document.querySelectorAll("[data-pregunta-item]")).map(x=>x.value).filter(Boolean).slice(0,5)
+      };
+      return { titulo, data };
+    }
+
+    async function loadAvailability(){
+      const { employerId, empresaId } = ctxIds();
+      if(!employerId || !empresaId) throw new Error("Faltan employerId/empresaId");
+
+      // 1) disponibilidad del backend (FREE + ledger reales)
+      try{
+        const d = await getJSON(`${PUB_BASE}/available?employerId=${employerId}&empresaId=${empresaId}`);
+        AVAIL = {
+          FREE: Number(d.FREE || 0),
+          PAID: {
+            BASICA:   { ledgerIds: d.PAID?.BASICA?.ledgerIds || d.BASICA || [] },
+            ESTANDAR: { ledgerIds: d.PAID?.ESTANDAR?.ledgerIds || d.ESTANDAR || [] },
+            PREMIUM:  { ledgerIds: d.PAID?.PREMIUM?.ledgerIds || d.PREMIUM || [] }
+          }
+        };
+      }catch(e){
+        // si falla, avanza con 0 y que el picker se bloquee (evita romper)
+        AVAIL = { FREE:0, PAID:{ BASICA:{ledgerIds:[]}, ESTANDAR:{ledgerIds:[]}, PREMIUM:{ledgerIds:[]} } };
+      }
+
+      // 2) pagos AUTHORIZED detectados (sin tocar backend)
+      await detectAuthorizedPayments(empresaId);
+    }
+
+    async function onSubmit(e){
+      e.preventDefault();
+      if(!selection){
+        if(window.Swal){ Swal.fire("Selecciona un tipo de aviso","Debes elegir Gratis o un plan pagado autorizado.","warning"); }
+        else{ alert("Selecciona el tipo de aviso antes de publicar."); }
+        return;
+      }
+
+      const { employerId, empresaId } = ctxIds();
+      const oferta = collectOffer();
+
+      try{
+        // importante: enviamos ledgerId si existe; sino, mandamos orderId (si tu backend lo admite, no necesitas cambios)
+        const res = await getJSON(`${PUB_BASE}/ofertas`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ employerId, empresaId, selection, oferta })
+        });
+        window.location.href = "employer-manage-job.html?id=" + String(res.ofertaId || "");
+      }catch(err){
+        if(window.Swal){ Swal.fire("No se pudo publicar", err.message || "Error al publicar el aviso", "error"); }
+        else{ alert(err.message || "No se pudo publicar."); }
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", async ()=>{
+      renderPicker(); // primer render vacío
+      try{
+        await loadAvailability();
+      }catch(_){}
+      renderPicker(); // render con datos
+      const form = document.getElementById("formulario-publicar");
+      if(form) form.addEventListener("submit", onSubmit, true);
+    });
+  </script>
 </body>
-
 </html>
