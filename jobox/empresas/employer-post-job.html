@@ -25,11 +25,13 @@
     .tu-card-title{font-weight:700;margin-bottom:2px}
     .tu-card-badge{font-size:22px;font-weight:800;margin:4px 0}
     .tu-card-info{font-size:12px;color:#666}
+    .tu-pill{display:inline-flex;align-items:center;gap:8px;border:1px solid #e6e8f0;border-radius:999px;padding:6px 10px;background:#f8fafc;font-size:13px}
+    .tu-pill strong{font-weight:700}
     .tu-blocked{opacity:.6;pointer-events:none}
   </style>
 </head>
 
-<!-- Define data-employer-id / data-empresa-id o expón window.currentEmployerId / window.currentEmpresaId -->
+<!-- NO pongas data-* a mano: se setean con el token -->
 <body data-employer-id="" data-empresa-id="">
   <div class="preloader"><div class="loader"><span></span><span></span><span></span></div></div>
   <div id="header-placeholder"></div>
@@ -79,12 +81,22 @@
                   <div class="card-body">
                     <h5 class="mb-2">1) Selecciona el tipo de aviso</h5>
                     <div id="plan-picker" class="tu-plan-grid"></div>
-                    <div id="no-cupos-alert" class="alert alert-warning d-none mt-2">
+
+                    <div class="d-flex align-items-center gap-2 mt-2">
+                      <div id="chosen-pill" class="d-none tu-pill">
+                        <span id="chosen-text"></span>
+                        <button id="btn-change-choice" type="button" class="btn btn-sm btn-outline-primary">Cambiar</button>
+                      </div>
+                      <div id="no-choice-msg" class="text-muted">Debes elegir un aviso (gratis, ticket reservado u orden autorizada) para poder publicar.</div>
+                    </div>
+
+                    <div id="no-cupos-alert" class="alert alert-warning d-none mt-3">
                       No tienes cupos disponibles para publicar. Compra en <a href="carrito.html">Carrito</a>.
                     </div>
                   </div>
                 </div>
 
+                <!-- Formulario -->
                 <div class="profile-resume">
                   <div class="profile-form">
                     <form id="formulario-publicar">
@@ -223,7 +235,9 @@
 
                         <div class="col-md-12">
                           <div class="form-group mt-3">
-                            <button type="submit" class="theme-btn"><span class="far fa-check-circle"></span> Publica Tu Empleo</button>
+                            <button type="submit" id="btn-submit" class="theme-btn" disabled>
+                              <span class="far fa-check-circle"></span> Publica Tu Empleo
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -238,30 +252,33 @@
       </div>
     </div>
 
-    <!-- Logout modal & toast -->
-    <div class="modal fade" id="logoutModal" tabindex="-1" aria-hidden="true">
+    <!-- Modal elegir cupo -->
+    <div class="modal fade" id="selectSlotModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">¿Cerrar sesión?</h5>
+            <h5 class="modal-title" id="slotModalTitle">Elegir cupo</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
           </div>
-          <div class="modal-body">¿Estás seguro de que deseas cerrar sesión?</div>
+          <div class="modal-body">
+            <div id="slotList" class="list-group"></div>
+            <div id="slotEmpty" class="alert alert-info d-none mt-2">No hay opciones disponibles para este plan.</div>
+          </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar Sesión</button>
+            <button type="button" id="slotConfirmBtn" class="btn btn-primary" disabled>Usar selección</button>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- Toast -->
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index:1100;min-width:300px;">
       <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header" style="background-color:#3D6AF2;color:#fff;">
           <strong class="me-auto" id="toastTitle">Mensaje</strong>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Cerrar"></button>
         </div>
-        <div class="toast-body" id="toastBody" style="background-color:#C2D7F2;color:#083359;">Texto de ejemplo</div>
+        <div class="toast-body" id="toastBody" style="background-color:#C2D7F2;color:#083359;">Texto</div>
       </div>
     </div>
   </main>
@@ -297,258 +314,370 @@
   <script src="../assets/js/modules/empresa/max-char-postjob.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <!-- Picker + Publicación (con fusión de AUTHORIZED) -->
+  <!-- Picker + Publicación + Contexto (usa POST /v1/ofertas) -->
   <script type="module">
     const BASE_URL_API = "http://localhost:3000/v1";
-    const PUB_BASE = BASE_URL_API.replace(/\/$/, "") + "/publication";
-    const PAY_BASE = BASE_URL_API.replace(/\/$/, "") + "/payments"; // usaremos varios endpoints *opcionales*
+    const PUB_BASE   = BASE_URL_API.replace(/\/$/, "") + "/publication";
+    const OFERTAS    = BASE_URL_API.replace(/\/$/, "") + "/ofertas";
 
-    function $(sel, root){ return (root || document).querySelector(sel); }
-    function $all(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+    const $  = (s, r=document) => r.querySelector(s);
+    const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
 
-    function ctxIds(){
-      const b = document.body || document.documentElement;
-      return {
-        employerId: Number(b.getAttribute("data-employer-id") || window.currentEmployerId || 0),
-        empresaId: Number(b.getAttribute("data-empresa-id") || window.currentEmpresaId || 0)
-      };
-    }
-
-    async function getJSON(url, opts){
-      const r = await fetch(url, opts);
-      const isJson = (r.headers.get("content-type") || "").includes("application/json");
-      const body = isJson ? await r.json() : null;
-      if(!r.ok){ throw new Error((body && (body.error || body.message)) || ("HTTP " + r.status)); }
-      return body;
-    }
-
-    // ====== estado de disponibilidad ======
-    var AVAIL = { FREE: 0, PAID: { BASICA: { ledgerIds: [] }, ESTANDAR: { ledgerIds: [] }, PREMIUM: { ledgerIds: [] } } };
-    // pagos autorizados detectados (sin ledger): {planKey, orderId}
-    var AUTHZ_ORDERS = { BASICA: [], ESTANDAR: [], PREMIUM: [] };
-    var selection = null; // { planKey:'FREE' } o { planKey:'BASICA', ledgerId? , orderId? }
-
-    // Mapea por monto si el endpoint no devuelve el plan explícito (evita tocar backend)
-    function mapAmountToPlan(amount){
-      const x = Number(amount || 0);
-      if (x === 80000) return "BASICA";
-      if (x === 140000) return "ESTANDAR";
-      if (x === 170000) return "PREMIUM";
-      return null;
-    }
-
-    async function detectAuthorizedPayments(empresaId){
-      AUTHZ_ORDERS = { BASICA: [], ESTANDAR: [], PREMIUM: [] };
-
-      // lista de endpoints candidatos (probamos en orden, el primero que responda bien aporta datos)
-      const candidates = [
-        `${PAY_BASE}/authorized?empresaId=${empresaId}`,
-        `${PAY_BASE}/empresa/${empresaId}?status=AUTHORIZED`,
-        `${PAY_BASE}?empresaId=${empresaId}&status=AUTHORIZED`,
-        `${BASE_URL_API.replace(/\/$/, "")}/transaction/empresa/${empresaId}`
-      ];
-
-      for (const url of candidates){
-        try{
-          const data = await getJSON(url);
-          // Normalizamos posibles formas:
-          const items = Array.isArray(data) ? data : (Array.isArray(data.items) ? data.items : (Array.isArray(data.data) ? data.data : []));
-          items.forEach(it=>{
-            const status = (it.status || it.estado || "").toUpperCase();
-            if(status !== "AUTHORIZED") return;
-            const orderId = it.orderId || it.buy_order || it.buyOrder || it.id || it.uuid;
-            const planKey = (it.planKey || it.plan || mapAmountToPlan(it.amount || it.monto) || "").toUpperCase();
-            if(!orderId || !planKey || !AUTHZ_ORDERS[planKey]) return;
-            // Evita duplicados
-            if(!AUTHZ_ORDERS[planKey].some(x=>x.orderId===orderId)){
-              AUTHZ_ORDERS[planKey].push({ orderId });
-            }
-          });
-          // con un endpoint que responda nos basta (el resto es opcional)
-        }catch(_e){
-          // ignoramos si no existe
+    /* =======================
+       Auth + contexto empresa
+       ======================= */
+    function getAnyToken(){
+      const keys = ["token","authToken","accessToken","jwt","Authorization","authorization"];
+      for(const k of keys){
+        const v = localStorage.getItem(k) || sessionStorage.getItem(k);
+        if(v && v.split(".").length===3) return v.replace(/^Bearer\s+/i,"");
+      }
+      for(const store of [localStorage, sessionStorage]){
+        for(let i=0;i<store.length;i++){
+          const v = store.getItem(store.key(i));
+          if(v && v.split(".").length===3) return v.replace(/^Bearer\s+/i,"");
         }
       }
-
-      // añade también el "último autorizado" almacenado localmente (carrito.html lo guarda)
-      const lastSess = sessionStorage.getItem("tuempleo_lastAuthorizedPlan");
-      const lastLocal = localStorage.getItem("tuempleo_lastAuthorizedPlan");
-      [lastSess, lastLocal].forEach(src=>{
-        if(!src) return;
-        try{
-          const { planKey, orderId } = JSON.parse(src);
-          if(planKey && orderId && AUTHZ_ORDERS[planKey] && !AUTHZ_ORDERS[planKey].some(x=>x.orderId===orderId)){
-            AUTHZ_ORDERS[planKey].push({ orderId });
-          }
-        }catch(_){}
-      });
+      return null;
+    }
+    function parseJwtSub(token){
+      try{
+        const b64 = token.split(".")[1].replace(/-/g,"+").replace(/_/g,"/");
+        const json = decodeURIComponent(atob(b64).split("").map(c=>"%"+("00"+c.charCodeAt(0).toString(16)).slice(-2)).join(""));
+        return Number(JSON.parse(json).sub)||null;
+      }catch{ return null; }
+    }
+    async function fetchEmployerBySub(sub, token){
+      const opts = token ? { headers:{ Authorization:"Bearer "+token } } : {};
+      const u1 = `${BASE_URL_API}/empleador/userid/${sub}`;
+      const r1 = await fetch(u1, opts);
+      if(r1.ok) return r1.json();
+      const u2 = `${BASE_URL_API}/empleador/${sub}`;
+      const r2 = await fetch(u2, opts);
+      if(r2.ok) return r2.json();
+      const e = await r1.json().catch(()=>({}));
+      throw new Error(e?.message||e?.error||"No se pudo obtener empleador");
+    }
+    async function ensureEmployerContext(){
+      const b = document.body;
+      const em = Number(b.getAttribute("data-employer-id")||0);
+      const ep = Number(b.getAttribute("data-empresa-id")||0);
+      if(em&&ep){ window.currentEmployerId=em; window.currentEmpresaId=ep; return {employerId:em, empresaId:ep}; }
+      const token = getAnyToken();
+      if(!token){ await Swal.fire("Sesión requerida","Inicia sesión para publicar un aviso.","warning"); throw new Error("Sin token"); }
+      const sub = parseJwtSub(token);
+      if(!sub){ await Swal.fire("Token inválido","No se pudo leer el usuario (sub) del token.","error"); throw new Error("Token sin sub"); }
+      const emp = await fetchEmployerBySub(sub, token);
+      const employerId = Number(emp?.id||0);
+      const empresaId  = Number(emp?.empresa?.id || emp?.usuario?.id_empresa || 0);
+      if(!employerId || !empresaId){ await Swal.fire("Datos faltantes","No se pudo resolver employerId/empresaId.","error"); throw new Error("ctx incompleto"); }
+      b.setAttribute("data-employer-id", String(employerId));
+      b.setAttribute("data-empresa-id",  String(empresaId));
+      window.currentEmployerId = employerId; window.currentEmpresaId = empresaId;
+      return { employerId, empresaId };
+    }
+    function ctxIds(){
+      const b = document.body;
+      return {
+        employerId: Number(b.getAttribute("data-employer-id") || window.currentEmployerId || 0),
+        empresaId:  Number(b.getAttribute("data-empresa-id")  || window.currentEmpresaId  || 0),
+      };
     }
 
-    function mergeAvailabilityForUI(){
-      // copiamos para no mutar referencias
-      const merged = JSON.parse(JSON.stringify(AVAIL));
-      // a cada plan pagado le sumamos la cantidad de pagos autorizados sin ledger (como “slots virtuales”)
-      (["BASICA","ESTANDAR","PREMIUM"]).forEach(pk=>{
-        const baseCount = (merged.PAID[pk]?.ledgerIds?.length || 0);
-        const extra = AUTHZ_ORDERS[pk].length;
-        merged.PAID[pk].uiCount = baseCount + extra; // mostramos conteo total
-      });
-      return merged;
+    function showToast(title, body){
+      $("#toastTitle").textContent = title||"Mensaje";
+      $("#toastBody").textContent  = body||"";
+      new bootstrap.Toast($("#liveToast")).show();
+    }
+    async function getJSON(url,opts){
+      const r = await fetch(url,opts);
+      const isJson = (r.headers.get("content-type")||"").includes("application/json");
+      const j = isJson ? await r.json() : null;
+      if(!r.ok) throw new Error(j?.message||j?.error||("HTTP "+r.status));
+      return j;
     }
 
+    // ===== Estado de cupos =====
+    let AVAIL = {
+      FREE: 0,
+      PAID: { BASICA:{ledgerIds:[]}, ESTANDAR:{ledgerIds:[]}, PREMIUM:{ledgerIds:[]} },
+      AUTHORIZED: { BASICA:[], ESTANDAR:[], PREMIUM:[] }
+    };
+    let selection = null; // { planKey, kind:'FREE'|'LEDGER'|'ORDER', ledgerId?, orderId? }
+
+    function hasAnyAvailableSlot(){
+      return (AVAIL.FREE>0) ||
+             (AVAIL.PAID.BASICA.ledgerIds.length + AVAIL.AUTHORIZED.BASICA.length > 0) ||
+             (AVAIL.PAID.ESTANDAR.ledgerIds.length + AVAIL.AUTHORIZED.ESTANDAR.length > 0) ||
+             (AVAIL.PAID.PREMIUM.ledgerIds.length + AVAIL.AUTHORIZED.PREMIUM.length > 0);
+    }
+    function mergedForUI(){
+      const ret = JSON.parse(JSON.stringify(AVAIL));
+      ["BASICA","ESTANDAR","PREMIUM"].forEach(k=>{
+        ret.PAID[k].uiCount = (ret.PAID[k]?.ledgerIds?.length||0) + (ret.AUTHORIZED[k]?.length||0);
+      });
+      return ret;
+    }
     function renderPicker(){
-      const root = $("#plan-picker");
-      if(!root) return;
-
-      const merged = mergeAvailabilityForUI();
-      const paid = merged.PAID || {};
-      const variants = [
-        { key: "FREE",     title: "Gratis",   badge: Number(merged.FREE || 0),                         info: "3 por mes / empresa", disabled: Number(merged.FREE || 0) <= 0 },
-        { key: "BASICA",   title: "Básica",   badge: (paid.BASICA?.uiCount || 0),   info: "Autorizado", disabled: !(paid.BASICA?.uiCount) },
-        { key: "ESTANDAR", title: "Estándar", badge: (paid.ESTANDAR?.uiCount || 0), info: "Autorizado", disabled: !(paid.ESTANDAR?.uiCount) },
-        { key: "PREMIUM",  title: "Premium",  badge: (paid.PREMIUM?.uiCount || 0),  info: "Autorizado", disabled: !(paid.PREMIUM?.uiCount) }
+      const root = $("#plan-picker"); if(!root) return;
+      const m = mergedForUI(); const paid = m.PAID||{};
+      const items = [
+        { key:"FREE",     title:"Gratis",   badge:Number(m.FREE||0),                       info:"3 por mes / empresa", disabled:(Number(m.FREE||0)<=0) },
+        { key:"BASICA",   title:"Básica",   badge:(paid.BASICA?.uiCount||0),   info:"Autorizado", disabled:!(paid.BASICA?.uiCount) },
+        { key:"ESTANDAR", title:"Estándar", badge:(paid.ESTANDAR?.uiCount||0), info:"Autorizado", disabled:!(paid.ESTANDAR?.uiCount) },
+        { key:"PREMIUM",  title:"Premium",  badge:(paid.PREMIUM?.uiCount||0),  info:"Autorizado", disabled:!(paid.PREMIUM?.uiCount) },
       ];
-
       root.innerHTML = "";
-      variants.forEach(v=>{
+      items.forEach(v=>{
         const el = document.createElement("button");
-        el.type = "button";
-        el.className = "tu-card-plan" + (v.disabled ? " disabled" : "");
-        el.setAttribute("data-plan", v.key);
-        el.innerHTML =
-          '<div class="tu-card-title">'+v.title+'</div>' +
-          '<div class="tu-card-badge">'+v.badge+'</div>' +
-          '<div class="tu-card-info">'+v.info+'</div>';
-        el.addEventListener("click",()=>choosePlan(v.key));
+        el.type="button"; el.dataset.plan=v.key;
+        el.className="tu-card-plan"+(v.disabled?" disabled":"");
+        el.innerHTML = `<div class="tu-card-title">${v.title}</div>
+                        <div class="tu-card-badge">${v.badge}</div>
+                        <div class="tu-card-info">${v.info}</div>`;
+        el.addEventListener("click", ()=>openSelectModal(v.key));
         root.appendChild(el);
       });
-
-      const any = variants.some(x=>!x.disabled);
-      setFormBlocked(!any);
+      $("#no-cupos-alert")?.classList.toggle("d-none", hasAnyAvailableSlot());
+      refreshSubmitState();
+    }
+    function choiceLabel(sel){
+      if(sel?.kind==="FREE")   return `Plan ${sel.planKey} · 1 aviso gratis`;
+      if(sel?.kind==="LEDGER") return `Plan ${sel.planKey} · Ticket reservado #${sel.ledgerId}`;
+      if(sel?.kind==="ORDER")  return `Plan ${sel.planKey} · Orden ${sel.orderId}`;
+      return "";
+    }
+    function refreshChosenPill(){
+      const pill=$("#chosen-pill"), txt=$("#chosen-text"), no=$("#no-choice-msg");
+      if(selection){ txt.textContent=choiceLabel(selection); pill.classList.remove("d-none"); no.classList.add("d-none"); }
+      else{ pill.classList.add("d-none"); no.classList.remove("d-none"); }
+      refreshSubmitState();
+    }
+    function refreshSubmitState(){
+      $("#btn-submit").disabled = !(selection && hasAnyAvailableSlot());
+      $("#formulario-publicar")?.classList.toggle("tu-blocked", !hasAnyAvailableSlot());
     }
 
-    function choosePlan(planKey){
-      $all(".tu-card-plan").forEach(n=>n.classList.remove("active"));
-      const btn = document.querySelector('.tu-card-plan[data-plan="'+planKey+'"]');
-      if(btn) btn.classList.add("active");
-
-      if(planKey === "FREE"){
-        if((AVAIL.FREE||0) <= 0) return;
-        selection = { planKey: "FREE" };
-        return;
-      }
-
-      // 1) intentamos usar ledgerId real
-      const ids = AVAIL.PAID?.[planKey]?.ledgerIds || [];
-      if(ids.length){
-        selection = { planKey, ledgerId: ids[0] };
-        return;
-      }
-      // 2) si no hay ledger pero sí pagos autorizados detectados, usamos orderId
-      const ord = AUTHZ_ORDERS[planKey]?.[0];
-      if(ord){
-        selection = { planKey, orderId: ord.orderId };
-      }
-    }
-
-    function setFormBlocked(blocked){
-      const form = $("#formulario-publicar");
-      const btn = form ? form.querySelector('[type="submit"]') : null;
-      const alertBox = $("#no-cupos-alert");
-      if(blocked){
-        alertBox?.classList.remove("d-none");
-        form?.classList.add("tu-blocked");
-        if(btn) btn.disabled = true;
+    // ===== Modal =====
+    let modal, pendingPlanKey=null, pendingValue=null;
+    function openSelectModal(planKey){
+      pendingPlanKey=planKey; pendingValue=null;
+      $("#slotModalTitle").textContent = "Elegir cupo · " + ({FREE:"Gratis",BASICA:"Básica",ESTANDAR:"Estándar",PREMIUM:"Premium"}[planKey]||planKey);
+      const list=$("#slotList"); list.innerHTML=""; $("#slotConfirmBtn").disabled=true;
+      let count=0;
+      if(planKey==="FREE" && AVAIL.FREE>0){
+        list.appendChild(renderRadioItem("opt-free","FREE","Usar 1 de "+AVAIL.FREE+" avisos gratis","free")); count++;
       }else{
-        alertBox?.classList.add("d-none");
-        form?.classList.remove("tu-blocked");
-        if(btn) btn.disabled = false;
+        const led=AVAIL.PAID?.[planKey]?.ledgerIds||[], ord=AVAIL.AUTHORIZED?.[planKey]||[];
+        if(led.length){
+          const h=document.createElement("div"); h.className="small text-muted mt-1 mb-1"; h.textContent="Tickets reservados"; list.appendChild(h);
+          led.forEach(lid=>{ list.appendChild(renderRadioItem("opt-ledger-"+lid,"LEDGER","Ticket #"+lid,String(lid))); count++; });
+        }
+        if(ord.length){
+          const h2=document.createElement("div"); h2.className="small text-muted mt-2 mb-1"; h2.textContent="Órdenes autorizadas"; list.appendChild(h2);
+          ord.forEach(oid=>{ list.appendChild(renderRadioItem("opt-order-"+oid,"ORDER","Orden "+oid,String(oid))); count++; });
+        }
       }
+      $("#slotEmpty").classList.toggle("d-none", count>0);
+      modal = new bootstrap.Modal("#selectSlotModal"); modal.show();
     }
-
-    function splitLines(val){
-      return String(val||"").split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+    function renderRadioItem(id, kind, label, val){
+      const item=document.createElement("label"); item.className="list-group-item d-flex align-items-center"; item.htmlFor=id;
+      const radio=document.createElement("input"); radio.type="radio"; radio.className="form-check-input me-2"; radio.name="slotRadio"; radio.id=id; radio.dataset.kind=kind; radio.dataset.value=val;
+      radio.addEventListener("change",()=>{ pendingValue={kind,value:val}; $("#slotConfirmBtn").disabled=false; });
+      const span=document.createElement("span"); span.textContent=label;
+      item.appendChild(radio); item.appendChild(span); return item;
     }
+    $("#slotConfirmBtn")?.addEventListener("click",()=>{
+      if(!pendingPlanKey||!pendingValue) return;
+      if(pendingValue.kind==="FREE") selection={ planKey:"FREE", kind:"FREE" };
+      else if(pendingValue.kind==="LEDGER") selection={ planKey:pendingPlanKey, kind:"LEDGER", ledgerId:Number(pendingValue.value) };
+      else if(pendingValue.kind==="ORDER") selection={ planKey:pendingPlanKey, kind:"ORDER", orderId:String(pendingValue.value) };
+      modal?.hide(); refreshChosenPill();
+      $$(".tu-card-plan").forEach(n=>n.classList.remove("active"));
+      document.querySelector(`.tu-card-plan[data-plan="${selection.planKey}"]`)?.classList.add("active");
+    });
+    $("#btn-change-choice")?.addEventListener("click", ()=>{ if(selection) openSelectModal(selection.planKey); });
 
-    function collectOffer(){
-      const form = $("#formulario-publicar");
-      const fd = new FormData(form);
-      const titulo = String(fd.get("titulo") || "Aviso").slice(0,255);
-      const data = {
-        area_trabajo: fd.get("area_cargo") || "",
-        anios_experiencia: fd.get("anios_experiencia") || "",
-        region: fd.get("region") || "",
-        educacion_requerida: fd.get("educacion_requerida") || "",
-        tipo_contrato: fd.get("tipo_contrato") || "",
-        modalidad: fd.get("modalidad") || "",
-        descripcion_puesto: fd.get("descripcion_puesto") || "",
+    // ===== Helpers de formulario (mapeo a /v1/ofertas) =====
+    function splitLines(v){ return String(v||"").split(/\r?\n/).map(s=>s.trim()).filter(Boolean); }
+    function mapModalidad(v){
+      const m=String(v||"");
+      return m==="1"?"Full Time":m==="2"?"Part Time":m==="3"?"Remoto":m==="4"?"Freelancer":m==="5"?"Temporal":"";
+    }
+    function collectOfferData(){
+      const fd = new FormData($("#formulario-publicar"));
+      const titulo = String(fd.get("titulo")||"Aviso").slice(0,255);
+
+      const herrMarcadas = Array.from(document.querySelectorAll('#checkbox-container input[type="checkbox"]:checked')).map(x=>x.value);
+      const otras = String(fd.get("otras_herramientas")||"").split(",").map(s=>s.trim()).filter(Boolean);
+      const herramientas = [...herrMarcadas, ...otras].filter(Boolean);
+
+      const dataObj = {
+        area: String(fd.get("area_cargo")||""),
+        experiencia: String(fd.get("anios_experiencia")||""),
+        region: String(fd.get("region")||""),
+        educacion: String(fd.get("educacion_requerida")||""),
+        tipo_contrato: String(fd.get("tipo_contrato")||""),
+        modalidad: mapModalidad(fd.get("modalidad")),
+        descripcion: String(fd.get("descripcion_puesto")||""),
         responsabilidades: splitLines(fd.get("responsabilidades")),
-        requisitos_minimos: splitLines(fd.get("requisitos")),
+        requisitos: splitLines(fd.get("requisitos_minimos")),
         beneficios: splitLines(fd.get("beneficios")),
-        renta_salarial: { desde: fd.get("renta_desde")||"", hasta: fd.get("renta_hasta")||"", de_acuerdo_al_mercado:true },
-        herramientas_basicas: Array.from(document.querySelectorAll('#checkbox-container input[type="checkbox"]:checked')).map(x=>x.value),
-        preguntas_personalizadas: Array.from(document.querySelectorAll("[data-pregunta-item]")).map(x=>x.value).filter(Boolean).slice(0,5)
+        renta: {
+          desde: Number(String(fd.get("renta_desde")||"").replace(/[^0-9]/g,"")) || null,
+          hasta: Number(String(fd.get("renta_hasta")||"").replace(/[^0-9]/g,"")) || null
+        },
+        herramientas
       };
-      return { titulo, data };
+
+      return { titulo, dataObj };
     }
 
+    // ===== Carga de disponibilidad =====
     async function loadAvailability(){
       const { employerId, empresaId } = ctxIds();
       if(!employerId || !empresaId) throw new Error("Faltan employerId/empresaId");
-
-      // 1) disponibilidad del backend (FREE + ledger reales)
       try{
         const d = await getJSON(`${PUB_BASE}/available?employerId=${employerId}&empresaId=${empresaId}`);
         AVAIL = {
-          FREE: Number(d.FREE || 0),
+          FREE: Number(d.FREE||0),
           PAID: {
-            BASICA:   { ledgerIds: d.PAID?.BASICA?.ledgerIds || d.BASICA || [] },
-            ESTANDAR: { ledgerIds: d.PAID?.ESTANDAR?.ledgerIds || d.ESTANDAR || [] },
-            PREMIUM:  { ledgerIds: d.PAID?.PREMIUM?.ledgerIds || d.PREMIUM || [] }
+            BASICA:   { ledgerIds: d.PAID?.BASICA?.ledgerIds   || [] },
+            ESTANDAR: { ledgerIds: d.PAID?.ESTANDAR?.ledgerIds || [] },
+            PREMIUM:  { ledgerIds: d.PAID?.PREMIUM?.ledgerIds  || [] },
+          },
+          AUTHORIZED: {
+            BASICA:   Array.isArray(d.AUTHORIZED?.BASICA)   ? d.AUTHORIZED.BASICA   : [],
+            ESTANDAR: Array.isArray(d.AUTHORIZED?.ESTANDAR) ? d.AUTHORIZED.ESTANDAR : [],
+            PREMIUM:  Array.isArray(d.AUTHORIZED?.PREMIUM)  ? d.AUTHORIZED.PREMIUM  : [],
           }
         };
       }catch(e){
-        // si falla, avanza con 0 y que el picker se bloquee (evita romper)
-        AVAIL = { FREE:0, PAID:{ BASICA:{ledgerIds:[]}, ESTANDAR:{ledgerIds:[]}, PREMIUM:{ledgerIds:[]} } };
+        console.error(e);
+        AVAIL = { FREE:0, PAID:{ BASICA:{ledgerIds:[]}, ESTANDAR:{ledgerIds:[]}, PREMIUM:{ledgerIds:[]} }, AUTHORIZED:{ BASICA:[], ESTANDAR:[], PREMIUM:[] } };
+        showToast("Avisos","No fue posible cargar disponibilidad.");
       }
-
-      // 2) pagos AUTHORIZED detectados (sin tocar backend)
-      await detectAuthorizedPayments(empresaId);
     }
 
+    // ===== Publicación: CREA con /v1/ofertas (tu formato) =====
+    async function createOferta(ofertaTitulo, empresaId, empleadorId, dataObj, durationDays=30){
+      const now = new Date();
+      const fecha_publicacion = now.toISOString();
+      const fecha_cierre = new Date(now.getTime() + durationDays*24*3600*1000).toISOString();
+
+      const body = {
+        titulo: ofertaTitulo,
+        empresa_id: empresaId,
+        empleador_id: empleadorId,
+        fecha_publicacion,
+        duracion_publicacion: durationDays,
+        es_activa: true,
+        fecha_cierre,
+        data: JSON.stringify(dataObj)
+      };
+
+      const res = await getJSON(OFERTAS, {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify(body)
+      });
+
+      const ofertaId = Number(res?.id || res?.ofertaId || res?.insertId || res?.data?.id || 0);
+      if(!ofertaId) throw new Error("No se obtuvo el ID de la oferta creada.");
+      return ofertaId;
+    }
+
+    // (Opcional) consumir/confirmar cupo tras crear
+    async function confirmIfNeeded(ofertaId){
+      try{
+        if(selection?.kind==="FREE"){
+          const r = await getJSON(`${PUB_BASE}/reservations`, {
+            method:"POST", headers:{ "Content-Type":"application/json" },
+            body: JSON.stringify({ employerId: ctxIds().employerId, planKey:"FREE" })
+          });
+          await getJSON(`${PUB_BASE}/confirm`, {
+            method:"POST", headers:{ "Content-Type":"application/json" },
+            body: JSON.stringify({ reservationId: r.reservationId, ofertaId })
+          });
+        }else if(selection?.kind==="LEDGER"){
+          await getJSON(`${PUB_BASE}/confirm`, {
+            method:"POST", headers:{ "Content-Type":"application/json" },
+            body: JSON.stringify({ reservationId: selection.ledgerId, ofertaId })
+          });
+        }else if(selection?.kind==="ORDER"){
+          const v = await getJSON(`${PUB_BASE}/paid/validate`, {
+            method:"POST", headers:{ "Content-Type":"application/json" },
+            body: JSON.stringify({ employerId: ctxIds().employerId, planKey: selection.planKey, orderId: selection.orderId })
+          });
+          await getJSON(`${PUB_BASE}/confirm`, {
+            method:"POST", headers:{ "Content-Type":"application/json" },
+            body: JSON.stringify({ reservationId: v.reservationId, ofertaId })
+          });
+        }
+      }catch(e){
+        console.warn("Confirmación de cupo falló/opcional:", e?.message||e);
+      }
+    }
+
+    // ===== Submit (con popup de éxito) =====
     async function onSubmit(e){
       e.preventDefault();
+
+      if(!hasAnyAvailableSlot()){
+        await Swal.fire("Sin cupos","No tienes avisos disponibles (gratis/ledgers/órdenes). Compra en Carrito.","warning");
+        return;
+      }
       if(!selection){
-        if(window.Swal){ Swal.fire("Selecciona un tipo de aviso","Debes elegir Gratis o un plan pagado autorizado.","warning"); }
-        else{ alert("Selecciona el tipo de aviso antes de publicar."); }
+        await Swal.fire("Selecciona un cupo","Elige gratis, un ticket reservado u orden autorizada.","warning");
         return;
       }
 
+      const btn = $("#btn-submit");
+      const prevHTML = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Publicando...`;
+
       const { employerId, empresaId } = ctxIds();
-      const oferta = collectOffer();
+      const { titulo, dataObj } = collectOfferData();
 
       try{
-        // importante: enviamos ledgerId si existe; sino, mandamos orderId (si tu backend lo admite, no necesitas cambios)
-        const res = await getJSON(`${PUB_BASE}/ofertas`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ employerId, empresaId, selection, oferta })
+        const ofertaId = await createOferta(titulo, empresaId, employerId, dataObj, 30);
+        await confirmIfNeeded(ofertaId);
+
+        const result = await Swal.fire({
+          icon: "success",
+          title: "¡Oferta publicada!",
+          html: `Tu aviso fue publicado correctamente.<br>Id de oferta: <code>${ofertaId}</code>`,
+          confirmButtonText: "Ir a gestionar aviso",
+          showCancelButton: true,
+          cancelButtonText: "Seguir aquí"
         });
-        window.location.href = "employer-manage-job.html?id=" + String(res.ofertaId || "");
+
+        if(result.isConfirmed){
+          window.location.href = "employer-manage-job.html?id=" + String(ofertaId);
+          return;
+        }
       }catch(err){
-        if(window.Swal){ Swal.fire("No se pudo publicar", err.message || "Error al publicar el aviso", "error"); }
-        else{ alert(err.message || "No se pudo publicar."); }
+        console.error(err);
+        await Swal.fire("No se pudo publicar", err?.message || "Error al publicar el aviso", "error");
+      }finally{
+        btn.disabled = !(selection && hasAnyAvailableSlot());
+        btn.innerHTML = prevHTML;
       }
     }
 
+    // ===== Init =====
     document.addEventListener("DOMContentLoaded", async ()=>{
-      renderPicker(); // primer render vacío
+      renderPicker(); // primer render de UI
       try{
+        await ensureEmployerContext();
         await loadAvailability();
-      }catch(_){}
-      renderPicker(); // render con datos
-      const form = document.getElementById("formulario-publicar");
-      if(form) form.addEventListener("submit", onSubmit, true);
+      }catch{}
+      renderPicker();
+      refreshChosenPill();
+
+      $("#formulario-publicar")?.addEventListener("submit", onSubmit, true);
     });
   </script>
 </body>
