@@ -48,7 +48,7 @@
         ${card({ title:'Premium',  key:P.PREMIUM,  hint:'Autorizado',          qty:p,       selectable:p>0,       selected:state.selected===P.PREMIUM })}
       </div>
       <div id="no-cupos-alert" class="alert alert-warning mt-2 ${ (freeLeft+b+e+p)>0 ? 'd-none' : ''}">
-        No tienes cupos disponibles para publicar. Compra en <a href="carrito.html">Carrito</a>.
+        No tienes cupos disponibles para publicar. Compra en <a href="shopping-cart.html">Carrito</a>.
       </div>
     `;
 
