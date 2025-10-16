@@ -27,12 +27,9 @@
     <link rel="stylesheet" href="assets/css/jquery-ui.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
-        .col-lg-9 {
-            width: 100%;
-        }
-        .site-breadcrumb{
-            height: 200px;
-        }
+        .col-lg-9 { width: 100%; }
+        .site-breadcrumb{ height: 200px; }
+
         .btn-filtro {
           background-color: #3C65F5;
           color: white;
@@ -43,9 +40,8 @@
           margin-top: 10px;
           transition: background-color 0.3s ease;
         }
-        .btn-filtro:hover {
-          background-color: #2b4bd4;
-        }
+        .btn-filtro:hover { background-color: #2b4bd4; }
+
         .row {
             --bs-gutter-x: 1.5rem;
             --bs-gutter-y: 0;
@@ -55,14 +51,13 @@
             margin-right: calc(-.5 * var(--bs-gutter-x));
             margin-left: calc(-.5 * var(--bs-gutter-x));
         }
-        
+
         /* Estilos específicos para móvil */
         @media (max-width: 768px) {
             .site-breadcrumb {
                 height: auto;
                 padding: 20px 0;
             }
-            
             .search-form-wrapper {
                 background: white;
                 padding: 15px;
@@ -70,67 +65,63 @@
                 box-shadow: 0 2px 10px rgba(0,0,0,0.1);
                 margin-bottom: 8px; /* Reducido de 15px a 8px */
             }
-            
             .search-form-wrapper .form-control {
                 margin-bottom: 10px;
                 font-size: 16px;
                 height: 48px;
             }
-            
             .search-form-wrapper button.theme-btn {
                 width: 100%;
                 height: 48px;
             }
-                        
-            #ultimas-busquedas {
-                margin-top: 8px; /* Añadido para reducir espacio */
-            }
-            
-            .hero-shape {
-                display: none;
-            }
-            
-            /* Asegurar que los elementos de filtro sean táctiles */
-            .form-check-label, .form-check-input {
-                min-height: 24px;
-                min-width: 24px;
-            }
-            
-            /* Mejorar espaciado en móvil */
-            .job-item {
-                padding: 15px;
-            }
-            
-            .job-info-list li {
-                margin-bottom: 8px;
-            }
+            #ultimas-busquedas { margin-top: 8px; }
+            .hero-shape { display: none; }
+            .form-check-label, .form-check-input { min-height: 24px; min-width: 24px; }
+            .job-item { padding: 15px; }
+            .job-info-list li { margin-bottom: 8px; }
         }
-        
+
         /* Estilos para desktop */
         @media (min-width: 769px) {
-            .hero-shape {
-                display: block;
-            }
-            
+            .hero-shape { display: block; }
         }
-        .volver-inicio-container {
-  position: absolute;
-  top: 180px;   /* Ajusta hasta que quede exacto en tu franja azul */
-  left: 40px;   /* Distancia desde el borde izquierdo */
-  z-index: 20;
-}
 
-.volver-inicio-btn{
-  font-size:14px;
-  padding:8px 16px;
-  border-radius:8px;
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-}
-
-
+        /* ===== Botón Volver al inicio (nuevo) ===== */
+        .return-home-card{
+          background:#fff;
+          border:1px solid #e6eefc;
+          border-radius:12px;
+          padding:12px;
+          box-shadow:0 6px 16px rgba(60,101,245,.08);
+          margin-bottom:16px;
+        }
+        .return-home-btn{
+          display:flex;
+          align-items:center;
+          gap:8px;
+          width:100%;
+          border:1px solid #3C65F5;
+          color:#3C65F5;
+          background:#f4f7ff;
+          padding:10px 14px;
+          border-radius:999px;
+          font-weight:600;
+          font-size:14px;
+          transition:transform .15s ease, box-shadow .15s ease, background-color .2s ease, color .2s ease;
+        }
+        .return-home-btn i{ font-size:18px; }
+        .return-home-btn:hover{
+          background:#3C65F5;
+          color:#fff;
+          box-shadow:0 8px 20px rgba(60,101,245,.28);
+          transform:translateY(-1px);
+        }
+        @media (max-width: 768px){
+          .return-home-card{ margin-top: 6px; }
+        }
+        /* ===== Fin botón volver ===== */
     </style>
+
     <!--btn de los filtros -->
     <style>
         .btn-filtro {
@@ -143,13 +134,8 @@
           margin-top: 10px;
           transition: background-color 0.3s ease;
         }
-
-        .btn-filtro:hover {
-          background-color: #2b4bd4;
-        }
-
+        .btn-filtro:hover { background-color: #2b4bd4; }
     </style>
-
 </head>
 
 <body>
@@ -164,22 +150,16 @@
     </div>
     <!-- preloader end -->
 
-
     <!-- header area -->
     <div id="header-placeholder"></div>
     <!-- header area end -->
-
-
 
     <main class="main">
 
         <!-- breadcrumb -->
         <div class="site-breadcrumb pb-5">
             <div class="container">
-                <br>
-                <br>
-                <br>
-                <br>
+                <br><br><br><br>
                 <h2 class="breadcrumb-title">Lista de Trabajos</h2>
 
                 <div class="job-list2 search-form mt-5 mb-3">
@@ -262,14 +242,19 @@
             </div>
         </div>
 
-
-
-
         <!-- job list -->
         <div class="job-list2 py-120">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-4 col-xl-3 mb-4">
+
+                        <!-- Volver al inicio (nuevo) -->
+                        <div class="return-home-card">
+                          <button type="button" class="return-home-btn" onclick="volverInicio()">
+                            <i class="fe-arrow-left"></i> Volver al inicio
+                          </button>
+                        </div>
+
                         <div class="job-sidebar">
                             <div class="job-sidebar-item">
                                 <div id="ultimas-busquedas" class="bg-light border rounded px-3 py-2 small shadow-sm">
@@ -381,6 +366,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="col-lg-8 col-xl-9">
                         <div class="col-md-12">
                             <div class="job-sort">
@@ -433,8 +419,7 @@
                                     <li class="page-item"><a class="page-link" href="#">3</a></li>
                                     <li class="page-item">
                                         <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true"><i
-                                                    class="far fa-angle-double-right"></i></span>
+                                            <span aria-hidden="true"><i class="far fa-angle-double-right"></i></span>
                                         </a>
                                     </li>
                                 </ul>
@@ -450,22 +435,15 @@
         </div>
         <!-- job list end -->
 
-
     </main>
-
-
 
     <!-- footer area -->
     <div id="footer-placeholder"></div>
     <!-- footer area end -->
 
-
-
-
     <!-- scroll-top -->
     <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
     <!-- scroll-top end -->
-
 
     <!-- js -->
     <script src="assets/js/jquery-3.6.0.min.js"></script>
@@ -490,17 +468,27 @@
     <script src="assets/js/job-list/ver-trabajo.js"></script>
     <script src="assets/js/postulaciones/paginacion.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         function aplicarFiltro(tipo) {
             console.log(`Filtro aplicado: ${tipo}`);
             const seleccionados = [...document.querySelectorAll(`.job-sidebar-item input[type="checkbox"]:checked`)]
                 .map(c => c.value);
-            
             console.log("Valores seleccionados:", seleccionados);
         }
+
+        // Navegación: volver al inicio (nuevo)
+        function volverInicio(){
+          // Si venimos de otra página, intenta volver; si no, redirige al home (ajusta la URL si tu home es distinto)
+          if (document.referrer && document.referrer !== location.href) {
+            history.back();
+            setTimeout(() => { window.location.href = 'candidate-dashboard.html'; }, 250); // fallback
+          } else {
+            window.location.href = 'candidate-dashboard.html';
+          }
+        }
     </script>
+
     <script src="assets/js/postulaciones/busqueda-empleos.js"></script>
-
 </body>
-
 </html>
