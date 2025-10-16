@@ -31,7 +31,7 @@ const planes = [
   {
     id: 4,
     nombre: "Publicación Premium",
-    precio: 170000,
+    precio: 180000,
     descripcion: "Para alto volumen de contratación.",
     caracteristicas: [
       "Publicaciones ilimitadas",

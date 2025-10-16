@@ -267,7 +267,7 @@
     { id:1, nombre:"Publicación Gratis",   precio:0,      descripcion:"Ideal para pequeñas empresas.", caracteristicas:["Hasta 2 publicaciones","Duración: 7 días","Soporte básico"], popular:false },
     { id:2, nombre:"Publicación Básica",   precio:80000,  precioLista:100000, descripcion:"Ideal para pequeñas empresas.", caracteristicas:["Hasta 2 publicaciones","Duración: 7 días","Soporte básico"], popular:false },
     { id:3, nombre:"Publicación Estándar", precio:140000, precioLista:170000, descripcion:"Para empresas medianas.", caracteristicas:["Hasta 5 publicaciones","Duración: 30 días","Soporte prioritario","Reportes básicos"], popular:true },
-    { id:4, nombre:"Publicación Premium",  precio:170000, precioLista:200000, descripcion:"Para alto volumen de contratación.", caracteristicas:["Publicaciones ilimitadas","Duración: 60 días","Soporte 24/7","Consultoría avanzada"], popular:false }
+    { id:4, nombre:"Publicación Premium",  precio:180000, precioLista:200000, descripcion:"Para alto volumen de contratación.", caracteristicas:["Publicaciones ilimitadas","Duración: 60 días","Soporte 24/7","Consultoría avanzada"], popular:false }
   ];
   let carrito = [];
 
@@ -544,7 +544,6 @@
     })();
   </script>
   <script type="module">
-  const BASE_URL_API = "http://localhost:3000/v1";
   const PAY_BASE = BASE_URL_API.replace(/\/$/, "") + "/payments";
 
   async function lookup(orderId){
@@ -570,7 +569,13 @@
       const statusEl = document.querySelector("#pago-estado");
       if(res.status === "AUTHORIZED"){
         // Usa planKey del backend o mapea por monto
-        const planKey = (res.planKey || "").toUpperCase() || (res.amount === 80000 ? "BASICA" : res.amount === 140000 ? "ESTANDAR" : res.amount === 170000 ? "PREMIUM" : "");
+        const normalize = s => String(s||'').trim().toUpperCase();
+        const amt = Number(res.amount);
+        const planKey = normalize(res.planKey)
+          || (amt === 80000 ? "BASICA"
+              : amt === 140000 ? "ESTANDAR"
+              : [180000, 180000].includes(amt) ? "PREMIUM"
+              : "");
         if(statusEl){ statusEl.textContent = "Pago AUTORIZADO"; statusEl.classList.add("text-success","fw-bold"); }
         persistAuthorized(planKey, res.orderId || orderId);
       }else{

@@ -281,6 +281,35 @@
         <div class="toast-body" id="toastBody" style="background-color:#C2D7F2;color:#083359;">Texto</div>
       </div>
     </div>
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">¿Cerrar sesión?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro de que deseas cerrar sesión?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar Sesión</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+            <div id="liveToast" class="toast custom-toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header custom-toast-header">
+                    <strong class="me-auto" id="toastTitle">Mensaje</strong>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"
+                        aria-label="Cerrar"></button>
+                </div>
+                <div class="toast-body custom-toast-body" id="toastBody">
+                    Texto de ejemplo
+                </div>
+            </div>
+        </div>
   </main>
 
   <div id="footer-placeholder"></div>
@@ -308,6 +337,7 @@
   <script src="../assets/js/form-register/area_cargo.js"></script>
   <script src="../assets/js/modules/utils/dinamic-checkboxes.js"></script>
   <script src="../assets/js/form-register/regiones.js"></script>
+  <script src="../assets/js/modules/empresa/publicar-oferta.js"></script>
   <script src="../assets/js/modules/empresa/preguntas-oferta.js"></script>
   <script src="../assets/js/logout-button-emp.js"></script>
   <script src="../assets/js/modules/empresa/dinamic-sidebar.js"></script>
@@ -668,16 +698,32 @@
 
     // ===== Init =====
     document.addEventListener("DOMContentLoaded", async ()=>{
-      renderPicker(); // primer render de UI
-      try{
-        await ensureEmployerContext();
-        await loadAvailability();
-      }catch{}
-      renderPicker();
-      refreshChosenPill();
+  renderPicker();
+  try{
+    await ensureEmployerContext();
+    await loadAvailability();
+  }catch{}
+  renderPicker();
+  refreshChosenPill();
 
-      $("#formulario-publicar")?.addEventListener("submit", onSubmit, true);
-    });
+  // SOLO validación del picker, no hace POST.
+  const form = document.getElementById('formulario-publicar');
+  form?.addEventListener('submit', (e)=>{
+    if(!hasAnyAvailableSlot()){
+      e.preventDefault();
+      Swal.fire("Sin cupos","No tienes avisos disponibles (gratis/ledgers/órdenes). Compra en Carrito.","warning");
+      return;
+    }
+    if(!selection){
+      e.preventDefault();
+      Swal.fire("Selecciona un cupo","Elige gratis, un ticket reservado u orden autorizada.","warning");
+      return;
+    }
+    // Guarda la selección para usarla luego (opcional).
+    localStorage.setItem('post_selection', JSON.stringify(selection));
+  });
+});
+
   </script>
 </body>
 </html>
