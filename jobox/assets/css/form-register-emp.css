@@ -1,0 +1,39 @@
+.required-field::after {
+          content: " *";
+          color: red;
+        }
+
+        .is-invalid {
+          border-color: #dc3545 !important;
+        }
+
+        .input-group {
+          position: relative; /* Necesario para posicionar internamente el mensaje */
+        }
+
+        .input-group .invalid-feedback {
+          color: #dc3545;
+          font-size: 0.875em;
+          position: absolute;
+          bottom: -1.2rem;
+          left: 0;
+          display: none;
+          width: 100%;
+        }
+
+        .is-invalid ~ .invalid-feedback {
+          display: block;
+        }
+        .btn-confirm-custom {
+        border-radius: 8px !important;
+        padding: 10px 20px !important;
+        font-size: 15px !important;
+        font-weight: bold !important;
+    }
+    /* Cancelar (Continuar registro) */
+    .btn-cancel-custom {
+        border-radius: 8px !important;
+        padding: 10px 20px !important;
+        font-size: 15px !important;
+        font-weight: bold !important;
+    }

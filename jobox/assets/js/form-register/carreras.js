@@ -221,21 +221,34 @@ const opcionesCarreras = [
 ];
 
 document.addEventListener("DOMContentLoaded", function () {
-    const select = document.getElementById("todas_carreras_chile");
+  const select = document.getElementById("todas_carreras_chile");
+  if (!select) return;
 
-    if (select) {
-        select.innerHTML = '';
+  // Poblar como siempre
+  select.innerHTML = "";
+  opcionesCarreras.forEach(({ value, text }) => {
+    const opt = document.createElement("option");
+    opt.value = value;
+    opt.textContent = text;
+    select.appendChild(opt);
+  });
 
-        opcionesCarreras.forEach(({ value, text }) => {
-            const option = document.createElement("option");
-            option.value = value;
-            option.textContent = text;
-            select.appendChild(option);
-        });
-    }
+  // Si nice-select se aplicó globalmente, lo destruimos SOLO aquí
+  try { $(select).niceSelect && $(select).niceSelect('destroy'); } catch (e) {}
+
+  // Inicializa Select2 con tema Bootstrap-5
+  $(select).select2({
+    theme: 'bootstrap-5',
+    width: '100%',
+    placeholder: select.dataset.placeholder || '-- Selecciona una carrera --',
+    allowClear: false,                 // sin la X
+    minimumResultsForSearch: 0,        // siempre con buscador
+    selectionCssClass: ':all:'         // <- copia TODAS las clases del <select>
+    // si prefieres solo una: selectionCssClass: 'form-control'
+  });
 });
 
 function obtenerCarreraSeleccionada() {
-    const select = document.getElementById("todas_carreras_chile");
-    return select.options[select.selectedIndex].text;
+  const select = document.getElementById("todas_carreras_chile");
+  return select.options[select.selectedIndex]?.text || "";
 }

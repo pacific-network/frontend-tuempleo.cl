@@ -1,167 +1,285 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8" />
-    <title>Resultado de la Transacción</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7ff;
-            color: #333;
-        }
+  <meta charset="UTF-8" />
+  <title>Resultado de la Transacción</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --brand:#3C65F5; --ink:#0f172a; --muted:#64748b; --bg:#f4f7ff; --surface:#ffffff; --border:#e6eaf3;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,"Helvetica",Arial,sans-serif;background:var(--bg);color:var(--ink)}
+    .wrap{max-width:900px;margin:48px auto;padding:0 16px}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:0 10px 30px rgba(2,6,23,.06);padding:0}
+    .shell{padding:28px}
 
-        .hero-single {
-            position: relative;
-            padding: 100px 20px;
-            text-align: center;
-            background-color: #fff;
-            overflow: hidden;
-        }
+    .invoice{border-radius:14px;overflow:hidden;border:1px solid var(--border);background:#fff}
+    .invoice__header{display:flex;justify-content:space-between;align-items:center;padding:28px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#fff, #fafcff)}
+    .brand{display:flex;align-items:center;gap:14px}
+    /* AUMENTOS DE TAMAÑO */
+    .brand__logo{width:72px;height:72px;border-radius:16px;overflow:hidden;display:grid;place-items:center;box-shadow:0 10px 24px rgba(60,101,245,.15);border:1px solid var(--border);background:#fff}
+    .brand__logo img{width:100%;height:100%;object-fit:contain}
+    .brand__text{line-height:1.2}
+    .brand__title{margin:0;font-size:22px;font-weight:800}
+    .brand__subtitle{margin:0;color:var(--muted);font-size:13px}
+    .badge{font-weight:800;border-radius:999px;padding:10px 18px;font-size:16px;letter-spacing:.6px;border:0;box-shadow:0 10px 22px rgba(0,0,0,.06)}
+    .badge--ok{color:#065f46;background:#bbf7d0}
+    .badge--fail{color:#7f1d1d;background:#fecaca}
 
-        .hero-info-content h6 {
-            font-weight: 600;
-            font-size: 20px;
-        }
-
-        .hero-info-content h6 span {
-            color: #3C65F5;
-            font-weight: 700;
-        }
-
-        .resultado-box {
-            background: #fff;
-            border-radius: 12px;
-            padding: 30px;
-            margin: 30px auto;
-            max-width: 600px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-            text-align: left;
-        }
-
-        .success {
-            color: #2ecc71;
-        }
-
-        .error {
-            color: #e74c3c;
-        }
-
-        .hero-shape img {
-            position: absolute;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .hero-shape .hero-shape-1 {
-            left: 0;
-            bottom: 0;
-            width: 200px;
-            opacity: 0.3;
-        }
-
-        .hero-shape .hero-shape-2 {
-            left: 40%;
-            top: 20%;
-            width: 100px;
-            opacity: 0.2;
-        }
-
-        .hero-shape .hero-shape-3 {
-            right: 10%;
-            top: 20%;
-            width: 50px;
-            opacity: 0.2;
-        }
-
-        .hero-shape .hero-shape-4 {
-            left: 22%;
-            top: 0;
-            width: 120px;
-            opacity: 0.1;
-        }
-    </style>
+    .invoice__body{padding:10px 24px 20px}
+    .grid{display:grid;gap:18px;grid-template-columns:1.4fr .9fr}
+    @media (max-width:800px){
+      .grid{grid-template-columns:1fr}
+      /* en móvil, que el header no se vea gigante */
+      .brand__logo{width:64px;height:64px}
+      .brand__title{font-size:20px}
+      .badge{font-size:15px;padding:10px 16px}
+    }
+    .panel{border:1px solid var(--border);border-radius:12px;padding:16px;background:#fff}
+    .panel h4{margin:0 0 10px;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+    .kv{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+    .kv li{display:flex;justify-content:space-between;gap:10px}
+    .kv b{font-weight:700}
+    .table{width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+    .table thead th{background:#f8fafc;color:#334155;font-size:12px;text-transform:uppercase;letter-spacing:.3px;padding:10px;border-bottom:1px solid var(--border);text-align:left}
+    .table td{padding:10px 12px;border-bottom:1px solid var(--border)}
+    .right{text-align:right}
+    .money{font-weight:800}
+    .actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+    .btn{border:0;border-radius:10px;padding:10px 16px;font-weight:800;cursor:pointer;text-decoration:none}
+    .btn-primary{background:#3C65F5;color:#fff}
+    .btn-secondary{background:#64748b;color:#fff}
+    .btn-outline{background:#fff;color:#3C65F5;border:2px solid #3C65F5}
+  </style>
 </head>
-
 <body>
-    <section class="hero-single">
-        <div class="hero-info-content">
-            <h6>Estado de la <span>transacción</span></h6>
-            <div class="resultado-box" id="resultado">
-                Cargando información de la transacción...
+  <div class="wrap">
+    <div class="card">
+      <div class="shell">
+        <div id="contenedor">Cargando información de la transacción…</div>
+        <div class="actions" id="acciones" style="display:none">
+          <button class="btn btn-secondary" id="copyBtn" type="button">Copiar comprobante</button>
+          <button class="btn btn-outline" id="downloadBtn" type="button">Descargar comprobante (PDF)</button>
+          <a class="btn btn-primary" id="continueBtn" href="#">Continuar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/config/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+  <script>
+  (async () => {
+    const qs = new URLSearchParams(location.search);
+    const token  = qs.get("token_ws");
+    const error  = qs.get("error");
+    const reason = qs.get("reason");
+
+    const cont = document.getElementById("contenedor");
+    const acc  = document.getElementById("acciones");
+    const btnCopy = document.getElementById("copyBtn");
+    const btnDown = document.getElementById("downloadBtn");
+    const btnGo   = document.getElementById("continueBtn");
+
+    const REDIRECT_OK   = "./employer-post-job.html";
+    const REDIRECT_FAIL = "./carrito.html";
+
+    const toast = (icon, title) => Swal.fire({toast:true, icon, title, position:"top-end", showConfirmButton:false, timer:1500, timerProgressBar:true});
+    const fmtCLP = n => Number(n||0).toLocaleString('es-CL', { style:'currency', currency:'CLP', maximumFractionDigits:0 });
+    const safe   = (v,d='-') => (v===null||v===undefined||v==='')?d:v;
+    const payName = c=>({VD:"Débito",VN:"Crédito (sin cuotas)",VC:"Crédito (con cuotas)",SI:"Crédito (3 sin interés)",S2:"Crédito (2 sin interés)",NC:"Crédito (cuotas sin interés)"}[c]||"Desconocido");
+
+    // Cancelada
+    if (error && reason === "aborted") {
+      cont.innerHTML = renderInvoice({ok:false,buyOrder:"-",amount:0,authCode:"-",fecha:new Date().toLocaleString("es-CL"),ptCode:"-",ptName:"-",cuotasTxt:"-",last4:"-",vci:"-",items:[]});
+      acc.style.display = "flex"; btnGo.href = REDIRECT_FAIL; bindCopy(); bindDownload("SinNumero"); return;
+    }
+
+    if (!token) {
+      cont.innerHTML = renderInvoice({ok:false,buyOrder:"-",amount:0,authCode:"-",fecha:new Date().toLocaleString("es-CL"),ptCode:"-",ptName:"-",cuotasTxt:"-",last4:"-",vci:"-",items:[]});
+      acc.style.display = "flex"; btnGo.href = REDIRECT_FAIL; bindCopy(); bindDownload("SinNumero"); return;
+    }
+
+    try {
+      const res  = await fetch(`${BASE_URL_API}/webpay/detail?token_ws=${encodeURIComponent(token)}`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Error consultando detalle");
+
+      const tx   = data.response_data || {};
+      const ok   = String(data.status || tx.status || '').toUpperCase() === "AUTHORIZED";
+
+      const buyOrder   = safe(tx.buy_order, data.orderId);
+      const totalTx    = Number(tx.amount ?? data.amount ?? 0); // Total con IVA
+      const authCode   = safe(tx.authorization_code);
+      const txISO      = safe(tx.transaction_date, data.created_at);
+      const fecha      = new Date(txISO).toLocaleString("es-CL");
+      const ptCode     = safe(tx.payment_type_code);
+      const ptName     = payName(ptCode);
+      const cuotasNum  = Number(tx.installments_number || 0);
+      const cuotasTxt  = (ptCode==="VN"||ptCode==="VD"||cuotasNum<=1) ? "Pago sin cuotas" : `${cuotasNum} cuota(s)`;
+      const last4      = safe(tx.card_detail?.card_number);
+      const vci        = safe(tx.vci);
+
+      const items = JSON.parse(localStorage.getItem('cart_items') || '[]');
+
+      const subtotal   = Math.round(totalTx / 1.19);
+      const iva        = totalTx - subtotal;
+      const descuento  = 0;
+
+      cont.innerHTML = renderInvoice({ ok,buyOrder,total:totalTx,subtotal,iva,descuento,authCode,fecha,ptCode,ptName,cuotasTxt,last4,vci,items });
+      acc.style.display = "flex";
+      btnGo.href = ok ? REDIRECT_OK : REDIRECT_FAIL;
+
+      if (ok) localStorage.removeItem('cart_items');
+
+      bindCopy(); bindDownload(buyOrder);
+    } catch (e) {
+      cont.innerHTML = renderInvoice({ok:false,buyOrder:"-",amount:0,authCode:"-",fecha:new Date().toLocaleString("es-CL"),ptCode:"-",ptName:"-",cuotasTxt:"-",last4:"-",vci:"-",items:[]});
+      acc.style.display = "flex"; btnGo.href = REDIRECT_FAIL; bindCopy(); bindDownload("SinNumero");
+      toast('error','No se pudo cargar la transacción');
+    }
+
+    function renderItemsTable(items){
+      if(!items || !items.length){
+        return `<p style="margin:0;color:#64748b">No hay detalle disponible.</p>`;
+      }
+      const rows = items.map(it=>`
+        <tr>
+          <td>${it.nombre}</td>
+          <td class="right">x${it.cantidad}</td>
+          <td class="right">${fmtCLP(it.precio * it.cantidad)}</td>
+        </tr>
+      `).join('');
+      return `
+        <table class="table" style="margin-top:6px">
+          <thead><tr><th>Producto</th><th class="right">Cant.</th><th class="right">Importe</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      `;
+    }
+
+    function renderInvoice({ok,buyOrder,total=0,subtotal=0,iva=0,descuento=0,authCode,fecha,ptCode,ptName,cuotasTxt,last4,vci,items=[]}){
+      const badge = ok ? 'badge--ok">APROBADO' : 'badge--fail">NO APROBADO';
+      return `
+      <section class="invoice" id="invoice">
+        <header class="invoice__header">
+          <div class="brand">
+            <div class="brand__logo"><img src="../assets/img/logo/favicon.png" alt="Logo Tu Empleo" /></div>
+            <div class="brand__text">
+              <p class="brand__title">Tu Empleo</p>
+              <p class="brand__subtitle">Comprobante de pago</p>
             </div>
+          </div>
+          <div class="badge ${badge}</div>
+        </header>
+
+        <div class="invoice__body">
+          <div class="grid">
+            <div class="panel">
+              <h4>Detalle de la compra</h4>
+              <ul class="kv">
+                <li><b>Orden de compra</b> <span>${buyOrder}</span></li>
+                <li><b>Fecha</b> <span>${fecha}</span></li>
+                <li><b>Tipo de pago</b> <span>${ptName} <span class="muted">(código ${ptCode})</span></span></li>
+                <li><b>Cuotas</b> <span>${cuotasTxt}</span></li>
+                <li><b>Tarjeta</b> <span>${last4 ? "**** **** **** " + last4 : "****"}</span></li>
+                <li><b>VCI</b> <span>${vci}</span></li>
+                <li><b>Código autorización</b> <span>${authCode}</span></li>
+              </ul>
+
+              <h4 style="margin-top:16px">Planes adquiridos</h4>
+              ${renderItemsTable(items)}
+            </div>
+
+            <div class="panel">
+              <h4>Resumen</h4>
+              <table class="table">
+                <thead>
+                  <tr><th>Concepto</th><th class="right">Monto</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Subtotal</td>   <td class="right">${fmtCLP(subtotal)}</td></tr>
+                  <tr><td>IVA (19%)</td>  <td class="right">${fmtCLP(iva)}</td></tr>
+                  <tr><td>Descuento</td>  <td class="right">${fmtCLP(descuento)}</td></tr>
+                  <tr><td><strong>Total</strong></td><td class="right money">${fmtCLP(total)}</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
 
-        <div class="hero-shape">
-            <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f4b0.svg" class="hero-shape-1">
-            <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/2728.svg" class="hero-shape-2">
-            <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f4b3.svg" class="hero-shape-3">
-            <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f4af.svg" class="hero-shape-4">
-        </div>
-    </section>
-    
-    <script src="../assets/js/jquery-3.6.0.min.js"></script>
-    <script src="../assets/js/modernizr.min.js"></script>
-    <script src="../assets/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/imagesloaded.pkgd.min.js"></script>
-    <script src="../assets/js/jquery.magnific-popup.min.js"></script>
-    <script src="../assets/js/isotope.pkgd.min.js"></script>
-    <script src="../assets/js/jquery.appear.min.js"></script>
-    <script src="../assets/js/jquery.easing.min.js"></script>
-    <script src="../assets/js/owl.carousel.min.js"></script>
-    <script src="../assets/js/counter-up.js"></script>
-    <script src="../assets/js/masonry.pkgd.min.js"></script>
-    <script src="../assets/js/wow.min.js"></script>
-    <script src="../assets/js/nice-select.min.js"></script>
-    <script src="../assets/js/config/config.js"></script>
-    <script src="../assets/js/main.js"></script>
-    <script>
-        const params = new URLSearchParams(window.location.search);
-        const token = params.get("token_ws");
-        const box = document.getElementById("resultado");
+        <footer class="invoice__footer" style="padding:12px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:#64748b;font-size:12px;background:#fcfdff">
+          <div>Soporte: soporte@tuempleo.cl</div>
+        </footer>
+      </section>
+      `;
+    }
 
-        if (!token) {
-            box.innerHTML = '<p class="error">Token inválido. No se puede mostrar la transacción.</p>';
-        } else {
-            fetch(`${BASE_URL_API}/webpay/detail?token_ws=${token}`)
-                .then(res => res.json())
-                .then(data => {
-                    const tx = data.response_data;
-                    const date = new Date(tx.transaction_date).toLocaleString("es-CL");
+    // Copiar lista de “Detalle de la compra”
+    function bindCopy(){
+      btnCopy.onclick = async () => {
+        const ul = document.querySelector('#invoice .kv');
+        const bullets = [...ul.querySelectorAll('li')].map(li => {
+          const b = li.querySelector('b')?.innerText || '';
+          const s = li.querySelector('span')?.innerText || '';
+          return `• ${b}: ${s}`;
+        }).join('\n');
 
-                    if (data.status === "AUTHORIZED") {
-                        box.innerHTML = `
-                            <p class="success"><strong>¡Pago exitoso!</strong></p>
-                            <p><strong>Número de orden de pedido:</strong> ${tx.buy_order}</p>
-                            <p><strong>Nombre del comercio:</strong> Comercio XYZ</p>
-                            <p><strong>Monto:</strong> $${tx.amount} CLP</p>
-                            <p><strong>Código de autorización:</strong> ${tx.authorization_code}</p>
-                            <p><strong>Fecha de la transacción:</strong> ${date}</p>
-                            <p><strong>Tipo de pago:</strong> ${tx.payment_type_code === 'VD' ? 'Débito' : 'Crédito'}</p>
-                            <p><strong>Cantidad de cuotas:</strong> ${tx.installments_number > 0 ? tx.installments_number : 'Pago sin cuotas'}</p>
-                            <p><strong>Tarjeta:</strong> **** **** **** ${tx.card_detail?.card_number || '****'}</p>
-                            <p><strong>Descripción:</strong> Compra de bienes o servicios</p>
-                        `;
-                    } else {
-                        box.innerHTML = `
-                            <p class="error"><strong>Orden de Compra ${tx?.buy_order || 'Desconocida'} rechazada</strong></p>
-                            <p><strong>Estado:</strong> ${data.status}</p>
-                            <p>Las posibles causas de este rechazo son:</p>
-                            <ul>
-                                <li>Error en el ingreso de los datos de su tarjeta de crédito o débito (fecha y/o código de seguridad).</li>
-                                <li>Su tarjeta de crédito o débito no cuenta con saldo suficiente.</li>
-                                <li>Tarjeta aún no habilitada en el sistema financiero.</li>
-                            </ul>
-                        `;
-                    }
-                })
-                .catch(() => {
-                    box.innerHTML = '<p class="error">Error al consultar los datos de la transacción.</p>';
-                });
+        const html = `<ul>${[...ul.children].map(li=>`<li>${li.innerHTML}</li>`).join('')}</ul>`;
+        if (navigator.clipboard && window.ClipboardItem) {
+          try {
+            const item = new ClipboardItem({
+              "text/html": new Blob([html], { type: "text/html" }),
+              "text/plain": new Blob([bullets], { type: "text/plain" })
+            });
+            await navigator.clipboard.write([item]);
+            toast('success','Comprobante copiado');
+            return;
+          } catch {}
         }
-    </script>
+        try { await navigator.clipboard.writeText(bullets); toast('success','Comprobante copiado'); }
+        catch { toast('error','No se pudo copiar automáticamente'); }
+      };
+    }
 
+    // PDF con nombre ComprobanteTransaccion_<buyOrder>.pdf
+    function bindDownload(numeroTransaccion = "SinNumero"){
+      btnDown.onclick = async () => {
+        try{
+          const raw = (numeroTransaccion ?? "").toString().trim();
+          const fallback = new Date().toISOString().replace(/[-:T.Z]/g, "").slice(0,14);
+          const safeNumber = (raw || fallback).replace(/[^A-Za-z0-9_-]/g, "");
+          const filename = `ComprobanteTransaccion_${safeNumber}.pdf`;
+
+          const area = document.getElementById("invoice");
+          const canvas = await html2canvas(area, { scale: 2, useCORS: true, backgroundColor:"#fff" });
+          const imgData = canvas.toDataURL("image/png");
+
+          const { jsPDF } = window.jspdf;
+          const pdf = new jsPDF("p", "mm", "a4");
+
+          const pageW = pdf.internal.pageSize.getWidth();
+          const pageH = pdf.internal.pageSize.getHeight();
+          const margin = 10;
+
+          let imgW = pageW - margin*2;
+          let imgH = canvas.height * imgW / canvas.width;
+          if (imgH > pageH - margin*2) { imgH = pageH - margin*2; imgW = canvas.width * imgH / canvas.height; }
+
+          pdf.addImage(imgData, "PNG", (pageW - imgW)/2, margin, imgW, imgH, undefined, "FAST");
+          pdf.save(filename);
+          toast('success','Descarga lista');
+        }catch(err){
+          console.error(err);
+          toast('error','No se pudo generar el PDF');
+        }
+      };
+    }
+  })();
+  </script>
 </body>
-
 </html>

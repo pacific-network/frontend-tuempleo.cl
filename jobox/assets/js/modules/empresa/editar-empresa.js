@@ -46,6 +46,7 @@ async function actualizarEmpresa() {
   const telefono = document.getElementById('telefono_empresa')?.value.trim() || '';
   const descripcion = document.getElementById('descripcion_empresa')?.value.trim() || '';
   const pais = document.getElementById('empresa_pais')?.value || '';
+  const web_factuacion = document.getElementById('web_facturacion')?.value.trim() || '';
   const region = document.getElementById('empresa_region')?.value.trim() || '';
   const comuna = document.getElementById('empresa_comuna')?.value.trim() || '';
   const direccion = document.getElementById('empresa_direccion')?.value.trim() || '';
@@ -59,6 +60,7 @@ async function actualizarEmpresa() {
     telefono,
     descripcion,
     pais,
+    web_factuacion,
     region,
     comuna,
     domicilios,

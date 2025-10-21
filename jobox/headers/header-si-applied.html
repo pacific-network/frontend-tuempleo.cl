@@ -1,37 +1,80 @@
+<style>
+  .volver-inicio-btn{
+    font-size:14px; padding:8px 16px; border-radius:8px;
+    display:inline-flex; align-items:center; gap:6px;
+    transition: opacity .25s ease, visibility .25s ease;
+  }
+  .volver-inicio-btn.hidden{
+    opacity:0; visibility:hidden; pointer-events:none;
+  }
+
+  /* Contenedor para posicionar el botón bajo el logo */
+  .brand-wrap{ position:relative; display:inline-block; }
+  .brand-wrap .volver-inicio-btn{
+    position:absolute; left:0; bottom:-90px;   /* AJUSTA este valor si lo quieres más abajo/arriba */
+    z-index:100;
+  }
+  .navbar .container{ overflow:visible; }
+</style>
+
 <header class="header">
-    <div class="main-navigation">
-        <nav class="navbar navbar-expand-lg">
-            <div class="container">
-                <a class="navbar-brand" href="job-list.html">
-                    <img src="./assets/img/logo/logo.png" alt="logo">
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main_nav"
-                  aria-controls="main_nav" aria-expanded="false" aria-label="Toggle navigation">
-                  <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="main_nav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="candidate-dashboard.html">Dashboard</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Nosotros</a>
-                            <ul class="dropdown-menu fade-down">
-                                <li><a class="dropdown-item" href="about-can-log.html">Sobre Nosotros</a></li>
-                                <li><a class="dropdown-item" href="faq-can-log.html">Preguntas Frecuentes</a></li>
-                                <li><a class="dropdown-item" href="terms-can-log.html">Terminos de Servicio</a></li>
-                                <li><a class="dropdown-item" href="privacy-can-log.html">Política de Privacidad</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="contact-can-log.html">Contáctanos</a>
-                        </li>
-                    </ul>
-                    <div class="header-nav-right d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2 mt-3 mt-lg-0">
-                        <a href="job-list.html" class="theme-btn"><span class="fas fa-briefcase"></span> Buscar Trabajo</a>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </div>
+  <div class="main-navigation">
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+
+        <!-- Logo + botón -->
+        <div class="brand-wrap">
+          <a class="navbar-brand" href="job-list.html">
+            <img src="./assets/img/logo/logo.png" alt="logo">
+          </a>
+        </div>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main_nav"
+          aria-controls="main_nav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="main_nav">
+          <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="candidate-dashboard.html">Dashboard</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Nosotros</a>
+              <ul class="dropdown-menu fade-down">
+                <li><a class="dropdown-item" href="about-can-log.html">Sobre Nosotros</a></li>
+                <li><a class="dropdown-item" href="faq-can-log.html">Preguntas Frecuentes</a></li>
+                <li><a class="dropdown-item" href="terms-can-log.html">Terminos de Servicio</a></li>
+                <li><a class="dropdown-item" href="privacy-can-log.html">Política de Privacidad</a></li>
+              </ul>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="contact-can-log.html">Contáctanos</a></li>
+          </ul>
+          <div class="header-nav-right d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2 mt-3 mt-lg-0">
+            <a href="job-list.html" class="theme-btn"><span class="fas fa-briefcase"></span> Buscar Trabajo</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
 </header>
+
+<script>
+  (function(){
+    const btn = document.getElementById('volverBtn');
+    if(!btn) return;
+
+    function isInViewport(el){
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      const vw = window.innerWidth  || document.documentElement.clientWidth;
+      return r.bottom > 0 && r.right > 0 && r.top < vh && r.left < vw;
+    }
+    function toggle(){
+      btn.classList.toggle('hidden', !isInViewport(btn));
+    }
+    // correr al cargar y en scroll/resize
+    toggle();
+    window.addEventListener('scroll', toggle, {passive:true});
+    window.addEventListener('resize', toggle);
+  })();
+</script>
+ 

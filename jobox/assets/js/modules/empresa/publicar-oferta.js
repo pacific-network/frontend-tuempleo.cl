@@ -90,7 +90,13 @@ async function crearOferta() {
   limpiarErrores();
 
   if (!empleadorData) {
-    alert('No se pudo cargar la información del empleador. Intenta recargar la página.');
+    await Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'No se pudo cargar la información del empleador. Intenta recargar la página.',
+      confirmButtonText: 'Aceptar',
+      confirmButtonColor: '#3085d6'
+    });
     return;
   }
 
@@ -180,16 +186,34 @@ async function crearOferta() {
     });
 
     if (response.ok) {
-      alert('Oferta publicada con éxito');
+      await Swal.fire({
+        icon: 'success',
+        title: '¡Oferta publicada!',
+        text: 'La oferta fue publicada con éxito.',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#3085d6'
+      });
       window.location.href = 'employer-manage-job.html';
     } else {
       const err = await response.json();
       console.error(err);
-      alert('Error al publicar la oferta');
+      await Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Error al publicar la oferta.',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#3085d6'
+      });
     }
   } catch (error) {
     console.error('Error al conectar con el servidor:', error);
-    alert('Error al conectar con el servidor');
+    await Swal.fire({
+      icon: 'error',
+      title: 'Error de conexión',
+      text: 'No se pudo conectar con el servidor.',
+      confirmButtonText: 'Aceptar',
+      confirmButtonColor: '#3085d6'
+    });
   }
 }
 
@@ -203,7 +227,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const userId = getUserIdFromToken();
   if (!userId) {
-    alert('Token inválido o expirado');
+    await Swal.fire({
+      icon: 'error',
+      title: 'Token inválido',
+      text: 'Token inválido o expirado.',
+      confirmButtonText: 'Aceptar',
+      confirmButtonColor: '#3085d6'
+    });
     return;
   }
 
@@ -214,7 +244,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log('Info empleador cargada:', empleadorData);
   } catch (e) {
     console.error('Error cargando info de empleador:', e);
-    alert('No se pudo cargar la información del empleador');
+    await Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'No se pudo cargar la información del empleador',
+      confirmButtonText: 'Aceptar',
+      confirmButtonColor: '#3085d6'
+    });
   }
 
   form.addEventListener('submit', function (e) {

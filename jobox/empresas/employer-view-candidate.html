@@ -212,36 +212,11 @@
         <script src="../https://cdnjs.cloudflare.com/ajax/libs/pdfkit/0.12.3/pdfkit.standalone.js"></script>
         <script src="../https://cdnjs.cloudflare.com/ajax/libs/blob-polyfill/5.0.20210301/Blob.min.js"></script>
         <script src="../assets/js/modules/postulaciones/detalle-postulante-id.js"></script>
-        document.getElementById('downloadEmptyPdf').addEventListener('click', function (e) {
-        e.preventDefault();
+        <script src="../assets/js/modules/ofertas/return-offer-candidate.js"></script>
+        <script src="../assets/js/modules/ofertas/hide-offer-id.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        // Crear un PDF vacío
-        const doc = new PDFDocument();
-        const stream = doc.pipe(blobStream());
 
-        // Puedes añadir texto vacío si lo deseas
-        doc.text(' ', 50, 50);
-        doc.end();
-
-        stream.on('finish', function () {
-        const blob = stream.toBlob('application/pdf');
-        const url = URL.createObjectURL(blob);
-
-        // Crear enlace temporal
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'CV_Vacio.pdf';
-        document.body.appendChild(a);
-        a.click();
-
-        // Limpiar
-        setTimeout(function () {
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-        }, 100);
-        });
-        });
-        </script> -->
 </body>
 
 </html>

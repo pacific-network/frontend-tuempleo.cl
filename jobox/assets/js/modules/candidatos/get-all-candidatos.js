@@ -1,10 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const BASE_URL_API = "http://localhost:3000/v1";
+    const BASE_URL_API = window.BASE_URL_API; 
     const token = localStorage.getItem('token');
   
     if (!token) {
       console.warn("No hay token. Redirigiendo al login...");
-      window.location.href = "login.html";
+      window.location.href = "../login.html";
       return;
     }
   

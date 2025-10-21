@@ -994,7 +994,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('token');
     if (!token) {
         alert('No estás autenticado. Redirigiendo a login...');
-        window.location.href = '/jobox/login.html';
+        window.location.href = '../login.html';
         return;
     }
 
@@ -1003,7 +1003,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (!userId) {
         alert('Error al obtener información del usuario. Por favor, inicia sesión nuevamente.');
-        window.location.href = '/jobox/login.html';
+        window.location.href = '../login.html';
         return;
     }
 

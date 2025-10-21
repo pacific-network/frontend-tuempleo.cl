@@ -1,54 +1,46 @@
 const planes = [
-    {
-        id: 1,
-        nombre: "Publicación Gratis",
-        precio: 0,
-        descripcion: "Ideal para pequeñas empresas.",
-        caracteristicas: [
-            "Hasta 2 publicaciones",
-            "Duración: 7 días",
-            "Soporte básico"
-        ],
-        popular: false
-    },
-    {
-        id: 2,
-        nombre: "Publicación Básica",
-        precio: 15000,
-        descripcion: "Ideal para pequeñas empresas.",
-        caracteristicas: [
-            "Hasta 2 publicaciones",
-            "Duración: 7 días",
-            "Soporte básico"
-        ],
-        popular: false
-    },
-    {
-        id: 3,
-        nombre: "Plan Estándar",
-        precio: 40000,
-        descripcion: "Para empresas medianas.",
-        caracteristicas: [
-            "Hasta 5 publicaciones",
-            "Duración: 30 días",
-            "Soporte prioritario",
-            "Reportes básicos"
-        ],
-        popular: true
-    },
-    {
-        id: 4,
-        nombre: "Plan Premium",
-        precio: 90000,
-        descripcion: "Para alto volumen de contratación.",
-        caracteristicas: [
-            "Publicaciones ilimitadas",
-            "Duración: 60 días",
-            "Soporte 24/7",
-            "Consultoría avanzada"
-        ],
-        popular: false
-    }
+  {
+    id: 1,
+    nombre: "Publicación Gratis",
+    precio: 0,
+    descripcion: "Ideal para pequeñas empresas.",
+    caracteristicas: ["Hasta 2 publicaciones", "Duración: 7 días", "Soporte básico"],
+    popular: false
+  },
+  {
+    id: 2,
+    nombre: "Publicación Básica",
+    precio: 80000,
+    descripcion: "Ideal para pequeñas empresas.",
+    caracteristicas: ["Hasta 2 publicaciones", "Duración: 7 días", "Soporte básico"],
+    popular: false
+  },
+  {
+    id: 3,
+    nombre: "Publicación Estándar",
+    precio: 140000,
+    descripcion: "Para empresas medianas.",
+    caracteristicas: [
+      "Hasta 5 publicaciones",
+      "Duración: 30 días",
+      "Soporte prioritario",
+      "Reportes básicos"
+    ],
+    popular: true
+  },
+  {
+    id: 4,
+    nombre: "Publicación Premium",
+    precio: 180000,
+    descripcion: "Para alto volumen de contratación.",
+    caracteristicas: [
+      "Publicaciones ilimitadas",
+      "Duración: 60 días",
+      "Soporte 24/7",
+      "Consultoría avanzada"
+    ],
+    popular: false
+  }
 ];
 
 let carrito = [];
@@ -60,123 +52,129 @@ const checkoutBtn = document.getElementById("checkoutBtn");
 const emptyCartMsg = document.getElementById("emptyCartMsg");
 
 function generarOrderId(longitud = 12) {
-    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let resultado = '';
-    for (let i = 0; i < longitud; i++) {
-        const indice = Math.floor(Math.random() * caracteres.length);
-        resultado += caracteres.charAt(indice);
-    }
-    return resultado;
+  const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let resultado = "";
+  for (let i = 0; i < longitud; i++) {
+    const indice = Math.floor(Math.random() * caracteres.length);
+    resultado += caracteres.charAt(indice);
+  }
+  return resultado;
 }
 
 function renderPlanes() {
-    planGrid.innerHTML = planes.map(plan => `
-      <div class="pricing-item ${plan.popular ? 'active' : ''}">
-        ${plan.popular ? `<div class="pricing-popular">Más popular</div>` : ''}
+  planGrid.innerHTML = planes
+    .map(
+      (plan) => `
+      <div class="pricing-item ${plan.popular ? "active" : ""}">
+        ${plan.popular ? `<div class="pricing-popular">Más popular</div>` : ""}
         <div class="pricing-content">
           <h4>${plan.nombre}</h4>
-          <div class="pricing-amount">$${plan.precio.toLocaleString('es-CL')} <span>CLP</span></div>
+          <div class="pricing-amount">$${plan.precio.toLocaleString("es-CL")} <span>CLP</span></div>
           <p>${plan.descripcion}</p>
         </div>
         <div class="pricing-feature">
           <ul>
-            ${plan.caracteristicas.map(c => `<li>${c}</li>`).join('')}
+            ${plan.caracteristicas.map((c) => `<li>${c}</li>`).join("")}
           </ul>
         </div>
-        ${plan.id !== 1 ? `<button class="theme-btn" data-id="${plan.id}">Agregar al carrito</button>` : ''}
+        ${plan.id !== 1 ? `<button class="theme-btn" data-id="${plan.id}">Agregar al carrito</button>` : ""}
       </div>
-    `).join('');
+    `
+    )
+    .join("");
 }
 
 function renderCarrito() {
-    if (carrito.length === 0) {
-        cartSummary.style.display = "none";
-        emptyCartMsg.style.display = "block";
-    } else {
-        cartSummary.style.display = "flex";
-        emptyCartMsg.style.display = "none";
-        const total = carrito.reduce((sum, item) => sum + item.precio * item.cantidad, 0);
-        cartTotal.textContent = total.toLocaleString('es-CL');
-    }
+  if (carrito.length === 0) {
+    cartSummary.style.display = "none";
+    emptyCartMsg.style.display = "block";
+  } else {
+    cartSummary.style.display = "flex";
+    emptyCartMsg.style.display = "none";
+    const total = carrito.reduce((sum, item) => sum + item.precio * item.cantidad, 0);
+    cartTotal.textContent = total.toLocaleString("es-CL");
+  }
 }
 
 function agregarAlCarrito(id) {
-    const plan = planes.find(p => p.id === id);
-    if (!plan || plan.id === 1) return;
+  const plan = planes.find((p) => p.id === id);
+  if (!plan || plan.id === 1) return;
 
-    const existente = carrito.find(p => p.id === id);
-    if (existente) {
-        existente.cantidad++;
-    } else {
-        carrito.push({ ...plan, cantidad: 1 });
-    }
-    alert(`"${plan.nombre}" agregado al carrito.`);
-    renderCarrito();
+  const existente = carrito.find((p) => p.id === id);
+  if (existente) {
+    existente.cantidad++;
+  } else {
+    carrito.push({ ...plan, cantidad: 1 });
+  }
+  alert(`"${plan.nombre}" agregado al carrito.`);
+  renderCarrito();
 }
 
 planGrid.addEventListener("click", (e) => {
-    if (e.target.classList.contains("theme-btn")) {
-        const id = parseInt(e.target.dataset.id);
-        agregarAlCarrito(id);
-    }
+  if (e.target.classList.contains("theme-btn")) {
+    const id = parseInt(e.target.dataset.id);
+    agregarAlCarrito(id);
+  }
 });
 
 checkoutBtn.addEventListener("click", async () => {
-    const total = carrito.reduce((sum, item) => sum + item.precio * item.cantidad, 0);
+  // Transbank usa enteros CLP
+  const total = Math.round(carrito.reduce((sum, item) => sum + item.precio * item.cantidad, 0));
 
-    if (total <= 0) {
-        alert("El carrito está vacío o el monto no es válido.");
-        return;
+  if (total <= 0) {
+    alert("El carrito está vacío o el monto no es válido.");
+    return;
+  }
+
+  const orderId = generarOrderId();
+  // útil por si quieres referenciar la compra luego
+  sessionStorage.setItem("last_buy_order", orderId);
+
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("Debes iniciar sesión para proceder con el pago.");
+    return;
+  }
+
+  try {
+    const response = await fetch(`${BASE_URL_API}/webpay/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        amount: total,
+        orderId: orderId
+      })
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.url && data.token) {
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = data.url;
+
+      const tokenInput = document.createElement("input");
+      tokenInput.type = "hidden";
+      tokenInput.name = "token_ws";
+      tokenInput.value = data.token;
+
+      form.appendChild(tokenInput);
+      document.body.appendChild(form);
+      form.submit();
+
+      carrito = [];
+      renderCarrito();
+    } else {
+      alert("Error al iniciar el proceso de pago.");
+      console.error("Respuesta inesperada:", data);
     }
-
-    const orderId = generarOrderId();
-
-    // Obtener token desde localStorage o donde lo tengas guardado
-    const token = localStorage.getItem('token');
-    if (!token) {
-        alert('Debes iniciar sesión para proceder con el pago.');
-        return;
-    }
-
-    try {
-        const response = await fetch(`${BASE_URL_API}/webpay/create`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                amount: total,
-                orderId: orderId
-            }),
-        });
-
-        const data = await response.json();
-
-        if (response.ok && data.url && data.token) {
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = data.url;
-
-            const tokenInput = document.createElement('input');
-            tokenInput.type = 'hidden';
-            tokenInput.name = 'token_ws';
-            tokenInput.value = data.token;
-
-            form.appendChild(tokenInput);
-            document.body.appendChild(form);
-            form.submit();
-
-            carrito = [];
-            renderCarrito();
-        } else {
-            alert('Error al iniciar el proceso de pago.');
-            console.error('Respuesta inesperada:', data);
-        }
-    } catch (error) {
-        console.error('Error al conectar con el backend:', error);
-        alert('Ocurrió un error al procesar el pago.');
-    }
+  } catch (error) {
+    console.error("Error al conectar con el backend:", error);
+    alert("Ocurrió un error al procesar el pago.");
+  }
 });
 
 renderPlanes();

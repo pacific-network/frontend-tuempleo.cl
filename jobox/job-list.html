@@ -27,12 +27,9 @@
     <link rel="stylesheet" href="assets/css/jquery-ui.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
-        .col-lg-9 {
-            width: 100%;
-        }
-        .site-breadcrumb{
-            height: 200px;
-        }
+        .col-lg-9 { width: 100%; }
+        .site-breadcrumb{ height: 200px; }
+
         .btn-filtro {
           background-color: #3C65F5;
           color: white;
@@ -43,9 +40,8 @@
           margin-top: 10px;
           transition: background-color 0.3s ease;
         }
-        .btn-filtro:hover {
-          background-color: #2b4bd4;
-        }
+        .btn-filtro:hover { background-color: #2b4bd4; }
+
         .row {
             --bs-gutter-x: 1.5rem;
             --bs-gutter-y: 0;
@@ -55,14 +51,13 @@
             margin-right: calc(-.5 * var(--bs-gutter-x));
             margin-left: calc(-.5 * var(--bs-gutter-x));
         }
-        
+
         /* Estilos específicos para móvil */
         @media (max-width: 768px) {
             .site-breadcrumb {
                 height: auto;
                 padding: 20px 0;
             }
-            
             .search-form-wrapper {
                 background: white;
                 padding: 15px;
@@ -70,50 +65,63 @@
                 box-shadow: 0 2px 10px rgba(0,0,0,0.1);
                 margin-bottom: 8px; /* Reducido de 15px a 8px */
             }
-            
             .search-form-wrapper .form-control {
                 margin-bottom: 10px;
                 font-size: 16px;
                 height: 48px;
             }
-            
             .search-form-wrapper button.theme-btn {
                 width: 100%;
                 height: 48px;
             }
-                        
-            #ultimas-busquedas {
-                margin-top: 8px; /* Añadido para reducir espacio */
-            }
-            
-            .hero-shape {
-                display: none;
-            }
-            
-            /* Asegurar que los elementos de filtro sean táctiles */
-            .form-check-label, .form-check-input {
-                min-height: 24px;
-                min-width: 24px;
-            }
-            
-            /* Mejorar espaciado en móvil */
-            .job-item {
-                padding: 15px;
-            }
-            
-            .job-info-list li {
-                margin-bottom: 8px;
-            }
+            #ultimas-busquedas { margin-top: 8px; }
+            .hero-shape { display: none; }
+            .form-check-label, .form-check-input { min-height: 24px; min-width: 24px; }
+            .job-item { padding: 15px; }
+            .job-info-list li { margin-bottom: 8px; }
         }
-        
+
         /* Estilos para desktop */
         @media (min-width: 769px) {
-            .hero-shape {
-                display: block;
-            }
-            
+            .hero-shape { display: block; }
         }
+
+        /* ===== Botón Volver al inicio (nuevo) ===== */
+        .return-home-card{
+          background:#fff;
+          border:1px solid #e6eefc;
+          border-radius:12px;
+          padding:12px;
+          box-shadow:0 6px 16px rgba(60,101,245,.08);
+          margin-bottom:16px;
+        }
+        .return-home-btn{
+          display:flex;
+          align-items:center;
+          gap:8px;
+          width:100%;
+          border:1px solid #3C65F5;
+          color:#3C65F5;
+          background:#f4f7ff;
+          padding:10px 14px;
+          border-radius:999px;
+          font-weight:600;
+          font-size:14px;
+          transition:transform .15s ease, box-shadow .15s ease, background-color .2s ease, color .2s ease;
+        }
+        .return-home-btn i{ font-size:18px; }
+        .return-home-btn:hover{
+          background:#3C65F5;
+          color:#fff;
+          box-shadow:0 8px 20px rgba(60,101,245,.28);
+          transform:translateY(-1px);
+        }
+        @media (max-width: 768px){
+          .return-home-card{ margin-top: 6px; }
+        }
+        /* ===== Fin botón volver ===== */
     </style>
+
     <!--btn de los filtros -->
     <style>
         .btn-filtro {
@@ -126,13 +134,8 @@
           margin-top: 10px;
           transition: background-color 0.3s ease;
         }
-
-        .btn-filtro:hover {
-          background-color: #2b4bd4;
-        }
-
+        .btn-filtro:hover { background-color: #2b4bd4; }
     </style>
-
 </head>
 
 <body>
@@ -147,22 +150,16 @@
     </div>
     <!-- preloader end -->
 
-
     <!-- header area -->
     <div id="header-placeholder"></div>
     <!-- header area end -->
-
-
 
     <main class="main">
 
         <!-- breadcrumb -->
         <div class="site-breadcrumb pb-5">
             <div class="container">
-                <br>
-                <br>
-                <br>
-                <br>
+                <br><br><br><br>
                 <h2 class="breadcrumb-title">Lista de Trabajos</h2>
 
                 <div class="job-list2 search-form mt-5 mb-3">
@@ -192,38 +189,34 @@
                                     <div class="col-md-3 px-0">
                                         <div class="form-group">
                                             <div class="form-group-icon">
-                                                <select type="text" class="form-control" id="categoria-select">
+                                                <select id="categoria-select" class="form-control ps-5" aria-label="Filtrar por categoría">
                                                     <option value="">Categoría</option>
-                                                    <option value="1">Informática / Tecnología</option>
-                                                    <option value="2">Administración / Oficina</option>
-                                                    <option value="3">Operaciones / Logística</option>
-                                                    <option value="4">Finanzas / Contabilidad</option>
-                                                    <option value="5">Gerencia / Dirección</option>
-                                                    <option value="6">Salud / Medicina</option>
-                                                    <option value="7">Recursos Humanos</option>
-                                                    <option value="8">Ventas / Comercial</option>
-                                                    <option value="9">Atención al Cliente</option>
-                                                    <option value="10">Educación / Docencia</option>
-                                                    <option value="11">Construcción</option>
-                                                    <option value="12">Electricidad / Electrónica</option>
-                                                    <option value="13">Mecánica / Automotriz</option>
-                                                    <option value="14">Transporte / Choferes</option>
-                                                    <option value="15">Gastronomía / Cocina</option>
-                                                    <option value="16">Panadería / Pastelería</option>
-                                                    <option value="17">Aseo / Limpieza</option>
-                                                    <option value="18">Seguridad / Guardia</option>
-                                                    <option value="19">Agricultura / Ganadería</option>
-                                                    <option value="20">Minería</option>
-                                                    <option value="21">Turismo / Hotelería</option>
-                                                    <option value="22">Periodismo / Comunicación</option>
-                                                    <option value="23">Diseño / Creatividad</option>
-                                                    <option value="24">Legal / Jurídico</option>
-                                                    <option value="25">Manufactura / Producción</option>
-                                                    <option value="26">Servicios Generales</option>
-                                                    <option value="27">Cuidado de Personas / Niñera</option>
-                                                    <option value="28">Veterinaria / Mascotas</option>
-                                                    <option value="29">Soldadura / Metalurgia</option>
-                                                    <option value="30">Gasfitería / Plomería</option>
+                                                    <option value="Abastecimiento y Logistica">Abastecimiento y Logistica</option>
+                                                    <option value="Administración, Contabilidad y Finanzas">Administración, Contabilidad y Finanzas</option>
+                                                    <option value="Aduana y Comercio Exterior">Aduana y Comercio Exterior</option>
+                                                    <option value="Atención al Cliente, Call Center y Telemarketing">Atención al Cliente, Call Center y Telemarketing</option>
+                                                    <option value="Comercial, Ventas y Negocios">Comercial, Ventas y Negocios</option>
+                                                    <option value="Comunicación, Relaciones Institucionales y Públicas">Comunicación, Relaciones Institucionales y Públicas</option>
+                                                    <option value="Departamento Técnico">Departamento Técnico</option>
+                                                    <option value="Diseño">Diseño</option>
+                                                    <option value="Educación, Docencia e Investigación">Educación, Docencia e Investigación</option>
+                                                    <option value="Enfermería">Enfermería</option>
+                                                    <option value="Gastronomía y Turismo">Gastronomía y Turismo</option>
+                                                    <option value="Gerencia y Dirección General">Gerencia y Dirección General</option>
+                                                    <option value="Ingeniería Civil y Construcción">Ingeniería Civil y Construcción</option>
+                                                    <option value="Ingenierías">Ingenierías</option>
+                                                    <option value="Legales">Legales</option>
+                                                    <option value="Marketing y Publicidad">Marketing y Publicidad</option>
+                                                    <option value="Minería, Petróleo y Gas">Minería, Petróleo y Gas</option>
+                                                    <option value="Navierio, Marítimo, Porutuario">Navierio, Marítimo, Porutuario</option>
+                                                    <option value="Oficios y Otros">Oficios y Otros</option>
+                                                    <option value="Producción y Manufactura">Producción y Manufactura</option>
+                                                    <option value="RRHH  y Capacitación">RRHH  y Capacitación</option>
+                                                    <option value="Salud, Medicina y Farmacia">Salud, Medicina y Farmacia</option>
+                                                    <option value="Secretaria y Recepción">Secretaria y Recepción</option>
+                                                    <option value="Seguros">Seguros</option>
+                                                    <option value="Sociología / Trabajo Social">Sociología / Trabajo Social</option>
+                                                    <option value="Tecnologías, Sistemas y Telecomunicaciones">Tecnologías, Sistemas y Telecomunicaciones</option>
                                                 </select>
                                                 <i class="fe-briefcase"></i>
                                             </div>
@@ -249,14 +242,19 @@
             </div>
         </div>
 
-
-
-
         <!-- job list -->
         <div class="job-list2 py-120">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-4 col-xl-3 mb-4">
+
+                        <!-- Volver al inicio (nuevo) -->
+                        <div class="return-home-card">
+                          <button type="button" class="return-home-btn" onclick="volverInicio()">
+                            <i class="fe-arrow-left"></i> Volver al inicio
+                          </button>
+                        </div>
+
                         <div class="job-sidebar">
                             <div class="job-sidebar-item">
                                 <div id="ultimas-busquedas" class="bg-light border rounded px-3 py-2 small shadow-sm">
@@ -319,61 +317,6 @@
                                 <button class="btn-filtro w-100" onclick="aplicarFiltro('salario')">Aplicar filtro</button>
                             </div>
                             <div class="job-sidebar-item">
-                                <h4 class="job-sidebar-title">Nivel de Experiencia</h4>
-                                <div class="job-experience">
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="experience" type="checkbox" value="1"
-                                            id="experience1">
-                                        <label class="form-check-label" for="experience1">
-                                            Manager <span>(0)</span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="experience" type="checkbox" value="2"
-                                            id="experience1">
-                                        <label class="form-check-label" for="experience1">
-                                            Lider Técnico / Lead <span>(0)</span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="experience" type="checkbox" value="3"
-                                            id="experience2">
-                                        <label class="form-check-label" for="experience2">
-                                            Senior <span>(0)</span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="experience" type="checkbox" value="4"
-                                            id="experience2">
-                                        <label class="form-check-label" for="experience2">
-                                            Semi Senior <span>(0)</span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="experience" type="checkbox" value="5"
-                                            id="experience3">
-                                        <label class="form-check-label" for="experience3">
-                                            Junior <span>(0)</span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="experience" type="checkbox" value="6"
-                                            id="experience4">
-                                        <label class="form-check-label" for="experience4">
-                                            Trainee <span>(0)</span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="experience" type="checkbox" value="7"
-                                            id="experience5">
-                                        <label class="form-check-label" for="experience5">
-                                            Practicante <span>(0)</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <button class="btn-filtro w-100" onclick="aplicarFiltro('experiencia')">Aplicar filtro</button>
-                            </div>
-                            <div class="job-sidebar-item">
                                 <h4 class="job-sidebar-title">Trabajos Publicados</h4>
                                 <div class="job-posted">
                                     <div class="form-check">
@@ -423,6 +366,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="col-lg-8 col-xl-9">
                         <div class="col-md-12">
                             <div class="job-sort">
@@ -459,98 +403,6 @@
                                     </div>
                                 </div>
                             </div>
-                        
-                            <!-- Trabajo 2 -->
-                            <!--<div class="col-lg-12">
-                                <div class="job-item" onclick="window.location.href='job-single-2-si.html?id=2'" style="cursor:pointer;">
-                                    <div class="job-img">
-                                        <img src="assets/img/job/03.jpg" alt="">
-                                    </div>
-                                    <div class="job-content">
-                                        <div class="job-top">
-                                            <div class="job-title">
-                                                <h5>Gerente de Marketing</h5>
-                                                <span class="job-employer"><i class="far fa-building"></i> Pacific Network</span>
-                                            </div>
-                                        </div>
-                                        <ul class="job-info-list">
-                                            <li><i class="fe-briefcase"></i> Gerencia y Dirección General</li>
-                                            <li><i class="fe-check-circle"></i> Full Time</li>
-                                            <li><i class="fe-clock"></i> Hace 1 semana</li>
-                                            <li><i class="fas fa-timer"></i> Exp: 30-07-2025 </li>
-                                            <li><i class="fe-dollar-sign"></i> Salario: 1.000.000 - 2.000.000</li>
-                                            <li><i class="fe-map-pin"></i> Región Metropolitana de Santiago</li>
-                                        </ul>
-                                        <div class="job-skill">
-                                            <a><span>Excel</span></a>
-                                            <a><span>Photoshop</span></a>
-                                            <a><span>Adobe Flash Player</span></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>-->
-                        
-                            <!-- Trabajo 3 -->
-                            <!--<div class="col-lg-12">
-                                <div class="job-item" onclick="window.location.href='job-single-2-si.html?id=5'" style="cursor:pointer;">
-                                    <div class="job-img">
-                                        <img src="assets/img/job/04.jpg" alt="">
-                                    </div>
-                                    <div class="job-content">
-                                        <div class="job-top">
-                                            <div class="job-title">
-                                                <h5>Administrador de Recursos Humanos</h5>
-                                                <span class="job-employer"><i class="far fa-building"></i> Almacenes Paris</span>
-                                            </div>
-                                        </div>
-                                        <ul class="job-info-list">
-                                            <li><i class="fe-briefcase"></i> Administrador RRHH</li>
-                                            <li><i class="fe-check-circle"></i> Full Time</li>
-                                            <li><i class="fe-clock"></i> Hace 6 Horas</li>
-                                            <li><i class="fe-dollar-sign"></i> Salario: 855.000</li>
-                                            <li><i class="fe-map-pin"></i> Región Metropolitana de Santiago</li>
-                                        </ul>
-                                        <div class="job-skill">
-                                            <a><span>Excel</span></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>-->
-                        
-                            <!-- Trabajo 4 -->
-                            <!--<div class="col-lg-12">
-                                <div class="job-item" onclick="window.location.href='creative-director.html'" style="cursor: pointer;">
-                                    <a href="creative-director.html" class="job-bookmark"><i class="fe-bookmark"></i></a>
-                                    <div class="job-img">
-                                        <img src="assets/img/job/05.jpg" alt="">
-                                    </div>
-                                    <div class="job-content">
-                                        <div class="job-top">
-                                            <div class="job-title">
-                                                <h5>Creative Director</h5>
-                                                <span class="job-employer"><i class="far fa-building"></i> Rubic Corner</span>
-                                            </div>
-                                        </div>
-                                        <ul class="job-info-list">
-                                            <li><i class="fe-briefcase"></i> Development</li>
-                                            <li><i class="fe-check-circle"></i> Full Time</li>
-                                            <li><i class="fe-clock"></i> 2 Hour Ago</li>
-                                            <li><i class="fe-dollar-sign"></i> Salary: 35k - 45k</li>
-                                            <li><i class="fe-map-pin"></i> 25/B Milford, New York</li>
-                                        </ul>
-                                        <div class="job-skill">
-                                            <a><span>Figma</span></a>
-                                            <a><span>Photoshop</span></a>
-                                            <a><span>Adobe XD</span></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>-->
-                        
-                            <!-- Trabajo 5 -->
-                        
-                            <!-- Trabajos 6 al 9 (similar estructura) -->
-                            <!-- ... -->
                         </div>
 
                         <!-- pagination -->
@@ -567,8 +419,7 @@
                                     <li class="page-item"><a class="page-link" href="#">3</a></li>
                                     <li class="page-item">
                                         <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true"><i
-                                                    class="far fa-angle-double-right"></i></span>
+                                            <span aria-hidden="true"><i class="far fa-angle-double-right"></i></span>
                                         </a>
                                     </li>
                                 </ul>
@@ -584,22 +435,15 @@
         </div>
         <!-- job list end -->
 
-
     </main>
-
-
 
     <!-- footer area -->
     <div id="footer-placeholder"></div>
     <!-- footer area end -->
 
-
-
-
     <!-- scroll-top -->
     <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
     <!-- scroll-top end -->
-
 
     <!-- js -->
     <script src="assets/js/jquery-3.6.0.min.js"></script>
@@ -623,17 +467,28 @@
     <script src="assets/js/job-list/lista-trabajos.js"></script>
     <script src="assets/js/job-list/ver-trabajo.js"></script>
     <script src="assets/js/postulaciones/paginacion.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         function aplicarFiltro(tipo) {
             console.log(`Filtro aplicado: ${tipo}`);
             const seleccionados = [...document.querySelectorAll(`.job-sidebar-item input[type="checkbox"]:checked`)]
                 .map(c => c.value);
-            
             console.log("Valores seleccionados:", seleccionados);
         }
+
+        // Navegación: volver al inicio (nuevo)
+        function volverInicio(){
+          // Si venimos de otra página, intenta volver; si no, redirige al home (ajusta la URL si tu home es distinto)
+          if (document.referrer && document.referrer !== location.href) {
+            history.back();
+            setTimeout(() => { window.location.href = 'candidate-dashboard.html'; }, 250); // fallback
+          } else {
+            window.location.href = 'candidate-dashboard.html';
+          }
+        }
     </script>
+
     <script src="assets/js/postulaciones/busqueda-empleos.js"></script>
-
 </body>
-
 </html>
