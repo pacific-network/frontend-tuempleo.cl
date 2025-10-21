@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -13,112 +14,358 @@
 
   <style>
     :root {
-      --brand:#3C65F5; --brand-dark:#1f3fa4; --ink:#05264E; --muted:#667085;
-      --surface:#ffffff; --panel:#F1F6FC; --ok:#e67e22; --ok-dark:#d35400;
-      --ring: 0 12px 24px rgba(60,101,245,.18); --ring-ghost: 0 8px 24px rgba(0,0,0,.06);
-      --border:#e9eef7; --line:#e6ecf6;
+      --brand: #3C65F5;
+      --brand-dark: #1f3fa4;
+      --ink: #05264E;
+      --muted: #667085;
+      --surface: #ffffff;
+      --panel: #F1F6FC;
+      --ok: #e67e22;
+      --ok-dark: #d35400;
+      --ring: 0 12px 24px rgba(60, 101, 245, .18);
+      --ring-ghost: 0 8px 24px rgba(0, 0, 0, .06);
+      --border: #e9eef7;
+      --line: #e6ecf6;
     }
-    body{
-      font-family:'Segoe UI',sans-serif;
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
       background:
-        radial-gradient(1200px 600px at 10% -10%, rgba(60,101,245,.08), transparent 60%),
-        radial-gradient(900px 500px at 110% 10%, rgba(12,115,255,.06), transparent 55%),
+        radial-gradient(1200px 600px at 10% -10%, rgba(60, 101, 245, .08), transparent 60%),
+        radial-gradient(900px 500px at 110% 10%, rgba(12, 115, 255, .06), transparent 55%),
         #f7f9fc;
-      margin:0; padding:40px 16px 40px; color:var(--ink);
+      margin: 0;
+      padding: 40px 16px 40px;
+      color: var(--ink);
     }
-    h1{ text-align:center; font-size:clamp(1.8rem,1.2rem + 2vw,2.6rem); margin:0 0 28px 0; letter-spacing:.2px; }
+
+    h1 {
+      text-align: center;
+      font-size: clamp(1.8rem, 1.2rem + 2vw, 2.6rem);
+      margin: 0 0 28px 0;
+      letter-spacing: .2px;
+    }
 
     /* Contenedor central reducido */
-    .pricing-wrapper{
-      background:var(--panel);
-      border-radius:28px;
-      padding:clamp(18px,3vw,40px);
-      width:80%;
-      max-width:960px;      /* <-- antes 1200, ahora 20% más reducido */
-      margin:auto;
-      box-shadow:var(--ring-ghost);
+    .pricing-wrapper {
+      background: var(--panel);
+      border-radius: 28px;
+      padding: clamp(18px, 3vw, 40px);
+      width: 80%;
+      max-width: 960px;
+      /* <-- antes 1200, ahora 20% más reducido */
+      margin: auto;
+      box-shadow: var(--ring-ghost);
     }
 
     /* Estado base (se sobreescribe abajo en breakpoints) */
-    .pricing-grid{ display:grid; gap:clamp(16px,2.2vw,28px); grid-template-columns:repeat(4,1fr); }
-    @media (max-width:1200px){.pricing-grid{grid-template-columns:repeat(2,1fr)}}
-    @media (max-width:640px){.pricing-grid{grid-template-columns:1fr}}
-
-    .pricing-item{
-      position:relative; overflow:hidden; padding:26px 24px; border-radius:18px;
-      background:var(--surface); border:1px solid var(--border); box-shadow:var(--ring-ghost);
-      transition:.18s ease; display:grid; grid-template-rows:auto 1fr auto; gap:16px;
+    .pricing-grid {
+      display: grid;
+      gap: clamp(16px, 2.2vw, 28px);
+      grid-template-columns: repeat(4, 1fr);
     }
-    .pricing-item:hover{ transform:translateY(-3px); box-shadow:0 14px 32px rgba(0,0,0,.08); border-color:#dde6f3 }
-    .pricing-item.active{ background:linear-gradient(180deg,var(--brand) 0%, #5b7cff 100%); color:#fff; border:none; box-shadow:var(--ring); }
-    .pricing-popular{ position:absolute; right:16px; top:16px; padding:6px 12px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; border-radius:999px; background:#fff; color:var(--brand); box-shadow:0 10px 20px rgba(255,255,255,.35); border:1px solid rgba(255,255,255,.7); }
-    .pricing-content h4{ margin:0 0 6px 0; font-size:clamp(1.1rem,.9rem + .6vw,1.3rem) }
-    .pricing-amount{ font-size:clamp(1.8rem,1.4rem + 1.2vw,2.1rem); font-weight:800; margin:0; }
-    .pricing-feature ul{ margin:4px 0 6px 0; padding:0; list-style:none; display:grid; gap:10px; }
-    .pricing-feature ul li{ position:relative; padding-left:26px; line-height:1.25rem }
-    .pricing-feature ul li::before{ content:"\f00c"; font:normal normal normal 14px/1 FontAwesome; position:absolute; left:0; top:0; width:18px; height:18px; border-radius:50%; display:grid; place-items:center; background:rgba(60,101,245,.12); color:var(--brand); }
 
-    .theme-btn{ background:var(--brand); color:#fff; border:none; padding:12px 16px; border-radius:10px; font-weight:800; cursor:pointer; transition:background .2s, transform .08s, box-shadow .2s; box-shadow:0 10px 18px rgba(60,101,245,.22); width:100%; }
-    .theme-btn:hover{ background:var(--brand-dark) }
-    .theme-btn[disabled]{ opacity:.55; cursor:not-allowed; box-shadow:none; }
+    @media (max-width:1200px) {
+      .pricing-grid {
+        grid-template-columns: repeat(2, 1fr)
+      }
+    }
+
+    @media (max-width:640px) {
+      .pricing-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .pricing-item {
+      position: relative;
+      overflow: hidden;
+      padding: 26px 24px;
+      border-radius: 18px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: var(--ring-ghost);
+      transition: .18s ease;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 16px;
+    }
+
+    .pricing-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, .08);
+      border-color: #dde6f3
+    }
+
+    .pricing-item.active {
+      background: linear-gradient(180deg, var(--brand) 0%, #5b7cff 100%);
+      color: #fff;
+      border: none;
+      box-shadow: var(--ring);
+    }
+
+    .pricing-popular {
+      position: absolute;
+      right: 16px;
+      top: 16px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      border-radius: 999px;
+      background: #fff;
+      color: var(--brand);
+      box-shadow: 0 10px 20px rgba(255, 255, 255, .35);
+      border: 1px solid rgba(255, 255, 255, .7);
+    }
+
+    .pricing-content h4 {
+      margin: 0 0 6px 0;
+      font-size: clamp(1.1rem, .9rem + .6vw, 1.3rem)
+    }
+
+    .pricing-amount {
+      font-size: clamp(1.8rem, 1.4rem + 1.2vw, 2.1rem);
+      font-weight: 800;
+      margin: 0;
+    }
+
+    .pricing-feature ul {
+      margin: 4px 0 6px 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .pricing-feature ul li {
+      position: relative;
+      padding-left: 26px;
+      line-height: 1.25rem
+    }
+
+    .pricing-feature ul li::before {
+      content: "\f00c";
+      font: normal normal normal 14px/1 FontAwesome;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(60, 101, 245, .12);
+      color: var(--brand);
+    }
+
+    .theme-btn {
+      background: var(--brand);
+      color: #fff;
+      border: none;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background .2s, transform .08s, box-shadow .2s;
+      box-shadow: 0 10px 18px rgba(60, 101, 245, .22);
+      width: 100%;
+    }
+
+    .theme-btn:hover {
+      background: var(--brand-dark)
+    }
+
+    .theme-btn[disabled] {
+      opacity: .55;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
 
     /* ===== Carrito ===== */
-    .cart-summary{ position:fixed; right:24px; top:120px; width:360px; background:#fff; border:1px solid var(--border); border-radius:14px; box-shadow:0 18px 38px rgba(0,0,0,.12); display:none; flex-direction:column; z-index:100; overflow:hidden; }
-    .cart-head{ display:flex; align-items:center; justify-content:space-between; padding:14px 16px; background:#f8fbff; border-bottom:1px solid var(--border); }
-    .cart-table{ padding:12px 16px; }
-    .cart-table .row{ display:grid; grid-template-columns:1fr 90px 120px; gap:12px; align-items:center; padding:10px 0; border-bottom:1px dashed var(--line); font-size:.95rem; }
-    .qty{display:flex; align-items:center; gap:6px}
-    .btn-remove{
-      width:32px; height:32px;
-      border-radius:8px;
-      border:0;
-      background:#ef4444;
-      color:#fff;
-      cursor:pointer;
-      display:inline-flex; align-items:center; justify-content:center;
-      box-shadow:0 6px 14px rgba(239,68,68,.25);
-      transition:transform .08s ease, background .18s ease, box-shadow .18s ease;
+    .cart-summary {
+      position: fixed;
+      right: 24px;
+      top: 120px;
+      width: 360px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 18px 38px rgba(0, 0, 0, .12);
+      display: none;
+      flex-direction: column;
+      z-index: 100;
+      overflow: hidden;
     }
-    .btn-remove:hover{ background:#dc2626; box-shadow:0 8px 18px rgba(239,68,68,.35) }
-    .btn-remove:active{ transform:translateY(1px) }
-    .btn-remove svg{ width:14px; height:14px; display:block; }
-    .totals{ padding:12px 16px; border-top:1px solid var(--line); }
-    .totals .line{ display:flex; justify-content:space-between; padding:6px 0; }
-    .totals .line.total{ border-top:1px solid var(--line); margin-top:6px; padding-top:10px; font-weight:800; font-size:1.05rem }
-    .cart-footer{ padding:14px 16px; display:flex; align-items:center; justify-content:flex-end; gap:10px; background:#fff; border-top:1px solid var(--border); }
-    .btn-checkout{ background:var(--ok); color:#fff; border:none; padding:12px 16px; border-radius:10px; font-size:.98rem; font-weight:800; cursor:pointer; }
-    .empty-cart{ position:fixed; right:24px; top:120px; width:360px; padding:18px; background:#fff; border:1px solid var(--border); border-radius:14px; box-shadow:0 18px 38px rgba(0,0,0,.08); color:var(--muted); }
 
-    @media (max-width:768px){
-      .cart-summary,.empty-cart{ left:50%; right:auto; transform:translateX(-50%); bottom:18px; top:auto; width:min(720px,92vw); }
-      .cart-head{display:none}
+    .cart-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      background: #f8fbff;
+      border-bottom: 1px solid var(--border);
     }
+
+    .cart-table {
+      padding: 12px 16px;
+    }
+
+    .cart-table .row {
+      display: grid;
+      grid-template-columns: 1fr 90px 120px;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px dashed var(--line);
+      font-size: .95rem;
+    }
+
+    .qty {
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .btn-remove {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 0;
+      background: #ef4444;
+      color: #fff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 14px rgba(239, 68, 68, .25);
+      transition: transform .08s ease, background .18s ease, box-shadow .18s ease;
+    }
+
+    .btn-remove:hover {
+      background: #dc2626;
+      box-shadow: 0 8px 18px rgba(239, 68, 68, .35)
+    }
+
+    .btn-remove:active {
+      transform: translateY(1px)
+    }
+
+    .btn-remove svg {
+      width: 14px;
+      height: 14px;
+      display: block;
+    }
+
+    .totals {
+      padding: 12px 16px;
+      border-top: 1px solid var(--line);
+    }
+
+    .totals .line {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+    }
+
+    .totals .line.total {
+      border-top: 1px solid var(--line);
+      margin-top: 6px;
+      padding-top: 10px;
+      font-weight: 800;
+      font-size: 1.05rem
+    }
+
+    .cart-footer {
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      background: #fff;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn-checkout {
+      background: var(--ok);
+      color: #fff;
+      border: none;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: .98rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .empty-cart {
+      position: fixed;
+      right: 24px;
+      top: 120px;
+      width: 360px;
+      padding: 18px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 18px 38px rgba(0, 0, 0, .08);
+      color: var(--muted);
+    }
+
+    @media (max-width:768px) {
+
+      .cart-summary,
+      .empty-cart {
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        bottom: 18px;
+        top: auto;
+        width: min(720px, 92vw);
+      }
+
+      .cart-head {
+        display: none
+      }
+    }
+
     /* Topbar + botón volver */
-    .topbar{
-      max-width:1200px;
-      margin:0 auto 18px;
-      display:flex; align-items:center; gap:10px;
+    .topbar {
+      max-width: 1200px;
+      margin: 0 auto 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    .btn-back{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:10px 14px; border-radius:10px;
-      background:#fff; color:var(--brand);
-      border:1px solid var(--border);
-      font-weight:800; text-decoration:none;
-      box-shadow:var(--ring-ghost);
-      transition:transform .08s ease, background .18s ease, box-shadow .18s ease, color .18s ease, border-color .18s ease;
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: #fff;
+      color: var(--brand);
+      border: 1px solid var(--border);
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: var(--ring-ghost);
+      transition: transform .08s ease, background .18s ease, box-shadow .18s ease, color .18s ease, border-color .18s ease;
     }
-    .btn-back:hover{
-      background:#f8fbff;
-      color:var(--brand-dark);
-      border-color:#dbe7ff;
-      transform:translateY(-1px);
-      box-shadow:0 10px 22px rgba(60,101,245,.12);
+
+    .btn-back:hover {
+      background: #f8fbff;
+      color: var(--brand-dark);
+      border-color: #dbe7ff;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(60, 101, 245, .12);
     }
-    .btn-back i{ font-size:14px; }
+
+    .btn-back i {
+      font-size: 14px;
+    }
 
     /* ====== Precio lista con X roja ====== (20% más pequeño) */
-    .pricing-amount .price-list{
+    .pricing-amount .price-list {
       position: relative;
       display: inline-block;
       vertical-align: baseline;
@@ -129,8 +376,9 @@
       font-weight: 800;
       line-height: 1.1;
     }
+
     .pricing-amount .price-list::before,
-    .pricing-amount .price-list::after{
+    .pricing-amount .price-list::after {
       content: "";
       position: absolute;
       left: -8%;
@@ -140,35 +388,71 @@
       background: #ef4444;
       transform: rotate(18deg);
     }
-    .pricing-amount .price-list::after{ transform: rotate(-18deg); }
+
+    .pricing-amount .price-list::after {
+      transform: rotate(-18deg);
+    }
 
     /* Badge contador gratis */
-    .free-badge{
-      display:inline-flex; align-items:center; gap:6px;
-      padding:6px 10px; border-radius:999px;
-      font-size:.8rem; font-weight:800;
-      background:#f1f6ff; color:#1f3fa4; border:1px solid #dbe7ff;
-      margin-top:6px;
+    .free-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: .8rem;
+      font-weight: 800;
+      background: #f1f6ff;
+      color: #1f3fa4;
+      border: 1px solid #dbe7ff;
+      margin-top: 6px;
     }
-    .free-badge i{ font-size:.9rem }
+
+    .free-badge i {
+      font-size: .9rem
+    }
 
     /* ====== Layout como en el mock (centrado y ancho fijo por card) ====== */
-    @media (min-width: 992px){
-      .pricing-grid{
-        display:flex; flex-wrap:wrap; gap:24px; justify-content:center;
+    @media (min-width: 992px) {
+      .pricing-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+        justify-content: center;
       }
-      .pricing-item{
-        flex:0 0 calc((100% - 72px) / 4); /* 4 columnas, 3 gaps de 24px */
-        max-width:300px;
+
+      .pricing-item {
+        flex: 0 0 calc((100% - 72px) / 4);
+        /* 4 columnas, 3 gaps de 24px */
+        max-width: 300px;
       }
     }
-    @media (min-width: 640px) and (max-width: 991.98px){
-      .pricing-grid{ display:flex; flex-wrap:wrap; gap:20px; justify-content:center; }
-      .pricing-item{ flex:0 0 calc((100% - 20px) / 2); max-width:420px; }
+
+    @media (min-width: 640px) and (max-width: 991.98px) {
+      .pricing-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+      }
+
+      .pricing-item {
+        flex: 0 0 calc((100% - 20px) / 2);
+        max-width: 420px;
+      }
     }
-    @media (max-width: 639.98px){
-      .pricing-grid{ display:flex; flex-wrap:wrap; gap:16px; justify-content:center; }
-      .pricing-item{ flex:1 1 100%; }
+
+    @media (max-width: 639.98px) {
+      .pricing-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        justify-content: center;
+      }
+
+      .pricing-item {
+        flex: 1 1 100%;
+      }
     }
   </style>
 </head>
@@ -222,15 +506,9 @@
 
     <div class="cart-footer" style="justify-content:space-between; flex-wrap:wrap; gap:12px">
       <div class="discount-wrap" style="display:flex; gap:8px; align-items:center; flex:1 1 340px">
-        <input
-          id="discountCode"
-          class="form-control"
-          placeholder="Código de descuento"
-          style="max-width:260px; text-transform:uppercase"
-          minlength="20" maxlength="20"
-          pattern="^[A-Z0-9]{20}$"
-          inputmode="latin"
-          autocomplete="off" />
+        <input id="discountCode" class="form-control" placeholder="Código de descuento"
+          style="max-width:260px; text-transform:uppercase" minlength="20" maxlength="20" pattern="^[A-Z0-9]{20}$"
+          inputmode="latin" autocomplete="off" />
         <button class="btn btn-outline-primary" id="btnCheckCode" type="button">Validar</button>
         <span id="discountStatus" style="font-size:.9rem; color:var(--muted)"></span>
       </div>
@@ -259,276 +537,278 @@
   <script src="../assets/js/config/config.js"></script>
   <script src="../assets/js/main.js"></script>
   <script src="../assets/js/header-footer/loadHeaderFooter.js" defer></script>
-  <script src="../assets/js/modules/carrito-compras/carrito-integration.js"></script>
+
 
   <!-- JS del carrito -->
   <script>
-  const planes = [
-    { id:1, nombre:"Publicación Gratis",   precio:0,      descripcion:"Ideal para pequeñas empresas.", caracteristicas:["Hasta 2 publicaciones","Duración: 7 días","Soporte básico"], popular:false },
-    { id:2, nombre:"Publicación Básica",   precio:80000,  precioLista:100000, descripcion:"Ideal para pequeñas empresas.", caracteristicas:["Hasta 2 publicaciones","Duración: 7 días","Soporte básico"], popular:false },
-    { id:3, nombre:"Publicación Estándar", precio:140000, precioLista:170000, descripcion:"Para empresas medianas.", caracteristicas:["Hasta 5 publicaciones","Duración: 30 días","Soporte prioritario","Reportes básicos"], popular:true },
-    { id:4, nombre:"Publicación Premium",  precio:180000, precioLista:200000, descripcion:"Para alto volumen de contratación.", caracteristicas:["Publicaciones ilimitadas","Duración: 60 días","Soporte 24/7","Consultoría avanzada"], popular:false }
-  ];
-  let carrito = [];
+    const BASE_URL_API = "http://localhost:3000/v1";
 
-  const planGrid     = document.getElementById("planGrid");
-  const cartSummary  = document.getElementById("cartSummary");
-  const emptyCartMsg = document.getElementById("emptyCartMsg");
+    const planes = [
+      { id: 1, tipoAviso: "FREE", nombre: "Publicación Gratis", precio: 0, descripcion: "Ideal para pequeñas empresas.", caracteristicas: ["Hasta 2 publicaciones", "Duración: 7 días", "Soporte básico"], popular: false },
+      { id: 2, tipoAviso: "BASICO", nombre: "Publicación Básica", precio: 80000, precioLista: 100000, descripcion: "Ideal para pequeñas empresas.", caracteristicas: ["Hasta 2 publicaciones", "Duración: 7 días", "Soporte básico"], popular: false },
+      { id: 3, tipoAviso: "ESTANDAR", nombre: "Publicación Estándar", precio: 140000, precioLista: 170000, descripcion: "Para empresas medianas.", caracteristicas: ["Hasta 5 publicaciones", "Duración: 30 días", "Soporte prioritario", "Reportes básicos"], popular: true },
+      { id: 4, tipoAviso: "PREMIUM", nombre: "Publicación Premium", precio: 180000, precioLista: 200000, descripcion: "Para alto volumen de contratación.", caracteristicas: ["Publicaciones ilimitadas", "Duración: 60 días", "Soporte 24/7", "Consultoría avanzada"], popular: false }
+    ];
 
-  const cartItemsBox = document.getElementById("cartItems");
-  const elSubtotal = document.getElementById("cartSubtotal");
-  const elIva      = document.getElementById("cartIva");
-  const elDiscount = document.getElementById("cartDiscount");
-  const elTotal    = document.getElementById("cartTotal");
-  const checkoutBtn= document.getElementById("checkoutBtn");
+    let carrito = [];
 
-  const fmtCLP = n => Number(n||0).toLocaleString('es-CL', { style:'currency', currency:'CLP', maximumFractionDigits:0 });
+    const planGrid = document.getElementById("planGrid");
+    const cartSummary = document.getElementById("cartSummary");
+    const emptyCartMsg = document.getElementById("emptyCartMsg");
+    const cartItemsBox = document.getElementById("cartItems");
+    const elSubtotal = document.getElementById("cartSubtotal");
+    const elIva = document.getElementById("cartIva");
+    const elDiscount = document.getElementById("cartDiscount");
+    const elTotal = document.getElementById("cartTotal");
+    const checkoutBtn = document.getElementById("checkoutBtn");
 
-  /** ========= Helpers Free mensual ========= **/
-  function decodeJwt (token) {
-    try {
-      const payload = token.split('.')[1];
-      return JSON.parse(atob(payload.replace(/-/g,'+').replace(/_/g,'/')));
-    } catch { return null; }
-  }
-  function getUserIdFromToken(){
-    const token = localStorage.getItem('token');
-    if(!token) return 'anon';
-    const data = decodeJwt(token);
-    return (data && (data.sub || data.userId || data.id)) ? (data.sub || data.userId || data.id) : 'anon';
-  }
-  function getPeriodKey(date = new Date()){
-    const y = date.getFullYear();
-    const m = String(date.getMonth()+1).padStart(2,'0'); // YYYYMM
-    return `${y}${m}`;
-  }
-  const FREE_MONTHLY_LIMIT = 3;
+    const fmtCLP = n => Number(n || 0).toLocaleString('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
 
-  function getFreeRemaining(){
-    const uid = getUserIdFromToken();
-    const key = `free_pub_remaining_${uid}_${getPeriodKey()}`;
-    const val = localStorage.getItem(key);
-    if (val === null || isNaN(+val)) {
-      localStorage.setItem(key, String(FREE_MONTHLY_LIMIT));
-      return FREE_MONTHLY_LIMIT;
+    // ===== JWT Helpers =====
+    function decodeJwt(token) { try { const p = token.split('.')[1]; return JSON.parse(atob(p.replace(/-/g, '+').replace(/_/g, '/'))); } catch { return null; } }
+    function getUserIdFromToken() {
+      const token = localStorage.getItem('token');
+      if (!token) return null;
+      const d = decodeJwt(token);
+      return (d && (d.sub || d.userId || d.id)) ? (d.sub || d.userId || d.id) : null;
     }
-    return Math.max(0, parseInt(val,10));
-  }
-  function setFreeRemaining(newVal){
-    const uid = getUserIdFromToken();
-    const key = `free_pub_remaining_${uid}_${getPeriodKey()}`;
-    localStorage.setItem(key, String(Math.max(0, newVal)));
-  }
 
-  function generarOrderId(longitud = 12) {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let out = '';
-    for (let i=0;i<longitud;i++) out += chars.charAt(Math.floor(Math.random()*chars.length));
-    return out;
-  }
-
-  function renderPlanes() {
-    const freeLeft = getFreeRemaining();
-
-    planGrid.innerHTML = planes.map(plan => {
-      const isFree = plan.id === 1;
-      const btnDisabled = isFree && freeLeft <= 0;
-      const btnText = isFree && freeLeft <= 0 ? 'Agotado este mes' : 'Agregar al carrito';
-
-      return `
-      <div class="pricing-item ${plan.popular ? 'active' : ''}">
-        ${plan.popular ? `<div class="pricing-popular">Más popular</div>` : ''}
-        <div class="pricing-content">
-          <h4>${plan.nombre}</h4>
-          <div class="pricing-amount">
-            ${plan.precioLista ? `<span class="price-list">${fmtCLP(plan.precioLista)}</span>` : ''}
-            ${fmtCLP(plan.precio)} <span>CLP</span>
-          </div>
-          <p>${plan.descripcion}</p>
-          ${isFree ? `
-            <div class="free-badge" title="Cupos gratis mensuales. Se reinician cada mes.">
-              <i class="fa fa-gift" aria-hidden="true"></i>
-              Gratis disponibles: <strong>${freeLeft}/${FREE_MONTHLY_LIMIT}</strong> este mes
-            </div>
-          ` : ''}
-        </div>
-        <div class="pricing-feature">
-          <ul>${plan.caracteristicas.map(c => `<li>${c}</li>`).join('')}</ul>
-        </div>
-        <button class="theme-btn" data-id="${plan.id}" ${btnDisabled ? 'disabled' : ''}>${btnText}</button>
-      </div>
-      `;
-    }).join('');
-  }
-
-  function calcularTotales() {
-    const total = carrito.reduce((sum, item) => sum + item.precio * item.cantidad, 0); // total con IVA
-    const descuento = 0;
-    const subtotal  = Math.round((total - descuento) / 1.19);
-    const iva       = (total - descuento) - subtotal;
-    return { subtotal, descuento, iva, total };
-  }
-
-  function renderRows(){
-    cartItemsBox.innerHTML = carrito.map(item => `
-      <div class="row">
-        <div>${item.nombre}</div>
-        <div class="qty">
-          <span>x${item.cantidad}</span>
-          <button class="btn-remove" title="Eliminar este producto" aria-label="Eliminar ${item.nombre}" data-id="${item.id}">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path fill-rule="evenodd" d="M16.5 4.5V6h3.75a.75.75 0 010 1.5H3.75a.75.75 0 010-1.5H7.5V4.5A2.25 2.25 0 019.75 2.25h4.5A2.25 2.25 0 0116.5 4.5zM17.25 9v9a2.25 2.25 0 01-2.25 2.25h-6A2.25 2.25 0 016.75 18V9h10.5z" clip-rule="evenodd"/>
-            </svg>
-          </button>
-        </div>
-        <div>${fmtCLP(item.precio * item.cantidad)}</div>
-      </div>
-    `).join('');
-  }
-
-  function renderCarrito() {
-    if (carrito.length === 0) {
-      cartSummary.style.display = "none";
-      emptyCartMsg.style.display = "block";
-    } else {
-      cartSummary.style.display = "flex";
-      emptyCartMsg.style.display = "none";
-      renderRows();
-      const { subtotal, descuento, iva, total } = calcularTotales();
-      elSubtotal.textContent = fmtCLP(subtotal);
-      elIva.textContent      = fmtCLP(iva);
-      elDiscount.textContent = fmtCLP(descuento);
-      elTotal.textContent    = fmtCLP(total);
+    // ===== FREE mensual =====
+    const FREE_MONTHLY_LIMIT = 3;
+    function periodKey(d = new Date()) { return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}`; }
+    function getFreeRemaining() {
+      const key = `free_pub_remaining_${getUserIdFromToken()}_${periodKey()}`;
+      const val = localStorage.getItem(key);
+      if (val === null || isNaN(+val)) { localStorage.setItem(key, String(FREE_MONTHLY_LIMIT)); return FREE_MONTHLY_LIMIT; }
+      return Math.max(0, parseInt(val, 10));
     }
-  }
+    function setFreeRemaining(v) {
+      const key = `free_pub_remaining_${getUserIdFromToken()}_${periodKey()}`;
+      localStorage.setItem(key, String(Math.max(0, v)));
+    }
 
-  function agregarAlCarrito(id) {
-    const plan = planes.find(p => p.id === id);
-    if (!plan) return;
+    // ===== Manejo de carrito persistente =====
+    function guardarCarrito() {
+      localStorage.setItem('cart_items', JSON.stringify(carrito));
+    }
 
-    // Reglas para GRATIS: respeta cupo mensual
-    if (plan.id === 1) {
-      const freeLeft = getFreeRemaining();
-      if (freeLeft <= 0) {
-        alert('Ya usaste tus 3 publicaciones gratis de este mes.');
-        return;
+    function cargarCarrito() {
+      try {
+        const data = JSON.parse(localStorage.getItem('cart_items') || '[]');
+        if (Array.isArray(data)) carrito = data;
+      } catch {
+        carrito = [];
       }
-      const existente = carrito.find(p => p.id === id);
-      if (existente) {
-        const posible = Math.min(existente.cantidad + 1, freeLeft);
-        if (posible === existente.cantidad) {
-          alert(`Te quedan ${freeLeft} gratis este mes. No puedes agregar más.`);
+    }
+
+    // ===== Render planes / carrito =====
+    function renderPlanes() {
+      const freeLeft = getFreeRemaining();
+      planGrid.innerHTML = planes.map(p => {
+        const isFree = p.id === 1;
+        const disabled = isFree && freeLeft <= 0;
+        const btnText = isFree ? (disabled ? 'Agotado este mes' : 'Gratis') : 'Agregar al carrito';
+        return `
+          <div class="pricing-item ${p.popular ? 'active' : ''}">
+            ${p.popular ? `<div class="pricing-popular">Más popular</div>` : ''}
+            <div class="pricing-content">
+              <h4>${p.nombre}</h4>
+              <div class="pricing-amount">
+                ${p.precioLista ? `<span class="price-list">${fmtCLP(p.precioLista)}</span>` : ''}
+                ${fmtCLP(p.precio)} <span>CLP</span>
+              </div>
+              <p>${p.descripcion}</p>
+              ${isFree ? `<div class="free-badge"><i class="fa fa-gift"></i>
+                Gratis disponibles: <strong>${freeLeft}/${FREE_MONTHLY_LIMIT}</strong></div>` : ''}
+            </div>
+            <div class="pricing-feature"><ul>${p.caracteristicas.map(c => `<li>${c}</li>`).join('')}</ul></div>
+            <button class="theme-btn" data-id="${p.id}" ${disabled ? 'disabled' : ''}>${btnText}</button>
+          </div>`;
+      }).join('');
+    }
+
+    // ===== FUNCIONES DE CARRITO =====
+    function calcularTotales() {
+      const total = carrito.reduce((s, i) => s + (i.precio * i.cantidad), 0);
+      const descuento = 0;
+      const subtotal = Math.round((total - descuento) / 1.19);
+      const iva = (total - descuento) - subtotal;
+      return { subtotal, descuento, iva, total };
+    }
+
+    function renderRows() {
+      cartItemsBox.innerHTML = carrito.map(i => `
+        <div class="row">
+          <div>${i.nombre}</div>
+          <div class="qty">
+            <span>x${i.cantidad}</span>
+            <button class="btn-remove" data-id="${i.id}">🗑️</button>
+          </div>
+          <div>${fmtCLP(i.precio * i.cantidad)}</div>
+        </div>`).join('');
+    }
+
+    function renderCarrito() {
+      if (carrito.length === 0) {
+        cartSummary.style.display = "none";
+        emptyCartMsg.style.display = "block";
+      } else {
+        cartSummary.style.display = "flex";
+        emptyCartMsg.style.display = "none";
+        renderRows();
+        const { subtotal, descuento, iva, total } = calcularTotales();
+        elSubtotal.textContent = fmtCLP(subtotal);
+        elIva.textContent = fmtCLP(iva);
+        elDiscount.textContent = fmtCLP(descuento);
+        elTotal.textContent = fmtCLP(total);
+      }
+    }
+
+    // ===== Agregar / eliminar del carrito =====
+    function agregarAlCarrito(id) {
+      const plan = planes.find(p => p.id === id);
+      if (!plan) return;
+
+      // FREE control
+      if (plan.id === 1) {
+        const freeLeft = getFreeRemaining();
+        if (freeLeft <= 0) {
+          alert('Ya usaste tus 3 publicaciones gratis este mes.');
           return;
         }
-        existente.cantidad = posible;
-      } else {
-        carrito.push({ ...plan, cantidad: 1 });
       }
-    } else {
+
       const existente = carrito.find(p => p.id === id);
       if (existente) existente.cantidad++;
       else carrito.push({ ...plan, cantidad: 1 });
-    }
 
-    alert(`"${plan.nombre}" agregado al carrito.`);
-    renderCarrito();
-  }
-
-  // Delegación: quitar 1 unidad
-  document.querySelector('.cart-table').addEventListener('click', (e)=>{
-    const btn = e.target.closest('.btn-remove');
-    if(!btn) return;
-    const id = parseInt(btn.dataset.id,10);
-    const item = carrito.find(x=>x.id===id);
-    if(!item) return;
-    item.cantidad--;
-    if(item.cantidad<=0){
-      carrito = carrito.filter(x=>x.id!==id);
-      alert('Producto eliminado del carrito.');
-    }else{
-      alert('Se quitó 1 unidad.');
-    }
-    renderCarrito();
-  });
-
-  planGrid.addEventListener("click", (e) => {
-    const btn = e.target.closest(".theme-btn");
-    if (!btn || btn.disabled) return;
-    const id = parseInt(btn.dataset.id);
-    agregarAlCarrito(id);
-  });
-
-  checkoutBtn.addEventListener("click", async () => {
-    const { total } = calcularTotales();
-    if (carrito.length === 0) { alert("El carrito está vacío."); return; }
-
-    // === Flujo $0: sólo GRATIS ===
-    if (total === 0) {
-      const freeItem = carrito.find(i => i.id === 1);
-      if (!freeItem) {
-        alert("No hay ítems válidos de $0 para procesar.");
-        return;
-      }
-      const freeLeft = getFreeRemaining();
-      if (freeItem.cantidad > freeLeft) {
-        alert(`Solo te quedan ${freeLeft} publicaciones gratis este mes.`);
-        return;
-      }
-
-      const token = localStorage.getItem('token');
-      if (!token) { alert('Debes iniciar sesión para usar la publicación gratis.'); return; }
-
-      setFreeRemaining(freeLeft - freeItem.cantidad);
-      carrito = [];
+      guardarCarrito();
       renderCarrito();
-      renderPlanes();
-      window.location.href = 'employer-post-job.html';
-      return;
+      alert(`"${plan.nombre}" agregado al carrito.`);
     }
 
-    // === Flujo Webpay normal para pagos > 0 ===
-    const orderId = generarOrderId();
-    const token = localStorage.getItem('token');
-    if (!token) { alert('Debes iniciar sesión para proceder con el pago.'); return; }
+    // Eliminar producto
+    document.querySelector(".cart-table").addEventListener("click", e => {
+      const btn = e.target.closest(".btn-remove");
+      if (!btn) return;
+      const id = parseInt(btn.dataset.id);
+      carrito = carrito.filter(i => i.id !== id);
+      guardarCarrito();
+      renderCarrito();
+    });
 
-    try {
-      localStorage.setItem('cart_items', JSON.stringify(carrito));
+    planGrid.addEventListener("click", e => {
+      const btn = e.target.closest(".theme-btn");
+      if (!btn || btn.disabled) return;
+      agregarAlCarrito(parseInt(btn.dataset.id));
+    });
 
-      const response = await fetch(`${BASE_URL_API}/webpay/create`, {
+    // ===== API HELPERS =====
+    async function getEmpresaId(userId, token) {
+      const res = await fetch(`${BASE_URL_API}/empleador/basic-info/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!res.ok) throw new Error('No se pudo obtener la empresa del empleador.');
+      const data = await res.json();
+      localStorage.setItem('empresaId', data.empresa_id);
+      return data.empresa_id;
+    }
+
+    async function createPendingTransaction(empresaId, items, token) {
+      const res = await fetch(`${BASE_URL_API}/webpay/create-pending`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ amount: total, orderId })
+        body: JSON.stringify({ empresaId, items })
       });
-
-      const data = await response.json();
-      if (response.ok && data.url && data.token) {
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = data.url;
-        const tokenInput = document.createElement('input');
-        tokenInput.type = 'hidden';
-        tokenInput.name = 'token_ws';
-        tokenInput.value = data.token;
-        form.appendChild(tokenInput);
-        document.body.appendChild(form);
-        form.submit();
-
-        carrito = [];
-        renderCarrito();
-      } else {
-        alert('Error al iniciar el proceso de pago.');
-        console.error('Respuesta inesperada:', data);
-      }
-    } catch (error) {
-      console.error('Error al conectar con el backend:', error);
-      alert('Ocurrió un error al procesar el pago.');
+      const j = await res.json();
+      if (!res.ok) throw new Error(j?.message || 'No se pudo registrar la transacción.');
+      return j;
     }
-  });
 
-  // Init
-  renderPlanes();
-  renderCarrito();
+    async function startWebpayTransaction(orderId, amount, token) {
+      const res = await fetch(`${BASE_URL_API}/webpay/create`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ orderId, amount })
+      });
+      const j = await res.json();
+      if (!res.ok) throw new Error(j?.message || 'No se pudo iniciar Webpay.');
+      return j;
+    }
+
+    // ===== Checkout =====
+    checkoutBtn.addEventListener('click', async () => {
+      const { total } = calcularTotales();
+      const token = localStorage.getItem('token');
+      if (!token) return alert('Debes iniciar sesión para continuar.');
+
+      const userId = getUserIdFromToken();
+      let empresaId = localStorage.getItem('empresaId');
+
+      if (!empresaId) {
+        try { empresaId = await getEmpresaId(userId, token); }
+        catch { return alert('No se pudo obtener la empresa asociada.'); }
+      }
+
+      if (total === 0) {
+        const freeItem = carrito.find(i => i.id === 1);
+        const freeLeft = getFreeRemaining();
+        if (!freeItem || freeItem.cantidad > freeLeft) return alert('No puedes usar más publicaciones gratis.');
+        setFreeRemaining(freeLeft - freeItem.cantidad);
+        carrito = [];
+        guardarCarrito();
+        renderCarrito(); renderPlanes();
+        alert('✅ Publicación gratuita activada.');
+        return window.location.href = 'employer-post-job.html';
+      }
+
+      try {
+        const paidItems = carrito.filter(i => i.precio > 0)
+          .map(i => ({ tipoAviso: i.tipoAviso, cantidad: i.cantidad, precioUnitario: i.precio }));
+        const pending = await createPendingTransaction(empresaId, paidItems, token);
+        const webpay = await startWebpayTransaction(pending.orderId, pending.total, token);
+
+        if (webpay.url && webpay.token) {
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = webpay.url;
+          const inp = document.createElement('input');
+          inp.type = 'hidden'; inp.name = 'token_ws'; inp.value = webpay.token;
+          form.appendChild(inp);
+          document.body.appendChild(form);
+          form.submit();
+        } else alert('Error al iniciar el proceso de pago.');
+      } catch (err) {
+        console.error(err);
+        alert(err.message || 'Ocurrió un error al procesar el pago.');
+      }
+    });
+
+    // ===== Init =====
+    document.addEventListener('DOMContentLoaded', () => {
+      cargarCarrito();
+      renderPlanes();
+      renderCarrito();
+    });
   </script>
+
+
+
+
+  <!-- SweetAlert como polyfill de alert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    (function () {
+      if (!window.Swal) return;
+      const native = window.alert.bind(window);
+      window.alert = function (msg) {
+        try {
+          Swal.fire({ toast: true, icon: 'success', title: typeof msg === 'string' ? msg : JSON.stringify(msg), position: 'top-end', showConfirmButton: false, timer: 1500, timerProgressBar: true });
+        } catch { native(msg); }
+      }
+    })();
+  </script>
+
 
   <!-- SweetAlert como “polyfill” de alert -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -538,52 +818,53 @@
       const nativeAlert = window.alert.bind(window);
       window.alert = function (msg) {
         try {
-          Swal.fire({ toast:true, icon:'success', title: typeof msg === 'string' ? msg : JSON.stringify(msg), position:'top-end', showConfirmButton:false, timer:1500, timerProgressBar:true });
+          Swal.fire({ toast: true, icon: 'success', title: typeof msg === 'string' ? msg : JSON.stringify(msg), position: 'top-end', showConfirmButton: false, timer: 1500, timerProgressBar: true });
         } catch { nativeAlert(msg); }
       };
     })();
   </script>
   <script type="module">
-  const PAY_BASE = BASE_URL_API.replace(/\/$/, "") + "/payments";
+    const PAY_BASE = BASE_URL_API.replace(/\/$/, "") + "/payments";
 
-  async function lookup(orderId){
-    const r = await fetch(PAY_BASE + "/lookup?orderId=" + encodeURIComponent(orderId));
-    const j = await r.json();
-    if(!r.ok) throw new Error(j?.message || ("HTTP " + r.status));
-    return j; // {status, planKey?, amount?, ledgerId?, orderId?}
-  }
+    async function lookup(orderId) {
+      const r = await fetch(PAY_BASE + "/lookup?orderId=" + encodeURIComponent(orderId));
+      const j = await r.json();
+      if (!r.ok) throw new Error(j?.message || ("HTTP " + r.status));
+      return j; // {status, planKey?, amount?, ledgerId?, orderId?}
+    }
 
-  function persistAuthorized(planKey, orderId){
-    if(!planKey || !orderId) return;
-    const payload = JSON.stringify({ planKey, orderId });
-    sessionStorage.setItem("tuempleo_lastAuthorizedPlan", payload);
-    localStorage.setItem("tuempleo_lastAuthorizedPlan", payload);
-  }
+    function persistAuthorized(planKey, orderId) {
+      if (!planKey || !orderId) return;
+      const payload = JSON.stringify({ planKey, orderId });
+      sessionStorage.setItem("tuempleo_lastAuthorizedPlan", payload);
+      localStorage.setItem("tuempleo_lastAuthorizedPlan", payload);
+    }
 
-  document.addEventListener("DOMContentLoaded", async ()=>{
-    const url = new URL(window.location.href);
-    const orderId = url.searchParams.get("orderId");
-    if(!orderId) return;
-    try{
-      const res = await lookup(orderId);
-      const statusEl = document.querySelector("#pago-estado");
-      if(res.status === "AUTHORIZED"){
-        // Usa planKey del backend o mapea por monto
-        const normalize = s => String(s||'').trim().toUpperCase();
-        const amt = Number(res.amount);
-        const planKey = normalize(res.planKey)
-          || (amt === 80000 ? "BASICA"
+    document.addEventListener("DOMContentLoaded", async () => {
+      const url = new URL(window.location.href);
+      const orderId = url.searchParams.get("orderId");
+      if (!orderId) return;
+      try {
+        const res = await lookup(orderId);
+        const statusEl = document.querySelector("#pago-estado");
+        if (res.status === "AUTHORIZED") {
+          // Usa planKey del backend o mapea por monto
+          const normalize = s => String(s || '').trim().toUpperCase();
+          const amt = Number(res.amount);
+          const planKey = normalize(res.planKey)
+            || (amt === 80000 ? "BASICA"
               : amt === 140000 ? "ESTANDAR"
-              : [180000, 180000].includes(amt) ? "PREMIUM"
-              : "");
-        if(statusEl){ statusEl.textContent = "Pago AUTORIZADO"; statusEl.classList.add("text-success","fw-bold"); }
-        persistAuthorized(planKey, res.orderId || orderId);
-      }else{
-        if(statusEl){ statusEl.textContent = "Pago no autorizado"; statusEl.classList.add("text-danger","fw-bold"); }
-      }
-    }catch(e){ console.error(e); }
-  });
-</script>
+                : [180000, 180000].includes(amt) ? "PREMIUM"
+                  : "");
+          if (statusEl) { statusEl.textContent = "Pago AUTORIZADO"; statusEl.classList.add("text-success", "fw-bold"); }
+          persistAuthorized(planKey, res.orderId || orderId);
+        } else {
+          if (statusEl) { statusEl.textContent = "Pago no autorizado"; statusEl.classList.add("text-danger", "fw-bold"); }
+        }
+      } catch (e) { console.error(e); }
+    });
+  </script>
 
 </body>
+
 </html>
