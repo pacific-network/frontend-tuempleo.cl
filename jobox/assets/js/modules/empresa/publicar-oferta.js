@@ -82,7 +82,7 @@ function getModalidadLabel(v){
        : "";
 }
 
-// Construir data con claves antiguas (lo que usabas) y alias nuevos
+// Construir data
 function collectOfferForm(){
   const fd = new FormData($("#formulario-publicar"));
 
@@ -93,7 +93,6 @@ function collectOfferForm(){
   const educacion_requerida = String(fd.get("educacion_requerida")||"");
   const tipo_contrato       = String(fd.get("tipo_contrato")||"");
 
-  // 👉 valor crudo del select (como antes) + etiqueta legible
   const modalidad_val  = String(fd.get("modalidad") || ""); // "1".."5"
   const modalidad_text = getModalidadLabel(modalidad_val);
 
@@ -116,14 +115,13 @@ function collectOfferForm(){
                                         .map(i=>i.value.trim()).filter(Boolean);
 
   const dataObj = {
-    // —— CLAVES ANTIGUAS ——
     titulo,
     area_trabajo,
     anios_experiencia,
     region,
     educacion_requerida,
     tipo_contrato,
-    modalidad: modalidad_val,           // ✅ valor crudo
+    modalidad: modalidad_val,
     descripcion_puesto,
     responsabilidades,
     requisitos_minimos,
@@ -135,8 +133,7 @@ function collectOfferForm(){
     },
     herramientas_basicas: herramientas,
     preguntas_personalizadas,
-
-    // —— ALIAS NUEVOS ——
+    // alias
     area: area_trabajo,
     experiencia: anios_experiencia,
     educacion: educacion_requerida,
@@ -144,7 +141,7 @@ function collectOfferForm(){
     requisitos: requisitos_minimos,
     renta: { desde: renta_desde, hasta: renta_hasta },
     herramientas,
-    modalidad_text // etiqueta legible
+    modalidad_text
   };
   return { titulo, dataObj };
 }
@@ -212,8 +209,9 @@ function setSelection(planKey){
   selection = { planKey }; // FREE | BASICO | ESTANDAR | PREMIUM
   $$(".tu-card-plan").forEach(n=>n.classList.remove("active"));
   document.querySelector(`.tu-card-plan[data-plan="${planKey}"]`)?.classList.add("active");
+  // 🔥 FREE → GRATIS en el texto mostrado (planKey se mantiene)
   $("#chosen-text").textContent = planKey==='FREE'
-    ? `Plan FREE · se usará 1 cupo mensual`
+    ? `Plan GRATIS · se usará 1 cupo mensual`
     : `Plan ${planKey} · se descontará 1 crédito de stock`;
   $("#chosen-pill").classList.remove("d-none");
   $("#no-choice-msg").classList.add("d-none");
@@ -240,7 +238,7 @@ $("#btn-change-choice")?.addEventListener("click", ()=>{
 async function crearOfertaYConsumir(e){
   e.preventDefault();
   if(!selection){
-    await Swal.fire("Selecciona un plan","Debes elegir FREE o un plan con stock.","warning");
+    await Swal.fire("Selecciona un plan","Debes elegir GRATIS o un plan con stock.","warning");
     return;
   }
 
@@ -267,7 +265,7 @@ async function crearOfertaYConsumir(e){
     duracion_publicacion: 30,
     es_activa: true,
     fecha_cierre,
-    tipo_aviso: selection.planKey,    // <<<<<< CLAVE
+    tipo_aviso: selection.planKey,    // <<<<<< mantiene FREE internamente
     data: JSON.stringify(dataObj)     // cadena JSON
   };
 
