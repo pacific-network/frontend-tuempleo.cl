@@ -1,7 +1,8 @@
-// ====== PUBLICAR OFERTA ======
+// ====== PUBLICAR OFERTA (COMPLETO) ======
 // - Muestra stock (BASICO/ESTANDAR/PREMIUM) y cupo FREE/mes
-// - En el POST /v1/ofertas envía tipo_aviso
-// - Tras publicar, descuenta del stock (pagados) o consume FREE (publication)
+// - En POST /v1/ofertas envía tipo_aviso
+// - Tras publicar: descuenta stock (pagados) o consume FREE (publication)
+// - Modalidad: guarda valor crudo ("1..5") y modalidad_text
 
 const API = BASE_URL_API.replace(/\/$/, "");
 const OFERTAS_URL = `${API}/ofertas`;
@@ -69,34 +70,81 @@ function showToast(title, body){
   new bootstrap.Toast($("#liveToast")).show();
 }
 function splitLines(v){ return String(v||"").split(/\r?\n/).map(s=>s.trim()).filter(Boolean); }
-function mapModalidad(v){
-  const m=String(v||"");
-  return m==="1"?"Full Time":m==="2"?"Part Time":m==="3"?"Remoto":m==="4"?"Freelancer":m==="5"?"Temporal":"";
+
+// Etiqueta legible para modalidad
+function getModalidadLabel(v){
+  const m = String(v || "");
+  return m==="1" ? "Full Time"
+       : m==="2" ? "Part Time"
+       : m==="3" ? "Remoto"
+       : m==="4" ? "Freelancer"
+       : m==="5" ? "Temporal"
+       : "";
 }
+
+// Construir data con claves antiguas (lo que usabas) y alias nuevos
 function collectOfferForm(){
   const fd = new FormData($("#formulario-publicar"));
-  const titulo = String(fd.get("titulo")||"Aviso").slice(0,255);
 
-  const herrMarcadas = Array.from(document.querySelectorAll('#checkbox-container input[type="checkbox"]:checked')).map(x=>x.value);
-  const otras = String(fd.get("otras_herramientas")||"").split(",").map(s=>s.trim()).filter(Boolean);
-  const herramientas = [...herrMarcadas, ...otras].filter(Boolean);
+  const titulo = String(fd.get("titulo")||"Aviso").slice(0,255);
+  const area_trabajo        = String(fd.get("area_cargo")||"");
+  const anios_experiencia   = String(fd.get("anios_experiencia")||"");
+  const region              = String(fd.get("region")||"");
+  const educacion_requerida = String(fd.get("educacion_requerida")||"");
+  const tipo_contrato       = String(fd.get("tipo_contrato")||"");
+
+  // 👉 valor crudo del select (como antes) + etiqueta legible
+  const modalidad_val  = String(fd.get("modalidad") || ""); // "1".."5"
+  const modalidad_text = getModalidadLabel(modalidad_val);
+
+  const descripcion_puesto = String(fd.get("descripcion_puesto")||"");
+  const responsabilidades  = splitLines(fd.get("responsabilidades"));
+  const requisitos_minimos = splitLines(fd.get("requisitos_minimos"));
+  const beneficios         = splitLines(fd.get("beneficios"));
+
+  const renta_desde = Number(String(fd.get("renta_desde")||"").replace(/[^0-9]/g,"")) || null;
+  const renta_hasta = Number(String(fd.get("renta_hasta")||"").replace(/[^0-9]/g,"")) || null;
+
+  const marcadas = Array.from(document.querySelectorAll('#checkbox-container input[type="checkbox"]:checked'))
+                   .map(x=>x.value);
+  const otras = String(fd.get("otras_herramientas")||"")
+                   .split(",").map(s=>s.trim()).filter(Boolean);
+  const herramientas = [...marcadas, ...otras].filter(Boolean);
+
+  const preguntasInputs = document.querySelectorAll('#preguntas-container input[name^="pregunta_"]');
+  const preguntas_personalizadas = Array.from(preguntasInputs)
+                                        .map(i=>i.value.trim()).filter(Boolean);
 
   const dataObj = {
-    area: String(fd.get("area_cargo")||""),
-    experiencia: String(fd.get("anios_experiencia")||""),
-    region: String(fd.get("region")||""),
-    educacion: String(fd.get("educacion_requerida")||""),
-    tipo_contrato: String(fd.get("tipo_contrato")||""),
-    modalidad: mapModalidad(fd.get("modalidad")),
-    descripcion: String(fd.get("descripcion_puesto")||""),
-    responsabilidades: splitLines(fd.get("responsabilidades")),
-    requisitos: splitLines(fd.get("requisitos_minimos")),
-    beneficios: splitLines(fd.get("beneficios")),
-    renta: {
-      desde: Number(String(fd.get("renta_desde")||"").replace(/[^0-9]/g,"")) || null,
-      hasta: Number(String(fd.get("renta_hasta")||"").replace(/[^0-9]/g,"")) || null
+    // —— CLAVES ANTIGUAS ——
+    titulo,
+    area_trabajo,
+    anios_experiencia,
+    region,
+    educacion_requerida,
+    tipo_contrato,
+    modalidad: modalidad_val,           // ✅ valor crudo
+    descripcion_puesto,
+    responsabilidades,
+    requisitos_minimos,
+    beneficios,
+    renta_salarial: {
+      desde: renta_desde,
+      hasta: renta_hasta,
+      de_acuerdo_al_mercado: true
     },
-    herramientas
+    herramientas_basicas: herramientas,
+    preguntas_personalizadas,
+
+    // —— ALIAS NUEVOS ——
+    area: area_trabajo,
+    experiencia: anios_experiencia,
+    educacion: educacion_requerida,
+    descripcion: descripcion_puesto,
+    requisitos: requisitos_minimos,
+    renta: { desde: renta_desde, hasta: renta_hasta },
+    herramientas,
+    modalidad_text // etiqueta legible
   };
   return { titulo, dataObj };
 }
@@ -176,7 +224,6 @@ document.addEventListener("click",(e)=>{
   const b = e.target.closest(".tu-card-plan");
   if(!b || b.classList.contains("disabled")) return;
   const plan = b.getAttribute("data-plan");
-  // reglas: FREE según cuota; pagados según stock
   if (plan==='FREE' && FREE_REMAINING<=0) return;
   if (plan!=='FREE' && (STOCK[plan]||0)<=0) return;
   setSelection(plan);
@@ -207,7 +254,11 @@ async function crearOfertaYConsumir(e){
   const fecha_publicacion = now.toISOString();
   const fecha_cierre = new Date(now.getTime() + 30*24*3600*1000).toISOString();
 
-  // Enviar tipo_aviso para eliminar validación del backend
+  const token = getAnyToken();
+  const headers = { "Content-Type":"application/json" };
+  if (token) headers.Authorization = `Bearer ${token}`;
+
+  // Payload exacto que tu backend acepta
   const payload = {
     titulo,
     empresa_id: empleadorCtx.empresaId,
@@ -216,15 +267,15 @@ async function crearOfertaYConsumir(e){
     duracion_publicacion: 30,
     es_activa: true,
     fecha_cierre,
-    tipo_aviso: selection.planKey,        // <<<<<< CLAVE
-    data: JSON.stringify(dataObj)
+    tipo_aviso: selection.planKey,    // <<<<<< CLAVE
+    data: JSON.stringify(dataObj)     // cadena JSON
   };
 
   try{
     // 1) crear oferta
     const r = await fetch(OFERTAS_URL, {
       method:"POST",
-      headers:{ "Content-Type":"application/json" },
+      headers,
       body: JSON.stringify(payload)
     });
     const j = await r.json();
@@ -233,7 +284,7 @@ async function crearOfertaYConsumir(e){
 
     // 2) consumir cupo
     if (selection.planKey === 'FREE') {
-      // FREE usa reserva + confirm (publication)
+      // FREE: reserva + confirm
       const resvRes = await fetch(`${PUB_URL}/reservations`, {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
@@ -241,6 +292,7 @@ async function crearOfertaYConsumir(e){
       });
       const resv = await resvRes.json();
       if(!resvRes.ok) throw new Error(resv?.message || "No se pudo reservar FREE");
+
       const confRes = await fetch(`${PUB_URL}/confirm`, {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
@@ -252,12 +304,12 @@ async function crearOfertaYConsumir(e){
       }
       FREE_REMAINING = Math.max(0, FREE_REMAINING-1);
     } else {
-      // Pagados: consume stock de tu endpoint real (usar/Tipo)
+      // Pagados: consume stock
       const tipo = selection.planKey; // BASICO|ESTANDAR|PREMIUM
-      const token = getAnyToken();
+      const token2 = getAnyToken();
       const useRes = await fetch(`${STOCK_URL}/${empleadorCtx.empresaId}/usar/${tipo}`, {
         method:"POST",
-        headers: { Authorization: `Bearer ${token}` }
+        headers: token2 ? { Authorization: `Bearer ${token2}` } : {}
       });
       if(!useRes.ok){
         const e = await useRes.json().catch(()=>({}));
