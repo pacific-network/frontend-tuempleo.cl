@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <li><b>Código autorización</b> <span>${data.authorization_code || '-'}</span></li>
           </ul>
   
-          <h6 class="mt-3">Planes adquiridos</h6>
+          <h6 class="mt-3">Avisos adquiridos</h6>
           ${itemsTable}
   
           <h6 class="mt-4">Resumen</h6>
