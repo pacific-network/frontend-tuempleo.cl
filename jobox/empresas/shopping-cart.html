@@ -5,12 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Planes y Carrito</title>
 
-  <!-- CSS base del proyecto -->
+  <!-- Fuentes / CSS base del proyecto -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
   <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
   <link rel="stylesheet" href="../assets/css/font-awesome.min.css" />
   <link rel="stylesheet" href="../assets/css/style.css" />
 
+  <!-- ===== UI más grande + estética (ancho más estrecho) ===== -->
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     :root{
@@ -21,8 +22,8 @@
       --color-primary:#667eea;--color-primary-dark:#5568d3;--color-secondary:#f5576c;
       --color-success:#00f2fe;--color-text:#2d3748;--color-text-light:#718096;
       --color-border:rgba(226,232,240,.8);--color-surface:rgba(255,255,255,.9);
-      --shadow-md:0 8px 24px rgba(0,0,0,.08);--shadow-lg:0 16px 48px rgba(0,0,0,.12);--shadow-xl:0 24px 64px rgba(0,0,0,.16);
-      --radius-full:9999px;--radius-lg:28px;--blur:blur(20px)
+      --shadow-md:0 10px 28px rgba(0,0,0,.08);--shadow-lg:0 18px 52px rgba(0,0,0,.12);--shadow-xl:0 28px 70px rgba(0,0,0,.16);
+      --radius-full:9999px;--radius-lg:32px;--blur:blur(20px)
     }
     body{
       font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial;
@@ -31,120 +32,114 @@
         radial-gradient(circle at 80% 80%, rgba(245,87,108,.06) 0%, transparent 50%),
         radial-gradient(circle at 40% 90%, rgba(74,172,254,.05) 0%, transparent 50%),
         linear-gradient(180deg,#f7fafc 0%,#edf2f7 100%);
-      color:var(--color-text); min-height:100vh; padding:20px; overflow-x:hidden
+      color:var(--color-text); min-height:100vh; padding:28px; overflow-x:hidden
     }
 
-    /* Topbar */
-    .header-container{max-width:1200px;margin:0 auto 24px;display:flex;gap:10px;align-items:center}
+    /* Topbar (estrechado) */
+    .header-container{
+      max-width:1100px;           /* antes 1320px */
+      margin:0 auto 28px;
+      display:flex;gap:12px;align-items:center
+    }
     .btn-back{
-      display:inline-flex;align-items:center;gap:10px;padding:12px 18px;background:var(--color-surface);
+      display:inline-flex;align-items:center;gap:12px;padding:14px 22px;background:var(--color-surface);
       backdrop-filter:var(--blur);border:1px solid var(--color-border);border-radius:var(--radius-full);
-      color:var(--color-text);font-weight:700;text-decoration:none;box-shadow:var(--shadow-md);transition:.3s
+      color:var(--color-text);font-weight:800;text-decoration:none;box-shadow:var(--shadow-md);transition:.3s;font-size:1.05rem
     }
     .btn-back:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);background:#fff;border-color:var(--color-primary);color:var(--color-primary)}
 
-    /* Hero */
-    .hero{text-align:center;max-width:820px;margin:0 auto 32px}
+    /* Hero (más contenido, menos ancho) */
+    .hero{text-align:center;max-width:760px;margin:0 auto 36px} /* antes 920px */
     .hero h1{
-      font-size:clamp(2rem,3.5vw,3rem);font-weight:800;line-height:1.1;
-      background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px
+      font-size:clamp(2.2rem,4.2vw,3.2rem);font-weight:900;line-height:1.08;
+      background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px
     }
-    .hero p{color:var(--color-text-light);font-weight:600}
+    .hero p{color:var(--color-text-light);font-weight:600;font-size:clamp(1rem,1.2vw,1.08rem)}
 
-    /* ===== Contenedor de página y grilla principal ===== */
-    .page-width{max-width:1320px;margin:0 auto;padding:0 16px}
-    /* Grilla: [columnas de planes] | [carrito] */
+    /* Layout principal (estrechado) */
+    .page-width{
+      max-width:1100px;           /* antes 1440px */
+      margin:0 auto;
+      padding:0 20px
+    }
     .plans-grid{
       display:grid;
-      grid-template-columns: 1fr 380px;
-      gap:24px;
-      align-items:start;
+      grid-template-columns: 1fr 340px;  /* antes 420px */
+      gap:24px;                          /* un pelito menos gap */
+      align-items:start
     }
 
-    /* ===== Grilla de tarjetas (4 paralelas) ===== */
-    .pricing-grid{
-      display:grid;
-      grid-template-columns: repeat(4, minmax(220px, 1fr)); /* 4 en paralelo */
-      gap:20px;
-    }
-
-    /* Card */
+    /* Cards de planes (4 en paralelo) */
+    .pricing-grid{display:grid;grid-template-columns: repeat(4, minmax(240px, 1fr));gap:20px} /* minmax levemente menor */
     .pricing-item{
       position:relative;background:var(--color-surface);backdrop-filter:var(--blur);
-      border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:26px 22px;
-      display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow-md);transition:.3s;overflow:hidden
+      border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:30px 22px;
+      display:flex;flex-direction:column;gap:16px;box-shadow:var(--shadow-md);transition:.3s;overflow:hidden
     }
     .pricing-item:hover{transform:translateY(-6px);box-shadow:var(--shadow-xl);border-color:transparent}
     .pricing-item.active{background:var(--gradient-primary);color:#fff;border:none;transform:scale(1.02)}
     .pricing-item.active .theme-btn{background:#fff;color:#4f5fd6}
 
-    .pricing-popular{
-      position:absolute;top:14px;right:14px;padding:6px 12px;font-size:12px;font-weight:800;border-radius:999px;
-      background:#fff;color:#667eea;box-shadow:0 4px 12px rgba(0,0,0,.1)
-    }
-    .pricing-content h4{font-size:1.12rem;font-weight:800;margin:0}
-    .pricing-amount{display:flex;align-items:baseline;gap:10px;margin:6px 0 4px;flex-wrap:wrap}
-    .price-list{position:relative;font-size:1.05rem;color:var(--color-text-light);opacity:.75}
+    .pricing-popular{position:absolute;top:16px;right:16px;padding:7px 12px;font-size:.78rem;font-weight:900;border-radius:999px;background:#fff;color:#667eea;box-shadow:0 6px 14px rgba(0,0,0,.12)}
+    .pricing-content h4{font-size:1.18rem;font-weight:900;margin:0}
+    .pricing-amount{display:flex;align-items:baseline;gap:10px;margin:8px 0 6px;flex-wrap:wrap}
+    .price-list{position:relative;font-size:1.02rem;color:var(--color-text-light);opacity:.75}
     .price-list::after{content:'';position:absolute;left:-4px;right:-4px;top:50%;height:2px;background:var(--gradient-secondary);transform:rotate(-8deg)}
-    .price-main{font-size:clamp(1.7rem,2.4vw,2.05rem);font-weight:900;letter-spacing:-.02em}
-    .currency{font-size:.9rem;color:var(--color-text-light)}
-    .pricing-content p{color:var(--color-text-light);margin:0}
-    .free-badge{
-      display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;border:1px solid rgba(74,172,254,.3);
-      background:linear-gradient(135deg,rgba(74,172,254,.1),rgba(0,242,254,.1));color:#0891b2;font-weight:700;margin-top:6px;font-size:.85rem
-    }
+    .price-main{font-size:clamp(1.8rem,2.4vw,2.1rem);font-weight:900;letter-spacing:-.02em}
+    .currency{font-size:.95rem;color:var(--color-text-light)}
+    .pricing-content p{color:#eaf0ff;opacity:.95}
+    .pricing-item:not(.active) .pricing-content p{color:var(--color-text-light)}
+    .free-badge{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;border:1px solid rgba(74,172,254,.3);background:linear-gradient(135deg,rgba(74,172,254,.1),rgba(0,242,254,.1));color:#0891b2;font-weight:800;margin-top:8px;font-size:.9rem}
 
-    .pricing-feature ul{list-style:none;display:flex;flex-direction:column;gap:9px;margin:0;padding:0}
-    .pricing-feature li{position:relative;padding-left:26px}
+    .pricing-feature ul{list-style:none;display:flex;flex-direction:column;gap:10px;margin:0;padding:0}
+    .pricing-feature li{position:relative;padding-left:28px;font-size:1.01rem}
     .pricing-feature li::before{
-      content:'\f00c';font-family:'FontAwesome';position:absolute;left:0;top:2px;width:18px;height:18px;display:grid;place-items:center;
-      border-radius:50%;background:var(--gradient-success);color:#fff;font-size:9px;box-shadow:0 3px 8px rgba(74,172,254,.3)
+      content:'\f00c';font-family:'FontAwesome';position:absolute;left:0;top:2px;width:20px;height:20px;display:grid;place-items:center;
+      border-radius:50%;background:var(--gradient-success);color:#fff;font-size:10px;box-shadow:0 3px 8px rgba(74,172,254,.3)
     }
 
+    /* Botón centrado */
     .theme-btn{
-      width:100%;padding:12px 16px;border:none;border-radius:14px;background:var(--gradient-primary);color:#fff;
-      font-weight:800;cursor:pointer;box-shadow:0 8px 24px rgba(102,126,234,.3);transition:.25s
+      width:100%; height:50px; padding:0 16px; border:none; border-radius:16px;
+      background:var(--gradient-primary); color:#fff; font-weight:900; font-size:1rem; line-height:1;
+      box-shadow:0 10px 28px rgba(102,126,234,.32); cursor:pointer; transition:.25s;
+      display:flex; align-items:center; justify-content:center;
     }
-    .theme-btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(102,126,234,.4)}
+    .theme-btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(102,126,234,.4)}
     .theme-btn:disabled{background:linear-gradient(135deg,#cbd5e0,#a0aec0);opacity:.7;cursor:not-allowed}
+    .theme-btn i{line-height:0;margin-right:.5rem}
 
-    /* ===== Carrito (columna derecha) ===== */
-    .cart-panel{ position:relative; }
+    /* Carrito (columna derecha) */
     .cart-summary{
-      position:relative;  /* en desktop NO es fixed */
-      right:auto; top:auto; width:100%;
+      position:relative;right:auto;top:auto;width:100%;
       display:none;flex-direction:column;z-index:1;
       background:var(--color-surface);backdrop-filter:var(--blur);border:1px solid var(--color-border);
       border-radius:28px;box-shadow:var(--shadow-xl);overflow:hidden
     }
     .cart-head{padding:18px;background:var(--gradient-primary);color:#fff;display:flex;align-items:center;justify-content:space-between}
-    .cart-head h3{font-size:1.05rem;font-weight:900;margin:0;display:flex;gap:10px;align-items:center}
-    .cart-table{padding:18px;max-height:420px;overflow-y:auto}
+    .cart-head h3{font-size:1.08rem;font-weight:900;margin:0;display:flex;gap:10px;align-items:center}
+    .cart-table{padding:18px;max-height:440px;overflow-y:auto;font-size:1.01rem}
     .cart-table .row{display:grid;grid-template-columns:1fr 90px 120px;gap:12px;align-items:center;padding:10px 0;border-bottom:1px dashed var(--color-border)}
-    .qty{display:flex;align-items:center;gap:6px;font-weight:700;color:var(--color-text-light)}
-    .btn-remove{width:32px;height:32px;border-radius:10px;border:none;background:var(--gradient-secondary);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s}
+    .qty{display:flex;align-items:center;gap:8px;font-weight:800;color:var(--color-text-light)}
+    .btn-remove{width:34px;height:34px;border-radius:12px;border:none;background:var(--gradient-secondary);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s}
     .btn-remove:hover{transform:scale(1.06)}
     .totals{padding:16px 18px;background:linear-gradient(180deg,transparent 0%, rgba(102,126,234,.05) 100%);border-top:1px solid var(--color-border)}
-    .totals .line{display:flex;justify-content:space-between;padding:6px 0;font-weight:700}
-    .totals .line.total{border-top:1px solid var(--color-border);margin-top:8px;padding-top:10px;font-size:1.02rem}
+    .totals .line{display:flex;justify-content:space-between;padding:6px 0;font-weight:800}
+    .totals .line.total{border-top:1px solid var(--color-border);margin-top:8px;padding-top:10px;font-size:1.05rem}
     .cart-footer{padding:16px 18px;display:flex;gap:10px;align-items:center;justify-content:space-between;border-top:1px solid var(--color-border);background:#fff;flex-wrap:wrap}
     .discount-wrap{display:flex;gap:10px;align-items:stretch;flex:1 1 320px}
-    .discount-wrap input{flex:1;padding:10px 12px;border:1px solid var(--color-border);border-radius:12px;background:var(--color-surface);font-weight:600}
-    .discount-wrap button{padding:10px 14px;border:none;border-radius:12px;background:var(--gradient-dark);color:#fff;font-weight:800;cursor:pointer}
-    .btn-checkout{width:auto;padding:11px 14px;background:var(--gradient-secondary);color:#fff;border:none;border-radius:12px;font-weight:900}
-    .empty-cart{
-      position:relative; right:auto; top:auto; width:100%;
-      padding:24px;text-align:center;color:var(--color-text-light);
-      background:var(--color-surface);backdrop-filter:var(--blur);border:1px solid var(--color-border);border-radius:28px;box-shadow:var(--shadow-lg);display:none
-    }
+    .discount-wrap input{flex:1;padding:12px 14px;border:1px solid var(--color-border);border-radius:14px;background:var(--color-surface);font-weight:700}
+    .discount-wrap button{padding:12px 14px;border:none;border-radius:14px;background:var(--gradient-dark);color:#fff;font-weight:900;cursor:pointer}
+    .btn-checkout{width:auto;padding:12px 14px;background:var(--gradient-secondary);color:#fff;border:none;border-radius:14px;font-weight:900}
+    .empty-cart{position:relative;right:auto;top:auto;width:100%;padding:24px;text-align:center;color:var(--color-text-light);background:var(--color-surface);backdrop-filter:var(--blur);border:1px solid var(--color-border);border-radius:28px;box-shadow:var(--shadow-lg);display:none;font-size:1.03rem}
 
-    /* ===== Responsivo ===== */
+    /* Responsive */
     @media (max-width: 1280px){
-      .plans-grid{ grid-template-columns: 1fr 340px; }
-      .pricing-grid{ grid-template-columns: repeat(4, minmax(200px, 1fr)); }
+      .plans-grid{ grid-template-columns: 1fr 320px; }
+      .pricing-grid{ grid-template-columns: repeat(4, minmax(220px, 1fr)); }
     }
     @media (max-width: 1100px){
-      .plans-grid{ grid-template-columns: 1fr 320px; }
+      .plans-grid{ grid-template-columns: 1fr 300px; }
       .pricing-grid{ grid-template-columns: repeat(3, minmax(220px, 1fr)); }
     }
     @media (max-width: 920px){
@@ -156,8 +151,7 @@
       .plans-grid{ grid-template-columns: 1fr; }
       .pricing-grid{ grid-template-columns: 1fr; }
       .cart-summary,.empty-cart{
-        position:fixed;left:50%;right:auto;transform:translateX(-50%);
-        bottom:20px;top:auto;width:min(92vw,520px);z-index:1000
+        position:fixed;left:50%;transform:translateX(-50%);bottom:20px;width:min(92vw,560px);z-index:1000
       }
       .cart-head{display:none}
     }
@@ -167,6 +161,7 @@
 
   <div class="preloader"><div class="loader"><span></span><span></span><span></span></div></div>
 
+  <!-- Back button superior -->
   <div class="header-container">
     <a href="employer-dashboard.html" class="btn-back" aria-label="Volver al panel">
       <i class="fa fa-arrow-left" aria-hidden="true"></i> Volver al panel
@@ -176,7 +171,7 @@
   <div id="header-placeholder"></div>
 
   <section class="hero">
-    <h1>Elige tu Plan</h1>
+    <h1>Elige tu Aviso</h1>
     <p>Potencia tu reclutamiento con nuestras soluciones</p>
   </section>
 
@@ -236,17 +231,33 @@
   <script src="../assets/js/main.js"></script>
   <script src="../assets/js/header-footer/loadHeaderFooter.js" defer></script>
 
-  <!-- JS -->
+  <!-- ===== Lógica de Planes + Carrito ===== -->
   <script>
-    const BASE_URL_API = "http://localhost:3000/v1";
 
+    /* ---------- PLANES (publicación única + nuevas duraciones) ---------- */
     const planes = [
-      { id: 1, tipoAviso: "FREE", nombre: "Publicación Gratis", precio: 0, descripcion: "Ideal para pequeñas empresas.", caracteristicas: ["Hasta 2 publicaciones", "Duración: 7 días", "Soporte básico"], popular: false },
-      { id: 2, tipoAviso: "BASICO", nombre: "Publicación Básica", precio: 80000, precioLista: 100000, descripcion: "Ideal para pequeñas empresas.", caracteristicas: ["Hasta 2 publicaciones", "Duración: 7 días", "Soporte básico"], popular: false },
-      { id: 3, tipoAviso: "ESTANDAR", nombre: "Publicación Estándar", precio: 140000, precioLista: 170000, descripcion: "Para empresas medianas.", caracteristicas: ["Hasta 5 publicaciones", "Duración: 30 días", "Soporte prioritario", "Reportes básicos"], popular: true },
-      { id: 4, tipoAviso: "PREMIUM", nombre: "Publicación Premium", precio: 180000, precioLista: 200000, descripcion: "Para alto volumen de contratación.", caracteristicas: ["Publicaciones ilimitadas", "Duración: 60 días", "Soporte 24/7", "Consultoría avanzada"], popular: false }
+      { id: 1, tipoAviso: "FREE",     nombre: "Publicación Gratis",   precio: 0,      precioLista: null,
+        descripcion: "Ideal para pequeñas empresas.",
+        caracteristicas: ["1 publicación", "Duración: 30 días", "Soporte básico"],
+        popular: false },
+
+      { id: 2, tipoAviso: "BASICO",   nombre: "Publicación Básica",   precio: 80000,  precioLista: 100000,
+        descripcion: "Ideal para pequeñas empresas.",
+        caracteristicas: ["1 publicación", "Duración: 30 días", "Soporte básico"],
+        popular: false },
+
+      { id: 3, tipoAviso: "ESTANDAR", nombre: "Publicación Estándar", precio: 140000, precioLista: 170000,
+        descripcion: "Para empresas medianas.",
+        caracteristicas: ["1 publicación", "Duración: 60 días", "Soporte prioritario", "Reportes básicos"],
+        popular: true },
+
+      { id: 4, tipoAviso: "PREMIUM",  nombre: "Publicación Premium",  precio: 180000, precioLista: 200000,
+        descripcion: "Para alto volumen de contratación.",
+        caracteristicas: ["1 publicación", "Duración: 90 días", "Soporte 24/7", "Consultoría avanzada"],
+        popular: false }
     ];
 
+    /* ---------- Estado carrito ---------- */
     let carrito = [];
 
     const planGrid = document.getElementById("planGrid");
@@ -261,23 +272,36 @@
 
     const fmtCLP = n => Number(n || 0).toLocaleString('es-CL',{style:'currency',currency:'CLP',maximumFractionDigits:0});
 
+    /* ---------- Helpers JWT ---------- */
     function decodeJwt(t){try{const p=t.split('.')[1];return JSON.parse(atob(p.replace(/-/g,'+').replace(/_/g,'/')))}catch{return null}}
     function getUserIdFromToken(){const token=localStorage.getItem('token');if(!token)return null;const d=decodeJwt(token);return(d&&(d.sub||d.userId||d.id))?(d.sub||d.userId||d.id):null}
 
+    /* ---------- Límite mensual Free ---------- */
     const FREE_MONTHLY_LIMIT=3;
     function periodKey(d=new Date()){return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}`}
-    function getFreeRemaining(){const k=`free_pub_remaining_${getUserIdFromToken()}_${periodKey()}`;const v=localStorage.getItem(k);if(v===null||isNaN(+v)){localStorage.setItem(k,String(FREE_MONTHLY_LIMIT));return FREE_MONTHLY_LIMIT}return Math.max(0,parseInt(v,10))}
-    function setFreeRemaining(v){const k=`free_pub_remaining_${getUserIdFromToken()}_${periodKey()}`;localStorage.setItem(k,String(Math.max(0,v)))}
+    function freeKey(){ return `free_pub_remaining_${getUserIdFromToken()}_${periodKey()}` }
+    function getFreeRemaining(){
+      const k=freeKey(); const v=localStorage.getItem(k);
+      if(v===null || isNaN(+v)){ localStorage.setItem(k,String(FREE_MONTHLY_LIMIT)); return FREE_MONTHLY_LIMIT; }
+      return Math.max(0,parseInt(v,10));
+    }
+    function setFreeRemaining(v){ localStorage.setItem(freeKey(), String(Math.max(0,v))) }
 
+    /* ---------- Persistencia carrito ---------- */
     function guardarCarrito(){localStorage.setItem('cart_items',JSON.stringify(carrito))}
     function cargarCarrito(){try{const d=JSON.parse(localStorage.getItem('cart_items')||'[]');if(Array.isArray(d))carrito=d}catch{carrito=[]}}
 
+    /* ---------- Render de planes ---------- */
     function renderPlanes(){
       const freeLeft=getFreeRemaining();
       planGrid.innerHTML=planes.map(p=>{
         const isFree=p.id===1;
-        const disabled=isFree&&freeLeft<=0;
-        const btnText=isFree?(disabled?'Agotado este mes':'Gratis'):'Agregar al carrito';
+        const disabled=isFree && freeLeft<=0;
+        const btnText=isFree?(disabled?'Agotado este mes':'Obtener Gratis'):'Agregar al carrito';
+        const yaEnCarrito = !!carrito.find(i=>i.id===p.id);
+        const btnDisabled = disabled || yaEnCarrito; // compra única
+        const btnLabel = yaEnCarrito ? 'Ya en carrito' : btnText;
+
         return `
           <div class="pricing-item ${p.popular?'active':''}">
             ${p.popular?`<div class="pricing-popular">Más popular</div>`:''}
@@ -291,11 +315,12 @@
               ${isFree?`<div class="free-badge"><i class="fa fa-gift"></i> Gratis disponibles: <strong>${freeLeft}/${FREE_MONTHLY_LIMIT}</strong></div>`:''}
             </div>
             <div class="pricing-feature"><ul>${p.caracteristicas.map(c=>`<li>${c}</li>`).join('')}</ul></div>
-            <button class="theme-btn" data-id="${p.id}" ${disabled?'disabled':''}>${btnText}</button>
+            <button class="theme-btn" data-id="${p.id}" ${btnDisabled?'disabled':''}>${btnLabel}</button>
           </div>`;
       }).join('');
     }
 
+    /* ---------- Totales ---------- */
     function calcularTotales(){
       const total=carrito.reduce((s,i)=>s+(i.precio*i.cantidad),0);
       const descuento=0;
@@ -325,28 +350,44 @@
         elDiscount.textContent=fmtCLP(descuento);
         elTotal.textContent=fmtCLP(total);
       }
+      renderPlanes(); // refrescar botones
     }
 
+    /* ---------- Agregar (compra única) ---------- */
     function agregarAlCarrito(id){
-      const plan=planes.find(p=>p.id===id);if(!plan)return;
+      const plan=planes.find(p=>p.id===id);
+      if(!plan) return;
+
       if(plan.id===1){
         const freeLeft=getFreeRemaining();
-        if(freeLeft<=0){alert('Ya usaste tus 3 publicaciones gratis este mes.');return}
+        if(freeLeft<=0){ alert('Ya usaste tus publicaciones gratis este mes.'); return; }
       }
-      const ex=carrito.find(p=>p.id===id);
-      if(ex) ex.cantidad++; else carrito.push({...plan,cantidad:1});
-      guardarCarrito();renderCarrito();alert(`"${plan.nombre}" agregado al carrito.`);
+
+      const existente = carrito.find(p=>p.id===id);
+      if(existente){ alert('Este aviso es de compra única. Ya está en tu carrito.'); return; }
+
+      carrito.push({...plan, cantidad:1});
+      guardarCarrito();
+      renderCarrito();
+      alert(`"${plan.nombre}" agregado al carrito.`);
     }
 
+    /* ---------- Eventos UI ---------- */
     document.addEventListener("click",e=>{
       const rm=e.target.closest(".btn-remove");
-      if(rm){const id=parseInt(rm.dataset.id);carrito=carrito.filter(i=>i.id!==id);guardarCarrito();renderCarrito();return}
+      if(rm){
+        const id=parseInt(rm.dataset.id);
+        carrito=carrito.filter(i=>i.id!==id);
+        guardarCarrito();renderCarrito();
+        return;
+      }
       const add=e.target.closest(".theme-btn");
-      if(add && !add.disabled){agregarAlCarrito(parseInt(add.dataset.id))}
+      if(add && !add.disabled){ agregarAlCarrito(parseInt(add.dataset.id)); }
     });
 
+    /* ---------- API pago ---------- */
     async function getEmpresaId(userId,token){
-      const res=await fetch(`${BASE_URL_API}/empleador/basic-info/${userId}`,{headers:{Authorization:`Bearer ${token}`}}); 
+      const res=await fetch(`${BASE_URL_API}/empleador/basic-info/${userId}`,{headers:{Authorization:`Bearer ${token}`}});
       if(!res.ok) throw new Error('No se pudo obtener la empresa del empleador.');
       const data=await res.json(); localStorage.setItem('empresaId',data.empresa_id); return data.empresa_id;
     }
@@ -365,6 +406,7 @@
       const j=await res.json(); if(!res.ok) throw new Error(j?.message||'No se pudo iniciar Webpay.'); return j;
     }
 
+    /* ---------- Checkout ---------- */
     checkoutBtn.addEventListener('click', async ()=>{
       const { total } = calcularTotales();
       const token = localStorage.getItem('token');
@@ -372,38 +414,61 @@
 
       const userId = getUserIdFromToken();
       let empresaId = localStorage.getItem('empresaId');
-      if(!empresaId){ try{ empresaId = await getEmpresaId(userId, token);}catch{ return alert('No se pudo obtener la empresa asociada.'); } }
+      if(!empresaId){
+        try{ empresaId = await getEmpresaId(userId, token); }
+        catch{ return alert('No se pudo obtener la empresa asociada.'); }
+      }
 
       if(total===0){
         const freeItem=carrito.find(i=>i.id===1);
         const freeLeft=getFreeRemaining();
         if(!freeItem || freeItem.cantidad>freeLeft) return alert('No puedes usar más publicaciones gratis.');
+
         setFreeRemaining(freeLeft - freeItem.cantidad);
-        carrito=[]; guardarCarrito(); renderCarrito(); renderPlanes();
-        alert('✅ Publicación gratuita activada.'); 
+        carrito=[]; guardarCarrito(); renderCarrito();
+        alert('✅ Publicación gratuita activada.');
         return window.location.href='employer-post-job.html';
       }
+
       try{
-        const paidItems=carrito.filter(i=>i.precio>0).map(i=>({tipoAviso:i.tipoAviso,cantidad:i.cantidad,precioUnitario:i.precio}));
+        const paidItems=carrito
+          .filter(i=>i.precio>0)
+          .map(i=>({tipoAviso:i.tipoAviso,cantidad:i.cantidad,precioUnitario:i.precio}));
+
         const pending=await createPendingTransaction(empresaId,paidItems,token);
         const webpay=await startWebpayTransaction(pending.orderId,pending.total,token);
+
         if(webpay.url && webpay.token){
           const form=document.createElement('form'); form.method='POST'; form.action=webpay.url;
           const inp=document.createElement('input'); inp.type='hidden'; inp.name='token_ws'; inp.value=webpay.token;
           form.appendChild(inp); document.body.appendChild(form); form.submit();
         }else alert('Error al iniciar el proceso de pago.');
-      }catch(err){ console.error(err); alert(err.message || 'Ocurrió un error al procesar el pago.'); }
+      }catch(err){
+        console.error(err); alert(err.message || 'Ocurrió un error al procesar el pago.');
+      }
     });
 
+    /* ---------- Init ---------- */
     document.addEventListener('DOMContentLoaded', ()=>{
       cargarCarrito();renderPlanes();renderCarrito();
     });
   </script>
 
+  <!-- Toasts bonitos con SweetAlert (opcional) -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
-    (function(){ if(!window.Swal) return; const n=window.alert.bind(window);
-      window.alert=function(msg){ try{Swal.fire({toast:true,icon:'success',title:typeof msg==='string'?msg:JSON.stringify(msg),position:'top-end',showConfirmButton:false,timer:1500,timerProgressBar:true});}catch{n(msg);} };
+    (function(){
+      if(!window.Swal) return;
+      const n=window.alert.bind(window);
+      window.alert=function(msg){
+        try{
+          Swal.fire({
+            toast:true,icon:'success',
+            title:typeof msg==='string'?msg:JSON.stringify(msg),
+            position:'top-end',showConfirmButton:false,timer:1500,timerProgressBar:true
+          });
+        }catch{ n(msg); }
+      };
     })();
   </script>
 

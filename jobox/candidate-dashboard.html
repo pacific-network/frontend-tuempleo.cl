@@ -1,642 +1,719 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
-    <!-- meta tags -->
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="keywords" content="">
+  <!-- meta tags -->
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- title -->
-    <title>Dashboard Candidato</title>
+  <!-- title -->
+  <title>Dashboard Candidato</title>
 
-    <!-- favicon -->
-    <link rel="icon" type="image/x-icon" href="assets/img/logo/favicon.png">
+  <!-- favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/img/logo/favicon.png" />
 
-    <!-- css -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/all-fontawesome.min.css">
-    <link rel="stylesheet" href="assets/css/feather.min.css">
-    <link rel="stylesheet" href="assets/css/flaticon.css">
-    <link rel="stylesheet" href="assets/css/animate.min.css">
-    <link rel="stylesheet" href="assets/css/magnific-popup.min.css">
-    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="assets/css/nice-select.min.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <style>
-        .equal-height {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.equal-height > [class*="col-"] {
-  display: flex;
-}
-
-.dashboard-widget {
-  flex: 1;
-  width: 100%;
-}
-.tab-btn {
-    color: #777;
-    transition: all 0.2s ease;
-  }
-
-  .tab-btn.active {
-    color: #3C65F5;
-    border-bottom: 2px solid #3C65F5;
-  }
-.user-profile-tabs {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-  gap: 2rem; /* o el espacio que prefieras */
-}
-.user-profile-tabs span {
-  margin: 0 0.5rem;
-  color: #888;
-}
-.user-profile-sidebar .d-flex {
-    margin-bottom: 0.1rem;
-}
-.fade-text {
-    transition: opacity 0.3s ease;
-    opacity: 1;
-}
-.fade-out {
-    opacity: 0.5;
-    transition: opacity 0.2s;
-}
-.user-profile-sidebar .item-toggle {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 2px 0;
-    margin: 0;
-    line-height: 1.2;
-}
-.user-profile-sidebar .item-toggle + .item-toggle {
-    margin-top: 4px;
-}
-.user-profile-sidebar .item-toggle div {
-    margin: 0;
-    padding: 0;
-}
-.user-profile-sidebar i {
-    transition: color 0.2s;
-}
-.toggle-azul {
-    color: #3C65F5 !important;
-}
-    </style>
-
+  <!-- css -->
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="assets/css/all-fontawesome.min.css" />
+  <link rel="stylesheet" href="assets/css/feather.min.css" />
+  <link rel="stylesheet" href="assets/css/flaticon.css" />
+  <link rel="stylesheet" href="assets/css/animate.min.css" />
+  <link rel="stylesheet" href="assets/css/magnific-popup.min.css" />
+  <link rel="stylesheet" href="assets/css/owl.carousel.min.css" />
+  <link rel="stylesheet" href="assets/css/nice-select.min.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <style>
+    .equal-height { display:flex; flex-wrap:wrap; }
+    .equal-height>[class*="col-"] { display:flex; }
+    .dashboard-widget { flex:1; width:100%; }
+    .tab-btn { color:#777; transition:all .2s ease; }
+    .tab-btn.active { color:#3C65F5; border-bottom:2px solid #3C65F5; }
+    .user-profile-tabs { display:flex; align-items:center; margin-bottom:1rem; gap:2rem; }
+    .user-profile-tabs span { margin:0 .5rem; color:#888; }
+    .user-profile-sidebar .d-flex { margin-bottom:.1rem; }
+    .fade-text { transition:opacity .3s ease; opacity:1; }
+    .fade-out { opacity:.5; transition:opacity .2s; }
+    .user-profile-sidebar .item-toggle { display:flex; justify-content:space-between; align-items:center; padding:2px 0; margin:0; line-height:1.2; }
+    .user-profile-sidebar .item-toggle+.item-toggle { margin-top:4px; }
+    .user-profile-sidebar .item-toggle div { margin:0; padding:0; }
+    .user-profile-sidebar i { transition:color .2s; }
+    .toggle-azul { color:#3C65F5 !important; }
+  </style>
 </head>
-
 <body>
+  <!-- preloader -->
+  <div class="preloader">
+    <div class="loader"><span></span><span></span><span></span></div>
+  </div>
+  <!-- preloader end -->
 
-    <!-- preloader -->
-    <div class="preloader">
-        <div class="loader">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+  <!-- header area -->
+  <div id="header-placeholder"></div>
+  <!-- header area end -->
+
+  <main class="main">
+    <!-- breadcrumb -->
+    <div class="site-breadcrumb">
+      <div class="container"><h2 class="breadcrumb-title">Dashboard</h2></div>
+      <div class="hero-shape">
+        <img class="hero-shape-1" src="assets/img/shape/03.svg" alt="">
+        <img class="hero-shape-2" src="assets/img/shape/05.svg" alt="">
+        <img class="hero-shape-4" src="assets/img/shape/07.svg" alt="">
+      </div>
     </div>
-    <!-- preloader end -->
 
-
-    <!-- header area -->
-    <div id="header-placeholder"></div>
-    <!-- header area end -->
-
-
-
-    <main class="main">
-
-        <!-- breadcrumb -->
-        <div class="site-breadcrumb">
-            <div class="container">
-                <h2 class="breadcrumb-title">Dashboard</h2>
-            </div>
-            <div class="hero-shape">
-                <img class="hero-shape-1" src="assets/img/shape/03.svg" alt="">
-                <img class="hero-shape-2" src="assets/img/shape/05.svg" alt="">
-                <img class="hero-shape-4" src="assets/img/shape/07.svg" alt="">
-            </div>
-        </div>
-
-
-
-
-        <!-- candidate-dashboard -->
-        <div class="user-profile py-120">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="user-profile-sidebar">
-                            <div class="user-profile-sidebar-top">
-                                <div class="user-profile-img">
-                                    <img src="assets/img/candidate/01.jpg" alt="">
-                                    <button type="button" class="profile-img-btn"><i class="far fa-camera"></i></button>
-                                    <input type="file" class="profile-img-file">
-                                </div>
-                                <h4 id="userFullName">Cargando...</h4>
-                                <p id="userCategory">Cargando...</p>
-                            </div>
-                            <ul class="user-profile-sidebar-list">
-                                <li><a class="active" href="candidate-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a></li>
-                                <li><a href="candidate-profile.html"><i class="far fa-user-tie"></i> Mi Perfil</a></li>
-                                <li><a href="job-list.html"><i class="far fa-briefcase-arrow-right"></i> Buscar Trabajo</a></li>
-                                <li><a href="candidate-applied-job.html"><i class="far fa-briefcase"></i> Trabajos Postulados</a></li>
-                                <li><a href="candidate-cv-manager.html"><i class="far fa-file-zipper"></i> Archivo CV</a></li>
-                                <li><a href="candidate-saved-job.html"><i class="far fa-bookmark"></i> Trabajos Guardados</a></li>
-                                <li><a href="candidate-settings.html"><i class="far fa-cog"></i> Editar Perfil</a></li>
-                                <li><a href="#" id="logoutButton"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
-                            </ul>
-                        </div>
-                        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="logoutModalLabel">¿Seguro que quieres cerrar sesión?</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                        <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar Sesión</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="user-profile-sidebar">
-                            <h6>Informa a las empresas tu disponibilidad</h6>
-
-                            <div class="item-toggle">
-                                <div class="user-profile fade-text" id="estadoDisponibilidad1">Escucho propuestas de empleo</div>
-                                <a onclick="toggleDisponibilidad('1')" style="cursor: pointer;">
-                                    <i id="toggleIcon1" class="fas fa-toggle-off fa-2x text-secondary toggle-azul"></i>
-                                </a>
-                            </div>
-                      
-                            <div class="item-toggle">
-                                <div class="user-profile fade-text" id="estadoDisponibilidad2">Puedo empezar de inmediato</div>
-                                <a onclick="toggleDisponibilidad('2')" style="cursor: pointer;">
-                                    <i id="toggleIcon2" class="fas fa-toggle-off fa-2x text-secondary toggle-azul"></i>
-                                </a>
-                            </div>
-                            <h6>Notificaciones</h6>
-                            <div class="item-toggle">
-                                <div class="user-profile fade-text" id="estadoDisponibilidad3">Notificación por Mail</div>
-                                <a onclick="toggleDisponibilidad('3')" style="cursor: pointer;">
-                                    <i id="toggleIcon3" class="fas fa-toggle-off fa-2x text-secondary toggle-azul"></i>
-                                </a>
-                            </div>
-                      
-                            <!--<div class="item-toggle">
-                                <div class="user-profile fade-text" id="estadoDisponibilidad4">Notificación por SMS</div>
-                                <a onclick="toggleDisponibilidad('4')" style="cursor: pointer;">
-                                    <i id="toggleIcon4" class="fas fa-toggle-off fa-2x text-secondary toggle-azul"></i>
-                                </a>
-                            </div>-->
-                        </div>
-                    </div>
-                    <div class="col-lg-9">
-                        <div class="user-profile-wrapper">
-                            <div class="row equal-height">
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="dashboard-widget dashboard-widget-color-1">
-                                        <div class="dashboard-widget-info">
-                                            <h1>0</h1>
-                                            <span>Trabajos Postulados Mensual</span>
-                                        </div>
-                                        <div class="dashboard-widget-icon">
-                                            <i class="fal fa-briefcase"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="dashboard-widget dashboard-widget-color-2">
-                                        <div class="dashboard-widget-info">
-                                            <h1 id="views-total"></h1>
-                                            <span>Visitas Totales al Perfil</span>
-                                        </div>
-                                        <div class="dashboard-widget-icon">
-                                            <i class="fal fa-eye"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="dashboard-widget dashboard-widget-color-3">
-                                        <div class="dashboard-widget-info">
-                                            <h1>0</h1>
-                                            <span>Recomendaciones Generales</span>
-                                        </div>
-                                        <div class="dashboard-widget-icon">
-                                            <i class="fal fa-layer-group"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <!--<div class="col-lg-8">
-                                    <div class="user-profile-card">
-                                        <h4 class="user-profile-card-title">Tus Visitas al Perfil</h4>
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div id="chart"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>-->
-                                <div class="col-lg-8">
-                                    <div class="user-profile-card">
-                                        <div class="d-flex align-items-center mb-3">
-                                            <h4 class="user-profile-card-title tab-btn active" data-tab="recomendaciones" style="cursor:pointer; flex: 1; text-align: left;">
-                                                Recomendaciones
-                                            </h4>
-                                            <i class="fas fa-slash-forward" style="font-size: 1.5rem; color: #888; margin: 0 1rem; line-height: 1; vertical-align: middle; width: 24px; text-align: center; display: inline-flex; justify-content: center; align-items: center;"></i>
-                                            <h4 class="user-profile-card-title tab-btn" data-tab="ultimos" style="cursor:pointer; flex: 1; text-align: right;">
-                                                Últimos Avisos
-                                            </h4>
-                                        </div>
-                                    
-                                      <!-- Contenedor del contenido dinámico -->
-                                        <div id="tab-content">
-                                        <!-- Por defecto: recomendaciones -->
-                                            <div id="tab-recomendaciones" class="tab-section">
-                                                <div class="col-lg-12" style="border-bottom: 1px solid #ccc; padding-bottom: 1rem; margin-bottom: 1rem;">
-                                                    <div class="job-item">
-                                                        <a href="#" class="job-bookmark"><i class="fe-bookmark"></i></a>
-                                                        <div class="job-top">
-                                                            <div class="job-img">
-                                                                <img src="assets/img/job/01.jpg" alt="">
-                                                            </div>
-                                                            <div class="job-title">
-                                                                <h5><a href="#">Application Developer</a></h5>
-                                                                <a href="#" class="job-employer"><i class="far fa-building"></i> Circle Pixel</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="job-content">
-                                                            <ul class="job-info-list">
-                                                                <li><i class="fe-briefcase"></i> Development</li>
-                                                                <li><i class="fe-check-circle"></i> Full Time</li>
-                                                                <li><i class="fe-clock"></i> 2 Hour Ago</li>
-                                                                <li><i class="fe-map-pin"></i> 25/B Milford Road, New York</li>
-                                                            </ul>
-                                                            <div class="job-skill">
-                                                                <a href="#">Figma</a>
-                                                                <a href="#">Photoshop</a>
-                                                                <a href="#">Adobe XD</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="job-bottom">
-                                                            <div class="job-salary">
-                                                                <span class="job-salary-amount">$150 - $180</span>
-                                                                <span class="job-salary-type">/Hour</span>
-                                                            </div>
-                                                            <a href="#" class="theme-btn">View Details</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12" style="border-bottom: 1px solid #ccc; padding-bottom: 1rem; margin-bottom: 1rem;">
-                                                    <div class="job-item">
-                                                        <a href="#" class="job-bookmark"><i class="fe-bookmark"></i></a>
-                                                        <div class="job-top">
-                                                            <div class="job-img">
-                                                                <img src="assets/img/job/03.jpg" alt="">
-                                                            </div>
-                                                            <div class="job-title">
-                                                                <h5><a href="#">Marketing Manager</a></h5>
-                                                                <a href="#" class="job-employer"><i class="far fa-building"></i> Azutine Growths</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="job-content">
-                                                            <ul class="job-info-list">
-                                                                <li><i class="fe-briefcase"></i> Marketing</li>
-                                                                <li><i class="fe-check-circle"></i> Freelance</li>
-                                                                <li><i class="fe-clock"></i> 2 Hour Ago</li>
-                                                                <li><i class="fe-map-pin"></i> 25/B Milford Road, New York</li>
-                                                            </ul>
-                                                            <div class="job-skill">
-                                                                <a href="#">Figma</a>
-                                                                <a href="#">Photoshop</a>
-                                                                <a href="#">Adobe XD</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="job-bottom">
-                                                            <div class="job-salary">
-                                                                <span class="job-salary-amount">$150 - $180</span>
-                                                                <span class="job-salary-type">/Hour</span>
-                                                            </div>
-                                                            <a href="#" class="theme-btn">View Details</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                      
-                                            <div id="tab-ultimos" class="tab-section d-none">
-                                                <div class="col-lg-12" style="border-bottom: 1px solid #ccc; padding-bottom: 1rem; margin-bottom: 1rem;">
-                                                    <div class="job-item">
-                                                        <a href="#" class="job-bookmark"><i class="fe-bookmark"></i></a>
-                                                        <div class="job-top">
-                                                            <div class="job-img">
-                                                                <img src="assets/img/job/03.jpg" alt="">
-                                                            </div>
-                                                            <div class="job-title">
-                                                                <h5><a href="#">Marketing Manager</a></h5>
-                                                                <a href="#" class="job-employer"><i class="far fa-building"></i> Azutine Growths</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="job-content">
-                                                            <ul class="job-info-list">
-                                                                <li><i class="fe-briefcase"></i> Marketing</li>
-                                                                <li><i class="fe-check-circle"></i> Freelance</li>
-                                                                <li><i class="fe-clock"></i> 2 Hour Ago</li>
-                                                                <li><i class="fe-map-pin"></i> 25/B Milford Road, New York</li>
-                                                            </ul>
-                                                            <div class="job-skill">
-                                                                <a href="#">Figma</a>
-                                                                <a href="#">Photoshop</a>
-                                                                <a href="#">Adobe XD</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="job-bottom">
-                                                            <div class="job-salary">
-                                                                <span class="job-salary-amount">$150 - $180</span>
-                                                                <span class="job-salary-type">/Hour</span>
-                                                            </div>
-                                                            <a href="#" class="theme-btn">View Details</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12" style="border-bottom: 1px solid #ccc; padding-bottom: 1rem; margin-bottom: 1rem;">
-                                                    <div class="job-item">
-                                                        <a href="#" class="job-bookmark"><i class="fe-bookmark"></i></a>
-                                                        <div class="job-top">
-                                                            <div class="job-img">
-                                                                <img src="assets/img/job/01.jpg" alt="">
-                                                            </div>
-                                                            <div class="job-title">
-                                                                <h5><a href="#">Application Developer</a></h5>
-                                                                <a href="#" class="job-employer"><i class="far fa-building"></i> Circle Pixel</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="job-content">
-                                                            <ul class="job-info-list">
-                                                                <li><i class="fe-briefcase"></i> Development</li>
-                                                                <li><i class="fe-check-circle"></i> Full Time</li>
-                                                                <li><i class="fe-clock"></i> 2 Hour Ago</li>
-                                                                <li><i class="fe-map-pin"></i> 25/B Milford Road, New York</li>
-                                                            </ul>
-                                                            <div class="job-skill">
-                                                                <a href="#">Figma</a>
-                                                                <a href="#">Photoshop</a>
-                                                                <a href="#">Adobe XD</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="job-bottom">
-                                                            <div class="job-salary">
-                                                                <span class="job-salary-amount">$150 - $180</span>
-                                                                <span class="job-salary-type">/Hour</span>
-                                                            </div>
-                                                            <a href="#" class="theme-btn">View Details</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="user-profile-card" id="notificationsCard">
-                                        <h4 class="user-profile-card-title d-flex align-items-center gap-2">
-                                            Notificaciones
-                                            <span class="badge bg-secondary" id="notificationsCount">0</span>
-                                        </h4>
-                                      
-                                        <!-- Aquí el JS inyectará las notificaciones -->
-                                        <div class="user-notification" id="notificationsList">
-                                          <!-- opcional: contenido placeholder si quieres -->
-                                          <!-- <div class="text-muted small px-3 py-2">No tienes notificaciones por ahora.</div> -->
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="user-profile-card">
-                                        <h4 class="user-profile-card-title" data-bs-toggle="collapse" href="#jobsAppliedCollapse" role="button" aria-expanded="false" aria-controls="jobsAppliedCollapse" style="cursor: pointer;">
-                                          Trabajos Postulados
-                                          <i class="fas fa-chevron-down ms-2"></i>
-                                        </h4>
-                                        <div class="collapse" id="jobsAppliedCollapse">
-                                            <div class="user-profile-job mt-3">
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <div class="job-item">
-                                                            <a href="#" class="job-bookmark"><i class="fe-bookmark"></i></a>
-                                                            <div class="job-top">
-                                                                <div class="job-img">
-                                                                    <img src="assets/img/job/01.jpg" alt="">
-                                                                </div>
-                                                                <div class="job-title">
-                                                                    <h5><a href="#">Application Developer</a></h5>
-                                                                    <a href="#" class="job-employer"><i class="far fa-building"></i> Circle Pixel</a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="job-content">
-                                                                <ul class="job-info-list">
-                                                                    <li><i class="fe-briefcase"></i> Development</li>
-                                                                    <li><i class="fe-check-circle"></i> Full Time</li>
-                                                                    <li><i class="fe-clock"></i> 2 Hour Ago</li>
-                                                                    <li><i class="fe-map-pin"></i> 25/B Milford Road, New York</li>
-                                                                </ul>
-                                                                <div class="job-skill">
-                                                                    <a href="#">Figma</a>
-                                                                    <a href="#">Photoshop</a>
-                                                                    <a href="#">Adobe XD</a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="job-bottom">
-                                                                <div class="job-salary">
-                                                                    <span class="job-salary-amount">$150 - $180</span> <span
-                                                                        class="job-salary-type">/Hour</span>
-                                                                </div>
-                                                                <a href="#" class="theme-btn">View Details</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <div class="job-item">
-                                                            <a href="#" class="job-bookmark"><i class="fe-bookmark"></i></a>
-                                                            <div class="job-top">
-                                                                <div class="job-img">
-                                                                    <img src="assets/img/job/03.jpg" alt="">
-                                                                </div>
-                                                                <div class="job-title">
-                                                                    <h5><a href="#">Marketing Manager</a></h5>
-                                                                    <a href="#" class="job-employer"><i class="far fa-building"></i> Azutine Growths</a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="job-content">
-                                                                <ul class="job-info-list">
-                                                                    <li><i class="fe-briefcase"></i> Marketing</li>
-                                                                    <li><i class="fe-check-circle"></i> Freelance</li>
-                                                                    <li><i class="fe-clock"></i> 2 Hour Ago</li>
-                                                                    <li><i class="fe-map-pin"></i> 25/B Milford Road, New York</li>
-                                                                </ul>
-                                                                <div class="job-skill">
-                                                                    <a href="#">Figma</a>
-                                                                    <a href="#">Photoshop</a>
-                                                                    <a href="#">Adobe XD</a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="job-bottom">
-                                                                <div class="job-salary">
-                                                                    <span class="job-salary-amount">$150 - $180</span> <span
-                                                                        class="job-salary-type">/Hour</span>
-                                                                </div>
-                                                                <a href="#" class="theme-btn">View Details</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <div class="job-item">
-                                                            <a href="#" class="job-bookmark"><i class="fe-bookmark"></i></a>
-                                                            <div class="job-top">
-                                                                <div class="job-img">
-                                                                    <img src="assets/img/job/04.jpg" alt="">
-                                                                </div>
-                                                                <div class="job-title">
-                                                                    <h5><a href="#">Product Designer</a></h5>
-                                                                    <a href="#" class="job-employer"><i class="far fa-building"></i> Larana Inc</a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="job-content">
-                                                                <ul class="job-info-list">
-                                                                    <li><i class="fe-briefcase"></i> Design</li>
-                                                                    <li><i class="fe-check-circle"></i> Internship</li>
-                                                                    <li><i class="fe-clock"></i> 2 Hour Ago</li>
-                                                                    <li><i class="fe-map-pin"></i> 25/B Milford Road, New York</li>
-                                                                </ul>
-                                                                <div class="job-skill">
-                                                                    <a href="#">Figma</a>
-                                                                    <a href="#">Photoshop</a>
-                                                                    <a href="#">Adobe XD</a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="job-bottom">
-                                                                <div class="job-salary">
-                                                                    <span class="job-salary-amount">$150 - $180</span> <span
-                                                                        class="job-salary-type">/Hour</span>
-                                                                </div>
-                                                                <a href="#" class="theme-btn">View Details</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <div class="job-item">
-                                                            <a href="#" class="job-bookmark"><i class="fe-bookmark"></i></a>
-                                                            <div class="job-top">
-                                                                <div class="job-img">
-                                                                    <img src="assets/img/job/05.jpg" alt="">
-                                                                </div>
-                                                                <div class="job-title">
-                                                                    <h5><a href="#">Creative Director</a></h5>
-                                                                    <a href="#" class="job-employer"><i class="far fa-building"></i> Rubic Corner</a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="job-content">
-                                                                <ul class="job-info-list">
-                                                                    <li><i class="fe-briefcase"></i> Design</li>
-                                                                    <li><i class="fe-check-circle"></i> Full Time</li>
-                                                                    <li><i class="fe-clock"></i> 2 Hour Ago</li>
-                                                                    <li><i class="fe-map-pin"></i> 25/B Milford Road, New York</li>
-                                                                </ul>
-                                                                <div class="job-skill">
-                                                                    <a href="#">Figma</a>
-                                                                    <a href="#">Photoshop</a>
-                                                                    <a href="#">Adobe XD</a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="job-bottom">
-                                                                <div class="job-salary">
-                                                                    <span class="job-salary-amount">$150 - $180</span> <span
-                                                                        class="job-salary-type">/Hour</span>
-                                                                </div>
-                                                                <a href="#" class="theme-btn">View Details</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    <!-- candidate-dashboard -->
+    <div class="user-profile py-120">
+      <div class="container">
+        <div class="row">
+          <!-- Sidebar -->
+          <div class="col-lg-3">
+            <div class="user-profile-sidebar">
+              <div class="user-profile-sidebar-top">
+                <div class="user-profile-img">
+                  <img src="assets/img/candidate/01.jpg" alt="">
+                  <button type="button" class="profile-img-btn"><i class="far fa-camera"></i></button>
+                  <input type="file" class="profile-img-file">
                 </div>
+                <h4 id="userFullName">Cargando...</h4>
+                <p id="userCategory">Cargando...</p>
+              </div>
+              <ul class="user-profile-sidebar-list">
+                <li><a class="active" href="candidate-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a></li>
+                <li><a href="candidate-profile.html"><i class="far fa-user-tie"></i> Mi Perfil</a></li>
+                <li><a href="job-list.html"><i class="far fa-briefcase-arrow-right"></i> Buscar Trabajo</a></li>
+                <li><a href="candidate-applied-job.html"><i class="far fa-briefcase"></i> Trabajos Postulados</a></li>
+                <li><a href="candidate-cv-manager.html"><i class="far fa-file-zipper"></i> Archivo CV</a></li>
+                <li><a href="candidate-saved-job.html"><i class="far fa-bookmark"></i> Trabajos Guardados</a></li>
+                <li><a href="candidate-settings.html"><i class="far fa-cog"></i> Editar Perfil</a></li>
+                <li><a href="#" id="logoutButton"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
+              </ul>
             </div>
+
+            <!-- Modal logout -->
+            <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">¿Seguro que quieres cerrar sesión?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar Sesión</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="user-profile-sidebar">
+              <h6>Informa a las empresas tu disponibilidad</h6>
+              <div class="item-toggle">
+                <div class="user-profile fade-text" id="estadoDisponibilidad1">Escucho propuestas de empleo</div>
+                <a onclick="toggleDisponibilidad('1')" style="cursor:pointer;">
+                  <i id="toggleIcon1" class="fas fa-toggle-off fa-2x text-secondary toggle-azul"></i>
+                </a>
+              </div>
+              <div class="item-toggle">
+                <div class="user-profile fade-text" id="estadoDisponibilidad2">Puedo empezar de inmediato</div>
+                <a onclick="toggleDisponibilidad('2')" style="cursor:pointer;">
+                  <i id="toggleIcon2" class="fas fa-toggle-off fa-2x text-secondary toggle-azul"></i>
+                </a>
+              </div>
+              <h6>Notificaciones</h6>
+              <div class="item-toggle">
+                <div class="user-profile fade-text" id="estadoDisponibilidad3">Notificación por Mail</div>
+                <a onclick="toggleDisponibilidad('3')" style="cursor:pointer;">
+                  <i id="toggleIcon3" class="fas fa-toggle-off fa-2x text-secondary toggle-azul"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <!-- /Sidebar -->
+
+          <!-- Content -->
+          <div class="col-lg-9">
+            <div class="user-profile-wrapper">
+              <!-- Widgets -->
+              <div class="row equal-height">
+                <div class="col-md-6 col-lg-4">
+                  <div class="dashboard-widget dashboard-widget-color-1">
+                    <div class="dashboard-widget-info">
+                      <h1 id="applied-monthly-count">0</h1>
+                      <span>Trabajos Postulados Mensual</span>
+                    </div>
+                    <div class="dashboard-widget-icon"><i class="fal fa-briefcase"></i></div>
+                  </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                  <div class="dashboard-widget dashboard-widget-color-2">
+                    <div class="dashboard-widget-info">
+                      <h1 id="views-total"></h1>
+                      <span>Visitas Totales al Perfil</span>
+                    </div>
+                    <div class="dashboard-widget-icon"><i class="fal fa-eye"></i></div>
+                  </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                  <div class="dashboard-widget dashboard-widget-color-3">
+                    <div class="dashboard-widget-info">
+                      <h1 id="recs-total">0</h1>
+                      <span>Recomendaciones Generales</span>
+                    </div>
+                    <div class="dashboard-widget-icon"><i class="fal fa-layer-group"></i></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <!-- Panel central: Recomendaciones / Últimos -->
+                <div class="col-lg-8">
+                  <div class="user-profile-card">
+                    <div class="d-flex align-items-center mb-3">
+                      <h4 class="user-profile-card-title tab-btn active" data-tab="recomendaciones" style="cursor:pointer; flex:1; text-align:left;">
+                        Recomendaciones
+                        <span id="recs-badge" class="badge bg-secondary ms-2">0</span>
+                      </h4>
+                      <i class="fas fa-slash-forward" style="font-size:1.5rem; color:#888; margin:0 1rem; line-height:1; width:24px; display:inline-flex; justify-content:center; align-items:center;"></i>
+                      <h4 class="user-profile-card-title tab-btn" data-tab="ultimos" style="cursor:pointer; flex:1; text-align:right;">
+                        Últimos Avisos
+                      </h4>
+                    </div>
+
+                    <div id="tab-content">
+                      <div id="tab-recomendaciones" class="tab-section"><!-- por JS --></div>
+                      <div id="tab-ultimos" class="tab-section d-none"><!-- por JS --></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Panel derecho: Notificaciones -->
+                <div class="col-lg-4">
+                  <div class="user-profile-card" id="notificationsCard">
+                    <h4 class="user-profile-card-title d-flex align-items-center gap-2">
+                      Notificaciones
+                      <span class="badge bg-secondary" id="notificationsCount">0</span>
+                    </h4>
+                    <div class="user-notification" id="notificationsList"></div>
+                  </div>
+                </div>
+
+                <!-- Postulados (colapsable) -->
+                <div class="col-lg-12">
+                  <div class="user-profile-card">
+                    <h4 class="user-profile-card-title" data-bs-toggle="collapse" href="#jobsAppliedCollapse" role="button" aria-expanded="false" aria-controls="jobsAppliedCollapse" style="cursor:pointer;">
+                      Trabajos Postulados
+                      <span class="badge bg-primary ms-2" id="applied-total-badge">0</span>
+                      <i class="fas fa-chevron-down ms-2"></i>
+                    </h4>
+                    <div class="collapse" id="jobsAppliedCollapse">
+                      <div class="user-profile-job mt-3">
+                        <div class="row">
+                          <div class="col-lg-12 text-muted">Aún no has postulado a trabajos.</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- /Postulados -->
+              </div>
+            </div>
+          </div>
+          <!-- /Content -->
         </div>
-        <!-- candidate-dashboard end -->
+      </div>
+    </div>
+    <!-- candidate-dashboard end -->
+  </main>
 
+  <!-- footer area -->
+  <div id="footer-placeholder"></div>
+  <!-- footer area end -->
 
-    </main>
+  <!-- scroll-top -->
+  <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
+  <!-- scroll-top end -->
 
-    <!-- footer area -->
-    <div id="footer-placeholder"></div>
-    <!-- footer area end -->
+  <!-- js base -->
+  <script src="assets/js/jquery-3.6.0.min.js"></script>
+  <script src="assets/js/modernizr.min.js"></script>
+  <script src="assets/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/imagesloaded.pkgd.min.js"></script>
+  <script src="assets/js/jquery.magnific-popup.min.js"></script>
+  <script src="assets/js/isotope.pkgd.min.js"></script>
+  <script src="assets/js/jquery.appear.min.js"></script>
+  <script src="assets/js/jquery.easing.min.js"></script>
+  <script src="assets/js/owl.carousel.min.js"></script>
+  <script src="assets/js/counter-up.js"></script>
+  <script src="assets/js/masonry.pkgd.min.js"></script>
+  <script src="assets/js/wow.min.js"></script>
+  <script src="assets/js/nice-select.min.js"></script>
+  <script src="assets/js/apexcharts.min.js"></script>
+  <script src="assets/js/apexchart-custom.js"></script>
+  <script src="assets/js/main.js"></script>
 
-    <!-- scroll-top -->
-    <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
-    <!-- scroll-top end -->
+  <!-- tu config: define window.BASE_URL_API -->
+  <script src="assets/js/config/config.js"></script>
 
+  <!-- módulos existentes -->
+  <script src="assets/js/header-footer/loadHeaderFooterSI.js"></script>
+  <script src="assets/js/logout-button.js"></script>
+  <script src="assets/js/candidate-name-category.js"></script>
+  <script src="assets/js/dashboard/estados-button.js"></script>
+  <script src="assets/js/modules/candidatos/candidate-notifications.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- js -->
-    <script src="assets/js/jquery-3.6.0.min.js"></script>
-    <script src="assets/js/modernizr.min.js"></script>
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/imagesloaded.pkgd.min.js"></script>
-    <script src="assets/js/jquery.magnific-popup.min.js"></script>
-    <script src="assets/js/isotope.pkgd.min.js"></script>
-    <script src="assets/js/jquery.appear.min.js"></script>
-    <script src="assets/js/jquery.easing.min.js"></script>
-    <script src="assets/js/owl.carousel.min.js"></script>
-    <script src="assets/js/counter-up.js"></script>
-    <script src="assets/js/masonry.pkgd.min.js"></script>
-    <script src="assets/js/wow.min.js"></script>
-    <script src="assets/js/nice-select.min.js"></script>
-    <script src="assets/js/apexcharts.min.js"></script>
-    <script src="assets/js/apexchart-custom.js"></script>
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/config/config.js"></script>
-    <script src="assets/js/header-footer/loadHeaderFooterSI.js"></script>
-    <script src="assets/js/logout-button.js" ></script>
-    <script src="assets/js/candidate-name-category.js"></script>
-    <script src="assets/js/dashboard/estados-button.js"></script>
-    <script src="assets/js/modules/candidatos/candidate-notifications.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-// Lógica para manejar los tabs
-document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const tab = btn.dataset.tab;
-
-      // Activar botón
-      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-      btn.classList.add('active');
-
-      // Cambiar contenido
-      document.querySelectorAll('.tab-section').forEach(sec => sec.classList.add('d-none'));
-      document.getElementById('tab-' + tab).classList.remove('d-none');
+  <!-- Tabs -->
+  <script>
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tab = btn.dataset.tab;
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.tab-section').forEach(sec => sec.classList.add('d-none'));
+        document.getElementById('tab-' + tab).classList.remove('d-none');
+      });
     });
-  });
-</script>
+  </script>
 
+  <!-- ====== Recomendaciones (CV) + Últimos avisos ====== -->
+  <script>
+    /* ========= Config ========= */
+    const BASE_URL_API = window.BASE_URL_API || "http://localhost:3000/v1";
+    const MAX_RECOMENDACIONES = 6;
+    const MAX_ULTIMOS = 6;
 
+    /* ========= Utilidades ========= */
+    function decodeJwt(t){try{const p=t.split('.')[1];return JSON.parse(atob(p.replace(/-/g,'+').replace(/_/g,'/')))}catch{return null}}
+    function getUserIdFromToken(){const token=localStorage.getItem('token');if(!token)return null;const d=decodeJwt(token);return(d&&(d.sub||d.userId||d.id))?(d.sub||d.userId||d.id):null}
+    function authHeaders(){const token=localStorage.getItem('token');return token?{Authorization:`Bearer ${token}`}:{ }}
+    function parseDataString(v){if(!v)return{};try{return typeof v==='string'?JSON.parse(v):v}catch{return{}}}
+    function safeDate(v){const d=new Date(v);return isNaN(d.getTime())?null:d}
+    function diffDays(from,to){const ms=Math.abs(to-from);return Math.max(0,Math.floor(ms/(1000*60*60*24)))}
+    function toCL(n){return Number(n||0).toLocaleString('es-CL')}
 
+    /* ========= Catálogos ========= */
+    const REGIONES_CHILE={1:"Región de Arica y Parinacota",2:"Región de Tarapacá",3:"Región de Antofagasta",4:"Región de Atacama",5:"Región de Coquimbo",6:"Región de Valparaíso",7:"Región Metropolitana de Santiago",8:"Región del Libertador General Bernardo O’Higgins",9:"Región de Maule",10:"Región de Ñuble",11:"Región del Biobío",12:"Región de La Araucanía",13:"Región de Los Ríos",14:"Región de Los Lagos",15:"Región de Aysén del General Carlos Ibáñez del Campo",16:"Región de Magallanes y de la Antártica Chilena"};
+    const MODALIDADES_ID_TO_TXT={1:"Full Time",2:"Part Time",3:"Remoto",4:"Freelancer",5:"Temporal"};
+    const MODALIDADES_TXT_TO_ID={"full time":1,"full-time":1,"tiempo completo":1,"jornada completa":1,"part time":2,"part-time":2,"medio tiempo":2,"remoto":3,"teletrabajo":3,"freelancer":4,"independiente":4,"temporal":5,"plazo fijo":5,"contrato temporal":5,"hibrida":6,"híbrida":6,"mixta":6};
 
+    /* ========= Normalización ========= */
+    const normalize=(s)=> (s||"").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\s+/g," ").trim();
+    function tokens(s){return normalize(s).split(/[^a-z0-9áéíóúüñ]+/).filter(Boolean)}
+
+    /* ========= Taxonomía por área ========= */
+    const AREA_CANON={
+      informatica:["programador","desarrollador","software","backend","frontend","fullstack","sistemas","ti","tecnologias","tecnologias de la informacion","informatica","informatico","devops","qa","soporte","it"],
+      marketing:["marketing","growth","seo","sem","contenido","social media","cm","community"],
+      finanzas:["finanzas","contabilidad","contador","analista financiero"],
+      operaciones:["logistica","operaciones","bodega","supply","almacen"],
+      salud:["salud","medicina","enfermeria"],
+      diseno:["diseno","diseño","ux","ui","grafico","producto","product designer"],
+      ventas:["ventas","comercial","account","ejecutivo ventas"]
+    };
+    function areaCanonFromText(s){
+      const t=normalize(s);
+      for(const canon in AREA_CANON){ for(const kw of AREA_CANON[canon]){ if(t.includes(kw)) return canon; } }
+      return null;
+    }
+    function inferCanonFromCV(cvData){
+      const pref = cvData?.preferencias_laborales?.categoria_empleo || "";
+      const fromPref = areaCanonFromText(pref);
+      if(fromPref) return fromPref;
+      const edu = Array.isArray(cvData?.educacion)?cvData.educacion:[];
+      for(const e of edu){
+        const cand = areaCanonFromText([e?.titulo,e?.descripcion].filter(Boolean).join(" "));
+        if(cand) return cand;
+      }
+      return null;
+    }
+
+    /* ========= Modalidad ========= */
+    function normalizeModalidad({modalidadId, modalidadTxt}){
+      if(modalidadId!=null){
+        const id = Number(modalidadId);
+        return {id: isNaN(id)?null:id, txt: MODALIDADES_ID_TO_TXT[id] || null};
+      }
+      if(modalidadTxt){
+        const key = normalize(modalidadTxt);
+        const id = MODALIDADES_TXT_TO_ID[key] ?? null;
+        return {id, txt: modalidadTxt};
+      }
+      return {id:null, txt:null};
+    }
+    function modalidadScore(cvNorm, jobNorm){
+      if(!cvNorm.id && !cvNorm.txt) return 0;
+      if(!jobNorm.id && !jobNorm.txt) return 0;
+      if(cvNorm.id && jobNorm.id && cvNorm.id===jobNorm.id) return 3;
+      if(cvNorm.txt && jobNorm.txt && normalize(cvNorm.txt)===normalize(jobNorm.txt)) return 3;
+      const cvIsHybrid = (normalize(cvNorm.txt||"")==="hibrida" || cvNorm.id===6);
+      if(cvIsHybrid && (jobNorm.id===1 || jobNorm.id===3 || ["full time","remoto"].includes(normalize(jobNorm.txt||"")))) return 1;
+      if(cvNorm.txt && jobNorm.txt){
+        const cvTok=tokens(cvNorm.txt); const jobTok=tokens(jobNorm.txt);
+        if(cvTok.some(t=>jobTok.includes(t))) return 1;
+      }
+      return 0;
+    }
+
+    /* ========= Helpers oferta ========= */
+    function offertaAreaTexto(data){ return data?.area_trabajo || data?.categoria_empleo || data?.area || "" }
+    function salarioScore(salarioEsperadoCLP, data){
+      const exp = Number((salarioEsperadoCLP||"").toString().replace(/\D+/g,""));
+      const desde = Number(data?.renta_salarial?.desde ?? data?.renta?.desde);
+      const hasta = Number(data?.renta_salarial?.hasta ?? data?.renta?.hasta);
+      if(!exp || isNaN(desde) || isNaN(hasta)) return 0;
+      if(exp>=desde && exp<=hasta) return 3;
+      const gap = exp<desde? (desde-exp) : (exp-hasta);
+      const base = exp<desde? desde: hasta;
+      const ratio = gap/Math.max(1,base);
+      return ratio<=0.15 ? 1 : 0;
+    }
+
+    /* ========= Scoring ========= */
+    function calcularSimilitud(perfilCV, ofertaData){
+      let score=0;
+      const cvCanon = perfilCV.canonArea;
+      const jobCanon = areaCanonFromText(offertaAreaTexto(ofertaData));
+      if(cvCanon && jobCanon && cvCanon===jobCanon) score+=8;
+
+      const cvAreaTxt = normalize(perfilCV.areaTexto||"");
+      const jobAreaTxt = normalize(offertaAreaTexto(ofertaData)||"");
+      if(cvAreaTxt && jobAreaTxt){
+        const cvT = new Set(tokens(cvAreaTxt));
+        const jobT = new Set(tokens(jobAreaTxt));
+        const inter = [...cvT].filter(t=>jobT.has(t));
+        if(inter.length>=1) score+=4;
+      }
+
+      const cvReg = String(perfilCV.region||"").trim();
+      const jobReg = String(ofertaData.region || ofertaData.id_region || "").trim();
+      if(cvReg && jobReg && cvReg===jobReg) score+=3;
+
+      const cvMod = normalizeModalidad({ modalidadTxt: perfilCV.tipo_empleo });
+      const jobMod = normalizeModalidad({
+        modalidadId: ofertaData.modalidad!=null ? Number(ofertaData.modalidad):null,
+        modalidadTxt: ofertaData.modalidad_text || ofertaData.tipo_empleo
+      });
+      score+= modalidadScore(cvMod, jobMod);
+
+      score+= salarioScore(perfilCV.salario_esperado, ofertaData);
+
+      const cvTools = new Set((perfilCV.herramientas||[]).map(x=>normalize(x)));
+      const jobTools = new Set((ofertaData.herramientas_basicas || ofertaData.herramientas || []).map(x=>normalize(x)));
+      let hits=0; cvTools.forEach(t=>{ if(jobTools.has(t)) hits++; });
+      score+= Math.min(5,hits);
+
+      return score;
+    }
+
+    /* ========= Render tarjetas ========= */
+    function jobCardHTML(oferta, targetUrl="job-single-2-si.html"){
+      const data = parseDataString(oferta.data);
+      const empresa = oferta.empresa?.nombre_fantasia || "Empresa";
+      const regionNombre = REGIONES_CHILE[parseInt(data.region || data.id_region)] || "Región no especificada";
+
+      const jobMod = normalizeModalidad({
+        modalidadId: data.modalidad!=null? Number(data.modalidad):null,
+        modalidadTxt: data.modalidad_text || data.tipo_empleo
+      });
+      const modalidadNombre = jobMod.id ? (MODALIDADES_ID_TO_TXT[jobMod.id] || jobMod.txt || "Modalidad")
+                                        : (jobMod.txt || "Modalidad");
+
+      const now = new Date();
+      const fechaRef = safeDate(oferta.fecha_publicacion || oferta.creado_en || oferta.updated_at || oferta.fecha_cierre) || now;
+      const dias = diffDays(now, fechaRef);
+
+      let desde = Number(data?.renta_salarial?.desde ?? data?.renta?.desde);
+      let hasta = Number(data?.renta_salarial?.hasta ?? data?.renta?.hasta);
+      if(isNaN(desde)) desde = 1; if(isNaN(hasta)) hasta = 1;
+      const sueldoTexto = `${toCL(desde)} - ${toCL(hasta)}`;
+
+      const skills = (data.herramientas_basicas || data.herramientas || []).map(h=>`<a><span>${h}</span></a>`).join(' ');
+
+      return `
+      <div class="col-lg-12" style="border-bottom:1px solid #ccc;padding-bottom:1rem;margin-bottom:1rem;">
+        <div class="job-item" onclick="window.location.href='${targetUrl}?id=${oferta.id}'" style="cursor:pointer;">
+          <a href="#" class="job-bookmark"><i class="fe-bookmark"></i></a>
+          <div class="job-top">
+            <div class="job-img"><img src="assets/img/job/01.jpg" alt=""></div>
+            <div class="job-title">
+              <h5>${oferta.titulo || 'Oferta'}</h5>
+              <span class="job-employer"><i class="far fa-building"></i> ${empresa}</span>
+            </div>
+          </div>
+          <div class="job-content">
+            <ul class="job-info-list">
+              <li><i class="fe-briefcase"></i> ${offertaAreaTexto(data) || 'N/D'}</li>
+              <li><i class="fe-check-circle"></i> ${modalidadNombre}</li>
+              <li><i class="fe-clock"></i> Hace ${dias || 1} día(s)</li>
+              <li><i class="fal fa-clock-rotate-left"></i> Exp: ${oferta.fecha_cierre ? new Date(oferta.fecha_cierre).toLocaleDateString('es-CL') : '—'}</li>
+              <li><i class="fe-dollar-sign"></i> Salario: ${sueldoTexto}</li>
+              <li><i class="fe-map-pin"></i> ${regionNombre}</li>
+            </ul>
+            <div class="job-skill">${skills}</div>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    /* ========= Carga principal ========= */
+    async function cargarCVyListas(){
+      const contRecs=document.getElementById('tab-recomendaciones');
+      const contUlt=document.getElementById('tab-ultimos');
+      const $recsTotal = document.getElementById('recs-total');
+      const $recsBadge = document.getElementById('recs-badge');
+      if(!contRecs||!contUlt) return;
+
+      contRecs.innerHTML=`<div class="text-muted px-2 py-2">Cargando recomendaciones...</div>`;
+      contUlt.innerHTML=`<div class="text-muted px-2 py-2">Cargando últimos avisos...</div>`;
+
+      try{
+        // 1) userId -> rut
+        const userId=getUserIdFromToken();
+        if(!userId) throw new Error("Debes iniciar sesión para ver recomendaciones.");
+        const uRes=await fetch(`${BASE_URL_API}/user/${userId}`,{headers:{'Content-Type':'application/json',...authHeaders()}});
+        if(!uRes.ok) throw new Error("No se pudo obtener el usuario.");
+        const user=await uRes.json();
+        const rut=user?.rut; if(!rut) throw new Error("No se encontró RUT del usuario.");
+
+        // 2) CV
+        const cvRes=await fetch(`${BASE_URL_API}/curriculum/${encodeURIComponent(rut)}`,{headers:{'Content-Type':'application/json',...authHeaders()}});
+        if(!cvRes.ok) throw new Error("No se pudo obtener el CV.");
+        const cvArr=await cvRes.json(); const cv=Array.isArray(cvArr)?cvArr[0]:cvArr; const cvData=cv?.data||{};
+
+        // Perfil CV enriquecido
+        const canonArea = inferCanonFromCV(cvData);
+        const areaTexto = cvData?.preferencias_laborales?.categoria_empleo || "";
+        const tipo_empleo = cvData?.preferencias_laborales?.tipo_empleo || "";
+        const region = cvData?.preferencias_laborales?.region || cvData?.region || "";
+        const salario_esperado = cvData?.preferencias_laborales?.salario_esperado || "";
+        const herramientas = cvData?.habilidades_clave || [];
+
+        const perfilCV = { canonArea, areaTexto, tipo_empleo, region, salario_esperado, herramientas };
+
+        // 3) Ofertas
+        const oRes=await fetch(`${BASE_URL_API}/ofertas`,{headers:{'Content-Type':'application/json',...authHeaders()}});
+        if(!oRes.ok) throw new Error("No se pudo obtener ofertas.");
+        const oJson=await oRes.json();
+        const ofertas=Array.isArray(oJson)?oJson:(oJson.data||[]);
+
+        // 4) Recomendaciones (activas) -> lista completa de matches para CONTAR
+        const candidatas = ofertas.filter(o=>o.es_activa!==false);
+        const scored = candidatas.map(o=>{
+          const data=parseDataString(o.data);
+          return {oferta:o, data, score:calcularSimilitud(perfilCV, data)};
+        });
+
+        // Umbral inteligente
+        const matchesAll = scored.filter(x=>{
+          const hasCanon = perfilCV.canonArea && areaCanonFromText(offertaAreaTexto(x.data))===perfilCV.canonArea;
+          const thr = hasCanon? 6 : 5;
+          return x.score>=thr;
+        });
+
+        // Contadores de recomendaciones
+        const totalRecs = matchesAll.length;
+        if ($recsTotal) $recsTotal.textContent = String(totalRecs);
+        if ($recsBadge) $recsBadge.textContent = String(totalRecs);
+
+        // Render (máx N)
+        const recomendaciones = matchesAll
+          .sort((a,b)=> b.score - a.score)
+          .slice(0,MAX_RECOMENDACIONES)
+          .map(x=>x.oferta);
+
+        // 5) Últimos avisos
+        const parseFecha=o=> safeDate(o.fecha_publicacion || o.creado_en || o.updated_at || o.fecha_cierre) || new Date(0);
+        const ultimos = ofertas.slice().sort((a,b)=>parseFecha(b)-parseFecha(a)).slice(0,MAX_ULTIMOS);
+
+        // 6) Render
+        contRecs.innerHTML='';
+        if(recomendaciones.length===0){
+          contRecs.innerHTML=`<div class="text-muted px-2 py-2">
+            No hay recomendaciones aún. Completa tu <a href="candidate-profile.html">perfil</a> (categoría/área, modalidad, región, habilidades) para mejorar los matches.
+          </div>`;
+        }else{
+          recomendaciones.forEach(o=>contRecs.insertAdjacentHTML('beforeend', jobCardHTML(o,'job-single-2-si.html')));
+        }
+
+        contUlt.innerHTML='';
+        if(ultimos.length===0){
+          contUlt.innerHTML=`<div class="text-muted px-2 py-2">No hay avisos publicados aún.</div>`;
+        }else{
+          ultimos.forEach(o=>contUlt.insertAdjacentHTML('beforeend', jobCardHTML(o,'job-single-2-si.html')));
+        }
+
+      }catch(err){
+        console.error(err);
+        const $recsTotal = document.getElementById('recs-total');
+        const $recsBadge = document.getElementById('recs-badge');
+        if ($recsTotal) $recsTotal.textContent = '0';
+        if ($recsBadge) $recsBadge.textContent = '0';
+        contRecs.innerHTML=`<div class="text-danger px-2 py-2">Error: ${err.message || 'No se pudieron cargar recomendaciones.'}</div>`;
+        contUlt.innerHTML=`<div class="text-danger px-2 py-2">Error: ${err.message || 'No se pudieron cargar últimos avisos.'}</div>`;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', cargarCVyListas);
+  </script>
+
+  <!-- ====== Contadores de postulaciones (total histórico + mensual) ====== -->
+  <script>
+    (function () {
+      const BASE = window.BASE_URL_API || "http://localhost:3000/v1";
+      const $monthly = document.getElementById('applied-monthly-count');
+      const $totalBadge = document.getElementById('applied-total-badge');
+
+      function authHeaders(){
+        const token = localStorage.getItem('token');
+        return token ? { 'Authorization': `Bearer ${token}` } : {};
+      }
+      function isInCurrentMonth(dateStr) {
+        const d = new Date(dateStr);
+        if (isNaN(d)) return false;
+        const now = new Date();
+        return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+      }
+
+      async function loadAppliedCounts() {
+        try {
+          const token = localStorage.getItem('token');
+          if (!token) {
+            if ($monthly) $monthly.textContent = '0';
+            if ($totalBadge) $totalBadge.textContent = '0';
+            return;
+          }
+          const res = await fetch(`${BASE}/postulaciones/postulante`, { headers: { ...authHeaders() } });
+          if (!res.ok) throw new Error('No se pudieron cargar tus postulaciones.');
+          const postulaciones = await res.json();
+
+          const total = Array.isArray(postulaciones) ? postulaciones.length : 0;
+          const delMes = Array.isArray(postulaciones)
+            ? postulaciones.filter(p => isInCurrentMonth(p.fechaPostulacion)).length
+            : 0;
+
+          if ($monthly) $monthly.textContent = String(delMes);
+          if ($totalBadge) $totalBadge.textContent = String(total);
+        } catch (err) {
+          console.error('Error al cargar contadores de postulaciones:', err);
+          if ($monthly) $monthly.textContent = '0';
+          if ($totalBadge) $totalBadge.textContent = '0';
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', loadAppliedCounts);
+    })();
+  </script>
+
+  <!-- ====== Preview: últimos 5 trabajos postulados en el Dashboard ====== -->
+  <script>
+  (function () {
+    const BASE = window.BASE_URL_API || "http://localhost:3000/v1";
+    const $containerRow = document.querySelector('#jobsAppliedCollapse .user-profile-job .row');
+    const $totalBadge   = document.getElementById('applied-total-badge');
+
+    if (!$containerRow) return;
+
+    function authHeaders(){
+      const token = localStorage.getItem('token');
+      return token ? { 'Authorization': `Bearer ${token}` } : {};
+    }
+    function escapeHtml(s){ return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+    function parseData(s){ try { return typeof s === 'string' ? JSON.parse(s) : (s || {}); } catch { return {}; } }
+    function regionName(code){
+      const map = {
+        '1':'Tarapacá','2':'Antofagasta','3':'Atacama','4':'Coquimbo','5':'Valparaíso','6':'O’Higgins',
+        '7':'Maule','8':'Biobío','9':'La Araucanía','10':'Los Lagos','11':'Aysén','12':'Magallanes',
+        '13':'Metropolitana de Santiago','14':'Los Ríos','15':'Arica y Parinacota','16':'Ñuble'
+      };
+      const k = code == null ? '' : String(code);
+      return map[k] || 'Sin ubicación';
+    }
+    function formatDate(fechaStr){
+      const d = new Date(fechaStr);
+      if (isNaN(d)) return '—';
+      return d.toLocaleDateString('es-CL', { day:'2-digit', month:'long', year:'numeric' });
+    }
+    function estadoPill(estadoRaw){
+      const raw = (estadoRaw ?? '').toString().toLowerCase();
+      let cls = 'bg-secondary';
+      let txt = estadoRaw || 'En proceso';
+      if (!raw || raw.includes('envi') || raw.includes('rev')) { cls='bg-warning text-dark'; txt='En proceso'; }
+      else if (raw.includes('contra')) { cls='bg-info'; txt='Contratado'; }
+      else if (raw.includes('seleccionado') && !raw.includes('no')) { cls='bg-primary'; txt='Preseleccionado'; }
+      else if (raw.includes('rechaz') || raw.includes('no sele')) { cls='bg-danger'; txt='No seleccionado'; }
+      return `<span class="badge ${cls}">${escapeHtml(txt)}</span>`;
+    }
+
+    function itemHTML(p){
+      const oferta   = p.oferta || {};
+      const data     = parseData(oferta.data);
+      const titulo   = oferta.titulo || data.titulo || 'Oferta sin título';
+      const empresa  = (oferta.empresa && oferta.empresa.nombre_fantasia) || data.empresa || 'Empresa';
+      const region   = regionName(data.region || data.id_region);
+      const fecha    = formatDate(p.fechaPostulacion);
+      const estado   = estadoPill(p.estado);
+      const jobUrl   = `job-single-2-si.html?id=${oferta.id ?? ''}`;
+
+      return `
+        <div class="col-lg-12">
+          <div class="d-flex align-items-start justify-content-between py-3 border-bottom">
+            <div class="d-flex gap-3">
+              <img src="assets/img/job/01.jpg" alt="" style="width:56px;height:56px;object-fit:cover;border-radius:8px;">
+              <div>
+                <h6 class="mb-1"><a href="${jobUrl}">${escapeHtml(titulo)}</a></h6>
+                <div class="text-muted small">
+                  <i class="far fa-building me-1"></i>${escapeHtml(empresa)}
+                  · <i class="far fa-location-dot ms-2 me-1"></i>${escapeHtml(region)}
+                </div>
+                <div class="text-muted small"><i class="far fa-calendar me-1"></i>${fecha}</div>
+              </div>
+            </div>
+            <div class="ms-3">
+              ${estado}
+              <a href="${jobUrl}" class="btn btn-outline-secondary btn-sm ms-2" title="Ver oferta">
+                <i class="far fa-eye"></i>
+              </a>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    async function loadAppliedPreview(){
+      try{
+        const token = localStorage.getItem('token');
+        if (!token) {
+          $containerRow.innerHTML = `<div class="col-lg-12 text-muted">Inicia sesión para ver tus postulaciones.</div>`;
+          if ($totalBadge) $totalBadge.textContent = '0';
+          return;
+        }
+        const res = await fetch(`${BASE}/postulaciones/postulante`, { headers: { ...authHeaders() } });
+        if (!res.ok) throw new Error('No se pudieron cargar tus postulaciones.');
+        const lista = await res.json();
+
+        const total = Array.isArray(lista) ? lista.length : 0;
+        if ($totalBadge) $totalBadge.textContent = String(total);
+
+        if (!Array.isArray(lista) || total === 0){
+          $containerRow.innerHTML = `<div class="col-lg-12 text-muted">Aún no has postulado a trabajos.</div>`;
+          return;
+        }
+
+        // ordenar desc por fecha y tomar los últimos 5
+        const top5 = lista
+          .slice()
+          .sort((a,b) => new Date(b.fechaPostulacion) - new Date(a.fechaPostulacion))
+          .slice(0,5);
+
+        $containerRow.innerHTML = top5.map(itemHTML).join('');
+      } catch (e){
+        console.error(e);
+        $containerRow.innerHTML = `<div class="col-lg-12 text-danger">No se pudieron cargar tus postulaciones.</div>`;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadAppliedPreview);
+  })();
+  </script>
 </body>
-
 </html>

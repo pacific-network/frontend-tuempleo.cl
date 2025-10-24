@@ -170,8 +170,8 @@
                                 </div>
                                 <div class="job-single-heading-btns mt-5">
                                     <div class="d-flex flex-wrap gap-3">
-                                        <a href="job-list.html" class="theme-btn theme-btn1">
-                                            <span class="fe-arrow-left"></span> Volver
+                                        <a href="#" id="btn-volver" class="theme-btn theme-btn1">
+                                          <span class="fe-arrow-left"></span> Volver
                                         </a>
                                         <a href="#" id="btn-postular" class="theme-btn">
                                             <span class="fe-briefcase"></span> Postular
@@ -602,6 +602,50 @@
     <script src="assets/js/popup-estado-postulacion.js"></script>
     <script src="assets/js/modules/saved-jobs/saved-job.js"></script>
     <script src="assets/js/View-employer/btn-view-employer-si.js"></script>
+    <script>
+  (function () {
+    const btn = document.getElementById('btn-volver');
+    if (!btn) return;
+
+    const SAME_ORIGIN = (url) => {
+      try { return new URL(url, location.href).origin === location.origin; }
+      catch { return false; }
+    };
+
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      // 1) Si guardamos una “lastListURL” en sessionStorage (ver paso 3)
+      const stored = sessionStorage.getItem('lastListURL');
+      if (stored && SAME_ORIGIN(stored)) {
+        location.href = stored;
+        return;
+      }
+
+      // 2) Si hay referrer del mismo origen, úsalo
+      if (document.referrer && SAME_ORIGIN(document.referrer)) {
+        location.href = document.referrer;
+        return;
+      }
+
+      // 3) Si hay historial, intenta volver
+      if (history.length > 1) {
+        history.back();
+        // Por si el back no cambia (algunos navegadores con referrer bloqueado)
+        setTimeout(() => {
+          if (document.visibilityState === 'visible') {
+            location.href = 'job-list.html';
+          }
+        }, 400);
+        return;
+      }
+
+      // 4) Fallback final
+      location.href = 'job-list.html';
+    });
+  })();
+</script>
+
 
 </body>
 
