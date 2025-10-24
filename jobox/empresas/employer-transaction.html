@@ -99,6 +99,43 @@
         }
 
         /* Tabla */
+
+        /* Columna de "Orden de compra" */
+        #tablaTransacciones td .badge-code {
+            display: inline-block;
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            color: #1e3a8a;
+            /* azul marino elegante */
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border: 1px solid #93c5fd;
+            border-radius: 10px;
+            padding: 6px 12px;
+            box-shadow: 0 2px 6px rgba(59, 130, 246, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        #tablaTransacciones td .badge-code:hover {
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(59, 130, 246, 0.25);
+        }
+
+        /* Encabezado de tabla para reforzar jerarquía */
+        #tablaTransacciones thead th:first-child {
+            color: #3b82f6;
+            font-weight: 800;
+        }
+
+        /* Numeración (#) con estilo sutil */
+        #tablaTransacciones td:first-child {
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
         #tablaTransacciones {
             width: 100%;
             border-collapse: separate;
@@ -575,6 +612,26 @@
                                 <table id="tablaTransacciones" class="table table-striped table-hover align-middle">
                                     <thead class="table-light">
                                         <tr>
+                                            <table id="tablaTransacciones"
+                                                class="table table-striped table-hover align-middle">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th style="width: 60px;">#</th>
+                                                        <th>Orden de Compra</th>
+                                                        <th>Monto</th>
+                                                        <th>Estado</th>
+                                                        <th>Tarjeta</th>
+                                                        <th>Fecha</th>
+                                                        <th class="text-center">Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="5" class="text-center text-muted">Cargando...</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
                                             <th>Orden ID</th>
                                             <th>Monto</th>
                                             <th>Estado</th>

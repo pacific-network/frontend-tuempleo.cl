@@ -39,27 +39,31 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!res.ok) throw new Error(`Error al obtener transacciones (${res.status})`);
   
         const json = await res.json();
-        renderTabla(json.data);
+        renderTabla(json.data, json.meta);
         renderPaginacion(json.meta);
       } catch (err) {
         console.error('❌ Error cargando transacciones:', err);
         tbody.innerHTML = `
           <tr>
-            <td colspan="6" class="text-danger text-center">Error al cargar transacciones</td>
+            <td colspan="7" class="text-danger text-center">Error al cargar transacciones</td>
           </tr>`;
       }
     }
   
     // ====== RENDERIZAR TABLA ======
-    function renderTabla(data) {
+    function renderTabla(data, meta) {
       if (!data || !data.length) {
         tbody.innerHTML = `
-          <tr><td colspan="6" class="text-center text-muted">Sin resultados</td></tr>`;
+          <tr><td colspan="7" class="text-center text-muted">Sin resultados</td></tr>`;
         return;
       }
   
+      const startIndex = (meta.page - 1) * meta.take; // Para numeración secuencial global
+  
       tbody.innerHTML = data
-        .map((tx) => {
+        .map((tx, index) => {
+          const rowNumber = startIndex + index + 1;
+  
           const detalleBtn = `
             <button class="btn btn-action" data-id="${tx.id}" title="Ver detalle">
               <i class="far fa-eye"></i>
@@ -79,7 +83,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   
           return `
             <tr>
-              <td>${tx.orderId}</td>
+              <td class="fw-bold text-secondary">${rowNumber}</td>
+              <td><span class="badge badge-code">${tx.orderId}</span></td>
               <td>${Number(tx.amount).toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>
               <td>${estado}</td>
               <td>${card}</td>
