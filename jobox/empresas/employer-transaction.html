@@ -67,14 +67,6 @@
             gap: 10px;
         }
 
-        .user-profile-card-title::before {
-            content: '';
-            width: 8px;
-            height: 28px;
-            border-radius: 4px;
-            background: linear-gradient(180deg, #3c65f5, #6a91ff);
-            box-shadow: 0 0 10px rgba(60, 101, 245, 0.6);
-        }
 
         /* Filtros */
         .filters {
@@ -106,6 +98,43 @@
         }
 
         /* Tabla */
+
+        /* Columna de "Orden de compra" */
+        #tablaTransacciones td .badge-code {
+            display: inline-block;
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            color: #1e3a8a;
+            /* azul marino elegante */
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border: 1px solid #93c5fd;
+            border-radius: 10px;
+            padding: 6px 12px;
+            box-shadow: 0 2px 6px rgba(59, 130, 246, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        #tablaTransacciones td .badge-code:hover {
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(59, 130, 246, 0.25);
+        }
+
+        /* Encabezado de tabla para reforzar jerarquía */
+        #tablaTransacciones thead th:first-child {
+            color: #3b82f6;
+            font-weight: 800;
+        }
+
+        /* Numeración (#) con estilo sutil */
+        #tablaTransacciones td:first-child {
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
         #tablaTransacciones {
             width: 100%;
             border-collapse: separate;
@@ -236,108 +265,260 @@
         /* ==========================
    MODAL DETALLE TRANSACCIÓN
    ========================== */
-        /* ==========================
-     MODAL DETALLE TRANSACCIÓN
-     ========================== */
+        /* ==============================
+   MODAL DETALLE TRANSACCIÓN - VERSIÓN ELEVADA
+   ============================== */
 
-        .glass-modal {
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.88);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border: 1px solid rgba(230, 235, 245, 0.8);
-            box-shadow: 0 12px 36px rgba(15, 23, 42, 0.25);
-            overflow: hidden;
+        /* Fondo del modal */
+        .modal.fade.show {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            background: rgba(15, 23, 42, 0.45);
+            backdrop-filter: blur(6px);
         }
 
-        #detalleModalBody {
-            padding: 25px 30px 35px;
-            font-size: 0.95rem;
+        /* Contenedor principal */
+        .glass-modal {
+            background: linear-gradient(180deg, #ffffff 0%, #f9fafc 100%);
+            border-radius: 24px;
+            box-shadow: 0 16px 48px rgba(15, 23, 42, 0.2);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            overflow: hidden;
+            animation: modalSlideIn 0.45s ease-out;
+            max-width: 720px;
+            width: 100%;
+            transition: all 0.3s ease-in-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: scale(0.9) translateY(-30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* =========================
+   HEADER
+   ========================= */
+        .glass-modal .modal-header {
+            background: linear-gradient(135deg, #eef2ff 0%, #e0f2fe 100%);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+            padding: 1.8rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .glass-modal .modal-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: #1e293b;
+            letter-spacing: -0.3px;
+        }
+
+
+        /* Cerrar */
+        .glass-modal .btn-close {
+            background: transparent;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+
+        .glass-modal .btn-close:hover {
+            transform: rotate(90deg);
+            opacity: 1;
+        }
+
+        /* =========================
+   BODY
+   ========================= */
+        .glass-modal .modal-body {
+            padding: 2.2rem 2.5rem;
             color: #334155;
             max-height: 70vh;
             overflow-y: auto;
+            background: rgba(255, 255, 255, 0.8);
         }
 
+        /* Titulares */
         #detalleModalBody h6 {
             font-weight: 700;
-            color: #111827;
-            margin-top: 20px;
-            border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 6px;
+            color: #0f172a;
+            margin-top: 1.6rem;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        #detalleModalBody .kv {
+        #detalleModalBody h6::before {
+            content: '';
+            width: 6px;
+            height: 20px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+        }
+
+        /* Lista clave-valor */
+        .kv {
             list-style: none;
             padding: 0;
             margin: 0;
         }
 
-        #detalleModalBody .kv li {
+        .kv li {
             display: flex;
             justify-content: space-between;
-            padding: 6px 0;
+            align-items: center;
+            background: linear-gradient(90deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 12px;
+            padding: 10px 16px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 6px rgba(148, 163, 184, 0.1);
+            transition: all 0.25s ease;
         }
 
-        #detalleModalBody .kv li b {
-            color: #1e293b;
+        .kv li:hover {
+            transform: scale(1.01);
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.12);
+            border-color: rgba(59, 130, 246, 0.25);
         }
 
+        .kv li b {
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        .kv li span {
+            color: #334155;
+            font-weight: 500;
+        }
+
+        /* =========================
+   TABLAS DE ÍTEMS
+   ========================= */
         #detalleModalBody table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            margin-top: 0.5rem;
+            border-radius: 10px;
+            overflow: hidden;
         }
 
         #detalleModalBody thead th {
-            font-size: 0.85rem;
             text-transform: uppercase;
-            color: #64748b;
-            border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 6px;
+            font-size: 0.8rem;
+            color: #475569;
+            background: #f1f5f9;
+            border-bottom: 2px solid #e2e8f0;
+            padding: 10px;
+            font-weight: 700;
+        }
+
+        #detalleModalBody tbody tr {
+            transition: background 0.25s ease;
+        }
+
+        #detalleModalBody tbody tr:hover {
+            background: #f8fafc;
         }
 
         #detalleModalBody td {
-            padding: 8px 0;
+            padding: 10px 8px;
+            color: #1e293b;
+            font-size: 0.95rem;
         }
 
-        .badge-status-modal {
-            display: inline-block;
-            padding: 8px 14px;
-            border-radius: 10px;
+        /* Enfatizar total */
+        #detalleModalBody td.fw-bold {
             font-weight: 700;
-            margin-left: auto;
+            color: #0f172a;
+        }
+
+        /* =========================
+   BADGES DE ESTADO
+   ========================= */
+        .badge-status-modal {
+            padding: 7px 14px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border-radius: 12px;
+            letter-spacing: 0.3px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
 
         .badge-success {
             background: linear-gradient(135deg, #34d399, #059669);
-            color: white;
+            color: #fff;
         }
 
         .badge-pending {
-            background: linear-gradient(135deg, #fde68a, #fbbf24);
-            color: #854d0e;
+            background: linear-gradient(135deg, #facc15, #f59e0b);
+            color: #fff;
         }
 
         .badge-fail {
-            background: linear-gradient(135deg, #fca5a5, #ef4444);
-            color: white;
+            background: linear-gradient(135deg, #f87171, #b91c1c);
+            color: #fff;
         }
 
-        /* Mini tabla para ítems */
-        .items-table th,
-        .items-table td {
-            padding: 6px 8px;
+        /* =========================
+   FOOTER
+   ========================= */
+        .glass-modal .modal-footer {
+            background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+            border-top: 1px solid #e2e8f0;
+            padding: 1.25rem 2rem;
+            display: flex;
+            justify-content: flex-end;
+            border-radius: 0 0 20px 20px;
         }
 
-        .items-table th {
-            background: #f9fafb;
+        .glass-modal .btn-outline-secondary {
+            border: 2px solid #cbd5e1;
             color: #475569;
-            font-size: 0.85rem;
-            text-transform: uppercase;
+            border-radius: 12px;
+            padding: 0.6rem 1.4rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
 
-        .items-table tr:nth-child(even) {
-            background: #f8fafc;
+        .glass-modal .btn-outline-secondary:hover {
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        /* =========================
+   RESPONSIVE
+   ========================= */
+        @media (max-width: 768px) {
+            .glass-modal {
+                width: 92%;
+            }
+
+            .glass-modal .modal-body {
+                padding: 1.5rem;
+                max-height: 60vh;
+            }
+
+            .kv li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
         }
     </style>
 
@@ -430,6 +611,26 @@
                                 <table id="tablaTransacciones" class="table table-striped table-hover align-middle">
                                     <thead class="table-light">
                                         <tr>
+                                            <table id="tablaTransacciones"
+                                                class="table table-striped table-hover align-middle">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th style="width: 60px;">#</th>
+                                                        <th>Orden de Compra</th>
+                                                        <th>Monto</th>
+                                                        <th>Estado</th>
+                                                        <th>Tarjeta</th>
+                                                        <th>Fecha</th>
+                                                        <th class="text-center">Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="5" class="text-center text-muted">Cargando...</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
                                             <th>Orden ID</th>
                                             <th>Monto</th>
                                             <th>Estado</th>
@@ -479,7 +680,11 @@
 
         <!-- Modal Detalle Transacción -->
         <div class="modal fade" id="detalleModal" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
+<<<<<<< HEAD
             <div class="modal-dialog modal-lg modal-dialog-centered">
+=======
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+>>>>>>> 64f94518877c3defcc2e109da6306e2f8cc2d386
                 <div class="modal-content glass-modal">
                     <div class="modal-header border-0">
                         <h5 class="modal-title fw-bold" id="detalleModalLabel">
@@ -532,7 +737,7 @@
     <script src="../assets/js/logout-button-emp.js"></script>
     <script src="../assets/js/modules/empresa/dinamic-sidebar.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="../assets/js/modules/transacciones/get-my-transacctions.js"></script>
+    <script src="../assets/js/modules/transacciones/get-my-transactions.js"></script>
 
 
 </body>
