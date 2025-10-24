@@ -1,5 +1,4 @@
 
-const BASE_URL_API = "http://localhost:3000/v1"; // Ajusta según tu entorno
 
 const planes = [
   { id: 1, nombre: "Publicación Gratis", precio: 0, descripcion: "Ideal para pequeñas empresas.", caracteristicas: ["Hasta 2 publicaciones", "Duración: 7 días", "Soporte básico"], popular: false },
