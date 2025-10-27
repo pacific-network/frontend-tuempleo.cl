@@ -82,7 +82,8 @@
                                         Avisos</a></li>
                                 <li><a href="employer-transaction.html"><i class="far fa-coins"></i> Transacción</a>
                                 </li>
-                                <li><a href="employer-settings.html"><i class="far fa-cog"></i> Cambiar Contraseña</a></li>
+                                <li><a href="employer-settings.html"><i class="far fa-cog"></i> Cambiar Contraseña</a>
+                                </li>
                                 <li><a href="#" id="logoutButton"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
                             </ul>
                         </div>
@@ -117,10 +118,10 @@
                         <div class="user-profile-wrapper">
                             <div class="user-profile-card">
                                 <h4 class="user-profile-card-title">Actualiza la información del Perfil</h4>
-                                    <div class="profile-form">
+                                <div class="profile-form">
                                     <form id="empresaPerfilForm" action="#">
                                         <div class="row">
-                                        <h6 class="mb-3">Información de Contacto Empresa</h6>
+                                            <h6 class="mb-3">Información de Contacto Empresa</h6>
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
@@ -128,24 +129,30 @@
                                                     <input id="rut_empresa" type="text" class="form-control" disabled>
                                                 </div>
                                             </div>
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Razón Social</label>
                                                     <input id="razon_social" type="text" class="form-control" disabled>
                                                 </div>
                                             </div>
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Nombre Empresa</label>
-                                                    <input id="nombre_fantasia" type="text" class="form-control" placeholder="Nombre Empresa">
+                                                    <input id="nombre_fantasia" type="text" class="form-control"
+                                                        placeholder="Nombre Empresa">
                                                 </div>
                                             </div>
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Correo Facturación</label>
-                                                    <input id="web_facturacion" type="text" class="form-control" placeholder="Correo Empresa">
+                                                    <input id="web_facturacion" type="text" class="form-control"
+                                                        placeholder="Correo Empresa">
                                                 </div>
                                             </div>
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Categoría</label>
@@ -156,145 +163,219 @@
                                                     </select>
                                                 </div>
                                             </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>País Empresa</label>
+                                                    <input id="empresa_pais" type="text" class="form-control"
+                                                        placeholder="País" disabled>
+                                                </div>
+                                            </div>
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Región</label>
-                                                    <input id="empresa_region" type="text" class="form-control" placeholder="Giro de la Empresa" disabled>
+                                                    <input id="empresa_region" type="text" class="form-control"
+                                                        placeholder="Región" disabled>
                                                 </div>
                                             </div>
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Comuna</label>
-                                                    <input id="empresa_comuna" type="text" class="form-control" placeholder="Comuna" disabled>
+                                                    <input id="empresa_comuna" type="text" class="form-control"
+                                                        placeholder="Comuna" disabled>
                                                 </div>
                                             </div>
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Dirección</label>
-                                                    <input id="empresa_direccion" type="text" class="form-control" placeholder="Dirección">
+                                                    <input id="empresa_direccion" type="text" class="form-control"
+                                                        placeholder="Dirección">
                                                 </div>
                                             </div>
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Actividad Empresa</label>
-                                                    <input id="actividad_empresa" type="text" class="form-control" placeholder="Actividad Económica" disabled>
+                                                    <input id="actividad_empresa" type="text" class="form-control"
+                                                        placeholder="Actividad Económica" disabled>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label>Fono Empresa</label>
-                                                    <input id="telefono_empresa" type="text" class="form-control" placeholder="+56 9 1234 5678">
+                                                    <input id="telefono_empresa" type="text" class="form-control"
+                                                        placeholder="+56 9 1234 5678">
                                                 </div>
                                             </div>
 
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label>Año Inicio Actividades</label>
-                                                    <input id="empresa_inicio_actividades" type="text" class="form-control" disabled>
+                                                    <input id="empresa_inicio_actividades" type="text"
+                                                        class="form-control" disabled>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>Descripción</label>
-                                                    <textarea id="descripcion_empresa" class="form-control" rows="3" placeholder="Describe brevemente tu empresa"></textarea>
-                                                    <small id="contadorDescripcion" class="form-text text-muted">0 / 500 caracteres</small>
+                                                    <textarea id="descripcion_empresa" class="form-control" rows="3"
+                                                        placeholder="Describe brevemente tu empresa"></textarea>
+                                                    <small id="contadorDescripcion" class="form-text text-muted">0 / 500
+                                                        caracteres</small>
                                                 </div>
                                             </div>
+
                                             <div class="col-md-12 mt-3 mb-3 pb-4">
                                                 <button type="button" id="actualizarEmpresaBtn"
                                                     class="theme-btn">Actualizar Empresa</button>
                                             </div>
 
+                                            <!-- ============================= -->
+                                            <!-- SECCIÓN USUARIO / EMPLEADOR -->
+                                            <!-- ============================= -->
                                             <div class="col-md-12">
                                                 <h6 class="mb-3 mt-3">Datos del Usuario</h6>
                                             </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>RUT Empleador</label>
+                                                    <input id="rut_empleador" type="text" class="form-control"
+                                                        placeholder="RUT" disabled>
+                                                </div>
+                                            </div>
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Nombres</label>
-                                                    <input id="nombre_usuario" type="text" class="form-control" placeholder="Nombres">
+                                                    <input id="nombre_usuario" type="text" class="form-control"
+                                                        placeholder="Nombres">
                                                 </div>
                                             </div>
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Apellidos</label>
-                                                    <input id="usuario_apellido" type="text" class="form-control" placeholder="Apellidos">
+                                                    <input id="usuario_apellido" type="text" class="form-control"
+                                                        placeholder="Apellidos">
                                                 </div>
                                             </div>
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Correo electrónico</label>
-                                                    <input id="usuario_correo" type="email" class="form-control" placeholder="Correo" disabled>
+                                                    <input id="usuario_correo" type="email" class="form-control"
+                                                        placeholder="Correo" disabled>
                                                 </div>
                                             </div>
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Cargo</label>
-                                                    <input id="usuario_cargo" type="text" class="form-control" placeholder="Cargo">
+                                                    <input id="usuario_cargo" type="text" class="form-control"
+                                                        placeholder="Cargo">
                                                 </div>
                                             </div>
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Teléfono Usuario</label>
-                                                    <input id="usuario_telefono" type="text" class="form-control" placeholder="+56 9 1234 5678">
+                                                    <input id="usuario_telefono" type="text" class="form-control"
+                                                        placeholder="+56 9 1234 5678">
                                                 </div>
                                             </div>
+
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label>Nacionalidad</label>
-                                                    <input id="empleador_pais" type="text" class="form-control" placeholder="Nacionalidad">
+                                                    <input id="empleador_pais" type="text" class="form-control"
+                                                        placeholder="Nacionalidad">
                                                 </div>
                                             </div>
+
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label>Región</label>
-                                                    <select id="empleador_region" type="text" class="form-control" placeholder="Región">
+                                                    <select id="empleador_region" class="form-control">
                                                         <option value="">Seleccione una Región</option>
                                                     </select>
                                                 </div>
                                             </div>
+
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label>Comuna</label>
-                                                    <select id="empleador_comuna" type="text" class="form-control" placeholder="Comuna">
+                                                    <select id="empleador_comuna" class="form-control">
                                                         <option value="">Seleccione una Comuna</option>
                                                     </select>
                                                 </div>
                                             </div>
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Dirección</label>
-                                                    <input id="empleador_direccion" type="text" class="form-control" placeholder="Dirección">
+                                                    <input id="empleador_direccion" type="text" class="form-control"
+                                                        placeholder="Dirección">
                                                 </div>
-                                            </div>            
-                                        
+                                            </div>
+
+                                            <!-- ============================= -->
+                                            <!-- REDES SOCIALES -->
+                                            <!-- ============================= -->
                                             <h6 class="mb-3">Redes Sociales</h6>
-                                        
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Facebook URL</label>
-                                                    <input id="empresa_facebook" type="text" class="form-control" placeholder="https://www.facebook.com/">
+                                                    <input id="empresa_facebook" type="text" class="form-control"
+                                                        placeholder="https://www.facebook.com/">
                                                 </div>
                                             </div>
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Twitter URL</label>
-                                                    <input id="empresa_twitter" type="text" class="form-control" placeholder="https://www.twitter.com/">
+                                                    <input id="empresa_twitter" type="text" class="form-control"
+                                                        placeholder="https://www.twitter.com/">
                                                 </div>
                                             </div>
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Linkedin URL</label>
-                                                    <input id="empresa_linkedin" type="text" class="form-control" placeholder="https://www.linkedin.com/">
+                                                    <input id="empresa_linkedin" type="text" class="form-control"
+                                                        placeholder="https://www.linkedin.com/">
                                                 </div>
                                             </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Pinterest URL</label>
+                                                    <input id="empresa_pinterest" type="text" class="form-control"
+                                                        placeholder="https://www.pinterest.com/">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>WhatsApp</label>
+                                                    <input id="empresa_whatsapp" type="text" class="form-control"
+                                                        placeholder="+56 9 1234 5678">
+                                                </div>
+                                            </div>
+
                                             <div class="col-md-12 mt-3 mb-3 pb-4">
                                                 <button type="button" id="actualizarEmpleadorBtn"
                                                     class="theme-btn">Actualizar Usuario</button>
                                             </div>
                                         </div>
                                     </form>
+
                                 </div>
                             </div>
                         </div>

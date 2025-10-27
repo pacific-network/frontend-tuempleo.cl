@@ -81,7 +81,14 @@
             flex-wrap: wrap;
         }
 
-        .filters input {
+        .filters-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: nowrap;
+        }
+
+        .filters-group input {
             border-radius: 12px;
             border: 1px solid #e2e8f0;
             padding: 10px 14px;
@@ -91,12 +98,36 @@
             transition: all 0.3s ease;
         }
 
-        .filters input:focus {
+        .filters-group input:focus {
             border-color: #3c65f5;
             background: #fff;
             box-shadow: 0 0 0 4px rgba(60, 101, 245, 0.15);
             outline: none;
         }
+
+        #searchInput {
+            max-width: 220px;
+        }
+
+        #fechaInicio,
+        #fechaFin {
+            width: 160px;
+        }
+
+        /* Versión responsive */
+        @media (max-width: 768px) {
+            .filters-group {
+                flex-wrap: wrap;
+            }
+
+            #searchInput,
+            #fechaInicio,
+            #fechaFin {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+
 
         /* Tabla */
 
@@ -602,12 +633,15 @@
                         <div class="user-profile-card">
                             <h4 class="user-profile-card-title">Mis Compras</h4>
                             <div class="table-responsive">
-                                <div class="filters mb-3 d-flex gap-2 align-items-center">
-                                    <input type="text" id="searchInput" class="form-control"
-                                        placeholder="Buscar transacción..." style="max-width: 250px;">
-                                    <input type="date" id="fechaInicio" class="form-control" />
-                                    <input type="date" id="fechaFin" class="form-control" />
+                                <div class="filters mb-3">
+                                    <div class="filters-group">
+                                        <input type="text" id="searchInput" class="form-control"
+                                            placeholder="Buscar transacción...">
+                                        <input type="date" id="fechaInicio" class="form-control">
+                                        <input type="date" id="fechaFin" class="form-control">
+                                    </div>
                                 </div>
+
 
                                 <table id="tablaTransacciones" class="table table-striped table-hover align-middle">
                                     <thead class="table-light">
