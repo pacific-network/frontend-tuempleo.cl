@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Verificación de compra</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap" />
     <style>
         :root {
             --primary: #3C65F5;
@@ -15,9 +16,8 @@
             --gray-muted: #757F95;
             --gray-border: #E8E8E8;
             --gray-light: #F5F7FA;
-            --gray-bg: #F1F6FC;
-            --hover-bg: #E0EEFF;
             --white: #FFFFFF;
+            --hover-bg: #E0EEFF;
             --radius: 14px;
         }
 
@@ -110,24 +110,6 @@
             color: var(--primary-dark);
         }
 
-        input {
-            width: 100%;
-            padding: 10px 12px;
-            border-radius: 10px;
-            border: 1px solid var(--gray-border);
-            background: var(--gray-light);
-            color: var(--primary-dark);
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: var(--primary);
-            background: var(--white);
-            box-shadow: 0 0 0 3px rgba(60, 101, 245, 0.15);
-        }
-
         .btn {
             background: var(--primary);
             color: var(--white);
@@ -160,7 +142,6 @@
             margin-top: 16px;
         }
 
-        /* === MÉTODOS DE PAGO === */
         .payopts {
             display: grid;
             gap: 16px;
@@ -182,7 +163,6 @@
 
         .payopt img {
             height: 40px;
-            width: auto;
             max-width: 160px;
             object-fit: contain;
             transition: transform 0.3s ease;
@@ -200,7 +180,6 @@
             background: #ECF0FE;
         }
 
-        /* Espaciado del botón de pagar */
         #payBtn {
             margin-top: 28px;
             width: 100%;
@@ -230,7 +209,7 @@
 
     <main class="wrap">
         <div class="layout">
-            <!-- ORDEN -->
+            <!-- 🧾 ORDEN -->
             <section class="card">
                 <h2>Tu Orden</h2>
                 <table>
@@ -258,118 +237,29 @@
                         </tr>
                     </tfoot>
                 </table>
-
                 <div class="actions">
                     <button class="btn secondary" id="backBtn">Seguir comprando</button>
-                    <button class="btn" id="continueBtn">Continuar</button>
                 </div>
             </section>
 
-            <!-- DATOS Y PAGO -->
+            <!-- 💳 DATOS Y PAGO -->
             <aside class="card">
-                <h2>Datos y Pago</h2>
-                <div class="sum">
-
-                    <div>
-                        <label>Método de pago</label>
-                        <div class="payopts">
-                            <div class="payopt" data-method="webpay">
-                                <img src="../assets/img/logo/tbnk.jpeg" alt="Webpay (Transbank)" />
-                            </div>
-                            <div class="payopt" data-method="mercadopago">
-                                <img src="../assets/img/logo/mp.jpeg" alt="Mercado Pago" />
-                            </div>
-                        </div>
+                <h2>Método de Pago</h2>
+                <div class="payopts">
+                    <div class="payopt" data-method="webpay">
+                        <img src="../assets/img/logo/tbnk.jpeg" alt="Webpay (Transbank)" />
                     </div>
-
-                    <button class="btn" id="payBtn">Confirmar y pagar</button>
+                    <div class="payopt" data-method="mercadopago">
+                        <img src="../assets/img/logo/mp.jpeg" alt="Mercado Pago" />
+                    </div>
                 </div>
+                <button class="btn" id="payBtn">Confirmar y pagar</button>
             </aside>
         </div>
     </main>
 
-    <script>
-        const CART_KEY = 'cartItems';
-        const CLP = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' });
-        const PRODUCTS = {
-            'BASICO': { name: 'Aviso Básico', price: 7990 },
-            'ESTANDAR': { name: 'Aviso Estándar', price: 14990 },
-            'PREMIUM': { name: 'Aviso Premium', price: 27990 },
-            'DESTACADO': { name: 'Aviso Destacado', price: 19990 },
-        };
-
-        let selectedMethod = null;
-
-        document.querySelectorAll('.payopt').forEach(opt => {
-            opt.addEventListener('click', () => {
-                document.querySelectorAll('.payopt').forEach(o => o.classList.remove('selected'));
-                opt.classList.add('selected');
-                selectedMethod = opt.dataset.method;
-            });
-        });
-
-        function getCart() {
-            try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; }
-            catch { return []; }
-        }
-
-        function totals(cart) {
-            let subtotal = 0, items = 0;
-            for (const c of cart) {
-                const p = PRODUCTS[c.id];
-                if (!p) continue;
-                subtotal += p.price * c.qty;
-                items += c.qty;
-            }
-            const iva = Math.round(subtotal * 0.19);
-            const total = subtotal + iva;
-            return { items, subtotal, iva, total };
-        }
-
-        function render() {
-            const cart = getCart();
-            const body = document.getElementById('orderBody');
-            body.innerHTML = '';
-            if (cart.length === 0) {
-                body.innerHTML = '<tr><td colspan="4" class="muted">No hay productos en tu carrito.</td></tr>';
-            } else {
-                const t = totals(cart);
-                for (const c of cart) {
-                    const p = PRODUCTS[c.id];
-                    if (!p) continue;
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-            <td>${p.name}</td>
-            <td class="right">${c.qty}</td>
-            <td class="right">${CLP.format(p.price)}</td>
-            <td class="right">${CLP.format(p.price * c.qty)}</td>`;
-                    body.appendChild(tr);
-                }
-                document.getElementById('subtotalCell').textContent = CLP.format(t.subtotal);
-                document.getElementById('ivaCell').textContent = CLP.format(t.iva);
-                document.getElementById('totalCell').textContent = CLP.format(t.total);
-            }
-        }
-
-        document.getElementById('backBtn').addEventListener('click', () => window.location.href = 'products.html');
-        document.getElementById('continueBtn').addEventListener('click', () => document.getElementById('name').focus());
-
-        document.getElementById('payBtn').addEventListener('click', () => {
-            const name = document.getElementById('name').value.trim();
-            const email = document.getElementById('email').value.trim();
-
-            if (!name || !email) return alert('Completa tu nombre y email para continuar.');
-            if (!selectedMethod) return alert('Selecciona un método de pago.');
-
-            const cart = getCart();
-            if (cart.length === 0) return alert('Tu carrito está vacío.');
-
-            const t = totals(cart);
-            alert(`Iniciando pago vía "${selectedMethod.toUpperCase()}" por ${CLP.format(t.total)}. (Simulado)`);
-        });
-
-        render();
-    </script>
+    <!-- JS -->
+    <script src="../assets/js/modules/transacciones/checkout.js" defer></script>
 </body>
 
 </html>
