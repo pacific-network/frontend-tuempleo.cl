@@ -1,14 +1,34 @@
 // ===============================
-// 🛒 CARRITO DE COMPRAS 
+// 🛒 CARRITO DE COMPRAS
 // ===============================
+
+// ===============================
+// ⚡ Función toast reutilizable
+// ===============================
+function showToast(message, type = 'success') {
+  Swal.fire({
+    toast: true,
+    position: 'top-end',
+    icon: type,
+    title: message,
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true,
+    background: '#fff',
+    color: '#2d3748',
+    customClass: {
+      popup: 'shadow-lg rounded-3'
+    }
+  });
+}
 
 const BASE_URL_API = "http://localhost:3000/v1";
 
 const planes = [
-  { id: 1, tipoAviso: "FREE", nombre: "Publicación Gratis", precio: 0, descripcion: "Ideal para pequeñas empresas.", caracteristicas: ["Hasta 2 publicaciones", "Duración: 7 días", "Soporte básico"], popular: false },
-  { id: 2, tipoAviso: "BASICO", nombre: "Publicación Básica", precio: 80000, precioLista: 100000, descripcion: "Ideal para pequeñas empresas.", caracteristicas: ["Hasta 2 publicaciones", "Duración: 7 días", "Soporte básico"], popular: false },
-  { id: 3, tipoAviso: "ESTANDAR", nombre: "Publicación Estándar", precio: 140000, precioLista: 170000, descripcion: "Para empresas medianas.", caracteristicas: ["Hasta 5 publicaciones", "Duración: 30 días", "Soporte prioritario", "Reportes básicos"], popular: true },
-  { id: 4, tipoAviso: "PREMIUM", nombre: "Publicación Premium", precio: 180000, precioLista: 200000, descripcion: "Para alto volumen de contratación.", caracteristicas: ["Publicaciones ilimitadas", "Duración: 60 días", "Soporte 24/7", "Consultoría avanzada"], popular: false }
+  { id: 1, tipoAviso: "FREE", nombre: "Publicación Gratis", precio: 0, descripcion: "Ideal para pequeñas empresas.", caracteristicas: ["1 publicación", "Duración: 30 días", "Soporte básico"], popular: false },
+  { id: 2, tipoAviso: "BASICO", nombre: "Publicación Básica", precio: 80000, precioLista: 100000, descripcion: "Ideal para pequeñas empresas.", caracteristicas: ["1 publicación", "Duración: 30 días", "Soporte básico"], popular: false },
+  { id: 3, tipoAviso: "ESTANDAR", nombre: "Publicación Estándar", precio: 140000, precioLista: 170000, descripcion: "Para empresas medianas.", caracteristicas: ["1 publicación", "Duración: 60 días", "Soporte prioritario", "Reportes básicos"], popular: true },
+  { id: 4, tipoAviso: "PREMIUM", nombre: "Publicación Premium", precio: 180000, precioLista: 200000, descripcion: "Para alto volumen de contratación.", caracteristicas: ["1 publicación", "Duración: 90 días", "Soporte 24/7", "Consultoría avanzada"], popular: false }
 ];
 
 // ===============================
@@ -24,6 +44,7 @@ const elIva = document.getElementById("cartIva");
 const elDiscount = document.getElementById("cartDiscount");
 const elTotal = document.getElementById("cartTotal");
 const checkoutBtn = document.getElementById("checkoutBtn");
+
 const fmtCLP = n => Number(n || 0).toLocaleString('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
 
 // ===============================
@@ -80,6 +101,10 @@ function renderPlanes() {
     const isFree = p.id === 1;
     const disabled = isFree && freeLeft <= 0;
     const btnText = isFree ? (disabled ? 'Agotado este mes' : 'Gratis') : 'Agregar al carrito';
+    const yaEnCarrito = carrito.some(i => i.id === p.id);
+    const btnDisabled = disabled || yaEnCarrito;
+    const btnLabel = yaEnCarrito ? 'Ya en carrito' : btnText;
+
     return `
       <div class="pricing-item ${p.popular ? 'active' : ''}">
         ${p.popular ? `<div class="pricing-popular">Más popular</div>` : ''}
@@ -87,13 +112,13 @@ function renderPlanes() {
           <h4>${p.nombre}</h4>
           <div class="pricing-amount">
             ${p.precioLista ? `<span class="price-list">${fmtCLP(p.precioLista)}</span>` : ''}
-            ${fmtCLP(p.precio)} <span>CLP</span>
+            <span class="price-main">${fmtCLP(p.precio)}</span> <span class="currency">CLP</span>
           </div>
           <p>${p.descripcion}</p>
           ${isFree ? `<div class="free-badge"><i class="fa fa-gift"></i> Gratis disponibles: <strong>${freeLeft}/${FREE_MONTHLY_LIMIT}</strong></div>` : ''}
         </div>
         <div class="pricing-feature"><ul>${p.caracteristicas.map(c => `<li>${c}</li>`).join('')}</ul></div>
-        <button class="theme-btn" data-id="${p.id}" ${disabled ? 'disabled' : ''}>${btnText}</button>
+        <button class="theme-btn" data-id="${p.id}" ${btnDisabled ? 'disabled' : ''}>${btnLabel}</button>
       </div>`;
   }).join('');
 }
@@ -124,6 +149,7 @@ function renderCarrito() {
     elDiscount.textContent = fmtCLP(descuento);
     elTotal.textContent = fmtCLP(total);
   }
+  renderPlanes();
 }
 
 // ===============================
@@ -132,42 +158,38 @@ function renderCarrito() {
 function agregarAlCarrito(id) {
   const plan = planes.find(p => p.id === id);
   if (!plan) return;
+  if (plan.id === 1 && getFreeRemaining() <= 0)
+    return showToast('Ya usaste tus publicaciones gratis este mes.', 'warning');
+  if (carrito.some(p => p.id === id))
+    return showToast('Este aviso ya está en tu carrito.', 'info');
 
-  // FREE control
-  if (plan.id === 1) {
-    const freeLeft = getFreeRemaining();
-    if (freeLeft <= 0) {
-      alert('Ya usaste tus 3 publicaciones gratis este mes.');
-      return;
-    }
-  }
-
-  const existente = carrito.find(p => p.id === id);
-  if (existente) existente.cantidad++;
-  else carrito.push({ ...plan, cantidad: 1 });
-
+  carrito.push({ ...plan, cantidad: 1 });
   guardarCarrito();
   renderCarrito();
-  alert(`"${plan.nombre}" agregado al carrito.`);
+
+  showToast(`"${plan.nombre}" agregado al carrito.`);
 }
 
-document.querySelector(".cart-table").addEventListener("click", e => {
-  const btn = e.target.closest(".btn-remove");
-  if (!btn) return;
-  const id = parseInt(btn.dataset.id);
-  carrito = carrito.filter(i => i.id !== id);
-  guardarCarrito();
-  renderCarrito();
-});
 
-planGrid.addEventListener("click", e => {
-  const btn = e.target.closest(".theme-btn");
-  if (!btn || btn.disabled) return;
-  agregarAlCarrito(parseInt(btn.dataset.id));
+document.addEventListener("click", e => {
+  const rm = e.target.closest(".btn-remove");
+  if (rm) {
+    const id = parseInt(rm.dataset.id);
+    carrito = carrito.filter(i => i.id !== id);
+    guardarCarrito();
+    renderCarrito();
+    return;
+  }
+
+  const add = e.target.closest(".theme-btn");
+  if (add && !add.disabled) agregarAlCarrito(parseInt(add.dataset.id));
 });
 
 // ===============================
-// ✅ Checkout redirección
+// 🧭 Checkout redirección
+// ===============================
+// ===============================
+// 🧭 Checkout redirección
 // ===============================
 checkoutBtn.addEventListener('click', () => {
   if (carrito.length === 0) {
@@ -175,10 +197,10 @@ checkoutBtn.addEventListener('click', () => {
     return;
   }
 
-  // Guardar carrito para checkout
+  // Guardamos el carrito para usarlo en checkout.html
   localStorage.setItem('checkout_cart', JSON.stringify(carrito));
 
-  // Redirigir
+  // Redirigimos al checkout
   window.location.href = 'checkout.html';
 });
 

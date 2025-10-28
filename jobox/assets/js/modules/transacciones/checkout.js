@@ -111,19 +111,27 @@ async function startMercadoPago(tipoAviso, token) {
 }
 
 // ===============================
-// 🧾 Procesar pago
+// 🧾 Procesar pago con SweetAlert2
 // ===============================
 document.getElementById("payBtn").addEventListener("click", async () => {
   const token = localStorage.getItem('token');
-  if (!token) return alert('Debes iniciar sesión para continuar.');
-  if (!metodoSeleccionado) return alert('Selecciona un método de pago.');
+  if (!token) return Swal.fire('Inicia sesión', 'Debes iniciar sesión para continuar.', 'warning');
+  if (!metodoSeleccionado) return Swal.fire('Selecciona un método de pago', '', 'info');
   const carrito = getCart();
-  if (carrito.length === 0) return alert('Tu carrito está vacío.');
+  if (carrito.length === 0) return Swal.fire('Tu carrito está vacío', '', 'info');
 
   const { total } = calcularTotales();
-  const tipoAviso = carrito[0].tipoAviso; // asume un tipo por transacción
+  const tipoAviso = carrito[0].tipoAviso;
 
   try {
+    // Mostrar modal de carga
+    Swal.fire({
+      title: 'Procesando pago...',
+      html: '<p style="color:#66789C;">Conectando con el proveedor de pago</p>',
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
     if (metodoSeleccionado === "webpay") {
       // ===============================
       // 🟦 WEBPAY FLOW
@@ -138,16 +146,23 @@ document.getElementById("payBtn").addEventListener("click", async () => {
       const webpay = await startWebpay(pending.orderId, pending.total, token);
 
       if (webpay.url && webpay.token) {
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = webpay.url;
-        const inp = document.createElement('input');
-        inp.type = 'hidden';
-        inp.name = 'token_ws';
-        inp.value = webpay.token;
-        form.appendChild(inp);
-        document.body.appendChild(form);
-        form.submit();
+        Swal.update({
+          title: 'Redirigiendo a Webpay...',
+          html: '<p style="color:#66789C;">Serás redirigido en unos segundos.</p>',
+        });
+
+        setTimeout(() => {
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = webpay.url;
+          const inp = document.createElement('input');
+          inp.type = 'hidden';
+          inp.name = 'token_ws';
+          inp.value = webpay.token;
+          form.appendChild(inp);
+          document.body.appendChild(form);
+          form.submit();
+        }, 1200);
       } else {
         throw new Error('Error al iniciar el pago con Webpay.');
       }
@@ -158,8 +173,15 @@ document.getElementById("payBtn").addEventListener("click", async () => {
       // ===============================
       const pref = await startMercadoPago(tipoAviso, token);
       if (pref.init_point) {
-        clearCart();
-        window.location.href = pref.init_point;
+        Swal.update({
+          title: 'Redirigiendo a Mercado Pago...',
+          html: '<p style="color:#66789C;">Abriendo el checkout seguro...</p>',
+        });
+
+        setTimeout(() => {
+          clearCart();
+          window.location.href = pref.init_point;
+        }, 1200);
       } else {
         throw new Error('No se pudo obtener el link de pago de Mercado Pago.');
       }
@@ -167,7 +189,7 @@ document.getElementById("payBtn").addEventListener("click", async () => {
 
   } catch (err) {
     console.error('❌ Error procesando pago:', err);
-    alert(err.message || 'Ocurrió un error al procesar el pago.');
+    Swal.fire('Error', err.message || 'Ocurrió un error al procesar el pago.', 'error');
   }
 });
 
