@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TuEmpleo.cl — Encuentra tu próximo trabajo</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+        :root {
+            --primary: #3C65F5;
+            --secondary: #FF7F00;
+            --bg: #F5F7FF;
+            --text-dark: #1E293B;
+            --text-light: #64748B;
+            --white: #FFFFFF;
+            --radius: 20px;
+            --shadow: 0 8px 30px rgba(15, 23, 42, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            position: relative;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+            color: #fff;
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 5vw, 3.4rem);
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .hero .btn {
+            background: var(--secondary);
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .hero .btn:hover {
+            background: #ff9940;
+        }
+
+        /* ===== SECCIONES ===== */
+        .section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .section h2 {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .section h2::after {
+            content: "";
+            width: 60px;
+            height: 4px;
+            background: var(--secondary);
+            display: block;
+            margin: 12px auto 0;
+            border-radius: 10px;
+        }
+
+        /* ===== PASOS ===== */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .step {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .step:hover {
+            transform: translateY(-8px);
+        }
+
+        .step img {
+            width: 60px;
+            margin-bottom: 15px;
+        }
+
+        .step h3 {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .step p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* ===== BENEFICIOS ===== */
+        .benefits {
+            background: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+            background-attachment: fixed;
+            color: #fff;
+            padding: 100px 20px;
+            position: relative;
+        }
+
+        .benefits::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .benefits-content {
+            position: relative;
+            max-width: 1100px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            z-index: 1;
+        }
+
+        .benefit {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius);
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .benefit h3 {
+            font-size: 1.2rem;
+            color: #fff;
+        }
+
+        .benefit p {
+            font-size: 0.95rem;
+            color: #e2e8f0;
+        }
+
+        /* ===== CTA ===== */
+        .cta {
+            text-align: center;
+            padding: 100px 20px;
+            background: linear-gradient(135deg, var(--primary), #1d4ed8);
+            color: #fff;
+            border-radius: var(--radius);
+            margin: 60px auto;
+            max-width: 1100px;
+            box-shadow: var(--shadow);
+        }
+
+        .cta h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .cta a {
+            background: var(--secondary);
+            color: #fff;
+            padding: 14px 30px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .cta a:hover {
+            background: #ff9940;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HERO -->
+    <section class="hero">
+        <h1>Encuentra el trabajo ideal en TuEmpleo.cl</h1>
+        <p>Conecta con las mejores empresas de Chile y postula en minutos. Rápido, moderno y efectivo.</p>
+        <a href="https://www.tuempleo.cl/index.html" class="btn">Comenzar Ahora</a>
+    </section>
+
+    <!-- CÓMO FUNCIONA -->
+    <section class="section">
+        <h2>Cómo funciona</h2>
+        <div class="steps">
+            <div class="step">
+                <img src="https://cdn-icons-png.flaticon.com/512/1828/1828961.png" alt="">
+                <h3>1. Regístrate</h3>
+                <p>Crea tu perfil profesional y destaca tus habilidades.</p>
+            </div>
+            <div class="step">
+                <img src="https://cdn-icons-png.flaticon.com/512/942/942748.png" alt="">
+                <h3>2. Explora</h3>
+                <p>Encuentra miles de ofertas laborales en todo Chile.</p>
+            </div>
+            <div class="step">
+                <img src="https://cdn-icons-png.flaticon.com/512/992/992700.png" alt="">
+                <h3>3. Postula</h3>
+                <p>Envía tu postulación fácilmente desde cualquier dispositivo.</p>
+            </div>
+            <div class="step">
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" alt="">
+                <h3>4. Comienza</h3>
+                <p>Recibe entrevistas, ofertas y da el siguiente paso en tu carrera.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- BENEFICIOS -->
+    <section class="benefits">
+        <div class="benefits-content">
+            <div class="benefit">
+                <h3>🚀 Más de 1000 ofertas activas</h3>
+                <p>Accede a una amplia variedad de oportunidades actualizadas a diario.</p>
+            </div>
+            <div class="benefit">
+                <h3>🧭 Filtros inteligentes</h3>
+                <p>Encuentra exactamente lo que buscas según ubicación y categoría.</p>
+            </div>
+            <div class="benefit">
+                <h3>📱 Diseño moderno</h3>
+                <p>Navega cómodamente desde tu celular, tablet o computador.</p>
+            </div>
+            <div class="benefit">
+                <h3>🤝 Empresas confiables</h3>
+                <p>Conecta solo con organizaciones verificadas y seguras.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="cta">
+        <h2>¿Listo para conseguir tu próximo empleo?</h2>
+        <p>Regístrate gratis y únete a miles de profesionales que ya encontraron trabajo con nosotros.</p>
+        <a href="https://www.tuempleo.cl/login.html">Crear mi cuenta ahora</a>
+    </section>
+
+    <footer>
+        © 2025 TuEmpleo.cl — Todos los derechos reservados.
+    </footer>
+
+</body>
+
+</html>
