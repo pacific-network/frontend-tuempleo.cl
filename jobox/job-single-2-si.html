@@ -29,107 +29,105 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
     <style>
         .interactive-tooltip {
-    display: none;
-    position: absolute;
-    background: white;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    padding: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 240px;
-    z-index: 1000;
-    font-family: Arial, sans-serif;
-    margin-top: 8px;
-}
+            display: none;
+            position: absolute;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 240px;
+            z-index: 1000;
+            font-family: Arial, sans-serif;
+            margin-top: 8px;
+        }
 
-.tooltip-description {
-    color: #555;
-    font-size: 13px;
-    margin-bottom: 12px;
-    line-height: 1.4;
-}
+        .tooltip-description {
+            color: #555;
+            font-size: 13px;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
 
-.tooltip-actions {
-    display: flex;
-    gap: 8px;
-}
+        .tooltip-actions {
+            display: flex;
+            gap: 8px;
+        }
 
-.tooltip-btn {
-    flex: 1;
-    padding: 6px 10px;
-    border: 1px solid #d1d1d1;
-    border-radius: 4px;
-    background: #f8f8f8;
-    color: #333;
-    font-size: 12px;
-    cursor: pointer;
-    transition: background 0.2s;
-}
+        .tooltip-btn {
+            flex: 1;
+            padding: 6px 10px;
+            border: 1px solid #d1d1d1;
+            border-radius: 4px;
+            background: #f8f8f8;
+            color: #333;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
 
-.tooltip-btn:hover {
-    background: #e9e9e9;
-}
+        .tooltip-btn:hover {
+            background: #e9e9e9;
+        }
 
-.save-job-btn:hover + .interactive-tooltip {
-    display: block;
-}
+        .save-job-btn:hover+.interactive-tooltip {
+            display: block;
+        }
     </style>
     <!-- cuadro si tiene preguntas-->
     <style>
         .alert-box {
-  background-color: #e6f6fb;
-  border-left: 4px solid #0ca4df;
-  padding: 1rem;
-  border-radius: 4px;
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-}
+            background-color: #e6f6fb;
+            border-left: 4px solid #0ca4df;
+            padding: 1rem;
+            border-radius: 4px;
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
 
-.alert-icon {
-  font-size: 1.8rem;
-  color: #0ca4df;
-}
+        .alert-icon {
+            font-size: 1.8rem;
+            color: #0ca4df;
+        }
 
-.alert-content {
-  color: #333;
-  font-size: 0.95rem;
-}
-
+        .alert-content {
+            color: #333;
+            font-size: 0.95rem;
+        }
     </style>
     <style>
         /* Estilo tipo popup flotante */
-#estado-postulacion {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  min-width: 300px;
-  background: #fff;
-  border-left: 5px solid #28a745;
-  padding: 15px 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
-  z-index: 9999;
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: all 0.4s ease-in-out;
-}
+        #estado-postulacion {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            min-width: 300px;
+            background: #fff;
+            border-left: 5px solid #28a745;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.4s ease-in-out;
+        }
 
-#estado-postulacion.show {
-  opacity: 1;
-  transform: translateY(0);
-}
+        #estado-postulacion.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-#estado-postulacion .alert-icon {
-  font-size: 24px;
-  color: #28a745;
-  margin-right: 10px;
-}
+        #estado-postulacion .alert-icon {
+            font-size: 24px;
+            color: #28a745;
+            margin-right: 10px;
+        }
 
-#estado-postulacion .alert-contnet {
-  font-size: 14px;
-}
-
+        #estado-postulacion .alert-contnet {
+            font-size: 14px;
+        }
     </style>
 
 </head>
@@ -147,7 +145,7 @@
     <!-- preloader end -->
 
     <!-- header area -->
-    <div id="header-placeholder"></div> 
+    <div id="header-placeholder"></div>
     <!-- header area end -->
 
     <main class="main">
@@ -170,13 +168,14 @@
                                 </div>
                                 <div class="job-single-heading-btns mt-5">
                                     <div class="d-flex flex-wrap gap-3">
-                                        <a href="job-list.html" class="theme-btn theme-btn1">
+                                        <a href="#" id="btn-volver" class="theme-btn theme-btn1">
                                             <span class="fe-arrow-left"></span> Volver
                                         </a>
                                         <a href="#" id="btn-postular" class="theme-btn">
                                             <span class="fe-briefcase"></span> Postular
                                         </a>
-                                        <div id="estado-postulacion" class="alert-box alert-success d-none d-flex align-items-center">
+                                        <div id="estado-postulacion"
+                                            class="alert-box alert-success d-none d-flex align-items-center">
                                             <div class="alert-icon"><i class="fe-check-circle"></i>
                                             </div>
                                             <div class="alert-contnet">
@@ -296,9 +295,11 @@
                                 <!-- Descripción del puesto -->
                                 <div class="mb-4">
                                     <h5 class="mb-3">Descripción del puesto</h5>
-                                    <p class="descripcion-puesto">En Vertice CC, estamos en búsqueda de un Desarrollador Full Stack para colaborar con un cliente del sector bancario en el desarrollo de productos digitales.</p>
+                                    <p class="descripcion-puesto">En Vertice CC, estamos en búsqueda de un Desarrollador
+                                        Full Stack para colaborar con un cliente del sector bancario en el desarrollo de
+                                        productos digitales.</p>
                                 </div>
-                            
+
                                 <!-- Responsabilidades -->
                                 <div class="mb-4">
                                     <h5 class="mb-3">Responsabilidades</h5>
@@ -310,7 +311,7 @@
                                         <li>Automatizar procesos CI/CD</li>
                                     </ul>
                                 </div>
-                            
+
                                 <!-- Requisitos mínimos -->
                                 <div class="mb-4">
                                     <h5 class="mb-3">Requisitos mínimos</h5>
@@ -321,7 +322,7 @@
                                         <li>Conocimiento de metodologías ágiles</li>
                                     </ul>
                                 </div>
-                            
+
                                 <!-- Beneficios -->
                                 <div class="mb-4">
                                     <h5 class="mb-3">Beneficios</h5>
@@ -390,7 +391,8 @@
                                         </div>
                                         <div class="job-title">
                                             <h5><a href="#">Application Developer</a></h5>
-                                            <a href="#" class="job-employer"><i class="far fa-building"></i> Circle Pixel</a>
+                                            <a href="#" class="job-employer"><i class="far fa-building"></i> Circle
+                                                Pixel</a>
                                         </div>
                                     </div>
                                     <div class="job-content">
@@ -424,7 +426,8 @@
                                         </div>
                                         <div class="job-title">
                                             <h5><a href="#">Marketing Manager</a></h5>
-                                            <a href="#" class="job-employer"><i class="far fa-building"></i> Azutine Growths</a>
+                                            <a href="#" class="job-employer"><i class="far fa-building"></i> Azutine
+                                                Growths</a>
                                         </div>
                                     </div>
                                     <div class="job-content">
@@ -458,7 +461,8 @@
                                         </div>
                                         <div class="job-title">
                                             <h5><a href="#">Product Designer</a></h5>
-                                            <a href="#" class="job-employer"><i class="far fa-building"></i> Larana Inc</a>
+                                            <a href="#" class="job-employer"><i class="far fa-building"></i> Larana
+                                                Inc</a>
                                         </div>
                                     </div>
                                     <div class="job-content">
@@ -492,7 +496,8 @@
                                         </div>
                                         <div class="job-title">
                                             <h5><a href="#">Creative Director</a></h5>
-                                            <a href="#" class="job-employer"><i class="far fa-building"></i> Rubic Corner</a>
+                                            <a href="#" class="job-employer"><i class="far fa-building"></i> Rubic
+                                                Corner</a>
                                         </div>
                                     </div>
                                     <div class="job-content">
@@ -522,7 +527,8 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="modalPreguntas" tabindex="-1" aria-labelledby="modalPreguntasLabel" aria-hidden="true">
+        <div class="modal fade" id="modalPreguntas" tabindex="-1" aria-labelledby="modalPreguntasLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content border-0 rounded-4 shadow-lg-plus">
                     <div class="modal-header bg-light rounded-top-4 px-4 py-3 border-bottom-0">
@@ -536,9 +542,11 @@
                                 <h5 class="modal-title fw-bold text-primary mb-1" id="modalPreguntasLabel">
                                     Responde estas preguntas antes de postular
                                 </h5>
-                                <p class="mb-0 text-muted small">Tus respuestas serán enviadas al empleador junto con tu postulación.</p>
+                                <p class="mb-0 text-muted small">Tus respuestas serán enviadas al empleador junto con tu
+                                    postulación.</p>
                             </div>
-                            <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"
+                                aria-label="Cerrar"></button>
                         </div>
                     </div>
                     <div class="modal-body px-4 pt-2 pb-0">
@@ -548,7 +556,8 @@
                         <button type="button" class="btn btn-outline-primary rounded-pill px-4" data-bs-dismiss="modal">
                             Cancelar
                         </button>
-                        <button type="button" id="btn-confirmar-postulacion" class="btn rounded-pill px-4 text-white" style="background-color: rgb(60, 101, 245);">
+                        <button type="button" id="btn-confirmar-postulacion" class="btn rounded-pill px-4 text-white"
+                            style="background-color: rgb(60, 101, 245);">
                             <i class="fas fa-paper-plane me-2"></i> Confirmar Postulación
                         </button>
                     </div>
@@ -560,48 +569,48 @@
 
     <!-- footer area -->
     <div id="footer-placeholder">
-    <!-- footer area end -->
+        <!-- footer area end -->
 
-    <!-- scroll-top -->
-    <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
-    <!-- scroll-top end -->
+        <!-- scroll-top -->
+        <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
+        <!-- scroll-top end -->
 
 
-    <!-- js -->
-    <script src="assets/js/jquery-3.6.0.min.js"></script>
-    <script src="assets/js/modernizr.min.js"></script>
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/imagesloaded.pkgd.min.js"></script>
-    <script src="assets/js/jquery.magnific-popup.min.js"></script>
-    <script src="assets/js/isotope.pkgd.min.js"></script>
-    <script src="assets/js/jquery.appear.min.js"></script>
-    <script src="assets/js/jquery.easing.min.js"></script>
-    <script src="assets/js/owl.carousel.min.js"></script>
-    <script src="assets/js/counter-up.js"></script>
-    <script src="assets/js/masonry.pkgd.min.js"></script>
-    <script src="assets/js/wow.min.js"></script>
-    <script src="assets/js/nice-select.min.js"></script>
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/config/config.js"></script>
-    <script src="assets/js/header-footer/loadHeaderFooterSiApplied1.js"></script>
-    <script src="assets/js/calification.js"></script>
-    <script src="assets/js/postulaciones/postulacion.js"></script>
-    <script src="assets/js/postulaciones/filtros-postulacion-si.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        document.querySelectorAll('.job-item').forEach(item => {
-            item.addEventListener('click', function(e) {
-                // Evita que se active si se hizo click en un enlace interno
-                if(!e.target.closest('a')) {
-                    window.location.href = '#'; // URL de destino
-                }
+        <!-- js -->
+        <script src="assets/js/jquery-3.6.0.min.js"></script>
+        <script src="assets/js/modernizr.min.js"></script>
+        <script src="assets/js/bootstrap.bundle.min.js"></script>
+        <script src="assets/js/imagesloaded.pkgd.min.js"></script>
+        <script src="assets/js/jquery.magnific-popup.min.js"></script>
+        <script src="assets/js/isotope.pkgd.min.js"></script>
+        <script src="assets/js/jquery.appear.min.js"></script>
+        <script src="assets/js/jquery.easing.min.js"></script>
+        <script src="assets/js/owl.carousel.min.js"></script>
+        <script src="assets/js/counter-up.js"></script>
+        <script src="assets/js/masonry.pkgd.min.js"></script>
+        <script src="assets/js/wow.min.js"></script>
+        <script src="assets/js/nice-select.min.js"></script>
+        <script src="assets/js/main.js"></script>
+        <script src="assets/js/config/config.js"></script>
+        <script src="assets/js/header-footer/loadHeaderFooterSiApplied1.js"></script>
+        <script src="assets/js/calification.js"></script>
+        <script src="assets/js/postulaciones/postulacion.js"></script>
+        <script src="assets/js/postulaciones/filtros-postulacion-si.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            document.querySelectorAll('.job-item').forEach(item => {
+                item.addEventListener('click', function (e) {
+                    // Evita que se active si se hizo click en un enlace interno
+                    if (!e.target.closest('a')) {
+                        window.location.href = '#'; // URL de destino
+                    }
+                });
+                item.style.cursor = 'pointer';
             });
-            item.style.cursor = 'pointer';
-        });
-    </script>
-    <script src="assets/js/popup-estado-postulacion.js"></script>
-    <script src="assets/js/modules/saved-jobs/saved-job.js"></script>
-    <script src="assets/js/View-employer/btn-view-employer-si.js"></script>
+        </script>
+        <script src="assets/js/popup-estado-postulacion.js"></script>
+        <script src="assets/js/modules/saved-jobs/saved-job.js"></script>
+        <script src="assets/js/View-employer/btn-view-employer-si.js"></script>
 
 </body>
 
