@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verificación de compra</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap" />
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+    <style>
+        :root {
+            --primary: #3C65F5;
+            --primary-dark: #05264E;
+            --primary-light: #587AF3;
+            --primary-bg: #F2F6FD;
+            --gray: #66789C;
+            --gray-muted: #757F95;
+            --gray-border: #E8E8E8;
+            --gray-light: #F5F7FA;
+            --white: #FFFFFF;
+            --hover-bg: #E0EEFF;
+            --radius: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--primary-bg);
+            color: var(--primary-dark);
+            font-family: "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
+            line-height: 1.5;
+        }
+
+        header {
+            padding: 40px 24px 30px;
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-border);
+            box-shadow: 0 2px 8px rgba(5, 38, 78, 0.05);
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.9rem;
+            color: var(--primary-dark);
+        }
+
+        .muted {
+            color: var(--gray-muted);
+            margin-top: 6px;
+            font-size: 0.95rem;
+        }
+
+        .wrap {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: var(--white);
+            border: 1px solid var(--gray-border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            box-shadow: 0 8px 20px rgba(5, 38, 78, 0.06);
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 16px;
+            font-size: 1.3rem;
+            color: var(--primary-dark);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 16px;
+        }
+
+        th,
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--gray-border);
+            text-align: left;
+        }
+
+        th {
+            color: var(--gray-muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .right {
+            text-align: right;
+        }
+
+        .total {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--primary-dark);
+        }
+
+        .btn {
+            background: var(--primary);
+            color: var(--white);
+            border: 0;
+            padding: 14px 22px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .btn:hover {
+            background: var(--primary-light);
+        }
+
+        .btn.secondary {
+            background: var(--white);
+            border: 1px solid var(--gray-border);
+            color: var(--primary-dark);
+        }
+
+        .btn.secondary:hover {
+            background: var(--hover-bg);
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 16px;
+        }
+
+        .payopts {
+            display: grid;
+            gap: 16px;
+            margin-top: 10px;
+        }
+
+        .payopt {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1.5px solid var(--gray-border);
+            border-radius: var(--radius);
+            background: var(--white);
+            cursor: pointer;
+            padding: 18px;
+            transition: all 0.3s ease;
+            height: 80px;
+        }
+
+        .payopt img {
+            height: 40px;
+            max-width: 160px;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .payopt:hover {
+            border-color: var(--primary);
+            background: var(--hover-bg);
+            transform: translateY(-2px);
+        }
+
+        .payopt.selected {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(60, 101, 245, 0.15);
+            background: #ECF0FE;
+        }
+
+        #payBtn {
+            margin-top: 28px;
+            width: 100%;
+        }
+
+        @media (max-width: 900px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .payopt {
+                height: 65px;
+            }
+
+            .payopt img {
+                height: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Verificación de compra</h1>
+        <p class="muted">Confirma los datos antes de realizar el pago.</p>
+        <button class="btn secondary" id="cartBtn" onclick="location.href='shopping-cart.html'">Seguir
+            Comprando</button>
+
+    </header>
+
+    <main class="wrap">
+        <div class="layout">
+            <!-- 🧾 ORDEN -->
+            <section class="card">
+                <h2>Tu Orden</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th class="right">Cantidad</th>
+                            <th class="right">Precio</th>
+                            <th class="right">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderBody"></tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="right muted">Subtotal</td>
+                            <td class="right" id="subtotalCell">$0</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="right muted">IVA (19%)</td>
+                            <td class="right" id="ivaCell">$0</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="right total">TOTAL</td>
+                            <td class="right total" id="totalCell">$0</td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <div class="actions">
+                    <button class="btn secondary" id="backBtn">Seguir comprando</button>
+                </div>
+            </section>
+
+            <!-- 💳 DATOS Y PAGO -->
+            <aside class="card">
+                <h2>Método de Pago</h2>
+                <div class="payopts">
+                    <div class="payopt" data-method="webpay">
+                        <img src="../assets/img/logo/tbnk.jpeg" alt="Webpay (Transbank)" />
+                    </div>
+                    <div class="payopt" data-method="mercadopago">
+                        <img src="../assets/img/logo/mp.jpeg" alt="Mercado Pago" />
+                    </div>
+                </div>
+                <button class="btn" id="payBtn">Confirmar y pagar</button>
+            </aside>
+        </div>
+    </main>
+
+    <!-- JS -->
+    <script src="../assets/js/modules/transacciones/checkout.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</body>
+
+</html>
