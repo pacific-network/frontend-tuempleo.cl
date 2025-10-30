@@ -1,7 +1,7 @@
     // assets/js/candidate-saved-job.js
 (function () {
   // === Utils ===
-  const BASE = window.BASE_URL_API || 'https://tuempleo.cl/api/v1';
+  const BASE = window.BASE_URL_API
   const tableBody = document.querySelector('.profile-applied-job tbody');
   const paginationContainer = document.querySelector('.pagination-area .pagination');
 

@@ -109,7 +109,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         rut: formData.get("rutInput"),
         razon_social: formData.get("razon_social"),
         nombre_fantasia: formData.get("nombre_empresa"),
-        plan_id: 1,
         data: {
           actividades_economicas: [formData.get("actividad_empresa")],
           condicion_fiscal: "Regular",

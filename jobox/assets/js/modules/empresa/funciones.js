@@ -2,6 +2,10 @@ document.addEventListener('DOMContentLoaded', function() {
   const regionesComunas = {
     "regiones": [
       {
+        "region": "Región Metropolitana de Santiago",
+        "comunas": ["Alhué", "Buin", "Calera de Tango", "Cerrillos", "Cerro Navia", "Colina", "Conchalí", "Curacaví", "El Bosque", "El Monte", "Estación Central", "Huechuraba", "Independencia", "Isla de Maipo", "La Cisterna", "La Florida", "La Granja", "La Pintana", "La Reina", "Lampa", "Las Condes", "Lo Barnechea", "Lo Espejo", "Lo Prado", "Macul", "Maipú", "María Pinto", "Melipilla", "Ñuñoa", "Padre Hurtado", "Paine", "Pedro Aguirre Cerda", "Peñaflor", "Peñalolén", "Pirque", "Providencia", "Pudahuel", "Puente Alto", "Quilicura", "Quinta Normal", "Recoleta", "Renca", "San Bernardo", "San Joaquín", "San José de Maipo", "San Miguel", "San Pedro", "San Ramón", "Santiago", "Talagante", "Tiltil", "Vitacura"].sort()
+      },
+      {
         "region": "Región de Arica y Parinacota",
         "comunas": ["Arica", "Camarones", "General Lagos", "Putre"].sort()
       },
@@ -60,10 +64,6 @@ document.addEventListener('DOMContentLoaded', function() {
       {
         "region": "Región de Magallanes y de la Antártica Chilena",
         "comunas": ["Antártica", "Cabo de Hornos (Ex Navarino)", "Laguna Blanca", "Natales", "Porvenir", "Primavera", "Punta Arenas", "Río Verde", "San Gregorio", "Timaukel", "Torres del Paine"].sort()
-      },
-      {
-        "region": "Región Metropolitana de Santiago",
-        "comunas": ["Alhué", "Buin", "Calera de Tango", "Cerrillos", "Cerro Navia", "Colina", "Conchalí", "Curacaví", "El Bosque", "El Monte", "Estación Central", "Huechuraba", "Independencia", "Isla de Maipo", "La Cisterna", "La Florida", "La Granja", "La Pintana", "La Reina", "Lampa", "Las Condes", "Lo Barnechea", "Lo Espejo", "Lo Prado", "Macul", "Maipú", "María Pinto", "Melipilla", "Ñuñoa", "Padre Hurtado", "Paine", "Pedro Aguirre Cerda", "Peñaflor", "Peñalolén", "Pirque", "Providencia", "Pudahuel", "Puente Alto", "Quilicura", "Quinta Normal", "Recoleta", "Renca", "San Bernardo", "San Joaquín", "San José de Maipo", "San Miguel", "San Pedro", "San Ramón", "Santiago", "Talagante", "Tiltil", "Vitacura"].sort()
       }
     ]
   };
@@ -75,7 +75,6 @@ function cargarRegionesYComunas(idRegion, idComuna) {
     if (!regionSelect || !comunaSelect) return;
 
     // Inicializar selects
-    regionSelect.innerHTML = '<option value="">Seleccione una región</option>';
     comunaSelect.innerHTML = '<option value="">Seleccione una comuna</option>';
     comunaSelect.disabled = true;
 
