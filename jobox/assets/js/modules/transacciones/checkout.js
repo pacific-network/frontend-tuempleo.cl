@@ -197,7 +197,7 @@ document.getElementById("payBtn").addEventListener("click", async () => {
 // 🔙 Navegación
 // ===============================
 document.getElementById("backBtn").addEventListener("click", () => {
-  window.location.href = 'carrito.html';
+  window.location.href = 'shopping-cart.html';
 });
 
 // ===============================
