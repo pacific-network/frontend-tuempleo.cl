@@ -2,7 +2,7 @@
 // 💳 CHECKOUT — Procesar Pago
 // ===============================
 
-const BASE_URL_API = "http://localhost:3000/v1";
+console.log(BASE_URL_API)
 const CART_KEY = 'checkout_cart';
 const fmtCLP = n => Number(n || 0).toLocaleString('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
 
