@@ -120,7 +120,7 @@
       const data = await fetchRecentTransactions();
 
       if (!data.length) {
-        listEl.innerHTML = `<div class="text-muted small px-3 py-2">No hay movimientos de pago por ahora.</div>`;
+        listEl.innerHTML = `<div class="text-muted small px-3 py-2">Aún no hay Pagos.</div>`;
         if (countEl) countEl.textContent = '0';
         return;
       }
@@ -155,7 +155,7 @@
 
     } catch (err) {
       console.error('Pago-notifications error:', err);
-      listEl.innerHTML = `<div class="text-danger small px-3 py-2">No se pudieron cargar las notificaciones de pago.</div>`;
+      listEl.innerHTML = `<div class="text-danger small px-3 py-2">Aún no se han realizado pagos.</div>`;
       if (countEl) countEl.textContent = '0';
     }
   }

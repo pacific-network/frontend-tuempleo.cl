@@ -27,63 +27,135 @@
 
   <!-- Ajustes de tamaño + separación -->
   <style>
-    /* ===== BANNERS SUPERIORES (50%) ===== */
-    #available-banners .dashboard-widget {
-      padding: 10px 12px;
-      min-height: 68px; /* ~50% del tamaño base */
-    }
-    #available-banners .dashboard-widget .dashboard-widget-info h1 {
-      font-size: 1.25rem;
-      line-height: 1.1;
-      margin: 0;
-    }
-    #available-banners .dashboard-widget .dashboard-widget-info span {
-      font-size: 0.85rem;
-    }
-    #available-banners .dashboard-widget .dashboard-widget-icon {
-      width: 36px;
-      height: 36px;
-    }
-    #available-banners .dashboard-widget .dashboard-widget-icon i {
-      font-size: 22px;
-      line-height: 36px;
-    }
+  /* ===== BANNERS SUPERIORES (50%) ===== */
+  #available-banners .dashboard-widget {
+    padding: 10px 12px;
+    min-height: 68px;
+  }
+  #available-banners .dashboard-widget .dashboard-widget-info h1 {
+    font-size: 1.25rem;
+    line-height: 1.1;
+    margin: 0;
+  }
+  #available-banners .dashboard-widget .dashboard-widget-info span {
+    font-size: 0.85rem;
+  }
+  #available-banners .dashboard-widget .dashboard-widget-icon {
+    width: 36px;
+    height: 36px;
+  }
+  #available-banners .dashboard-widget .dashboard-widget-icon i {
+    font-size: 22px;
+    line-height: 36px;
+  }
 
-    /* 🔻 Acerca el bloque inferior al superior */
-    #available-banners { margin-bottom: 8px !important; }
-    #available-banners + .row { margin-top: 4px !important; }
+  /* 🔻 Acerca el bloque inferior al superior */
+  #available-banners { margin-bottom: 4px !important; }
+  #available-banners + .row { margin-top: 2px !important; }
 
-    /* ===== BANNERS INFERIORES (KPI) al 75% ===== */
-    .user-profile-wrapper > .row:nth-of-type(2) .dashboard-widget {
-      padding: 22px 26px;
-      min-height: 160px;
-    }
-    .user-profile-wrapper > .row:nth-of-type(2) .dashboard-widget .dashboard-widget-info h1 {
-      font-size: 2.1rem;
-      line-height: 1.2;
-      margin-bottom: 6px;
-    }
-    .user-profile-wrapper > .row:nth-of-type(2) .dashboard-widget .dashboard-widget-info span {
-      font-size: 1.05rem;
-    }
-    .user-profile-wrapper > .row:nth-of-type(2) .dashboard-widget .dashboard-widget-icon {
-      width: 60px;
-      height: 60px;
-    }
-    .user-profile-wrapper > .row:nth-of-type(2) .dashboard-widget .dashboard-widget-icon i {
-      font-size: 34px;
-      line-height: 60px;
-    }
-  </style>
+  /* ===== BANNERS INFERIORES (KPI) ===== */
+  .user-profile-wrapper > .row:nth-of-type(2) .dashboard-widget {
+    padding: 18px 22px;
+    min-height: 140px;
+  }
+  .user-profile-wrapper > .row:nth-of-type(2) .dashboard-widget .dashboard-widget-info h1 {
+    font-size: 2rem;
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .user-profile-wrapper > .row:nth-of-type(2) .dashboard-widget .dashboard-widget-info span {
+    font-size: 1rem;
+  }
+  .user-profile-wrapper > .row:nth-of-type(2) .dashboard-widget .dashboard-widget-icon {
+    width: 58px;
+    height: 58px;
+  }
+  .user-profile-wrapper > .row:nth-of-type(2) .dashboard-widget .dashboard-widget-icon i {
+    font-size: 32px;
+    line-height: 58px;
+  }
+
+  /* ===== Tarjetas de avisos ultracompactas ===== */
+  .user-profile-card {
+    padding: 10px 14px;           /* menos relleno interno */
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    transition: all 0.15s ease;
+    margin-bottom: 5px;           /* espacio mínimo entre avisos */
+  }
+
+  .user-profile-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .user-profile-card-title {
+    font-size: 0.95rem;           /* más pequeño aún */
+    margin-bottom: 2px;
+    color: #0b2341;
+  }
+
+  .profile-info-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .profile-info-list li {
+    font-size: 0.8rem;
+    margin-bottom: 2px;           /* casi sin separación */
+    display: flex;
+    align-items: center;
+    color: #223;
+  }
+
+  .profile-info-list li i {
+    font-size: 0.85rem;
+    margin-right: 5px;
+    color: #0056b3;
+  }
+
+  .profile-info-list li strong {
+    font-weight: 600;
+    margin-right: 3px;
+    color: #0b2341;
+  }
+
+  /* Estado del aviso */
+  .badge-status {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    line-height: 1;
+  }
+
+  .badge-active {
+    background-color: #28a745;
+    color: #fff;
+  }
+
+  .badge-warning {
+    background-color: #ffc107;
+    color: #000;
+  }
+
+  .badge-expired {
+    background-color: #dc3545;
+    color: #fff;
+  }
+</style>
+
 </head>
 
 <body>
 
   <!-- preloader -->
   <div class="preloader">
-    <div class="loader">
-      <span></span><span></span><span></span>
-    </div>
+    <div class="loader"><span></span><span></span><span></span></div>
   </div>
 
   <!-- header area -->
@@ -132,7 +204,7 @@
           <div class="col-lg-9">
             <div class="user-profile-wrapper">
               
-              <!-- ====== Avisos disponibles (banners superiores reducidos) ====== -->
+              <!-- ====== Avisos disponibles ====== -->
               <div class="row mb-3" id="available-banners">
                 <div class="col-md-6 col-lg-3">
                   <div class="dashboard-widget dashboard-widget-color-1">
@@ -140,9 +212,7 @@
                       <h1 id="avail-free">0</h1>
                       <span>Gratis disponibles</span>
                     </div>
-                    <div class="dashboard-widget-icon">
-                      <i class="fal fa-badge-check"></i>
-                    </div>
+                    <div class="dashboard-widget-icon"><i class="fal fa-badge-check"></i></div>
                   </div>
                 </div>
 
@@ -152,9 +222,7 @@
                       <h1 id="avail-basica">0</h1>
                       <span>Básico disponibles</span>
                     </div>
-                    <div class="dashboard-widget-icon">
-                      <i class="fal fa-star"></i>
-                    </div>
+                    <div class="dashboard-widget-icon"><i class="fal fa-star"></i></div>
                   </div>
                 </div>
 
@@ -164,9 +232,7 @@
                       <h1 id="avail-estandar">0</h1>
                       <span>Estándar disponibles</span>
                     </div>
-                    <div class="dashboard-widget-icon">
-                      <i class="fal fa-rocket"></i>
-                    </div>
+                    <div class="dashboard-widget-icon"><i class="fal fa-rocket"></i></div>
                   </div>
                 </div>
 
@@ -176,71 +242,28 @@
                       <h1 id="avail-premium">0</h1>
                       <span>Premium disponibles</span>
                     </div>
-                    <div class="dashboard-widget-icon">
-                      <i class="fal fa-crown"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- ====== /Avisos disponibles ====== -->
-
-              <!-- ====== Banners inferiores (KPIs) al 75% ====== -->
-              <div class="row">
-                <div class="col-md-6 col-lg-4">
-                  <div class="dashboard-widget dashboard-widget-color-1">
-                    <div class="dashboard-widget-info">
-                      <h1 id="kpi-pubs-total">0</h1>  <!-- 👈 NUEVO id -->
-                      <span>Trabajos Publicados</span>
-                    </div>
-                    <div class="dashboard-widget-icon">
-                      <i class="fal fa-briefcase"></i>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                  <div class="dashboard-widget dashboard-widget-color-2">
-                    <div class="dashboard-widget-info">
-                      <h1>0</h1>
-                      <span>Visitas al Perfil</span>
-                    </div>
-                    <div class="dashboard-widget-icon">
-                      <i class="fal fa-eye"></i>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                  <div class="dashboard-widget dashboard-widget-color-3">
-                    <div class="dashboard-widget-info">
-                      <h1 id="kpi-postulaciones-total">0</h1>
-                      <span>Total Postulaciones</span>
-                    </div>
-                    <div class="dashboard-widget-icon">
-                      <i class="fal fa-layer-group"></i>
-                    </div>
+                    <div class="dashboard-widget-icon"><i class="fal fa-crown"></i></div>
                   </div>
                 </div>
               </div>
 
-              <!-- resto igual -->
               <div class="row">
                 <div class="col-lg-8">
                   <ul class="nav nav-tabs" id="visitasTabs">
-                    <li class="nav-item"><a class="nav-link active" href="#" data-tab="hoy">Candidatos Sugeridos</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#" data-tab="hoy">Últimos Avisos Publicados</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" data-tab="semana">Historial Publicaciones</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" data-tab="mes">Pendiente</a></li>
                   </ul>
 
                   <div class="tab-content mt-3">
                     <div class="tab-pane active" id="tab-hoy">
-                      <p>Candidatos sugeridos:</p>
+                      <p>Últimos avisos publicados:</p>
                       <div id="candidatos-container" class="user-profiles-grid"></div>
-                      <nav>
-                        <ul id="paginacion" class="pagination mt-3"></ul>
-                      </nav>
+                      <nav><ul id="paginacion" class="pagination mt-3"></ul></nav>
                     </div>
 
                     <div class="tab-pane d-none" id="tab-semana">
-                      <p>Historial de ofertas <strong>48</strong></p>
+                      <p>Historial de ofertas <strong>0</strong></p>
                     </div>
                     <div class="tab-pane d-none" id="tab-mes">
                       <p>Pendientes <strong>211</strong></p>
@@ -248,22 +271,18 @@
                   </div>
                 </div>
 
-                <!-- ===== Notificaciones de pago (IDs requeridos) ===== -->
+                <!-- ===== Notificaciones de pago ===== -->
                 <div class="col-lg-4">
                   <div class="user-profile-card">
                     <h4 class="user-profile-card-title d-flex align-items-center gap-2">
                       Notificaciones de pago
                       <span class="badge bg-secondary" id="notificationsCount">0</span>
                     </h4>
-                    <div class="user-notification" id="notificationsList">
-                      <!-- Se rellena por JS -->
-                    </div>
+                    <div class="user-notification" id="notificationsList"></div>
                   </div>
                 </div>
-                <!-- ===== /Notificaciones de pago ===== -->
               </div>
-
-            </div><!-- /.user-profile-wrapper -->
+            </div>
           </div>
         </div>
       </div>
@@ -276,9 +295,7 @@
             <h5 class="modal-title">¿Cerrar sesión?</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
-          <div class="modal-body">
-            ¿Estás seguro de que deseas cerrar sesión?
-          </div>
+          <div class="modal-body">¿Estás seguro de que deseas cerrar sesión?</div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
             <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar Sesión</button>
@@ -288,9 +305,7 @@
     </div>
   </main>
 
-  <!-- footer area -->
   <div id="footer-placeholder"></div>
-
   <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
 
   <!-- js -->
@@ -316,13 +331,127 @@
   <script src="../assets/js/logout-button-emp.js"></script>
   <script src="../assets/js/modules/empresa/dinamic-sidebar.js"></script>
   <script src="../assets/js/modules/utils/dashboard-tabs.js"></script>
-  <script src="../assets/js/modules/candidatos/get-all-candidatos.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="../assets/js/modules/empresa/dashboard-availability.js"></script>
-
-  <!-- ⚡ NUEVO: notificaciones de pago -->
   <script src="../assets/js/modules/empresa/employer-payment-notification.js"></script>
   <script src="../assets/js/modules/empresa/employer-kpi-publications.js"></script>
   <script src="../assets/js/modules/empresa/employer-kpi-applications.js"></script>
+  <script src="../assets/js/config/token-exp.js"></script>
+
+ <script type="module">
+import { getUserIdFromToken } from "../assets/js/modules/utils/decode-jwt.js";
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const BASE_URL_API = window.BASE_URL_API;
+  const token = localStorage.getItem("token");
+  const container = document.getElementById("candidatos-container");
+  container.innerHTML = `<p class="text-center text-muted">Cargando avisos de tu empresa...</p>`;
+
+  try {
+    // 1️⃣ Obtener el ID del usuario desde el token JWT
+    const userId = getUserIdFromToken();
+    if (!userId) {
+      container.innerHTML = `<p class="text-danger text-center">Token inválido o usuario no identificado.</p>`;
+      return;
+    }
+
+    // 2️⃣ Obtener información básica del empleador
+    const empleadorRes = await fetch(`${BASE_URL_API}/empleador/basic-info/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!empleadorRes.ok) {
+      const error = await empleadorRes.text();
+      console.error("❌ Error al obtener empleador:", error);
+      container.innerHTML = `<p class="text-danger text-center">Error al cargar el empleador.</p>`;
+      return;
+    }
+
+    const { empleador_id } = await empleadorRes.json();
+    if (!empleador_id) {
+      container.innerHTML = `<p class="text-center text-muted">No se encontró información del empleador.</p>`;
+      return;
+    }
+
+    // 3️⃣ Traer las ofertas del empleador
+    const ofertasRes = await fetch(`${BASE_URL_API}/ofertas/empleador/${empleador_id}?page=1&take=10&order=DESC`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!ofertasRes.ok) {
+      const error = await ofertasRes.text();
+      console.error("❌ Error al obtener ofertas:", error);
+      container.innerHTML = `<p class="text-danger text-center">Error al cargar las ofertas.</p>`;
+      return;
+    }
+
+    const { data: ofertas } = await ofertasRes.json();
+
+    if (!ofertas || ofertas.length === 0) {
+      container.innerHTML = `<p class="text-center text-muted">Tu empresa aún no tiene avisos publicados.</p>`;
+      return;
+    }
+
+    // 4️⃣ Renderizar las ofertas
+    const hoy = new Date();
+    container.innerHTML = ofertas
+      .map((o) => {
+        const inicio = o.fecha_publicacion ? new Date(o.fecha_publicacion) : new Date();
+
+        // 🔹 Duración según tipo de aviso
+        let duracionDias = 30; // Por defecto (GRATIS o BASICA)
+        if (o.tipo_aviso === "ESTANDAR" || o.tipo_aviso === "PREMIUM") {
+          duracionDias = 60;
+        }
+
+        const termino = new Date(inicio);
+        termino.setDate(termino.getDate() + duracionDias);
+
+        const diasRestantes = Math.ceil((termino - hoy) / (1000 * 60 * 60 * 24));
+
+        let estadoClass = "badge-active";
+        let estadoTexto = "Activo";
+        if (diasRestantes < 0) {
+          estadoClass = "badge-expired";
+          estadoTexto = "Expirado";
+        } else if (diasRestantes <= 3) {
+          estadoClass = "badge-warning";
+          estadoTexto = "Por expirar";
+        }
+
+        const inicioFmt = inicio.toLocaleDateString("es-CL", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        });
+        const terminoFmt = termino.toLocaleDateString("es-CL", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        });
+
+        return `
+          <div class="user-profile-card mb-3">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h5 class="user-profile-card-title">${o.titulo || "Sin título"}</h5>
+              <span class="badge-status ${estadoClass}">
+                <i class="far fa-circle-check me-1"></i>${estadoTexto}
+              </span>
+            </div>
+            <ul class="profile-info-list">
+              <li><i class="far fa-calendar-alt me-1"></i><strong>Inicio:</strong> ${inicioFmt}</li>
+              <li><i class="far fa-calendar me-1"></i><strong>Término:</strong> ${terminoFmt}</li>
+              <li><i class="far fa-star me-1"></i><strong>Tipo:</strong> ${o.tipo_aviso || "-"}</li>
+            </ul>
+          </div>
+        `;
+      })
+      .join("");
+  } catch (error) {
+    console.error("❌ Error general al cargar avisos:", error);
+    container.innerHTML = `<p class="text-danger text-center">No se pudieron cargar los avisos (${error.message}).</p>`;
+  }
+});
+</script>
+
 </body>
 </html>
