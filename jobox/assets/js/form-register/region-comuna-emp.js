@@ -7,6 +7,10 @@ document.addEventListener('DOMContentLoaded', async function() {
   const regionesComunas = {
     "regiones": [
       {
+        "region": "Región Metropolitana de Santiago",
+        "comunas": ["Alhué", "Buin", "Calera de Tango", "Cerrillos", "Cerro Navia", "Colina", "Conchalí", "Curacaví", "El Bosque", "El Monte", "Estación Central", "Huechuraba", "Independencia", "Isla de Maipo", "La Cisterna", "La Florida", "La Granja", "La Pintana", "La Reina", "Lampa", "Las Condes", "Lo Barnechea", "Lo Espejo", "Lo Prado", "Macul", "Maipú", "María Pinto", "Melipilla", "Ñuñoa", "Padre Hurtado", "Paine", "Pedro Aguirre Cerda", "Peñaflor", "Peñalolén", "Pirque", "Providencia", "Pudahuel", "Puente Alto", "Quilicura", "Quinta Normal", "Recoleta", "Renca", "San Bernardo", "San Joaquín", "San José de Maipo", "San Miguel", "San Pedro", "San Ramón", "Santiago", "Talagante", "Tiltil", "Vitacura"].sort()
+      },
+      {
         "region": "Región de Arica y Parinacota",
         "comunas": ["Arica", "Camarones", "General Lagos", "Putre"].sort()
       },
@@ -65,15 +69,10 @@ document.addEventListener('DOMContentLoaded', async function() {
       {
         "region": "Región de Magallanes y de la Antártica Chilena",
         "comunas": ["Antártica", "Cabo de Hornos (Ex Navarino)", "Laguna Blanca", "Natales", "Porvenir", "Primavera", "Punta Arenas", "Río Verde", "San Gregorio", "Timaukel", "Torres del Paine"].sort()
-      },
-      {
-        "region": "Región Metropolitana de Santiago",
-        "comunas": ["Alhué", "Buin", "Calera de Tango", "Cerrillos", "Cerro Navia", "Colina", "Conchalí", "Curacaví", "El Bosque", "El Monte", "Estación Central", "Huechuraba", "Independencia", "Isla de Maipo", "La Cisterna", "La Florida", "La Granja", "La Pintana", "La Reina", "Lampa", "Las Condes", "Lo Barnechea", "Lo Espejo", "Lo Prado", "Macul", "Maipú", "María Pinto", "Melipilla", "Ñuñoa", "Padre Hurtado", "Paine", "Pedro Aguirre Cerda", "Peñaflor", "Peñalolén", "Pirque", "Providencia", "Pudahuel", "Puente Alto", "Quilicura", "Quinta Normal", "Recoleta", "Renca", "San Bernardo", "San Joaquín", "San José de Maipo", "San Miguel", "San Pedro", "San Ramón", "Santiago", "Talagante", "Tiltil", "Vitacura"].sort()
       }
     ]
   };
 
-  // Llenar el select de regiones
   regionesComunas.regiones.forEach(region => {
     const option = document.createElement('option');
     option.value = region.region;
@@ -81,7 +80,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     regionSelect.appendChild(option);
   });
 
-  // Función para cargar comunas
+  // === Función para cargar comunas ===
   function cargarComunas(regionNombre, comunaSeleccionada = '') {
     comunaSelect.innerHTML = '<option value="">Seleccione una comuna</option>';
     comunaSelect.disabled = true;
@@ -96,39 +95,53 @@ document.addEventListener('DOMContentLoaded', async function() {
       });
       comunaSelect.disabled = false;
 
-      if (comunaSeleccionada) {
-        comunaSelect.value = comunaSeleccionada;
-      }
+      // Si hay comuna preseleccionada, usarla; si no, tomar la primera
+      comunaSelect.value = comunaSeleccionada || regionData.comunas[0];
     }
   }
 
-  // Evento cambio de región
+  // === Evento de cambio de región ===
   regionSelect.addEventListener('change', () => {
     cargarComunas(regionSelect.value);
   });
 
-  // Preseleccionar datos desde backend
+  // === Preselección por defecto ===
+  const regionPorDefecto = 'Región Metropolitana de Santiago';
+  const existeRM = Array.from(regionSelect.options).some(o => o.value === regionPorDefecto);
+
+  if (existeRM) {
+    regionSelect.value = regionPorDefecto;
+
+    // ✅ Cargar automáticamente las comunas y seleccionar la primera (Alhué)
+    const regionData = regionesComunas.regiones.find(r => r.region === regionPorDefecto);
+    if (regionData) {
+      cargarComunas(regionPorDefecto, regionData.comunas[0]);
+    }
+  }
+
+  // === Cargar datos desde backend (si existen, sobreescriben la selección) ===
   try {
     const token = localStorage.getItem('token');
-    const sub = getUserIdFromToken(); // Esta función debe obtener el ID del usuario desde el token
+    const sub = typeof getUserIdFromToken === 'function' ? getUserIdFromToken() : null;
 
-    const res = await fetch(`${BASE_URL_API}/empleador/${sub}`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
+    if (token && sub) {
+      const res = await fetch(`${BASE_URL_API}/empleador/${sub}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
 
-    if (!res.ok) throw new Error('Error al obtener datos del empleador');
+      if (!res.ok) throw new Error('Error al obtener datos del empleador');
 
-    const data = await res.json();
-    const regionActual = data?.data?.region || '';
-    const comunaActual = data?.data?.comuna || '';
+      const data = await res.json();
+      const regionActual = data?.data?.region || '';
+      const comunaActual = data?.data?.comuna || '';
 
-    if (regionActual) {
-      regionSelect.value = regionActual;
-      cargarComunas(regionActual, comunaActual);
+      // Si vienen datos desde backend, reemplazar selección por ellos
+      if (regionActual) {
+        regionSelect.value = regionActual;
+        cargarComunas(regionActual, comunaActual);
+      }
     }
   } catch (error) {
     console.error('❌ Error cargando región y comuna:', error);
   }
-
-  comunaSelect.disabled = true;
 });

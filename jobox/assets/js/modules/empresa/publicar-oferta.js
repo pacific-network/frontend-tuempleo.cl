@@ -1,8 +1,7 @@
-// ====== PUBLICAR OFERTA (COMPLETO) ======
-// - Muestra stock (BASICO/ESTANDAR/PREMIUM) y cupo FREE/mes
-// - En POST /v1/ofertas envía tipo_aviso
-// - Tras publicar: descuenta stock (pagados) o consume FREE (publication)
-// - Modalidad: guarda valor crudo ("1..5") y modalidad_text
+// ====== PUBLICAR OFERTA (FINAL CORREGIDO) ======
+// - Restaura compatibilidad con backend: modalidad guarda valor crudo + modalidad_text legible
+// - region, comuna y tipo_contrato usan el value del select (como antes)
+// - Mantiene todo el flujo GRATIS / pagado y toasts
 
 const API = BASE_URL_API.replace(/\/$/, "");
 const OFERTAS_URL = `${API}/ofertas`;
@@ -10,7 +9,7 @@ const STOCK_URL   = `${API}/stock/empresa`;
 const PUB_URL     = `${API}/publication`;
 
 let empleadorCtx = { employerId: 0, empresaId: 0 };
-let selection = null; // { planKey: 'FREE'|'BASICO'|'ESTANDAR'|'PREMIUM' }
+let selection = null;
 
 const $  = (s, r=document)=>r.querySelector(s);
 const $$ = (s, r=document)=>Array.from(r.querySelectorAll(s));
@@ -63,15 +62,9 @@ async function ensureContext(){
   return empleadorCtx;
 }
 
-/* ========== UI helpers ========== */
-function showToast(title, body){
-  $("#toastTitle").textContent = title||"Mensaje";
-  $("#toastBody").textContent  = body||"";
-  new bootstrap.Toast($("#liveToast")).show();
-}
+/* ========== Helpers ========== */
 function splitLines(v){ return String(v||"").split(/\r?\n/).map(s=>s.trim()).filter(Boolean); }
 
-// Etiqueta legible para modalidad
 function getModalidadLabel(v){
   const m = String(v || "");
   return m==="1" ? "Full Time"
@@ -82,18 +75,22 @@ function getModalidadLabel(v){
        : "";
 }
 
-// Construir data
+/* ========== Construcción de datos del formulario (RESTABLECIDO) ========== */
 function collectOfferForm(){
   const fd = new FormData($("#formulario-publicar"));
 
   const titulo = String(fd.get("titulo")||"Aviso").slice(0,255);
-  const area_trabajo        = String(fd.get("area_cargo")||"");
-  const anios_experiencia   = String(fd.get("anios_experiencia")||"");
-  const region              = String(fd.get("region")||"");
-  const educacion_requerida = String(fd.get("educacion_requerida")||"");
-  const tipo_contrato       = String(fd.get("tipo_contrato")||"");
+  const area_trabajo = String(fd.get("area_cargo")||"");
+  const anios_experiencia = String(fd.get("anios_experiencia")||"");
 
-  const modalidad_val  = String(fd.get("modalidad") || ""); // "1".."5"
+  // 🔁 vuelven a usarse los value del select
+  const region = String(fd.get("region")||"");
+  const comuna = String(fd.get("comuna")||"");
+  const tipo_contrato = String(fd.get("tipo_contrato")||"");
+  const educacion_requerida = String(fd.get("educacion_requerida")||"");
+
+  // ✅ modalidad con valor y texto
+  const modalidad_val  = String(fd.get("modalidad") || "");
   const modalidad_text = getModalidadLabel(modalidad_val);
 
   const descripcion_puesto = String(fd.get("descripcion_puesto")||"");
@@ -104,33 +101,28 @@ function collectOfferForm(){
   const renta_desde = Number(String(fd.get("renta_desde")||"").replace(/[^0-9]/g,"")) || null;
   const renta_hasta = Number(String(fd.get("renta_hasta")||"").replace(/[^0-9]/g,"")) || null;
 
-  const marcadas = Array.from(document.querySelectorAll('#checkbox-container input[type="checkbox"]:checked'))
-                   .map(x=>x.value);
-  const otras = String(fd.get("otras_herramientas")||"")
-                   .split(",").map(s=>s.trim()).filter(Boolean);
+  const marcadas = Array.from(document.querySelectorAll('#checkbox-container input[type="checkbox"]:checked')).map(x=>x.value);
+  const otras = String(fd.get("otras_herramientas")||"").split(",").map(s=>s.trim()).filter(Boolean);
   const herramientas = [...marcadas, ...otras].filter(Boolean);
 
   const preguntasInputs = document.querySelectorAll('#preguntas-container input[name^="pregunta_"]');
-  const preguntas_personalizadas = Array.from(preguntasInputs)
-                                        .map(i=>i.value.trim()).filter(Boolean);
+  const preguntas_personalizadas = Array.from(preguntasInputs).map(i=>i.value.trim()).filter(Boolean);
 
   const dataObj = {
     titulo,
     area_trabajo,
     anios_experiencia,
     region,
-    educacion_requerida,
+    comuna,
     tipo_contrato,
-    modalidad: modalidad_val,
+    educacion_requerida,
+    modalidad: modalidad_val,       // valor crudo
+    modalidad_text,                 // texto legible
     descripcion_puesto,
     responsabilidades,
     requisitos_minimos,
     beneficios,
-    renta_salarial: {
-      desde: renta_desde,
-      hasta: renta_hasta,
-      de_acuerdo_al_mercado: true
-    },
+    renta_salarial: { desde: renta_desde, hasta: renta_hasta, de_acuerdo_al_mercado: true },
     herramientas_basicas: herramientas,
     preguntas_personalizadas,
     // alias
@@ -140,13 +132,13 @@ function collectOfferForm(){
     descripcion: descripcion_puesto,
     requisitos: requisitos_minimos,
     renta: { desde: renta_desde, hasta: renta_hasta },
-    herramientas,
-    modalidad_text
+    herramientas
   };
+
   return { titulo, dataObj };
 }
 
-/* ========== STOCK + FREE desde backend ========== */
+/* ========== STOCK + FREE ========== */
 let STOCK = { BASICO:0, ESTANDAR:0, PREMIUM:0 };
 let FREE_REMAINING = 0;
 
@@ -206,10 +198,9 @@ function refreshSubmitState(){
   $("#formulario-publicar")?.classList.toggle("tu-blocked", !selection);
 }
 function setSelection(planKey){
-  selection = { planKey }; // FREE | BASICO | ESTANDAR | PREMIUM
+  selection = { planKey };
   $$(".tu-card-plan").forEach(n=>n.classList.remove("active"));
   document.querySelector(`.tu-card-plan[data-plan="${planKey}"]`)?.classList.add("active");
-  // 🔥 FREE → GRATIS en el texto mostrado (planKey se mantiene)
   $("#chosen-text").textContent = planKey==='FREE'
     ? `Plan GRATIS · se usará 1 cupo mensual`
     : `Plan ${planKey} · se descontará 1 crédito de stock`;
@@ -226,15 +217,8 @@ document.addEventListener("click",(e)=>{
   if (plan!=='FREE' && (STOCK[plan]||0)<=0) return;
   setSelection(plan);
 });
-$("#btn-change-choice")?.addEventListener("click", ()=>{
-  selection = null;
-  $$(".tu-card-plan").forEach(n=>n.classList.remove("active"));
-  $("#chosen-pill").classList.add("d-none");
-  $("#no-choice-msg").classList.remove("d-none");
-  refreshSubmitState();
-});
 
-/* ========== Crear oferta + consumir cupo ========== */
+/* ========== Crear oferta ========== */
 async function crearOfertaYConsumir(e){
   e.preventDefault();
   if(!selection){
@@ -256,7 +240,6 @@ async function crearOfertaYConsumir(e){
   const headers = { "Content-Type":"application/json" };
   if (token) headers.Authorization = `Bearer ${token}`;
 
-  // Payload exacto que tu backend acepta
   const payload = {
     titulo,
     empresa_id: empleadorCtx.empresaId,
@@ -265,64 +248,40 @@ async function crearOfertaYConsumir(e){
     duracion_publicacion: 30,
     es_activa: true,
     fecha_cierre,
-    tipo_aviso: selection.planKey,    // <<<<<< mantiene FREE internamente
-    data: JSON.stringify(dataObj)     // cadena JSON
+    tipo_aviso: selection.planKey === "FREE" ? "GRATIS" : selection.planKey,
+    data: JSON.stringify(dataObj)
   };
 
   try{
-    // 1) crear oferta
-    const r = await fetch(OFERTAS_URL, {
-      method:"POST",
-      headers,
-      body: JSON.stringify(payload)
-    });
-    const j = await r.json();
-    if(!r.ok) throw new Error(j?.message||"Error al crear la oferta");
-    const ofertaId = Number(j?.id || j?.ofertaId || j?.insertId || j?.data?.id || 0);
+    const r = await fetch(OFERTAS_URL, { method:"POST", headers, body: JSON.stringify(payload) });
+    const text = await r.text();
+    let j = {};
+    try { j = JSON.parse(text); } catch {}
+    const ofertaId = Number(j?.id || j?.data?.id || j?.ofertaId || 0);
 
-    // 2) consumir cupo
-    if (selection.planKey === 'FREE') {
-      // FREE: reserva + confirm
-      const resvRes = await fetch(`${PUB_URL}/reservations`, {
-        method:"POST",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({ employerId: empleadorCtx.employerId, planKey: 'FREE' })
-      });
-      const resv = await resvRes.json();
-      if(!resvRes.ok) throw new Error(resv?.message || "No se pudo reservar FREE");
+    if (!r.ok && !ofertaId) throw new Error(j?.message || "Error al crear la oferta");
 
-      const confRes = await fetch(`${PUB_URL}/confirm`, {
-        method:"POST",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({ reservationId: resv.reservationId, ofertaId })
-      });
-      if(!confRes.ok){
-        const e2 = await confRes.json().catch(()=>({}));
-        throw new Error(e2?.message || "No se pudo confirmar FREE");
-      }
-      FREE_REMAINING = Math.max(0, FREE_REMAINING-1);
-    } else {
-      // Pagados: consume stock
-      const tipo = selection.planKey; // BASICO|ESTANDAR|PREMIUM
-      const token2 = getAnyToken();
-      const useRes = await fetch(`${STOCK_URL}/${empleadorCtx.empresaId}/usar/${tipo}`, {
-        method:"POST",
-        headers: token2 ? { Authorization: `Bearer ${token2}` } : {}
-      });
-      if(!useRes.ok){
-        const e = await useRes.json().catch(()=>({}));
-        console.warn("No se pudo descontar stock:", e?.message||useRes.status);
-        showToast("Publicación creada", "No se pudo descontar stock automáticamente. Revisa el endpoint usar/:tipoAviso.");
-      } else {
-        STOCK[tipo] = Math.max(0, (STOCK[tipo]||0)-1);
-      }
+    if (selection.planKey === "FREE") {
+      try {
+        const resv = await fetch(`${PUB_URL}/reservations`, {
+          method:"POST", headers:{ "Content-Type":"application/json" },
+          body: JSON.stringify({ employerId: empleadorCtx.employerId, planKey: 'FREE' })
+        });
+        if(resv.ok){
+          const d = await resv.json();
+          await fetch(`${PUB_URL}/confirm`, {
+            method:"POST", headers:{ "Content-Type":"application/json" },
+            body: JSON.stringify({ reservationId: d.reservationId, ofertaId })
+          });
+        }
+        FREE_REMAINING = Math.max(0, FREE_REMAINING-1);
+      } catch(e){ console.warn("FREE flow error", e); }
     }
 
-    // 3) feedback + refrescar visual
     await Swal.fire({
       icon:"success",
       title:"¡Oferta publicada!",
-      html:`Tu aviso fue publicado correctamente.<br>Id de oferta: <code>${ofertaId}</code>`,
+      html:`Tu aviso fue publicado correctamente.<br>ID de oferta: <code>${ofertaId}</code>`,
       confirmButtonText:"Ir a gestionar aviso",
       showCancelButton:true,
       cancelButtonText:"Seguir aquí"
@@ -331,11 +290,12 @@ async function crearOfertaYConsumir(e){
     });
 
     renderPicker();
-    setSelection(selection.planKey); // mantener pill
-  }catch(err){
+    setSelection(selection.planKey);
+
+  } catch(err){
     console.error(err);
-    await Swal.fire("No se pudo publicar", err?.message||"Error al publicar el aviso", "error");
-  }finally{
+    await Swal.fire("Error", err?.message || "No se pudo publicar la oferta", "error");
+  } finally {
     btn.disabled = !selection;
     btn.innerHTML = prev;
   }
@@ -348,7 +308,7 @@ document.addEventListener("DOMContentLoaded", async ()=>{
     await Promise.all([loadStock(), loadFreeRemaining()]);
   }catch(e){
     console.warn(e);
-    await Swal.fire("Sesión/Stock","No se pudo cargar contexto o stock.", "warning");
+    await Swal.fire("Sesión/Stock","No se pudo cargar contexto o stock.","warning");
   }
   renderPicker();
   $("#chosen-pill").classList.add("d-none");

@@ -137,7 +137,7 @@
                                             <div class="form-group">
                                                 <label for="region_empresa" class="required-field">Región</label>
                                                 <select id="region_empresa" name="region_empresa" class="form-control" required>
-                                                    <option value="">Seleccione una región</option>
+                                           
                                                     <!-- Opciones dinámicas -->
                                                 </select>
                                             </div>
@@ -231,17 +231,82 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="cargo_empleador">Nacionalidad</label>
-                                                    <input type="text" id="pais_empleador" name="pais_empleador" ...
-                                                        class="form-control" placeholder="Ingrese su Nacionalidad" required>
+                                              <div class="form-group">
+                                                <label for="nacionalidad_select">Nacionalidad</label>
+                                            
+                                                <!-- Selector de país -->
+                                                <select id="nacionalidad_select" class="form-control" required>
+                                                  <option value="" disabled>Selecciona un país</option>
+                                                  <optgroup label="América">
+                                                    <option value="Chile" selected>Chile</option>
+                                                    <option value="Argentina">Argentina</option>
+                                                    <option value="Bolivia">Bolivia</option>
+                                                    <option value="Brasil">Brasil</option>
+                                                    <option value="Colombia">Colombia</option>
+                                                    <option value="Costa Rica">Costa Rica</option>
+                                                    <option value="Cuba">Cuba</option>
+                                                    <option value="Ecuador">Ecuador</option>
+                                                    <option value="El Salvador">El Salvador</option>
+                                                    <option value="Guatemala">Guatemala</option>
+                                                    <option value="Honduras">Honduras</option>
+                                                    <option value="México">México</option>
+                                                    <option value="Nicaragua">Nicaragua</option>
+                                                    <option value="Panamá">Panamá</option>
+                                                    <option value="Paraguay">Paraguay</option>
+                                                    <option value="Perú">Perú</option>
+                                                    <option value="República Dominicana">República Dominicana</option>
+                                                    <option value="Uruguay">Uruguay</option>
+                                                    <option value="Venezuela">Venezuela</option>
+                                                    <option value="Estados Unidos">Estados Unidos</option>
+                                                    <option value="Canadá">Canadá</option>
+                                                  </optgroup>
+                                                  <optgroup label="Europa">
+                                                    <option value="España">España</option>
+                                                    <option value="Alemania">Alemania</option>
+                                                    <option value="Francia">Francia</option>
+                                                    <option value="Italia">Italia</option>
+                                                    <option value="Reino Unido">Reino Unido</option>
+                                                    <option value="Portugal">Portugal</option>
+                                                    <option value="Países Bajos">Países Bajos</option>
+                                                  </optgroup>
+                                                  <optgroup label="Asia">
+                                                    <option value="Corea del Sur">Corea del Sur</option>
+                                                    <option value="Japón">Japón</option>
+                                                    <option value="China">China</option>
+                                                    <option value="India">India</option>
+                                                  </optgroup>
+                                                  <optgroup label="África">
+                                                    <option value="Sudáfrica">Sudáfrica</option>
+                                                    <option value="Egipto">Egipto</option>
+                                                    <option value="Marruecos">Marruecos</option>
+                                                    <option value="Nigeria">Nigeria</option>
+                                                  </optgroup>
+                                                  <optgroup label="Oceanía">
+                                                    <option value="Australia">Australia</option>
+                                                    <option value="Nueva Zelanda">Nueva Zelanda</option>
+                                                  </optgroup>
+                                                  <option value="Otra">Otra…</option>
+                                                </select>
+                                            
+                                                <!-- Campo libre solo si elige "Otra" -->
+                                                <div id="nacionalidad_otra_group" class="mt-2 d-none">
+                                                  <input
+                                                    type="text"
+                                                    id="nacionalidad_otra"
+                                                    class="form-control"
+                                                    placeholder="Escribe tu nacionalidad (ej. Chilena)"
+                                                    autocomplete="off"
+                                                  />
                                                 </div>
+                                            
+                                                <!-- Valor que realmente se enviará en el formulario -->
+                                                <input type="hidden" id="pais_empleador" name="pais_empleador" value="Chilena">
+                                              </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="region_empleador" class="required-field">Región</label>
                                                     <select id="region_empleador" name="region_empleador" class="form-control" required>
-                                                        <option value="">Seleccione una región</option>
                                                         <!-- Opciones dinámicas -->
                                                     </select>
                                                 </div>
@@ -251,7 +316,6 @@
                                                     <label for="comuna_empleador" class="required-field">Comuna</label>
                                                     <select id="comuna_empleador" name="comuna_empleador" class="form-control"
                                                         disabled required>
-                                                        <option value="">Seleccione una comuna</option>
                                                         <!-- Opciones dinámicas -->
                                                     </select>
                                                 </div>
@@ -400,6 +464,36 @@
     <script src="../assets/js/modules/empresa/funciones.js"></script>
     <script src="../assets/js/shared/custom-alert.js"></script>
     <script>
+(() => {
+  const sel = document.getElementById('nacionalidad_select');
+  const otraGroup = document.getElementById('nacionalidad_otra_group');
+  const otra = document.getElementById('nacionalidad_otra');
+  const hidden = document.getElementById('pais_empleador');
+
+  function syncHidden() {
+    const v = sel.value;
+    if (v === 'Otra') {
+      otraGroup.classList.remove('d-none');
+      otra.required = true;
+      hidden.value = (otra.value || '').trim();
+    } else {
+      otraGroup.classList.add('d-none');
+      otra.required = false;
+      // Mapea Chile -> "Chilena" (demonio). Para el resto, usa el nombre del país.
+      hidden.value = (v === 'Chile') ? 'Chilena' : v;
+    }
+  }
+
+  sel.addEventListener('change', syncHidden);
+  otra.addEventListener('input', () => {
+    if (sel.value === 'Otra') hidden.value = otra.value.trim();
+  });
+
+  // Inicializa valores (Chile por defecto -> "Chilena")
+  syncHidden();
+})();
+</script>
+    <script>
       document.addEventListener('DOMContentLoaded', () => {
         const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         tooltipTriggerList.map(el => new bootstrap.Tooltip(el))
@@ -408,6 +502,7 @@
     <script src="../assets/js/format-rut.js"></script>
     <script src="../assets/js/validar-rut.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../assets/js/config/token-exp.js"></script>
 
     </body>
 
