@@ -168,15 +168,111 @@ function normalizarTipoAviso(nombre) {
 }
 
 // ===============================
+// 🚀 Pago con Mercado Pago
+// ===============================
+
+// ✅ Función para obtener el userId decodificando el token JWT
+async function getUserIdFromToken() {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    console.log("🧩 Payload decodificado:", payload);
+
+    // Retorna el campo más confiable del token (sub, id o userId)
+    return payload.sub || payload.id || payload.userId || null;
+  } catch (e) {
+    console.error("❌ Error al decodificar el token:", e);
+    return null;
+  }
+}
+
+// ✅ Función principal para iniciar el pago con Mercado Pago
+async function iniciarPagoMercadoPago() {
+  const carrito = getCart();
+  if (!carrito.length) {
+    Swal.fire("Carrito vacío", "Agrega productos antes de pagar.", "warning");
+    return;
+  }
+
+  // ⚠️ Aquí había un error: estabas haciendo getItem(token) en lugar de getItem("token")
+  const token = localStorage.getItem("token");
+  const userId = getUserIdFromToken();
+
+  if (!token || !userId) {
+    Swal.fire("Sesión requerida", "Inicia sesión para continuar.", "info");
+    return;
+  }
+
+  try {
+    Swal.fire({
+      title: "Creando preferencia...",
+      html: "Conectando con Mercado Pago...",
+      didOpen: () => Swal.showLoading(),
+      allowOutsideClick: false,
+    });
+
+    const tipoAviso = normalizarTipoAviso(carrito[0]?.nombre);
+
+    // 🔹 Crear preferencia de pago en tu backend
+    const res = await fetch(`${BASE_URL_API}/mercadopago/preferences`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        tipo: tipoAviso,
+        userId,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || !data.init_point) {
+      throw new Error(data.message || "Error al crear preferencia de pago.");
+    }
+
+    // 🔹 Guardamos carrito temporal para mostrar en el resultado
+    localStorage.setItem("cart_items", JSON.stringify(carrito));
+
+    Swal.update({
+      title: "Redirigiendo a Mercado Pago...",
+      html: "<p>Abriendo el checkout seguro...</p>",
+    });
+
+    // ✅ Redirigir al checkout seguro de Mercado Pago
+    setTimeout(() => {
+      window.location.href = data.init_point;
+    }, 1000);
+  } catch (err) {
+    console.error("❌ Error procesando pago:", err);
+    Swal.fire("Error", err.message || "No se pudo iniciar el pago en Mercado Pago.", "error");
+  }
+}
+
+// ===============================
 // 🔘 Listeners
 // ===============================
 document.getElementById("payBtn").addEventListener("click", () => {
-  if (selectedMethod === "webpay") {
-    iniciarPagoWebpay();
-  } else if (!selectedMethod) {
+  if (!selectedMethod) {
     Swal.fire("Selecciona un método de pago", "", "info");
-  } else {
-    Swal.fire("Método no disponible", "Solo Webpay está habilitado.", "warning");
+    return;
+  }
+
+  switch (selectedMethod) {
+    case "webpay":
+      iniciarPagoWebpay();
+      break;
+
+    case "mercadopago":
+      iniciarPagoMercadoPago();
+      break;
+
+    default:
+      Swal.fire("Método no disponible", "El método de pago seleccionado no está habilitado.", "warning");
+      break;
   }
 });
 
