@@ -5,9 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  // ==============================
-  // ELEMENTOS DEL DOM
-  // ==============================
+  // ====== ELEMENTOS DEL DOM ======
   const searchInput = document.getElementById('searchInput');
   const fechaInicio = document.getElementById('fechaInicio');
   const fechaFin = document.getElementById('fechaFin');
@@ -16,21 +14,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   const prevBtn = document.getElementById('prevBtn');
   const nextBtn = document.getElementById('nextBtn');
 
-  // ==============================
-  // ESTADO LOCAL
-  // ==============================
+  // ====== ESTADO LOCAL ======
   let page = 1;
   const take = 10;
   let search = '';
   let fechaInicioVal = '';
   let fechaFinVal = '';
 
-  // ==============================
-  // OBTENER TRANSACCIONES
-  // ==============================
+  // ====== OBTENER TRANSACCIONES ======
   async function obtenerTransacciones() {
     try {
-      const params = new URLSearchParams({ page, take, t: Date.now() }); // evita caché
+      const params = new URLSearchParams({ page, take });
       if (search) params.append('search', search);
       if (fechaInicioVal) params.append('fechaInicio', fechaInicioVal);
       if (fechaFinVal) params.append('fechaFin', fechaFinVal);
@@ -39,47 +33,36 @@ document.addEventListener('DOMContentLoaded', async () => {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
         },
-        cache: 'no-store',
       });
 
       if (!res.ok) throw new Error(`Error al obtener transacciones (${res.status})`);
 
       const json = await res.json();
-      renderTabla(json.data || []);
+      renderTabla(json.data, json.meta);
       renderPaginacion(json.meta);
     } catch (err) {
       console.error('❌ Error cargando transacciones:', err);
       tbody.innerHTML = `
         <tr>
-          <td colspan="6" class="text-danger text-center">Error al cargar transacciones</td>
+          <td colspan="7" class="text-danger text-center">Error al cargar transacciones</td>
         </tr>`;
     }
   }
 
-  // ==============================
-  // RENDERIZAR TABLA
-  // ==============================
-  function renderTabla(data) {
-    if (!data.length) {
+  // ====== RENDERIZAR TABLA ======
+  function renderTabla(data, meta) {
+    if (!data || !data.length) {
       tbody.innerHTML = `
-        <tr><td colspan="6" class="text-center text-muted">Sin resultados</td></tr>`;
+        <tr><td colspan="7" class="text-center text-muted">Sin resultados</td></tr>`;
       return;
     }
 
-    tbody.innerHTML = data
-      .map((tx) => {
-        const estado = String(tx.status || '').trim().toUpperCase();
-        const aprobado = ['APPROVED', 'AUTHORIZED', 'SUCCESS', 'COMPLETED'].includes(estado);
-        const pendiente = ['PENDING', 'IN_PROCESS', 'INPROGRESS'].includes(estado);
+    const startIndex = (meta.page - 1) * meta.take; // Para numeración secuencial global
 
-        const badge = aprobado
-          ? `<span class="badge bg-success">Aprobado</span>`
-          : pendiente
-          ? `<span class="badge bg-warning text-dark">Pendiente</span>`
-          : `<span class="badge bg-danger">Rechazado</span>`;
+    tbody.innerHTML = data
+      .map((tx, index) => {
+        const rowNumber = startIndex + index + 1;
 
         const detalleBtn = `
           <button class="btn btn-action" data-id="${tx.id}" title="Ver detalle">
@@ -91,12 +74,19 @@ document.addEventListener('DOMContentLoaded', async () => {
           ? '**** ' + tx.response_data.card_detail.card_number
           : '-';
         const fecha = new Date(tx.createdAt).toLocaleString('es-CL');
+        const estado =
+          tx.status === 'AUTHORIZED'
+            ? `<span class="badge bg-success">Aprobado</span>`
+            : tx.status === 'PENDING'
+            ? `<span class="badge bg-warning text-dark">Pendiente</span>`
+            : `<span class="badge bg-danger">Rechazado</span>`;
 
         return `
           <tr>
-            <td>${tx.orderId || '-'}</td>
-            <td>${Number(tx.amount || 0).toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>
-            <td>${badge}</td>
+            <td class="fw-bold text-secondary">${rowNumber}</td>
+            <td><span class="badge badge-code">${tx.orderId}</span></td>
+            <td>${Number(tx.amount).toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>
+            <td>${estado}</td>
             <td>${card}</td>
             <td>${fecha}</td>
             <td class="text-center">${detalleBtn}</td>
@@ -105,9 +95,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       .join('');
   }
 
-  // ==============================
-  // RENDERIZAR PAGINACIÓN
-  // ==============================
+  // ====== RENDERIZAR PAGINACIÓN ======
   function renderPaginacion(meta) {
     if (!meta) return;
     paginationInfo.textContent = `Página ${meta.page} de ${meta.pageCount} (Total: ${meta.itemCount})`;
@@ -115,9 +103,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     nextBtn.disabled = !meta.hasNextPage;
   }
 
-  // ==============================
-  // DEBOUNCE
-  // ==============================
+  // ====== DEBOUNCE ======
   function debounce(fn, delay = 400) {
     let timeout;
     return (...args) => {
@@ -126,9 +112,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
   }
 
-  // ==============================
-  // EVENTOS DE FILTROS
-  // ==============================
+  // ====== EVENTOS DE FILTROS ======
   searchInput.addEventListener(
     'input',
     debounce((e) => {
@@ -162,9 +146,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     obtenerTransacciones();
   });
 
-  // ==============================
-  // EVENTO: CLICK EN "VER DETALLE"
-  // ==============================
+  // ====== EVENTO: CLICK EN "VER DETALLE" ======
   tbody.addEventListener('click', async (e) => {
     const btn = e.target.closest('.btn-action');
     if (!btn) return;
@@ -177,26 +159,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     modal.show();
 
     try {
-      const res = await fetch(`${BASE_URL_API}/transactions/${txId}?t=${Date.now()}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
-        },
-        cache: 'no-store',
+      const res = await fetch(`${BASE_URL_API}/transactions/${txId}`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
-
       if (!res.ok) throw new Error('Error al obtener detalle de transacción');
 
       const tx = await res.json();
       const data = tx.response_data || {};
       const items = tx.items || [];
       const fecha = new Date(tx.createdAt).toLocaleString('es-CL');
+      const ok = (tx.status || '').toUpperCase() === 'AUTHORIZED';
 
-      const estado = String(tx.status || '').trim().toUpperCase();
-      const aprobado = ['APPROVED', 'AUTHORIZED', 'SUCCESS', 'COMPLETED'].includes(estado);
-      const pendiente = ['PENDING', 'IN_PROCESS', 'INPROGRESS'].includes(estado);
-
+      // 🧾 Tabla de ítems
       const itemsTable = items.length
         ? `
           <table class="table table-sm mt-2">
@@ -231,16 +205,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             <small class="text-muted">Comprobante de pago</small>
           </div>
           <span class="badge-status-modal ${
-            aprobado
+            ok
               ? 'badge-success'
-              : pendiente
+              : tx.status === 'PENDING'
               ? 'badge-pending'
               : 'badge-fail'
           } ms-auto">
             ${
-              aprobado
+              ok
                 ? 'APROBADO'
-                : pendiente
+                : tx.status === 'PENDING'
                 ? 'PENDIENTE'
                 : 'RECHAZADO'
             }
@@ -258,7 +232,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           <li><b>Código autorización</b> <span>${data.authorization_code || '-'}</span></li>
         </ul>
 
-        <h6 class="mt-3">Planes adquiridos</h6>
+        <h6 class="mt-3">Avisos adquiridos</h6>
         ${itemsTable}
 
         <h6 class="mt-4">Resumen</h6>
@@ -276,9 +250,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // ==============================
-  // FUNCIÓN AUXILIAR
-  // ==============================
+  // ====== FUNCIÓN AUXILIAR ======
   function tipoPago(code) {
     const tipos = {
       VD: 'Débito',
@@ -291,7 +263,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     return `${tipos[code] || 'Desconocido'} (${code || '-'})`;
   }
 
-  // 🚀 CARGA INICIAL + AUTOREFRESH CADA 15s
+  // 🚀 CARGA INICIAL
   obtenerTransacciones();
-  setInterval(obtenerTransacciones, 15000);
 });
