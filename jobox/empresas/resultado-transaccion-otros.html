@@ -243,7 +243,7 @@
                 });
 
             // 🚫 Validar parámetros
-            if (!paymentId || !prefId) {
+            if (!paymentId) {
                 cont.innerHTML = `<p style="color:#64748b">No se encontró información de la transacción.</p>`;
                 return;
             }
@@ -251,31 +251,16 @@
             try {
                 Swal.fire({
                     title: "Procesando...",
-                    html: "Actualizando pago con Mercado Pago.",
+                    html: "Consultando el estado del pago en Mercado Pago.",
                     allowOutsideClick: false,
                     didOpen: () => Swal.showLoading(),
                 });
 
-                // 1️⃣ Notificar al backend vía webhook (enviar el payment_id correcto)
-                await fetch(`${BASE_URL_API}/mercadopago/webhook`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        action: "payment.updated",
-                        api_version: "v1",
-                        data: { id: paymentId }, // ✅ Enviamos 132468542096
-                        type: "payment",
-                        topic: "payment",
-                        user_id: 2948293844,
-                        live_mode: false,
-                        date_created: new Date().toISOString(),
-                    }),
-                });
-
-                // 2️⃣ Consultar el detalle de la preferencia con preference_id
+                // ✅ Consultar el detalle directamente desde el backend
                 const res = await fetch(
-                    `${BASE_URL_API}/mercadopago/detail?token=${encodeURIComponent(prefId)}`
+                    `${BASE_URL_API}/mercadopago/detail?payment_id=${encodeURIComponent(paymentId)}`
                 );
+
                 const data = await res.json();
                 Swal.close();
 
@@ -451,6 +436,7 @@
             }
         })();
     </script>
+
 
 </body>
 
