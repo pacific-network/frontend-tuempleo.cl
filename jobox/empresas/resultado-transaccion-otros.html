@@ -221,7 +221,8 @@
     <script>
         (async () => {
             const qs = new URLSearchParams(location.search);
-            const prefId = qs.get("pref_id") || qs.get("collection_id") || qs.get("token");
+            const paymentId = qs.get("payment_id") || qs.get("collection_id");
+            const prefId = qs.get("preference_id") || qs.get("pref_id") || qs.get("token");
             const cont = document.getElementById("contenedor");
             const acc = document.getElementById("acciones");
             const btnCopy = document.getElementById("copyBtn");
@@ -231,25 +232,38 @@
             const REDIRECT_FAIL = "./carrito.html";
 
             const toast = (icon, title) =>
-                Swal.fire({ toast: true, icon, title, position: "top-end", showConfirmButton: false, timer: 1500, timerProgressBar: true });
+                Swal.fire({
+                    toast: true,
+                    icon,
+                    title,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true,
+                });
 
-            if (!prefId) {
+            // 🚫 Validar parámetros
+            if (!paymentId || !prefId) {
                 cont.innerHTML = `<p style="color:#64748b">No se encontró información de la transacción.</p>`;
                 return;
             }
 
             try {
-                Swal.fire({ title: "Procesando...", html: "Actualizando pago con Mercado Pago.", allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+                Swal.fire({
+                    title: "Procesando...",
+                    html: "Actualizando pago con Mercado Pago.",
+                    allowOutsideClick: false,
+                    didOpen: () => Swal.showLoading(),
+                });
 
-                // 1️⃣ Notificar webhook para actualizar estado en backend
-                const paymentId = prefId.replace("MP-", "");
+                // 1️⃣ Notificar al backend vía webhook (enviar el payment_id correcto)
                 await fetch(`${BASE_URL_API}/mercadopago/webhook`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         action: "payment.updated",
                         api_version: "v1",
-                        data: { id: paymentId },
+                        data: { id: paymentId }, // ✅ Enviamos 132468542096
                         type: "payment",
                         topic: "payment",
                         user_id: 2948293844,
@@ -258,15 +272,19 @@
                     }),
                 });
 
-                // 2️⃣ Consultar el detalle actualizado
-                const res = await fetch(`${BASE_URL_API}/mercadopago/detail?token=${encodeURIComponent(prefId)}`);
+                // 2️⃣ Consultar el detalle de la preferencia con preference_id
+                const res = await fetch(
+                    `${BASE_URL_API}/mercadopago/detail?token=${encodeURIComponent(prefId)}`
+                );
                 const data = await res.json();
                 Swal.close();
 
                 if (!res.ok) throw new Error(data.message || "Error consultando detalle");
 
                 const tx = data.data || {};
-                const ok = ["AUTHORIZED", "APPROVED"].includes(String(tx.status || '').toUpperCase());
+                const ok = ["AUTHORIZED", "APPROVED"].includes(
+                    String(tx.status || "").toUpperCase()
+                );
                 const items = tx.response_data?.items || [];
                 const subtotal = Math.round(tx.amount / 1.19);
                 const iva = tx.amount - subtotal;
@@ -283,7 +301,7 @@
 
                 acc.style.display = "flex";
                 btnGo.href = ok ? REDIRECT_OK : REDIRECT_FAIL;
-                if (ok) localStorage.removeItem('cart_items');
+                if (ok) localStorage.removeItem("cart_items");
                 bindCopy();
                 bindDownload(tx.orderId);
             } catch (e) {
@@ -293,85 +311,114 @@
                 acc.style.display = "flex";
             }
 
+            // ==============================
+            // 🧾 Render del comprobante
+            // ==============================
             function renderInvoice({ ok, buyOrder, fecha, total, subtotal, iva, items = [] }) {
                 const badge = ok ? 'badge--ok">APROBADO' : 'badge--fail">NO APROBADO';
-                const fmtCLP = n => Number(n || 0).toLocaleString('es-CL', { style: 'currency', currency: 'CLP' });
+                const fmtCLP = (n) =>
+                    Number(n || 0).toLocaleString("es-CL", {
+                        style: "currency",
+                        currency: "CLP",
+                    });
                 const rows = items.length
-                    ? items.map(it => `<tr><td>${it.title}</td><td class="right">${it.quantity}</td><td class="right">${fmtCLP(it.unit_price)}</td></tr>`).join('')
+                    ? items
+                        .map(
+                            (it) =>
+                                `<tr><td>${it.title}</td><td class="right">${it.quantity}</td><td class="right">${fmtCLP(
+                                    it.unit_price
+                                )}</td></tr>`
+                        )
+                        .join("")
                     : `<tr><td colspan="3" class="right muted">Sin detalle disponible</td></tr>`;
 
                 return `
-      <section class="invoice" id="invoice">
-        <header class="invoice__header">
-          <div class="brand">
-            <div class="brand__logo"><img src="../assets/img/logo/favicon.png" alt="Logo Tu Empleo" /></div>
-            <div class="brand__text">
-              <p class="brand__title">Tu Empleo</p>
-              <p class="brand__subtitle">Comprobante de pago (Mercado Pago)</p>
-            </div>
-          </div>
-          <div class="badge ${badge}</div>
-        </header>
-        <div class="invoice__body">
-          <div class="grid">
-            <div class="panel">
-              <h4>Detalle de la compra</h4>
-              <ul class="kv">
-                <li><b>Orden de compra</b> <span>${buyOrder}</span></li>
-                <li><b>Fecha</b> <span>${fecha}</span></li>
-                <li><b>Pasarela</b> <span>Mercado Pago</span></li>
-                <li><b>Estado</b> <span>${ok ? "Aprobado" : "Pendiente o Rechazado"}</span></li>
-              </ul>
-              <h4 style="margin-top:16px">Planes adquiridos</h4>
-              <table class="table">
-                <thead><tr><th>Producto</th><th class="right">Cant.</th><th class="right">Importe</th></tr></thead>
-                <tbody>${rows}</tbody>
-              </table>
-            </div>
-            <div class="panel">
-              <h4>Resumen</h4>
-              <table class="table">
-                <tbody>
-                  <tr><td>Subtotal</td><td class="right">${fmtCLP(subtotal)}</td></tr>
-                  <tr><td>IVA (19%)</td><td class="right">${fmtCLP(iva)}</td></tr>
-                  <tr><td><strong>Total</strong></td><td class="right money">${fmtCLP(total)}</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        <footer class="invoice__footer" style="padding:12px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:#64748b;font-size:12px;background:#fcfdff">
-          <div>Soporte: soporte@tuempleo.cl</div>
-        </footer>
-      </section>`;
+              <section class="invoice" id="invoice">
+                <header class="invoice__header">
+                  <div class="brand">
+                    <div class="brand__logo"><img src="../assets/img/logo/favicon.png" alt="Logo Tu Empleo" /></div>
+                    <div class="brand__text">
+                      <p class="brand__title">Tu Empleo</p>
+                      <p class="brand__subtitle">Comprobante de pago (Mercado Pago)</p>
+                    </div>
+                  </div>
+                  <div class="badge ${badge}</div>
+                </header>
+                <div class="invoice__body">
+                  <div class="grid">
+                    <div class="panel">
+                      <h4>Detalle de la compra</h4>
+                      <ul class="kv">
+                        <li><b>Orden de compra</b> <span>${buyOrder}</span></li>
+                        <li><b>Fecha</b> <span>${fecha}</span></li>
+                        <li><b>Pasarela</b> <span>Mercado Pago</span></li>
+                        <li><b>Estado</b> <span>${ok ? "Aprobado" : "Pendiente o Rechazado"}</span></li>
+                      </ul>
+                      <h4 style="margin-top:16px">Planes adquiridos</h4>
+                      <table class="table">
+                        <thead><tr><th>Producto</th><th class="right">Cant.</th><th class="right">Importe</th></tr></thead>
+                        <tbody>${rows}</tbody>
+                      </table>
+                    </div>
+                    <div class="panel">
+                      <h4>Resumen</h4>
+                      <table class="table">
+                        <tbody>
+                          <tr><td>Subtotal</td><td class="right">${fmtCLP(subtotal)}</td></tr>
+                          <tr><td>IVA (19%)</td><td class="right">${fmtCLP(iva)}</td></tr>
+                          <tr><td><strong>Total</strong></td><td class="right money">${fmtCLP(total)}</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <footer class="invoice__footer" style="padding:12px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:#64748b;font-size:12px;background:#fcfdff">
+                  <div>Soporte: soporte@tuempleo.cl</div>
+                </footer>
+              </section>`;
             }
 
+            // ==============================
+            // 📋 Copiar comprobante
+            // ==============================
             function bindCopy() {
                 btnCopy.onclick = async () => {
-                    const ul = document.querySelector('#invoice .kv');
-                    const bullets = [...ul.querySelectorAll('li')].map(li => {
-                        const b = li.querySelector('b')?.innerText || '';
-                        const s = li.querySelector('span')?.innerText || '';
-                        return `• ${b}: ${s}`;
-                    }).join('\n');
+                    const ul = document.querySelector("#invoice .kv");
+                    const bullets = [...ul.querySelectorAll("li")]
+                        .map((li) => {
+                            const b = li.querySelector("b")?.innerText || "";
+                            const s = li.querySelector("span")?.innerText || "";
+                            return `• ${b}: ${s}`;
+                        })
+                        .join("\n");
                     try {
                         await navigator.clipboard.writeText(bullets);
-                        toast('success', 'Comprobante copiado');
+                        toast("success", "Comprobante copiado");
                     } catch {
-                        toast('error', 'No se pudo copiar automáticamente');
+                        toast("error", "No se pudo copiar automáticamente");
                     }
                 };
             }
 
+            // ==============================
+            // 💾 Descargar comprobante PDF
+            // ==============================
             function bindDownload(numeroTransaccion = "SinNumero") {
                 btnDown.onclick = async () => {
                     try {
                         const raw = (numeroTransaccion ?? "").toString().trim();
-                        const fallback = new Date().toISOString().replace(/[-:T.Z]/g, "").slice(0, 14);
+                        const fallback = new Date()
+                            .toISOString()
+                            .replace(/[-:T.Z]/g, "")
+                            .slice(0, 14);
                         const safeNumber = (raw || fallback).replace(/[^A-Za-z0-9_-]/g, "");
                         const filename = `ComprobanteTransaccion_${safeNumber}.pdf`;
                         const area = document.getElementById("invoice");
-                        const canvas = await html2canvas(area, { scale: 2, useCORS: true, backgroundColor: "#fff" });
+                        const canvas = await html2canvas(area, {
+                            scale: 2,
+                            useCORS: true,
+                            backgroundColor: "#fff",
+                        });
                         const imgData = canvas.toDataURL("image/png");
                         const { jsPDF } = window.jspdf;
                         const pdf = new jsPDF("p", "mm", "a4");
@@ -379,19 +426,32 @@
                         const pageH = pdf.internal.pageSize.getHeight();
                         const margin = 10;
                         let imgW = pageW - margin * 2;
-                        let imgH = canvas.height * imgW / canvas.width;
-                        if (imgH > pageH - margin * 2) { imgH = pageH - margin * 2; imgW = canvas.width * imgH / canvas.height; }
-                        pdf.addImage(imgData, "PNG", (pageW - imgW) / 2, margin, imgW, imgH, undefined, "FAST");
+                        let imgH = (canvas.height * imgW) / canvas.width;
+                        if (imgH > pageH - margin * 2) {
+                            imgH = pageH - margin * 2;
+                            imgW = (canvas.width * imgH) / canvas.height;
+                        }
+                        pdf.addImage(
+                            imgData,
+                            "PNG",
+                            (pageW - imgW) / 2,
+                            margin,
+                            imgW,
+                            imgH,
+                            undefined,
+                            "FAST"
+                        );
                         pdf.save(filename);
-                        toast('success', 'Descarga lista');
+                        toast("success", "Descarga lista");
                     } catch (err) {
                         console.error(err);
-                        toast('error', 'No se pudo generar el PDF');
+                        toast("error", "No se pudo generar el PDF");
                     }
                 };
             }
         })();
     </script>
+
 </body>
 
 </html>
