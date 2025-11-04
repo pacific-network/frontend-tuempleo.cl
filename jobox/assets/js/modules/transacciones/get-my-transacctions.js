@@ -84,10 +84,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         return `
           <tr>
             <td class="fw-bold text-secondary">${rowNumber}</td>
-            <td><span class="badge badge-code">${tx.orderId}</span></td>
+            <td>${tx.origen === 'WEBPAY' ? 'Webpay' : 'Mercado Pago'}</td>
             <td>${Number(tx.amount).toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>
             <td>${estado}</td>
-            <td>${card}</td>
             <td>${fecha}</td>
             <td class="text-center">${detalleBtn}</td>
           </tr>`;
@@ -146,122 +145,158 @@ document.addEventListener('DOMContentLoaded', async () => {
     obtenerTransacciones();
   });
 
-  // ====== EVENTO: CLICK EN "VER DETALLE" ======
-  tbody.addEventListener('click', async (e) => {
-    const btn = e.target.closest('.btn-action');
-    if (!btn) return;
+// ====== EVENTO: CLICK EN "VER DETALLE" ======
+tbody.addEventListener('click', async (e) => {
+  const btn = e.target.closest('.btn-action');
+  if (!btn) return;
 
-    const txId = btn.getAttribute('data-id');
-    const modal = new bootstrap.Modal(document.getElementById('detalleModal'));
-    const body = document.getElementById('detalleModalBody');
+  const txId = btn.getAttribute('data-id');
+  const modalElement = document.getElementById('detalleModal');
+  const modal = new bootstrap.Modal(modalElement);
+  const body = document.getElementById('detalleModalBody');
 
-    body.innerHTML = `<div class="text-center text-muted py-4">Cargando información...</div>`;
-    modal.show();
+  // Mostrar loader y abrir modal
+  body.innerHTML = `<div class="text-center text-muted py-4">Cargando información...</div>`;
+  modal.show();
 
-    try {
-      const res = await fetch(`${BASE_URL_API}/transactions/${txId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error('Error al obtener detalle de transacción');
+  try {
+    const res = await fetch(`${BASE_URL_API}/transactions/${txId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-      const tx = await res.json();
-      const data = tx.response_data || {};
-      const items = tx.items || [];
-      const fecha = new Date(tx.createdAt).toLocaleString('es-CL');
-      const ok = (tx.status || '').toUpperCase() === 'AUTHORIZED';
+    if (!res.ok) throw new Error(`Error al obtener transacción (${res.status})`);
 
-      // 🧾 Tabla de ítems
-      const itemsTable = items.length
-        ? `
-          <table class="table table-sm mt-2">
-            <thead>
-              <tr>
-                <th>Producto</th>
-                <th class="text-center">Cant.</th>
-                <th class="text-end">Subtotal</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${items
-                .map(
-                  (i) => `
-                <tr>
-                  <td>${i.tipoAviso}</td>
-                  <td class="text-center">${i.cantidad}</td>
-                  <td class="text-end">$${Number(i.subtotal).toLocaleString('es-CL')}</td>
-                </tr>`
-                )
-                .join('')}
-            </tbody>
-          </table>
-        `
-        : `<p class="text-muted">No hay ítems asociados.</p>`;
+    const tx = await res.json();
+    const data = tx.response_data || {};
+    const items = data.items || [];
+    const fecha = new Date(tx.createdAt).toLocaleString('es-CL');
+    const isApproved = (tx.status || '').toUpperCase() === 'AUTHORIZED';
 
-      body.innerHTML = `
-        <div class="d-flex align-items-center mb-3">
-          <img src="../assets/img/logo/favicon.png" width="50" class="me-3 rounded-3" alt="Logo Tu Empleo">
-          <div>
-            <h4 class="m-0 fw-bold">Tu Empleo</h4>
-            <small class="text-muted">Comprobante de pago</small>
+    // ===============================
+    // 🧾 Render principal con OrderID
+    // ===============================
+    body.innerHTML = `
+      <div class="d-flex align-items-center mb-4">
+        <img src="../assets/img/logo/favicon.png" width="50" class="me-3 rounded-3" alt="Logo Tu Empleo">
+        <div>
+          <h4 class="m-0 fw-bold">Comprobante de Pago</h4>
+          <small class="text-muted">Generado automáticamente por TuEmpleo.cl</small>
+          <div class="mt-1">
+            <small class="text-muted">
+              Orden de compra: <span class="fw-semibold text-dark">${tx.orderId || '—'}</span>
+            </small>
           </div>
-          <span class="badge-status-modal ${
-            ok
-              ? 'badge-success'
+        </div>
+        <span class="badge-status-modal ${
+          isApproved
+            ? 'badge-success'
+            : tx.status === 'PENDING'
+            ? 'badge-pending'
+            : 'badge-fail'
+        } ms-auto">
+          ${
+            isApproved
+              ? 'APROBADO'
               : tx.status === 'PENDING'
-              ? 'badge-pending'
-              : 'badge-fail'
-          } ms-auto">
-            ${
-              ok
-                ? 'APROBADO'
-                : tx.status === 'PENDING'
-                ? 'PENDIENTE'
-                : 'RECHAZADO'
-            }
-          </span>
+              ? 'PENDIENTE'
+              : 'RECHAZADO'
+          }
+        </span>
+      </div>
+
+      <!-- 🔹 GRID PRINCIPAL: Datos de transacción + Emisor -->
+      <div class="detalle-grid">
+        <div class="detalle-section">
+          <h6>Datos de Transacción</h6>
+          <ul class="kv">
+            <li><b>Fecha</b> <span>${fecha}</span></li>
+            <li><b>Pasarela</b> <span>${tx.origen || 'Desconocido'}</span></li>
+            <li><b>Tipo de pago</b> <span>${tipoPago(data.payment_type_code)}</span></li>
+            <li><b>Tarjeta</b> <span>${data.card_detail?.card_number ? '**** ' + data.card_detail.card_number : '-'}</span></li>
+            <li><b>Autorización</b> <span>${data.authorization_code || '-'}</span></li>
+            <li><b>VCI</b> <span>${data.vci || '-'}</span></li>
+          </ul>
         </div>
 
-        <h6>Detalle de la compra</h6>
-        <ul class="kv">
-          <li><b>Orden de compra</b> <span>${tx.orderId}</span></li>
-          <li><b>Fecha</b> <span>${fecha}</span></li>
-          <li><b>Tipo de pago</b> <span>${tipoPago(data.payment_type_code)}</span></li>
-          <li><b>Cuotas</b> <span>${data.installments_number || 0}</span></li>
-          <li><b>Tarjeta</b> <span>${data.card_detail?.card_number ? '**** ' + data.card_detail.card_number : '-'}</span></li>
-          <li><b>VCI</b> <span>${data.vci || '-'}</span></li>
-          <li><b>Código autorización</b> <span>${data.authorization_code || '-'}</span></li>
-        </ul>
+        <div class="detalle-section">
+          <h6>Emisor</h6>
+          <ul class="kv">
+            <li><b>Empresa</b> <span>TuEmpleo.cl SpA</span></li>
+            <li><b>RUT</b> <span>77.777.777-7</span></li>
+            <li><b>Giro</b> <span>Servicios de Tecnología</span></li>
+            <li><b>Dirección</b> <span>Av. Providencia 1234, Santiago</span></li>
+            <li><b>Correo</b> <span>facturacion@tuempleo.cl</span></li>
+          </ul>
+        </div>
+      </div>
 
-        <h6 class="mt-3">Avisos adquiridos</h6>
-        ${itemsTable}
+      <!-- 🔹 Tabla de ítems -->
+      <h6 class="mt-4">Detalle de Avisos</h6>
+      <table class="table table-sm align-middle">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th class="text-center">Cant.</th>
+            <th class="text-end">Precio Unit.</th>
+            <th class="text-end">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${
+            items.length
+              ? items
+                  .map(
+                    (i) => `
+                  <tr>
+                    <td>${i.title || i.tipoAviso || 'Aviso'}</td>
+                    <td class="text-center">${i.quantity || i.cantidad || 1}</td>
+                    <td class="text-end">$${Number(i.unit_price || i.precioUnitario || 0).toLocaleString('es-CL')}</td>
+                    <td class="text-end">$${Number((i.quantity || i.cantidad || 1) * (i.unit_price || i.precioUnitario || 0)).toLocaleString('es-CL')}</td>
+                  </tr>`
+                  )
+                  .join('')
+              : `<tr><td colspan="4" class="text-center text-muted">Sin ítems asociados</td></tr>`
+          }
+        </tbody>
+      </table>
 
-        <h6 class="mt-4">Resumen</h6>
-        <table class="w-100">
-          <tbody>
-            <tr><td>Subtotal</td><td class="text-end">$${Math.round(tx.amount / 1.19).toLocaleString('es-CL')}</td></tr>
-            <tr><td>IVA (19%)</td><td class="text-end">$${Math.round(tx.amount - tx.amount / 1.19).toLocaleString('es-CL')}</td></tr>
-            <tr><td><b>Total</b></td><td class="text-end fw-bold">$${Number(tx.amount).toLocaleString('es-CL')}</td></tr>
-          </tbody>
-        </table>
-      `;
-    } catch (err) {
-      console.error('❌ Error obteniendo detalle:', err);
-      body.innerHTML = `<div class="alert alert-danger">No se pudo cargar el detalle de la transacción.</div>`;
-    }
-  });
+      <!-- 🔹 Totales -->
+      <h6 class="mt-4">Resumen</h6>
+      <table class="w-100">
+        <tbody>
+          <tr><td>Subtotal</td><td class="text-end">$${Math.round(tx.amount / 1.19).toLocaleString('es-CL')}</td></tr>
+          <tr><td>IVA (19%)</td><td class="text-end">$${Math.round(tx.amount - tx.amount / 1.19).toLocaleString('es-CL')}</td></tr>
+          <tr><td class="fw-bold">Total</td><td class="text-end fw-bold">$${Number(tx.amount).toLocaleString('es-CL')}</td></tr>
+        </tbody>
+      </table>
 
-  // ====== FUNCIÓN AUXILIAR ======
-  function tipoPago(code) {
-    const tipos = {
-      VD: 'Débito',
-      VN: 'Crédito (sin cuotas)',
-      VC: 'Crédito (con cuotas)',
-      SI: 'Crédito (3 sin interés)',
-      S2: 'Crédito (2 sin interés)',
-      NC: 'Crédito (cuotas sin interés)',
-    };
-    return `${tipos[code] || 'Desconocido'} (${code || '-'})`;
+      <div class="text-center text-muted mt-4 small">
+        Documento no tributario — ID interno: <b>${tx.id}</b>
+      </div>
+    `;
+
+  } catch (err) {
+    console.error('❌ Error obteniendo detalle:', err);
+    body.innerHTML = `
+      <div class="alert alert-danger text-center my-3">
+        No se pudo cargar el detalle de la transacción.<br>
+        <small>${err.message}</small>
+      </div>`;
   }
+});
+
+// ====== FUNCIÓN AUXILIAR ======
+function tipoPago(code) {
+  const tipos = {
+    VD: 'Débito',
+    VN: 'Crédito (sin cuotas)',
+    VC: 'Crédito (con cuotas)',
+    SI: 'Crédito (3 sin interés)',
+    S2: 'Crédito (2 sin interés)',
+    NC: 'Crédito (cuotas sin interés)',
+  };
+  return tipos[code] || '-';
+}
 
   // 🚀 CARGA INICIAL
   obtenerTransacciones();

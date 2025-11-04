@@ -293,14 +293,11 @@
             }
         }
 
-        /* ==========================
-   MODAL DETALLE TRANSACCIÓN
-   ========================== */
         /* ==============================
-   MODAL DETALLE TRANSACCIÓN - VERSIÓN ELEVADA
+   MODAL DETALLE TRANSACCIÓN — VERSIÓN ANCHA
    ============================== */
 
-        /* Fondo del modal */
+        /* Fondo del modal (se mantiene igual) */
         .modal.fade.show {
             display: flex !important;
             align-items: center;
@@ -317,7 +314,8 @@
             border: 1px solid rgba(226, 232, 240, 0.8);
             overflow: hidden;
             animation: modalSlideIn 0.45s ease-out;
-            max-width: 720px;
+            max-width: 980px;
+            /* ← antes 720px */
             width: 100%;
             transition: all 0.3s ease-in-out;
         }
@@ -334,9 +332,21 @@
             }
         }
 
+        #btnCopiarOrderId {
+            font-size: 0.8rem;
+            border-radius: 8px;
+            line-height: 1;
+            transition: all 0.2s ease;
+        }
+
+        #btnCopiarOrderId:hover {
+            background: #3C65F5;
+            color: white;
+        }
+
         /* =========================
-   HEADER
-   ========================= */
+     HEADER (igual)
+     ========================= */
         .glass-modal .modal-header {
             background: linear-gradient(135deg, #eef2ff 0%, #e0f2fe 100%);
             border-bottom: 1px solid rgba(226, 232, 240, 0.9);
@@ -356,22 +366,9 @@
             letter-spacing: -0.3px;
         }
 
-
-        /* Cerrar */
-        .glass-modal .btn-close {
-            background: transparent;
-            opacity: 0.6;
-            transition: all 0.3s ease;
-        }
-
-        .glass-modal .btn-close:hover {
-            transform: rotate(90deg);
-            opacity: 1;
-        }
-
         /* =========================
-   BODY
-   ========================= */
+     BODY (aquí mejoramos estructura)
+     ========================= */
         .glass-modal .modal-body {
             padding: 2.2rem 2.5rem;
             color: #334155;
@@ -380,7 +377,30 @@
             background: rgba(255, 255, 255, 0.8);
         }
 
-        /* Titulares */
+        /* Diseño en dos columnas */
+        .detalle-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            /* ← dos columnas iguales */
+            gap: 24px;
+        }
+
+        /* Bloques internos */
+        .detalle-section {
+            background: linear-gradient(90deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 14px;
+            padding: 16px 18px;
+            box-shadow: 0 3px 8px rgba(148, 163, 184, 0.08);
+            transition: all 0.25s ease;
+        }
+
+        .detalle-section:hover {
+            transform: scale(1.01);
+            box-shadow: 0 6px 14px rgba(59, 130, 246, 0.12);
+        }
+
+        /* Titulares dentro del body */
         #detalleModalBody h6 {
             font-weight: 700;
             color: #0f172a;
@@ -400,7 +420,7 @@
             background: linear-gradient(135deg, #3b82f6, #6366f1);
         }
 
-        /* Lista clave-valor */
+        /* Clave-valor */
         .kv {
             list-style: none;
             padding: 0;
@@ -411,19 +431,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: linear-gradient(90deg, #f8fafc 0%, #f1f5f9 100%);
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            border-radius: 12px;
-            padding: 10px 16px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 6px rgba(148, 163, 184, 0.1);
-            transition: all 0.25s ease;
-        }
-
-        .kv li:hover {
-            transform: scale(1.01);
-            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.12);
-            border-color: rgba(59, 130, 246, 0.25);
+            border-bottom: 1px dashed rgba(226, 232, 240, 0.9);
+            padding: 6px 0;
         }
 
         .kv li b {
@@ -437,12 +446,12 @@
         }
 
         /* =========================
-   TABLAS DE ÍTEMS
-   ========================= */
+     TABLA DE ÍTEMS
+     ========================= */
         #detalleModalBody table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 0.5rem;
+            margin-top: 1rem;
             border-radius: 10px;
             overflow: hidden;
         }
@@ -457,10 +466,6 @@
             font-weight: 700;
         }
 
-        #detalleModalBody tbody tr {
-            transition: background 0.25s ease;
-        }
-
         #detalleModalBody tbody tr:hover {
             background: #f8fafc;
         }
@@ -471,42 +476,9 @@
             font-size: 0.95rem;
         }
 
-        /* Enfatizar total */
-        #detalleModalBody td.fw-bold {
-            font-weight: 700;
-            color: #0f172a;
-        }
-
         /* =========================
-   BADGES DE ESTADO
-   ========================= */
-        .badge-status-modal {
-            padding: 7px 14px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            border-radius: 12px;
-            letter-spacing: 0.3px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-
-        .badge-success {
-            background: linear-gradient(135deg, #34d399, #059669);
-            color: #fff;
-        }
-
-        .badge-pending {
-            background: linear-gradient(135deg, #facc15, #f59e0b);
-            color: #fff;
-        }
-
-        .badge-fail {
-            background: linear-gradient(135deg, #f87171, #b91c1c);
-            color: #fff;
-        }
-
-        /* =========================
-   FOOTER
-   ========================= */
+     FOOTER (sin cambios)
+     ========================= */
         .glass-modal .modal-footer {
             background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
             border-top: 1px solid #e2e8f0;
@@ -516,39 +488,17 @@
             border-radius: 0 0 20px 20px;
         }
 
-        .glass-modal .btn-outline-secondary {
-            border: 2px solid #cbd5e1;
-            color: #475569;
-            border-radius: 12px;
-            padding: 0.6rem 1.4rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .glass-modal .btn-outline-secondary:hover {
-            background: linear-gradient(135deg, #3b82f6, #6366f1);
-            border-color: transparent;
-            color: white;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-        }
-
         /* =========================
-   RESPONSIVE
-   ========================= */
-        @media (max-width: 768px) {
+     RESPONSIVE
+     ========================= */
+        @media (max-width: 992px) {
             .glass-modal {
-                width: 92%;
+                max-width: 95%;
             }
 
-            .glass-modal .modal-body {
-                padding: 1.5rem;
-                max-height: 60vh;
-            }
-
-            .kv li {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 4px;
+            .detalle-grid {
+                grid-template-columns: 1fr;
+                /* colapsa a una sola columna */
             }
         }
     </style>
@@ -643,7 +593,7 @@
                                 </div>
 
 
-                                <table id="tablaTransacciones" class="table table-striped table-hover align-middle">
+                                <!-- <table id="tablaTransacciones" class="table table-striped table-hover align-middle">
                                     <thead class="table-light">
                                         <tr>
                                             <table id="tablaTransacciones"
@@ -677,6 +627,23 @@
                                     <tbody>
                                         <tr>
                                             <td colspan="5" class="text-center text-muted">Cargando...</td>
+                                        </tr>
+                                    </tbody>
+                                </table> -->
+                                <table id="tablaTransacciones" class="table table-striped table-hover align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th style="width: 60px;">#</th>
+                                            <th>Medio de Pago</th>
+                                            <th>Monto</th>
+                                            <th>Estado</th>
+                                            <th>Fecha</th>
+                                            <th class="text-center">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="7" class="text-center text-muted">Cargando...</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -713,30 +680,110 @@
             </div>
         </div>
 
+
         <!-- Modal Detalle Transacción -->
         <div class="modal fade" id="detalleModal" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
-            <<<<<<< HEAD <div class="modal-dialog modal-lg modal-dialog-centered">
-                =======
-                <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-                    >>>>>>> 64f94518877c3defcc2e109da6306e2f8cc2d386
-                    <div class="modal-content glass-modal">
-                        <div class="modal-header border-0">
-                            <h5 class="modal-title fw-bold" id="detalleModalLabel">
-                                <i class="far fa-file-invoice-dollar me-2 text-primary"></i> Comprobante de pago
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Cerrar"></button>
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content glass-modal">
+                    <!-- 🔹 Header -->
+                    <div class="modal-header border-0">
+
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+
+                    <!-- 🔹 Body -->
+                    <div class="modal-body" id="detalleModalBody">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="../assets/img/logo/favicon.png" width="50" class="me-3 rounded-3"
+                                alt="Logo Tu Empleo">
+                            <div>
+                                <h4 class="m-0 fw-bold">Comprobante de Pago</h4>
+                                <small class="text-muted">Generado automáticamente por TuEmpleo.cl</small>
+                            </div>
+                            <span id="detalleEstado" class="badge-status-modal badge-success ms-auto">APROBADO</span>
                         </div>
-                        <div class="modal-body" id="detalleModalBody">
-                            <div class="text-center text-muted py-4">Cargando información...</div>
+
+                        <!-- 🔹 Bloque principal en dos columnas -->
+                        <div class="detalle-grid">
+                            <div class="detalle-section">
+                                <h6>Datos de Transacción</h6>
+                                <ul class="kv">
+                                    <li><b>Fecha</b> <span id="detalleFecha">—</span></li>
+                                    <li><b>Pasarela</b> <span id="detallePasarela">—</span></li>
+                                    <li><b>Tipo de pago</b> <span id="detalleTipoPago">—</span></li>
+                                    <li><b>Tarjeta</b> <span id="detalleTarjeta">—</span></li>
+                                    <li><b>Autorización</b> <span id="detalleAuth">—</span></li>
+                                    <li><b>VCI</b> <span id="detalleVci">—</span></li>
+                                </ul>
+                            </div>
+
+                            <div class="detalle-section">
+                                <h6>Emisor</h6>
+                                <ul class="kv">
+                                    <li><b>Empresa</b> <span>TuEmpleo.cl SpA</span></li>
+                                    <li><b>RUT</b> <span>77.777.777-7</span></li>
+                                    <li><b>Giro</b> <span>Servicios de Tecnología</span></li>
+                                    <li><b>Dirección</b> <span>Av. Providencia 1234</span></li>
+                                    <li><b>Correo</b> <span>facturacion@tuempleo.cl</span></li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="modal-footer border-0">
-                            <button type="button" class="btn btn-outline-secondary"
-                                data-bs-dismiss="modal">Cerrar</button>
+
+                        <!-- 🔹 Tabla de ítems -->
+                        <h6 class="mt-4">Detalle de Avisos</h6>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th class="text-center">Cant.</th>
+                                    <th class="text-end">Precio Unit.</th>
+                                    <th class="text-end">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detalleItems">
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted">Cargando...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- 🔹 Totales -->
+                        <h6 class="mt-4">Resumen</h6>
+                        <table class="w-100">
+                            <tbody>
+                                <tr>
+                                    <td>Subtotal</td>
+                                    <td class="text-end" id="detalleSubtotal">$0</td>
+                                </tr>
+                                <tr>
+                                    <td>IVA (19%)</td>
+                                    <td class="text-end" id="detalleIva">$0</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold">Total</td>
+                                    <td class="text-end fw-bold" id="detalleTotal">$0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- 🔹 Leyenda -->
+                        <div class="text-center text-muted mt-4 small">
+                            Documento no tributario — ID interno: <span id="detalleId">—</span>
+                            <br>
+                            <span class="fw-semibold text-danger d-block mt-1">
+                                ⚠️ Este comprobante no tiene validez como boleta o factura tributaria.
+                            </span>
                         </div>
                     </div>
+
+                    <!-- 🔹 Footer -->
+                    <div class="modal-footer border-0">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
                 </div>
+            </div>
         </div>
+
 
 
 
