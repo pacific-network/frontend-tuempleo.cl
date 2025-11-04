@@ -258,7 +258,7 @@
 
                 // ✅ Consultar el detalle directamente desde el backend
                 const res = await fetch(
-                    `${BASE_URL_API}/mercadopago/detail?payment_id=${encodeURIComponent(paymentId)}`
+                    `${BASE_URL_API}/mercadopago/detail?token=${encodeURIComponent(prefId)}`
                 );
 
                 const data = await res.json();
