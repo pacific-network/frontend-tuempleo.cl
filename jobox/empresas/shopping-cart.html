@@ -448,6 +448,64 @@
       box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25);
     }
 
+    /* === Contador de ítems en el botón flotante === */
+    .cart-count-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      min-width: 22px;
+      height: 22px;
+      background: #f5576c;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 0.8rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+      border: 2px solid #fff;
+      transform: scale(0);
+      opacity: 0;
+      transition: all 0.25s ease;
+    }
+
+    /* Animación cuando hay items */
+    .cart-count-badge.active {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    .btn-remove {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+      /* 🔹 elimina borde de foco */
+      background: var(--gradient-secondary);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform .2s;
+      font-size: 1rem;
+    }
+
+    .btn-remove:hover {
+      transform: scale(1.1);
+    }
+
+    .btn-remove:focus {
+      outline: none;
+      /* 🔹 elimina borde azul o negro */
+      box-shadow: none;
+      /* 🔹 elimina sombra de enfoque */
+    }
+
+
+
     /* ===== Responsivo ===== */
     @media (max-width: 1100px) {
       .pricing-grid {
@@ -544,6 +602,7 @@
       <!-- BOTÓN FLOTANTE 🛒 -->
       <button id="openCartBtn" class="floating-cart-btn" title="Ver carrito">
         <i class="fa fa-shopping-cart"></i>
+        <span id="cartCount" class="cart-count-badge">0</span>
 
       </button>
       <!-- PANEL FLOTANTE DEL CARRITO -->

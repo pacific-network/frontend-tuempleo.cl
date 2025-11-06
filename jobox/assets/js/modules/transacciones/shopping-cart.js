@@ -186,6 +186,18 @@ function renderRows() {
     .join("");
 }
 
+function updateCartCount() {
+  const badge = document.getElementById('cartCount');
+  const count = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+
+  if (count > 0) {
+    badge.textContent = count;
+    badge.classList.add('active');
+  } else {
+    badge.classList.remove('active');
+    setTime
+  }
+}
 function renderCarrito() {
   if (carrito.length === 0) {
     emptyCartMsg.classList.add("active");
@@ -200,6 +212,7 @@ function renderCarrito() {
     elTotal.textContent = fmtCLP(total);
   }
   renderPlanes();
+  updateCartCount();
 }
 
 // ===============================
