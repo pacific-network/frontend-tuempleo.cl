@@ -2,7 +2,6 @@
 // FUNCIONES DE FORMATEO
 // ===============================
 
-// Función para convertir tipo de contrato a texto amigable
 function formatoContrato(tipo) {
   const mapping = {
     plazo_fijo: 'Plazo Fijo',
@@ -12,21 +11,19 @@ function formatoContrato(tipo) {
     reemplazo: 'Reemplazo',
     practica: 'Práctica',
   };
-  return mapping[tipo] || tipo || 'No especificado';
+  return mapping[tipo] || null;
 }
 
-// Función para convertir modalidad a texto
 function formatoModalidad(m) {
-  if (!m) return 'No especificado';
+  if (!m) return null;
   return m === "1" ? "Full Time"
        : m === "2" ? "Part Time"
        : m === "3" ? "Remoto"
        : m === "4" ? "Freelancer"
        : m === "5" ? "Temporal"
-       : "No especificado";
+       : null;
 }
 
-// Función para obtener el nombre de la región según número o texto
 function formatoRegion(regionValor) {
   const regionesDeChile = [
     { numero: 1, nombre: "Región de Arica y Parinacota" },
@@ -46,12 +43,10 @@ function formatoRegion(regionValor) {
     { numero: 15, nombre: "Región de Aysén del General Carlos Ibáñez del Campo" },
     { numero: 16, nombre: "Región de Magallanes y de la Antártica Chilena" }
   ];
-
-  // Si ya es texto (no número), devuélvelo directo
+  if (!regionValor) return null;
   if (isNaN(regionValor)) return regionValor;
-
   const regionEncontrada = regionesDeChile.find(r => r.numero === parseInt(regionValor));
-  return regionEncontrada ? regionEncontrada.nombre : "No especificada";
+  return regionEncontrada ? regionEncontrada.nombre : null;
 }
 
 // ===============================
@@ -71,65 +66,71 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!res.ok) throw new Error('Error al obtener los datos');
 
     const oferta = await res.json();
-    const data = typeof oferta.data === 'string' ? JSON.parse(oferta.data) : oferta.data;
+    const data = typeof oferta.data === 'string' ? JSON.parse(oferta.data) : oferta.data || {};
 
     // ===============================
     // Datos de la empresa (sidebar)
     // ===============================
-    document.getElementById('empresa-nombre').textContent =
-      oferta.empresa?.razon_social || 'Sin nombre';
-    document.getElementById('empresa-rubro').textContent =
-      oferta.empresa?.data?.actividades_economicas?.[0] || 'Sin rubro';
+    mostrarTexto('empresa-nombre', oferta.empresa?.razon_social);
+    mostrarTexto('empresa-rubro', oferta.empresa?.data?.actividades_economicas?.[0]);
     if (oferta.empresa?.logo_url) {
       document.getElementById('empresa-logo').src = oferta.empresa.logo_url;
+    } else {
+      document.getElementById('empresa-logo').style.display = 'none';
     }
 
     // ===============================
     // Datos principales de la oferta
     // ===============================
-    document.querySelector('h4.titulo-oferta').textContent = oferta.titulo || 'Sin título';
+    mostrarTextoEnSelector('h4.titulo-oferta', oferta.titulo);
 
-    document.querySelector('p.fecha-publicacion').textContent =
-      new Date(oferta.fecha_publicacion).toLocaleDateString('es-CL');
-    document.querySelector('p.fecha-cierre').textContent =
-      new Date(oferta.fecha_cierre).toLocaleDateString('es-CL');
+    mostrarTextoEnSelector(
+      'p.fecha-publicacion',
+      oferta.fecha_publicacion
+        ? new Date(oferta.fecha_publicacion).toLocaleDateString('es-CL')
+        : null
+    );
+
+    mostrarTextoEnSelector(
+      'p.fecha-cierre',
+      oferta.fecha_cierre
+        ? new Date(oferta.fecha_cierre).toLocaleDateString('es-CL')
+        : null
+    );
 
     // ===============================
     // Datos adicionales
     // ===============================
-    document.querySelector('p.area-trabajo').textContent = data.area_trabajo || 'No especificado';
-    document.querySelector('p.experiencia').textContent =
-      data.anios_experiencia ? `${data.anios_experiencia} años` : 'No especificado';
-
-    // Región / ubicación
-    document.querySelector('p.region').textContent = formatoRegion(data.region);
-
-    // Educación requerida
-    document.querySelector('p.educacion').textContent = data.educacion_requerida || 'No especificado';
-
-    // Tipo de contrato
-    document.querySelector('p.contrato').textContent = formatoContrato(data.tipo_contrato);
-
-    // Modalidad laboral
-    document.querySelector('p.modalidad').textContent = formatoModalidad(data.modalidad);
+    mostrarTextoEnSelector('p.area-trabajo', data.area_trabajo);
+    mostrarTextoEnSelector(
+      'p.experiencia',
+      data.anios_experiencia ? `${data.anios_experiencia} año${data.anios_experiencia > 1 ? 's' : ''}` : null
+    );
+    mostrarTextoEnSelector('p.region', formatoRegion(data.region));
+    mostrarTextoEnSelector('p.educacion', data.educacion_requerida);
+    mostrarTextoEnSelector('p.contrato', formatoContrato(data.tipo_contrato));
+    mostrarTextoEnSelector('p.modalidad', formatoModalidad(data.modalidad));
 
     // ===============================
     // Renta salarial
     // ===============================
-    const renta = data.renta_salarial;
-    document.querySelector('p.renta').textContent =
-      renta?.desde && renta?.hasta
+    const renta = data.renta_salarial || {};
+    const textoRenta =
+      renta.desde && renta.hasta
         ? `$${renta.desde} - $${renta.hasta}`
-        : renta?.de_acuerdo_al_mercado
+        : renta.de_acuerdo_al_mercado
         ? 'De acuerdo al mercado'
-        : 'No informado';
+        : renta.desde
+        ? `$${renta.desde}`
+        : renta.hasta
+        ? `Hasta $${renta.hasta}`
+        : null;
+    mostrarTextoEnSelector('p.renta', textoRenta);
 
     // ===============================
     // Descripción y listas
     // ===============================
-    document.querySelector('.descripcion-puesto').textContent =
-      data.descripcion_puesto || 'Sin descripción';
-
+    mostrarTextoEnSelector('.descripcion-puesto', data.descripcion_puesto);
     renderLista('.responsabilidades-list', data.responsabilidades);
     renderLista('.requisitos-list', data.requisitos_minimos);
     renderLista('.beneficios-list', data.beneficios);
@@ -140,14 +141,38 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // ===============================
-// Función para renderizar listas
+// Helpers visuales
 // ===============================
-function renderLista(selector, items = []) {
+function mostrarTexto(id, texto) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (texto && texto.trim() !== '') el.textContent = texto;
+  else el.style.display = 'none';
+}
+
+function mostrarTextoEnSelector(selector, texto) {
+  const el = document.querySelector(selector);
+  if (!el) return;
+  if (texto && texto.trim() !== '') el.textContent = texto;
+  else el.style.display = 'none';
+}
+
+// ===============================
+// Renderizado de listas
+// ===============================
+function renderLista(selector, items) {
   const ul = document.querySelector(selector);
   if (!ul) return;
 
+  if (!items || !Array.isArray(items) || items.length === 0) {
+    ul.style.display = 'none';
+    return;
+  }
+
+  ul.style.display = 'block';
   ul.innerHTML = '';
   items.forEach(item => {
+    if (!item || item.trim() === '') return;
     const li = document.createElement('li');
     li.className = 'mb-2';
     li.textContent = item;
