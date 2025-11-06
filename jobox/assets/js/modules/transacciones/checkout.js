@@ -198,7 +198,7 @@ async function iniciarPagoMercadoPago() {
 
   // ⚠️ Aquí había un error: estabas haciendo getItem(token) en lugar de getItem("token")
   const token = localStorage.getItem("token");
-  const userId = getUserIdFromToken();
+  const userId = await getUserIdFromToken();
 
   if (!token || !userId) {
     Swal.fire("Sesión requerida", "Inicia sesión para continuar.", "info");
@@ -213,20 +213,27 @@ async function iniciarPagoMercadoPago() {
       allowOutsideClick: false,
     });
 
-    const tipoAviso = normalizarTipoAviso(carrito[0]?.nombre);
+    const carrito = getCart();
+const tipoAviso = normalizarTipoAviso(carrito[0]?.nombre);
 
-    // 🔹 Crear preferencia de pago en tu backend
-    const res = await fetch(`${BASE_URL_API}/mercadopago/preferences`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        tipo: tipoAviso,
-        userId,
-      }),
-    });
+const res = await fetch(`${BASE_URL_API}/mercadopago/preferences`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  },
+  body: JSON.stringify({
+    tipo: tipoAviso,
+    userId,
+    items: carrito.map(i => ({
+      tipoAviso: normalizarTipoAviso(i.nombre),
+      cantidad: i.cantidad,
+      precioUnitario: i.precio,
+      subtotal: i.precio * i.cantidad,
+    })),
+  }),
+});
+
 
     const data = await res.json();
 

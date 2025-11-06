@@ -29,7 +29,7 @@
   async function fetchEmployerBySub(sub, token){
     const opts = token ? { headers:{ Authorization:"Bearer "+token } } : {};
     // Igual que en tu código: primero /empleador/userid/{sub}, luego /empleador/{sub}
-    const u1 = `${API}/empleador/userid/${sub}`;
+    const u1 = `${API}/empleador/${sub}`;
     const r1 = await fetch(u1, opts);
     if(r1.ok) return r1.json();
     const u2 = `${API}/empleador/${sub}`;
