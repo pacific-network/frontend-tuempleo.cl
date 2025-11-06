@@ -164,6 +164,172 @@
       font-size: 0.9rem;
     }
 
+    /* ===============================
+   💎 ESTILO ELEGANTE NOTIFICACIONES
+   =============================== */
+    .user-notification-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #ffffff;
+      border-radius: 16px;
+      border: 1px solid #e5e9f2;
+      padding: 16px 20px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 12px rgba(60, 101, 245, 0.05);
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .user-notification-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(60, 101, 245, 0.12);
+    }
+
+    /* 🔹 Línea lateral de estado */
+    .user-notification-item::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      border-radius: 16px 0 0 16px;
+    }
+
+    .user-notification-item[data-txid*="AUTHORIZED"]::before {
+      background: linear-gradient(180deg, #22c55e, #15803d);
+    }
+
+    .user-notification-item[data-txid*="PENDING"]::before {
+      background: linear-gradient(180deg, #facc15, #eab308);
+    }
+
+    .user-notification-item[data-txid*="REJECTED"],
+    .user-notification-item[data-txid*="FAILED"]::before {
+      background: linear-gradient(180deg, #ef4444, #b91c1c);
+    }
+
+    /* Icono circular */
+    .user-notification-icon {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      font-weight: 500;
+      background: #f9fafb;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .user-notification-icon i.text-success {
+      color: #22c55e;
+    }
+
+    .user-notification-icon i.text-warning {
+      color: #eab308;
+    }
+
+    .user-notification-icon i.text-danger {
+      color: #ef4444;
+    }
+
+    /* Información */
+    .user-notification-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .user-notification-info p:first-child {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #0b2341;
+      margin-bottom: 2px;
+    }
+
+    .user-notification-info p.mb-1 {
+      color: #111827;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .user-notification-info small {
+      color: #6b7280;
+      font-size: 0.85rem;
+    }
+
+    /* Botón eliminar */
+    .btn-delete-noti {
+      background: transparent;
+      border: none;
+      color: #ef4444;
+      font-size: 1.1rem;
+      padding: 6px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-delete-noti:hover {
+      background: rgba(239, 68, 68, 0.1);
+      color: #b91c1c;
+    }
+
+    /* Badge “nuevo” */
+    .badge.bg-primary {
+      background-color: #3c65f5 !important;
+      font-size: 0.7rem;
+      padding: 3px 7px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    /* Animación */
+    .fade-in {
+      animation: fadeIn 0.4s ease both;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Paginación */
+    .user-notification-item+.d-flex {
+      border-top: 1px solid #edf1f7;
+      margin-top: 18px;
+      padding-top: 14px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .user-notification-item {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 14px;
+      }
+
+      .btn-delete-noti {
+        position: absolute;
+        top: 10px;
+        right: 12px;
+      }
+    }
+
+
+
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
       .job-card {
