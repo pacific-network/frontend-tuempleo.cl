@@ -1,4 +1,4 @@
-// ====== gestion-oferta.js (con paginación real) ======
+// ====== gestion-oferta.js (paginación arreglada, no desaparece) ======
 import { getUserIdFromToken } from '../utils/decode-jwt.js';
 
 /* ───── Toast genérico ───── */
@@ -13,7 +13,11 @@ function showToast(message, type = 'success') {
     type === 'success' ? '✅ Éxito' :
     type === 'error' ? '❌ Error' :
     '⚠️ Aviso';
-  toastEl.classList.add(type === 'success' ? 'bg-success' : type === 'error' ? 'bg-danger' : 'bg-warning');
+  toastEl.classList.add(
+    type === 'success' ? 'bg-success' :
+    type === 'error' ? 'bg-danger' :
+    'bg-warning'
+  );
 
   const toast = new bootstrap.Toast(toastEl);
   toast.show();
@@ -45,6 +49,7 @@ async function getPostulantesCount(ofertaId) {
 let currentPage = 1;
 const itemsPerPage = 7;
 let totalPages = 1;
+let totalItemsGlobal = 0;
 let empleador_id = null;
 
 /* ───── Render tabla ───── */
@@ -62,9 +67,27 @@ async function renderOfertas(page = 1) {
 
     const ofertas = json.data || json;
     const meta = json.meta || {};
-    totalPages = Math.ceil((meta.totalItems || ofertas.length) / itemsPerPage) || 1;
 
-    if (!ofertas.length) {
+    // Si viene totalItems, lo usamos. Si no, usamos el global.
+    if (meta.totalItems) {
+      totalItemsGlobal = meta.totalItems;
+    } else if (totalItemsGlobal === 0 && page === 1) {
+      try {
+        const resAll = await fetch(`${BASE_URL_API}/ofertas/empleador/${empleador_id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const jsonAll = await resAll.json();
+        const todas = jsonAll.data || jsonAll;
+        totalItemsGlobal = todas.length;
+      } catch (err) {
+        totalItemsGlobal = ofertas.length;
+      }
+    }
+
+    totalPages = Math.ceil(totalItemsGlobal / itemsPerPage);
+    if (totalPages < 1) totalPages = 1;
+
+    if (!ofertas.length && page === 1) {
       tbody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-muted">No tienes ofertas publicadas.</td></tr>`;
       document.querySelector('.pagination').innerHTML = '';
       return;
@@ -75,13 +98,15 @@ async function renderOfertas(page = 1) {
         let totalPostulantes = 0;
         try {
           totalPostulantes = await getPostulantesCount(oferta.id);
-        } catch (err) {
-          console.warn(`No se pudo obtener postulantes para ${oferta.id}:`, err);
-        }
+        } catch {}
 
-        const fecha = new Date(oferta.fecha_cierre).toLocaleDateString('es-CL', {
-          year: 'numeric', month: 'short', day: 'numeric'
-        });
+        const fecha = oferta.fecha_cierre
+          ? new Date(oferta.fecha_cierre).toLocaleDateString('es-CL', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+            })
+          : '-';
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
@@ -96,22 +121,27 @@ async function renderOfertas(page = 1) {
             </div>
           </td>
           <td>
-            <a href="employer-candidate.html?id=${oferta.id}" class="btn btn-outline-primary btn-sm rounded-pill position-relative px-2 py-1">
+            <a href="employer-candidate.html?id=${oferta.id}"
+               class="btn btn-outline-primary btn-sm rounded-pill position-relative px-2 py-1">
               <i class="far fa-users me-1 fs-6"></i>
               <span>Postulantes</span>
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" style="font-size: 1em;">
-                ${totalPostulantes}
-              </span>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
+                    style="font-size: 1em;">${totalPostulantes}</span>
             </a>
           </td>
           <td>${fecha}</td>
           <td>
-            <span class="badge ${oferta.es_activa ? 'bg-success' : 'bg-secondary'}">${oferta.es_activa ? 'Activo' : 'Inactivo'}</span>
+            <span class="badge ${oferta.es_activa ? 'bg-success' : 'bg-secondary'}">
+              ${oferta.es_activa ? 'Activo' : 'Inactivo'}
+            </span>
           </td>
           <td>
-            <a href="employer-view-job.html?id=${oferta.id}" class="btn btn-outline-secondary btn-sm"><i class="far fa-eye"></i></a>
-            <a href="employer-edit-job.html?id=${oferta.id}" class="btn btn-outline-secondary btn-sm"><i class="far fa-pen"></i></a>
-            <a href="#" class="btn btn-outline-danger btn-sm btn-delete" data-id="${oferta.id}"><i class="far fa-trash-can"></i></a>
+            <a href="employer-view-job.html?id=${oferta.id}" class="btn btn-outline-secondary btn-sm">
+              <i class="far fa-eye"></i></a>
+            <a href="employer-edit-job.html?id=${oferta.id}" class="btn btn-outline-secondary btn-sm">
+              <i class="far fa-pen"></i></a>
+            <a href="#" class="btn btn-outline-danger btn-sm btn-delete" data-id="${oferta.id}">
+              <i class="far fa-trash-can"></i></a>
           </td>`;
         return tr;
       })
@@ -129,9 +159,10 @@ async function renderOfertas(page = 1) {
   }
 }
 
-/* ───── Paginación dinámica ───── */
+/* ───── Paginación dinámica (ya no desaparece) ───── */
 function renderPagination() {
   const pagination = document.querySelector('.pagination');
+  if (!pagination) return;
   pagination.innerHTML = '';
 
   if (totalPages <= 1) return;
@@ -139,7 +170,7 @@ function renderPagination() {
   const prevDisabled = currentPage === 1 ? 'disabled' : '';
   const nextDisabled = currentPage === totalPages ? 'disabled' : '';
 
-  pagination.innerHTML = `
+  let html = `
     <li class="page-item ${prevDisabled}">
       <a class="page-link" href="#" data-page="${currentPage - 1}">
         <i class="far fa-angle-double-left"></i>
@@ -148,13 +179,13 @@ function renderPagination() {
   `;
 
   for (let i = 1; i <= totalPages; i++) {
-    pagination.innerHTML += `
+    html += `
       <li class="page-item ${i === currentPage ? 'active' : ''}">
         <a class="page-link" href="#" data-page="${i}">${i}</a>
       </li>`;
   }
 
-  pagination.innerHTML += `
+  html += `
     <li class="page-item ${nextDisabled}">
       <a class="page-link" href="#" data-page="${currentPage + 1}">
         <i class="far fa-angle-double-right"></i>
@@ -162,17 +193,26 @@ function renderPagination() {
     </li>
   `;
 
+  pagination.innerHTML = html;
+
   pagination.querySelectorAll('a.page-link').forEach((link) => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
-      const newPage = Number(e.target.closest('a').dataset.page);
-      if (newPage >= 1 && newPage <= totalPages && newPage !== currentPage) {
+      const newPage = parseInt(e.currentTarget.dataset.page, 10);
+      if (!isNaN(newPage) && newPage >= 1 && newPage <= totalPages && newPage !== currentPage) {
         currentPage = newPage;
         renderOfertas(currentPage);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     });
   });
+
+  const info = document.getElementById('pagination-info');
+  if (info) {
+    const start = (currentPage - 1) * itemsPerPage + 1;
+    const end = Math.min(currentPage * itemsPerPage, totalItemsGlobal);
+    info.textContent = `Mostrando ${start} – ${end} de ${totalItemsGlobal} ofertas`;
+  }
 }
 
 /* ───── Eliminar ofertas ───── */

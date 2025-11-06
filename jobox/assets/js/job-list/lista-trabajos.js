@@ -178,12 +178,38 @@
       cont.innerHTML = `<p class="text-center">No hay resultados con esos filtros.</p>`;
       return;
     }
+
     ofertas.forEach(oferta => {
       const data = safeParse(oferta.data);
-      const herramientas = (data.herramientas_basicas || []).map(h => `<a><span>${h}</span></a>`).join('');
-      const modalidadLegible = formatModalidad(data.modalidad);
+      const herramientas = (data.herramientas_basicas || [])
+        .filter(h => !!h?.trim())
+        .map(h => `<a><span>${h}</span></a>`)
+        .join('');
+
+      const modalidadLegible = data.modalidad ? formatModalidad(data.modalidad) : null;
       const detailUrl = `job-single-2-si.html?id=${oferta.id}`;
 
+      // --- campos opcionales ---
+      const areaTrabajo = data.area_trabajo && data.area_trabajo.trim() !== '' ? data.area_trabajo : null;
+      const fechaPublicacion = oferta.fecha_publicacion ? diasDesde(oferta.fecha_publicacion) : null;
+      const fechaCierre = oferta.fecha_cierre ? formatFecha(oferta.fecha_cierre) : null;
+      const salarioRango = (data.renta_salarial?.desde && data.renta_salarial?.hasta)
+        ? `$${parseInt(data.renta_salarial.desde).toLocaleString('es-CL')} - $${parseInt(data.renta_salarial.hasta).toLocaleString('es-CL')}`
+        : null;
+      const region = oferta.empleador?.data?.region && oferta.empleador.data.region.trim() !== ''
+        ? oferta.empleador.data.region
+        : null;
+
+      // --- generar <li> sólo si existen ---
+      const infoItems = [];
+      if (areaTrabajo) infoItems.push(`<li><i class="fe-briefcase"></i> ${areaTrabajo}</li>`);
+      if (modalidadLegible) infoItems.push(`<li><i class="fe-check-circle"></i> ${modalidadLegible}</li>`);
+      if (fechaPublicacion) infoItems.push(`<li><i class="fe-clock"></i> ${fechaPublicacion}</li>`);
+      if (fechaCierre) infoItems.push(`<li><i class="fas fa-timer"></i> Exp: ${fechaCierre}</li>`);
+      if (salarioRango) infoItems.push(`<li><i class="fe-dollar-sign"></i> Salario: ${salarioRango}</li>`);
+      if (region) infoItems.push(`<li><i class="fe-map-pin"></i> ${region}</li>`);
+
+      // --- generar bloque completo ---
       cont.insertAdjacentHTML('beforeend', `
         <div class="col-lg-12" id="oferta-${oferta.id}">
           <div class="job-item" data-id="${oferta.id}" onclick="window.location.href='${detailUrl}'" style="cursor: pointer;">
@@ -191,19 +217,14 @@
             <div class="job-content">
               <div class="job-top">
                 <div class="job-title">
-                  <h5>${oferta.titulo}</h5>
+                  <h5>${oferta.titulo || 'Sin título'}</h5>
                   <span class="job-employer"><i class="far fa-building"></i> ${oferta.empresa?.nombre_fantasia || 'Empresa'}</span>
                 </div>
               </div>
               <ul class="job-info-list">
-                <li><i class="fe-briefcase"></i> ${data.area_trabajo || 'Área no especificada'}</li>
-                <li><i class="fe-check-circle"></i> ${modalidadLegible}</li>
-                <li><i class="fe-clock"></i> ${diasDesde(oferta.fecha_publicacion)}</li>
-                <li><i class="fas fa-timer"></i> Exp: ${formatFecha(oferta.fecha_cierre)}</li>
-                <li><i class="fe-dollar-sign"></i> Salario: ${formatRango(data.renta_salarial)}</li>
-                <li><i class="fe-map-pin"></i> ${oferta.empleador?.data?.region || 'Región no disponible'}</li>
+                ${infoItems.join('')}
               </ul>
-              <div class="job-skill">${herramientas}</div>
+              ${herramientas ? `<div class="job-skill">${herramientas}</div>` : ''}
             </div>
           </div>
         </div>
