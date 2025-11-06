@@ -167,28 +167,93 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Datos oferta en DOM
     document.title = `${oferta.titulo} - ${oferta.empresa.nombre_fantasia}`;
-    document.querySelector('h4.mb-4').textContent = oferta.titulo;
-    document.querySelector('.job-single-employer-info h5 a').textContent = oferta.empresa.nombre_fantasia;
-    document.querySelector('.job-single-employer-info p').textContent = (oferta.empresa.data.actividades_economicas?.[0]) || 'Sin datos';
+    document.querySelector('h4.mb-4').textContent = oferta.titulo || '';
 
-    document.querySelector('.fecha-publicacion').textContent = formatFecha(oferta.fecha_publicacion);
-    document.querySelector('.fecha-cierre').textContent = formatFecha(oferta.fecha_cierre);
-    document.querySelector('.area-trabajo').textContent = data.area_trabajo || 'No especificado';
-    document.querySelector('.experiencia').textContent = (data.anios_experiencia || '0') + ' años';
-    document.querySelector('.ubicacion').textContent = oferta.empleador?.data?.region || 'Sin datos';
-    document.querySelector('.educacion').textContent = formatEducacion(data.educacion_requerida);
-    document.querySelector('.tipo-contrato').textContent = data.tipo_contrato ? formatTextoBonito(data.tipo_contrato) : 'No definido';
-    document.querySelector('.modalidad').textContent = formatModalidad(data.modalidad);
-    document.querySelector('.renta').textContent = (data.renta_salarial?.desde && data.renta_salarial?.hasta)
-      ? `$${formatNum(data.renta_salarial.desde)} - $${formatNum(data.renta_salarial.hasta)}`
-      : 'De acuerdo al mercado';
-    document.querySelector('.descripcion-puesto').textContent = data.descripcion_puesto || '';
-    renderLista(data.responsabilidades, '.responsabilidades-list');
-    renderLista(data.requisitos_minimos, '.requisitos-list');
-    renderLista(data.beneficios, '.beneficios-list');
-    renderLista(data.herramientas_basicas, '.herramientas-list');
-    renderLista(data.preguntas_personalizadas, '.preguntas-list');
+    const infoEmpresa = document.querySelector('.job-single-employer-info');
+    if (infoEmpresa) {
+      const nombreEl = infoEmpresa.querySelector('h5 a');
+      const giroEl = infoEmpresa.querySelector('p');
+      if (nombreEl) nombreEl.textContent = oferta.empresa?.nombre_fantasia || '';
+      if (giroEl) {
+        const act = oferta.empresa?.data?.actividades_economicas?.[0];
+        if (act && act.trim() !== '') giroEl.textContent = act;
+        else giroEl.remove();
+      }
+    }
 
+    // Fechas
+    if (oferta.fecha_publicacion)
+      document.querySelector('.fecha-publicacion').textContent = formatFecha(oferta.fecha_publicacion);
+    else
+      document.querySelector('.fecha-publicacion').closest('li')?.remove();
+
+    if (oferta.fecha_cierre)
+      document.querySelector('.fecha-cierre').textContent = formatFecha(oferta.fecha_cierre);
+    else
+      document.querySelector('.fecha-cierre').closest('li')?.remove();
+
+    // Área
+    if (data.area_trabajo && data.area_trabajo.trim() !== '')
+      document.querySelector('.area-trabajo').textContent = data.area_trabajo;
+    else
+      document.querySelector('.area-trabajo').closest('li')?.remove();
+
+    // Experiencia
+    if (data.anios_experiencia)
+      document.querySelector('.experiencia').textContent = `${data.anios_experiencia} años`;
+    else
+      document.querySelector('.experiencia').closest('li')?.remove();
+
+    // Ubicación
+    if (oferta.empleador?.data?.region && oferta.empleador.data.region.trim() !== '')
+      document.querySelector('.ubicacion').textContent = oferta.empleador.data.region;
+    else
+      document.querySelector('.ubicacion').closest('li')?.remove();
+
+    // Educación
+    if (data.educacion_requerida)
+      document.querySelector('.educacion').textContent = formatEducacion(data.educacion_requerida);
+    else
+      document.querySelector('.educacion').closest('li')?.remove();
+
+    // Tipo de contrato
+    if (data.tipo_contrato)
+      document.querySelector('.tipo-contrato').textContent = formatTextoBonito(data.tipo_contrato);
+    else
+      document.querySelector('.tipo-contrato').closest('li')?.remove();
+
+    // Modalidad
+    if (data.modalidad)
+      document.querySelector('.modalidad').textContent = formatModalidad(data.modalidad);
+    else
+      document.querySelector('.modalidad').closest('li')?.remove();
+
+    // Renta
+    if (data.renta_salarial?.desde && data.renta_salarial?.hasta) {
+      document.querySelector('.renta').textContent =
+        `$${formatNum(data.renta_salarial.desde)} - $${formatNum(data.renta_salarial.hasta)}`;
+    } else if (data.renta_salarial?.desde || data.renta_salarial?.hasta) {
+      const soloUno = data.renta_salarial.desde
+        ? `$${formatNum(data.renta_salarial.desde)}`
+        : `$${formatNum(data.renta_salarial.hasta)}`;
+      document.querySelector('.renta').textContent = soloUno;
+    } else {
+      document.querySelector('.renta').closest('li')?.remove();
+    }
+
+    // Descripción
+    if (data.descripcion_puesto && data.descripcion_puesto.trim() !== '')
+      document.querySelector('.descripcion-puesto').textContent = data.descripcion_puesto;
+    else
+      document.querySelector('.descripcion-puesto').closest('section, div, li')?.remove();
+
+    // Listas (solo si tienen contenido real)
+    renderLista(data.responsabilidades?.filter(t => !!t?.trim()), '.responsabilidades-list');
+    renderLista(data.requisitos_minimos?.filter(t => !!t?.trim()), '.requisitos-list');
+    renderLista(data.beneficios?.filter(t => !!t?.trim()), '.beneficios-list');
+    renderLista(data.herramientas_basicas?.filter(t => !!t?.trim()), '.herramientas-list');
+    renderLista(data.preguntas_personalizadas?.filter(t => !!t?.trim()), '.preguntas-list');
+    
     // Token/usuario
     const token = localStorage.getItem('token');
     if (!token) return;

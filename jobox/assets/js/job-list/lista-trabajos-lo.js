@@ -80,11 +80,37 @@ function renderEmpleosPagina(pagina) {
   slice.forEach(oferta => {
     const data = safeParseData(oferta.data);
     const herramientas = (data.herramientas_basicas || data.herramientas || [])
+      .filter(h => !!h?.trim())
       .map(h => `<a><span>${h}</span></a>`)
       .join('');
 
-    const empresa = oferta.empresa?.nombre_fantasia || 'Empresa no disponible';
+    const empresa = oferta.empresa?.nombre_fantasia || 'Empresa';
 
+    // --- Validar campos antes de mostrarlos ---
+    const areaTrabajo = (data.area_trabajo || data.area || '').trim() || null;
+    const modalidad = data.modalidad ? formatModalidad(data.modalidad) : null;
+    const fechaPublicacion = oferta.fecha_publicacion ? diasDesde(oferta.fecha_publicacion) : null;
+    const fechaCierre = oferta.fecha_cierre ? formatFecha(oferta.fecha_cierre) : null;
+    const renta = data.renta_salarial || data.renta;
+    const salario =
+      renta && (renta.desde || renta.hasta)
+        ? formatRango(renta)
+        : null;
+    const region =
+      oferta.empleador?.data?.region && oferta.empleador.data.region.trim() !== ''
+        ? oferta.empleador.data.region
+        : null;
+
+    // --- Construir solo los <li> que tengan valor ---
+    const infoItems = [];
+    if (areaTrabajo) infoItems.push(`<li><i class="fe-briefcase"></i> ${areaTrabajo}</li>`);
+    if (modalidad && modalidad !== 'No especificado') infoItems.push(`<li><i class="fe-check-circle"></i> ${modalidad}</li>`);
+    if (fechaPublicacion) infoItems.push(`<li><i class="fe-clock"></i> ${fechaPublicacion}</li>`);
+    if (fechaCierre && fechaCierre !== 'Sin fecha') infoItems.push(`<li><i class="fas fa-timer"></i> Exp: ${fechaCierre}</li>`);
+    if (salario && salario !== 'No disponible') infoItems.push(`<li><i class="fe-dollar-sign"></i> Salario: ${salario}</li>`);
+    if (region) infoItems.push(`<li><i class="fe-map-pin"></i> ${region}</li>`);
+
+    // --- Render final ---
     contenedor.insertAdjacentHTML('beforeend', `
       <div class="col-lg-12">
         <div class="job-item" onclick="window.location.href='job-single-2.html?id=${oferta.id}'" style="cursor:pointer;">
@@ -94,19 +120,14 @@ function renderEmpleosPagina(pagina) {
           <div class="job-content">
             <div class="job-top">
               <div class="job-title">
-                <h5>${oferta.titulo}</h5>
+                <h5>${oferta.titulo || 'Sin título'}</h5>
                 <span class="job-employer"><i class="far fa-building"></i> ${empresa}</span>
               </div>
             </div>
             <ul class="job-info-list">
-              <li><i class="fe-briefcase"></i> ${data.area_trabajo || data.area || 'Área no especificada'}</li>
-              <li><i class="fe-check-circle"></i> ${formatModalidad(data.modalidad)}</li>
-              <li><i class="fe-clock"></i> ${diasDesde(oferta.fecha_publicacion)}</li>
-              <li><i class="fas fa-timer"></i> Exp: ${formatFecha(oferta.fecha_cierre)}</li>
-              <li><i class="fe-dollar-sign"></i> Salario: ${formatRango(data.renta_salarial || data.renta)}</li>
-              <li><i class="fe-map-pin"></i> ${oferta.empleador?.data?.region || 'Región no disponible'}</li>
+              ${infoItems.join('')}
             </ul>
-            <div class="job-skill">${herramientas}</div>
+            ${herramientas ? `<div class="job-skill">${herramientas}</div>` : ''}
           </div>
         </div>
       </div>
