@@ -324,6 +324,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const BASE_URL_API = window.BASE_URL_API;
   const token = localStorage.getItem("token");
   const container = document.getElementById("candidatos-container");
+  const historialContainer = document.getElementById("tab-semana");
+  const historialTexto = historialContainer.querySelector("p strong");
+
   container.innerHTML = `<p class="text-center text-muted">Cargando avisos de tu empresa...</p>`;
 
   try {
@@ -368,9 +371,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // ordenar del más nuevo al más antiguo
-    ofertas.sort((a,b) => new Date(b.fecha_publicacion) - new Date(a.fecha_publicacion));
+    ofertas.sort((a, b) => new Date(b.fecha_publicacion) - new Date(a.fecha_publicacion));
 
     const hoy = new Date();
+    const expiradosHistorial = [];
+
     container.innerHTML = ofertas
       .map((o) => {
         const inicio = o.fecha_publicacion ? new Date(o.fecha_publicacion) : new Date();
@@ -380,11 +385,22 @@ document.addEventListener("DOMContentLoaded", async () => {
         const termino = new Date(inicio);
         termino.setDate(inicio.getDate() + duracionDias);
         const diasRestantes = Math.ceil((termino - hoy) / (1000 * 60 * 60 * 24));
+        const diasDesdeExpiracion = Math.ceil((hoy - termino) / (1000 * 60 * 60 * 24));
 
         let estadoClass = "badge-active";
         let estadoTexto = "Activo";
-        if (diasRestantes < 0) { estadoClass = "badge-expired"; estadoTexto = "Expirado"; }
-        else if (diasRestantes <= 3) { estadoClass = "badge-warning"; estadoTexto = "Por expirar"; }
+        if (diasRestantes < 0) {
+          estadoClass = "badge-expired";
+          estadoTexto = "Expirado";
+
+          // si expiró hace más de 7 días, se guarda para el historial
+          if (diasDesdeExpiracion > 7) {
+            expiradosHistorial.push(o);
+          }
+        } else if (diasRestantes <= 3) {
+          estadoClass = "badge-warning";
+          estadoTexto = "Por expirar";
+        }
 
         const inicioFmt = inicio.toLocaleDateString("es-CL", { year: "numeric", month: "short", day: "numeric" });
         const terminoFmt = termino.toLocaleDateString("es-CL", { year: "numeric", month: "short", day: "numeric" });
@@ -394,7 +410,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             <div class="d-flex justify-content-between align-items-start mb-2">
               <h5 class="user-profile-card-title">${o.titulo || "Sin título"}</h5>
               <span class="badge-status ${estadoClass}">
-                <i class="…circle-check me-1"></i>${estadoTexto}
+                <i class="far fa-circle-check me-1"></i>${estadoTexto}
               </span>
             </div>
             <ul class="profile-info-list">
@@ -406,7 +422,44 @@ document.addEventListener("DOMContentLoaded", async () => {
       })
       .join("");
 
-    // tabs dinámicos
+    // ===== Historial de publicaciones expiradas hace más de 7 días =====
+    if (expiradosHistorial.length > 0) {
+      historialTexto.textContent = expiradosHistorial.length;
+      const historialHTML = expiradosHistorial
+        .map((o) => {
+          const inicio = new Date(o.fecha_publicacion);
+          let duracionDias = 30;
+          if (o.tipo_aviso === "ESTANDAR" || o.tipo_aviso === "PREMIUM") duracionDias = 60;
+          const termino = new Date(inicio);
+          termino.setDate(inicio.getDate() + duracionDias);
+
+          const inicioFmt = inicio.toLocaleDateString("es-CL", { year: "numeric", month: "short", day: "numeric" });
+          const terminoFmt = termino.toLocaleDateString("es-CL", { year: "numeric", month: "short", day: "numeric" });
+          const diasDesdeExpiracion = Math.ceil((hoy - termino) / (1000 * 60 * 60 * 24));
+
+          return `
+            <div class="user-profile-card mb-2">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <h5 class="user-profile-card-title">${o.titulo || "Sin título"}</h5>
+                <span class="badge-status badge-expired">
+                  <i class="far fa-times-circle me-1"></i>Expirado hace ${diasDesdeExpiracion} días
+                </span>
+              </div>
+              <ul class="profile-info-list">
+                <li><i class="far fa-calendar-alt me-1"></i><strong>Inicio:</strong> ${inicioFmt}</li>
+                <li><i class="far fa-calendar me-1"></i><strong>Término:</strong> ${terminoFmt}</li>
+                <li><i class="far fa-star me-1"></i><strong>Tipo:</strong> ${o.tipo_aviso || "-"}</li>
+              </ul>
+            </div>`;
+        })
+        .join("");
+      historialContainer.innerHTML += historialHTML;
+    } else {
+      historialTexto.textContent = "0";
+      historialContainer.innerHTML += `<p class="text-muted">No hay publicaciones expiradas hace más de una semana.</p>`;
+    }
+
+    // tabs dinámicos (igual que antes)
     document.querySelectorAll("#visitasTabs .nav-link").forEach(tab => {
       tab.addEventListener("click", e => {
         e.preventDefault();
