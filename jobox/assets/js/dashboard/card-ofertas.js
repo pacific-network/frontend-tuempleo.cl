@@ -52,74 +52,62 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const hoy = new Date();
 
-    // 🔹 Render dinámico con estructura elegante
-    const cardsHTML = ofertas
-      .map((o) => {
-        const inicio = o.fecha_publicacion ? new Date(o.fecha_publicacion) : new Date();
-        let duracionDias = 30;
-        if (o.tipo_aviso === "ESTANDAR" || o.tipo_aviso === "PREMIUM") duracionDias = 60;
+    const cardsHTML = ofertas.map((o) => {
+      const inicio = o.fecha_publicacion ? new Date(o.fecha_publicacion) : new Date();
+      const cierre = o.fecha_cierre ? new Date(o.fecha_cierre) : null;
+    
+      const inicioFmt = inicio.toLocaleDateString("es-CL", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+      const terminoFmt = cierre
+        ? cierre.toLocaleDateString("es-CL", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })
+        : "-";
+    
+      let estadoClass = "badge-active";
+      let estadoTexto = "Activo";
+      if (!o.es_activa) {
+        estadoClass = "badge-expired";
+        estadoTexto = "Cerrado";
+      } else if (cierre && cierre < new Date()) {
+        estadoClass = "badge-expired";
+        estadoTexto = "Expirado";
+      }
+    
+      const visitas = Number(o.visitsTotal ?? 0);
+    
+      return `
+  <div class="job-card ${estadoClass}">
+    <h5 class="job-card-title">${o.titulo || "Sin título"}</h5>
+    <span class="job-badge ${estadoClass}">
+      <i class="fa-solid fa-circle-check"></i> ${estadoTexto}
+    </span>
+    <div class="info-row">
+      <i class="far fa-calendar-alt"></i>
+      <strong>Publicado:</strong> ${inicioFmt}
+    </div>
+    <div class="info-row">
+      <i class="far fa-calendar"></i>
+      <strong>Cierre:</strong> ${terminoFmt}
+    </div>
+    <div class="info-row">
+      <i class="far fa-eye"></i>
+      <strong>Visitas:</strong> <span class="text-primary fw-bold">${visitas}</span>
+    </div>
+    <div class="info-row">
+      <i class="far fa-star"></i>
+      <strong>Tipo:</strong> ${o.tipo_aviso || "-"}
+    </div>
+  </div>
+`;
+    }).join("");
+    
 
-        const termino = new Date(inicio);
-        termino.setDate(inicio.getDate() + duracionDias);
-        const diasRestantes = Math.ceil((termino - hoy) / (1000 * 60 * 60 * 24));
-
-        let estadoClass = "badge-active";
-        let estadoTexto = "Activo";
-        if (diasRestantes < 0) {
-          estadoClass = "badge-expired";
-          estadoTexto = "Expirado";
-        } else if (diasRestantes <= 3) {
-          estadoClass = "badge-warning";
-          estadoTexto = "Por expirar";
-        }
-
-        const inicioFmt = inicio.toLocaleDateString("es-CL", {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-        });
-        const terminoFmt = termino.toLocaleDateString("es-CL", {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-        });
-
-        return `
-          <div class="job-card ${estadoClass}">
-            <div class="job-card-header">
-              <h5 class="job-card-title">${o.titulo || "Sin título"}</h5>
-              <span class="job-badge ${estadoClass}">
-                <i class="fa-solid fa-circle-check"></i> ${estadoTexto}
-              </span>
-            </div>
-            <div class="job-divider"></div>
-            <div class="job-info">
-              <div class="info-row">
-                <i class="far fa-calendar-alt"></i>
-                <div class="info-text">
-                  <strong>Inicio</strong>
-                  <span>${inicioFmt}</span>
-                </div>
-              </div>
-              <div class="info-row">
-                <i class="far fa-calendar"></i>
-                <div class="info-text">
-                  <strong>Término</strong>
-                  <span>${terminoFmt}</span>
-                </div>
-              </div>
-              <div class="info-row">
-                <i class="far fa-star"></i>
-                <div class="info-text">
-                  <strong>Tipo</strong>
-                  <span>${o.tipo_aviso || "-"}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-      })
-      .join("");
 
     container.innerHTML = `<div class="user-profile-grid">${cardsHTML}</div>`;
 
