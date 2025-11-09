@@ -102,21 +102,25 @@
     const icon = iconForStatus(tx.status);
     const title = titleForStatus(tx.status);
     const line = lineForStatus(tx.status, Number(tx.amount));
-
+  
     return `
-      <div class="user-notification-item fade-in" data-txid="${tx.id}">
-        <div class="user-notification-icon"><i class="${icon}"></i></div>
-        <div class="user-notification-info">
-          <p>${title} ${isNew ? '<span class="badge bg-primary ms-2">nuevo</span>' : ''}</p>
-          <p class="mb-1">${line}</p>
-          <small class="text-muted">OC: <b>${tx.orderId || '-'}</b> · ${when}</small>
+      <div class="notification-card fade-in" data-txid="${tx.id}">
+        <div class="notification-icon"><i class="${icon}"></i></div>
+        <div class="notification-content">
+          <p class="notification-title">
+            ${title}
+            ${isNew ? '<span class="notification-badge">Nuevo</span>' : ''}
+          </p>
+          <p class="notification-text">${line}</p>
+          <p class="notification-meta">OC: <b>${tx.orderId || '-'}</b> · ${when}</p>
         </div>
-        <button class="btn btn-sm btn-outline-danger btn-delete-noti" data-id="${tx.id}" title="Eliminar notificación">
+        <button class="notification-delete" data-id="${tx.id}" title="Eliminar notificación">
           <i class="far fa-trash"></i>
         </button>
       </div>
     `;
   }
+  
 
   // ====== Render total ======
   function renderList() {

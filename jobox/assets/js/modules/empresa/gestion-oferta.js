@@ -52,6 +52,37 @@ let totalPages = 1;
 let totalItemsGlobal = 0;
 let empleador_id = null;
 
+
+let tipoSeleccionado = "";
+
+async function cargarTiposAviso() {
+  try {
+    const res = await fetch(`${BASE_URL_API}/ofertas/empleador/${empleador_id}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    if (!res.ok) throw new Error(`Error HTTP ${res.status}`);
+    const json = await res.json();
+    const ofertas = json.data || json;
+
+    const tipos = [...new Set(ofertas.map(o => o.tipo_aviso))].filter(Boolean);
+    const select = document.getElementById("filterTipo");
+    tipos.forEach(tipo => {
+      const opt = document.createElement("option");
+      opt.value = tipo;
+      opt.textContent = tipo.charAt(0) + tipo.slice(1).toLowerCase();
+      select.appendChild(opt);
+    });
+
+    // Evento de cambio
+    select.addEventListener("change", (e) => {
+      tipoSeleccionado = e.target.value;
+      renderOfertas(1); // Reinicia a la página 1
+    });
+  } catch (err) {
+    console.error("Error al cargar tipos de aviso:", err);
+  }
+}
+
 /* ───── Render tabla ───── */
 async function renderOfertas(page = 1) {
   const token = localStorage.getItem('token');

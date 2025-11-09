@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -18,46 +19,113 @@
   <link rel="stylesheet" href="../assets/css/style.css" />
 
   <style>
-    .tu-plan-grid{display:grid;grid-template-columns:repeat(4,minmax(180px,1fr));gap:12px;margin:8px 0 16px}
-    .tu-card-plan{border:2px solid #e6e8f0;border-radius:12px;padding:14px;background:#fff;cursor:pointer;user-select:none;box-shadow:0 1px 2px rgba(0,0,0,.04);text-align:left}
-    .tu-card-plan.disabled{opacity:.5;pointer-events:none;filter:grayscale(1)}
-    .tu-card-plan.active{border-color:#3C65F5;box-shadow:0 0 0 3px rgba(60,101,245,.2)}
-    .tu-card-title{font-weight:700;margin-bottom:2px}
-    .tu-card-badge{font-size:22px;font-weight:800;margin:4px 0}
-    .tu-card-info{font-size:12px;color:#666}
-    .tu-pill{display:inline-flex;align-items:center;gap:8px;border:1px solid #e6e8f0;border-radius:999px;padding:6px 10px;background:#f8fafc;font-size:13px}
-    .tu-pill strong{font-weight:700}
-    .tu-blocked{opacity:.6;pointer-events:none}
+    .tu-plan-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 8px 0 16px
+    }
+
+    .tu-card-plan {
+      border: 2px solid #e6e8f0;
+      border-radius: 12px;
+      padding: 14px;
+      background: #fff;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+      text-align: left
+    }
+
+    .tu-card-plan.disabled {
+      opacity: .5;
+      pointer-events: none;
+      filter: grayscale(1)
+    }
+
+    .tu-card-plan.active {
+      border-color: #3C65F5;
+      box-shadow: 0 0 0 3px rgba(60, 101, 245, .2)
+    }
+
+    .tu-card-title {
+      font-weight: 700;
+      margin-bottom: 2px
+    }
+
+    .tu-card-badge {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 4px 0
+    }
+
+    .tu-card-info {
+      font-size: 12px;
+      color: #666
+    }
+
+    .tu-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #e6e8f0;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: #f8fafc;
+      font-size: 13px
+    }
+
+    .tu-pill strong {
+      font-weight: 700
+    }
+
+    .tu-blocked {
+      opacity: .6;
+      pointer-events: none
+    }
+
     /* 🔥 Requisito: más grande y en negrita */
-    #no-choice-msg{font-weight:700;font-size:1.05rem}
+    #no-choice-msg {
+      font-weight: 700;
+      font-size: 1.05rem
+    }
+
     /* 🔥 Mejora visual del recuadro de plan elegido */
     #chosen-pill {
-      font-size: 1.05rem;       /* un poco más grande */
-      font-weight: 600;         /* texto seminegrita */
-      padding: 8px 14px;        /* más aire interno */
-      border-width: 2px;        /* borde más marcado */
+      font-size: 1.05rem;
+      /* un poco más grande */
+      font-weight: 600;
+      /* texto seminegrita */
+      padding: 8px 14px;
+      /* más aire interno */
+      border-width: 2px;
+      /* borde más marcado */
     }
-    
+
     #chosen-pill button {
-      font-size: 0.95rem;       /* botón un poquito más grande */
+      font-size: 0.95rem;
+      /* botón un poquito más grande */
       font-weight: 600;
       padding: 4px 10px;
       border-radius: 8px;
     }
-
   </style>
 </head>
 
 <body data-employer-id="" data-empresa-id="">
   <!-- preloader -->
-  <div class="preloader"><div class="loader"><span></span><span></span><span></span></div></div>
+  <div class="preloader">
+    <div class="loader"><span></span><span></span><span></span></div>
+  </div>
 
   <!-- header -->
   <div id="header-placeholder"></div>
 
   <main class="main">
     <div class="site-breadcrumb">
-      <div class="container"><h2 class="breadcrumb-title">Publicar un Trabajo</h2></div>
+      <div class="container">
+        <h2 class="breadcrumb-title">Publicar un Trabajo</h2>
+      </div>
       <div class="hero-shape">
         <img class="hero-shape-1" src="../assets/img/shape/03.svg" alt="">
         <img class="hero-shape-2" src="../assets/img/shape/05.svg" alt="">
@@ -73,7 +141,8 @@
               <div class="user-profile-sidebar-top"></div>
               <ul class="user-profile-sidebar-list">
                 <li><a href="employer-dashboard.html"><i class="far fa-gauge-high"></i> Panel de Control</a></li>
-                <li><a class="active" href="employer-post-job.html"><i class="far fa-paper-plane"></i> Publicar un Trabajo</a></li>
+                <li><a class="active" href="employer-post-job.html"><i class="far fa-paper-plane"></i> Publicar un
+                    Trabajo</a></li>
                 <li><a href="employer-manage-job.html"><i class="far fa-briefcase"></i> Gestionar Avisos</a></li>
                 <li><a href="employer-transaction.html"><i class="far fa-coins"></i> Transacción</a></li>
                 <li><a href="employer-profile.html"><i class="far fa-user-tie"></i> Perfil de Empresa</a></li>
@@ -105,10 +174,12 @@
                       <div id="chosen-pill" class="d-none tu-pill">
                         <span id="chosen-text"></span>
                         <!-- 🔥 Cambiar → Anular (solo visual) -->
-                        <button id="btn-change-choice" type="button" class="btn btn-sm btn-outline-primary">Anular</button>
+                        <button id="btn-change-choice" type="button"
+                          class="btn btn-sm btn-outline-primary">Anular</button>
                       </div>
                       <!-- 🔥 FREE → GRATIS (solo visual) + negrita y más grande por CSS -->
-                      <div id="no-choice-msg" class="text-muted">Debes elegir un aviso (GRATIS o con stock) para poder publicar.</div>
+                      <div id="no-choice-msg" class="text-muted">Debes elegir un aviso (GRATIS o con stock) para poder
+                        publicar.</div>
                     </div>
 
                     <div id="no-cupos-alert" class="alert alert-warning d-none mt-3">
@@ -125,7 +196,8 @@
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="titulo">Título del Trabajo</label>
-                            <input id="titulo" name="titulo" class="form-control" placeholder="Ingrese el título del trabajo" required />
+                            <input id="titulo" name="titulo" class="form-control"
+                              placeholder="Ingrese el título del trabajo" required />
                           </div>
                         </div>
                         <div class="col-md-6">
@@ -138,7 +210,8 @@
                         <div class="col-md-3">
                           <div class="form-group">
                             <label for="anios_experiencia">Años de Experiencia</label>
-                            <input id="anios_experiencia" name="anios_experiencia" class="form-control" placeholder="Ingresa Exp..." />
+                            <input id="anios_experiencia" name="anios_experiencia" class="form-control"
+                              placeholder="Ingresa Exp..." />
                           </div>
                         </div>
                         <div class="col-md-5">
@@ -197,29 +270,34 @@
                         <div class="col-md-12">
                           <div class="form-group">
                             <label for="descripcion">Descripción del puesto</label>
-                            <textarea id="descripcion" name="descripcion_puesto" class="form-control" rows="4" maxlength="500" placeholder="Escribe una descripción del trabajo"></textarea>
-                            <small id="contadorDescripcionPuesto" class="form-text text-muted">0 / 500 caracteres</small>
+                            <textarea id="descripcion" name="descripcion_puesto" class="form-control" rows="4"
+                              maxlength="500" placeholder="Escribe una descripción del trabajo"></textarea>
+                            <small id="contadorDescripcionPuesto" class="form-text text-muted">0 / 500
+                              caracteres</small>
                           </div>
                         </div>
 
                         <div class="col-md-12">
                           <div class="form-group">
                             <label for="responsabilidades">Responsabilidades (una por línea)</label>
-                            <textarea id="responsabilidades" name="responsabilidades" class="form-control" rows="3" placeholder="Ej: Desarrollar interfaces con React&#10;Crear APIs con Node.js"></textarea>
+                            <textarea id="responsabilidades" name="responsabilidades" class="form-control" rows="3"
+                              placeholder="Ej: Desarrollar interfaces con React&#10;Crear APIs con Node.js"></textarea>
                           </div>
                         </div>
 
                         <div class="col-md-12">
                           <div class="form-group">
                             <label for="requisitos">Requisitos mínimos (uno por línea)</label>
-                            <textarea id="requisitos" name="requisitos_minimos" class="form-control" rows="3" placeholder="Ej: 3+ años de experiencia en desarrollo&#10;Conocimiento de metodologías ágiles"></textarea>
+                            <textarea id="requisitos" name="requisitos_minimos" class="form-control" rows="3"
+                              placeholder="Ej: 3+ años de experiencia en desarrollo&#10;Conocimiento de metodologías ágiles"></textarea>
                           </div>
                         </div>
 
                         <div class="col-md-12">
                           <div class="form-group">
                             <label for="beneficios">Beneficios (uno por línea)</label>
-                            <textarea id="beneficios" name="beneficios" class="form-control" rows="3" placeholder="Ej: Modalidad híbrida&#10;Capacitaciones constantes"></textarea>
+                            <textarea id="beneficios" name="beneficios" class="form-control" rows="3"
+                              placeholder="Ej: Modalidad híbrida&#10;Capacitaciones constantes"></textarea>
                           </div>
                         </div>
 
@@ -228,11 +306,13 @@
                             <label class="font-weight-bold d-block mb-2">Renta Salarial</label>
                             <div class="mb-2">
                               <label for="salaryFrom" class="small mb-1">Desde:</label>
-                              <input class="form-control form-control-sm" id="salaryFrom" name="renta_desde" placeholder="Ej: $900.000" />
+                              <input class="form-control form-control-sm" id="salaryFrom" name="renta_desde"
+                                placeholder="Ej: $900.000" />
                             </div>
                             <div class="mb-2">
                               <label for="salaryTo" class="small mb-1">Hasta:</label>
-                              <input class="form-control form-control-sm" id="salaryTo" name="renta_hasta" placeholder="Ej: $1.200.000" />
+                              <input class="form-control form-control-sm" id="salaryTo" name="renta_hasta"
+                                placeholder="Ej: $1.200.000" />
                             </div>
                             <small class="text-muted">De acuerdo al mercado</small>
                           </div>
@@ -242,7 +322,8 @@
                           <div class="form-group border p-3 rounded shadow-sm">
                             <label>Herramientas básicas</label>
                             <div id="checkbox-container" class="row"></div>
-                            <input id="otras_herramientas" name="otras_herramientas" class="form-control mt-2" placeholder="Escribe otras herramientas separadas por coma" />
+                            <input id="otras_herramientas" name="otras_herramientas" class="form-control mt-2"
+                              placeholder="Escribe otras herramientas separadas por coma" />
                           </div>
                         </div>
 
@@ -250,7 +331,8 @@
                           <div class="form-group">
                             <label for="preguntas">Preguntas personalizadas (máximo 5)</label>
                             <div id="preguntas-container"></div>
-                            <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="agregar-pregunta">+ Agregar pregunta</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="agregar-pregunta">+
+                              Agregar pregunta</button>
                           </div>
                         </div>
 
@@ -273,22 +355,22 @@
       </div>
     </div>
     <div class="modal fade" id="logoutModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">¿Cerrar sesión?</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                    </div>
-                    <div class="modal-body">
-                        ¿Estás seguro de que deseas cerrar sesión?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar Sesión</button>
-                    </div>
-                </div>
-            </div>
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">¿Cerrar sesión?</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            ¿Estás seguro de que deseas cerrar sesión?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar Sesión</button>
+          </div>
         </div>
+      </div>
+    </div>
 
     <!-- Toast -->
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index:1100;min-width:300px;">
@@ -338,4 +420,5 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="../assets/js/config/token-exp.js"></script>
 </body>
+
 </html>

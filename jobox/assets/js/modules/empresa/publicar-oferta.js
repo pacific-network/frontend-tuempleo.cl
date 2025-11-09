@@ -309,7 +309,10 @@ async function crearOfertaYConsumir(e){
     await Swal.fire({
       icon:"success",
       title:"¡Oferta publicada!",
-      html:`Tu aviso fue publicado correctamente.<br>ID de oferta: <code>${ofertaId}</code>`,
+      html:`Tu aviso fue publicado correctamente.<br>
+<strong>Oferta:</strong> <code>${titulo}</code><br>
+📅 Fecha de publicación: <strong>${fecha_publicacion}</strong>
+`,
       confirmButtonText:"Ir a gestionar aviso",
       showCancelButton:true,
       cancelButtonText:"Seguir aquí"

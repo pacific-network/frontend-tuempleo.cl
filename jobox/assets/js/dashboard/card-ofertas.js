@@ -82,29 +82,30 @@ document.addEventListener("DOMContentLoaded", async () => {
       const visitas = Number(o.visitsTotal ?? 0);
     
       return `
-  <div class="job-card ${estadoClass}">
-    <h5 class="job-card-title">${o.titulo || "Sin título"}</h5>
-    <span class="job-badge ${estadoClass}">
-      <i class="fa-solid fa-circle-check"></i> ${estadoTexto}
-    </span>
-    <div class="info-row">
-      <i class="far fa-calendar-alt"></i>
-      <strong>Publicado:</strong> ${inicioFmt}
-    </div>
-    <div class="info-row">
-      <i class="far fa-calendar"></i>
-      <strong>Cierre:</strong> ${terminoFmt}
-    </div>
-    <div class="info-row">
-      <i class="far fa-eye"></i>
-      <strong>Visitas:</strong> <span class="text-primary fw-bold">${visitas}</span>
-    </div>
-    <div class="info-row">
-      <i class="far fa-star"></i>
-      <strong>Tipo:</strong> ${o.tipo_aviso || "-"}
-    </div>
-  </div>
-`;
+      <div class="job-card">
+        <h5 class="job-card-title">${o.titulo || "Sin título"}</h5>
+        <span class="job-badge ${estadoClass}">
+          <i class="fa-solid fa-circle-check"></i> ${estadoTexto}
+        </span>
+        <div class="info-row">
+          <i class="far fa-calendar-alt"></i>
+          <strong>Publicado:</strong> ${inicioFmt}
+        </div>
+        <div class="info-row">
+          <i class="far fa-calendar"></i>
+          <strong>Cierre:</strong> ${terminoFmt}
+        </div>
+        <div class="info-row">
+          <i class="far fa-eye"></i>
+          <strong>Visitas:</strong>
+          <span class="text-primary fw-bold">${visitas}</span>
+        </div>
+        <div class="info-row">
+          <i class="far fa-star"></i>
+          <strong>Tipo:</strong> ${o.tipo_aviso || "-"}
+        </div>
+      </div>
+    `;
     }).join("");
     
 
