@@ -102,24 +102,25 @@
     const icon = iconForStatus(tx.status);
     const title = titleForStatus(tx.status);
     const line = lineForStatus(tx.status, Number(tx.amount));
+    const comprobanteUrl = `http://127.0.0.1:5501/jobox/empresas/employer-transaction.html?order=${encodeURIComponent(tx.orderId || "")}`;
   
     return `
-      <div class="notification-card fade-in" data-txid="${tx.id}">
-        <div class="notification-icon"><i class="${icon}"></i></div>
-        <div class="notification-content">
-          <p class="notification-title">
-            ${title}
-            ${isNew ? '<span class="notification-badge">Nuevo</span>' : ''}
-          </p>
-          <p class="notification-text">${line}</p>
-          <p class="notification-meta">OC: <b>${tx.orderId || '-'}</b> · ${when}</p>
-        </div>
-        <button class="notification-delete" data-id="${tx.id}" title="Eliminar notificación">
-          <i class="far fa-trash"></i>
-        </button>
+    <div class="notification-card fade-in clickable" data-txid="${tx.id}" data-url="${comprobanteUrl}">
+      <div class="notification-icon"><i class="${icon}"></i></div>
+      <div class="notification-content">
+        <p class="notification-title">
+          ${title}
+          ${isNew ? '<span class="notification-badge">Nuevo</span>' : ''}
+        </p>
+        <p class="notification-text">${line}</p>
+        <p class="notification-meta">OC: <b>${tx.orderId || '-'}</b> · ${when}</p>
       </div>
-    `;
-  }
+      <button class="notification-delete" data-id="${tx.id}" title="Eliminar notificación">
+        <i class="far fa-trash"></i>
+      </button>
+    </div>
+  `;
+}
   
 
   // ====== Render total ======
@@ -148,6 +149,7 @@
     listEl.innerHTML = html + renderPagination(totalPages);
     attachDeleteListeners();
     attachPaginationListeners(totalPages);
+    attachClickListeners();
     updateCount();
   }
 
@@ -188,7 +190,7 @@
 
   // ====== Eliminar evento ======
   function attachDeleteListeners() {
-    listEl.querySelectorAll(".btn-delete-noti").forEach((btn) => {
+    listEl.querySelectorAll(".notification-delete").forEach((btn) => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
         const id = btn.dataset.id;
@@ -196,6 +198,23 @@
       });
     });
   }
+
+  function attachClickListeners() {
+    listEl.querySelectorAll(".notification-card.clickable").forEach((card) => {
+      card.addEventListener("click", (e) => {
+        // evita conflicto con el botón eliminar
+        if (e.target.closest(".notification-delete")) return;
+  
+        const url = card.dataset.url;
+        if (url) {
+          // redirige al comprobante con el parámetro orderId
+          window.location.href = url;
+        }
+      });
+    });
+  }
+  
+  
 
   // ====== Contador ======
   function updateCount() {
