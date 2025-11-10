@@ -143,6 +143,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
+    // ===============================
+  // REGISTRAR VISITA (solo candidatos / anónimos)
+  // ===============================
+  async function registrarVisitaSiCorresponde(ofertaId) {
+    const token = localStorage.getItem('token');
+    const headers = { 'Content-Type': 'application/json' };
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    try {
+      const res = await fetch(`${BASE_URL_API}/ofertas/${ofertaId}/visit`, {
+        method: 'POST',
+        headers,
+      });
+      const data = await res.json();
+      console.log('👁️ Resultado de registrar visita:', data);
+    } catch (err) {
+      console.error('❌ Error al registrar visita:', err);
+    }
+  }
+
+  registrarVisitaSiCorresponde(idOferta);
+
   try {
     // Obtener oferta
     const response = await fetch(`${BASE_URL_API}/ofertas/${idOferta}`);
@@ -168,6 +190,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Datos oferta en DOM
     document.title = `${oferta.titulo} - ${oferta.empresa.nombre_fantasia}`;
     document.querySelector('h4.mb-4').textContent = oferta.titulo || '';
+    
 
     const infoEmpresa = document.querySelector('.job-single-employer-info');
     if (infoEmpresa) {
