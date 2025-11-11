@@ -82,52 +82,74 @@ function setAsterisk(fieldId, show){
   star.style.display = show ? "inline" : "none";
 }
 
+
 /* ====== FORMULARIO ====== */
-function collectOfferForm(){
+function collectOfferForm() {
   const fd = new FormData($("#formulario-publicar"));
-  const titulo = String(fd.get("titulo")||"Aviso").slice(0,255);
-  const area_trabajo = String(fd.get("area_cargo")||"");
-  const anios_experiencia = String(fd.get("anios_experiencia")||"");
-  const region = String(fd.get("region")||"");
-  const comuna = String(fd.get("comuna")||"");
-  const tipo_contrato = String(fd.get("tipo_contrato")||"");
-  const educacion_requerida = String(fd.get("educacion_requerida")||"");
-  const modalidad_val  = String(fd.get("modalidad") || "");
-  const modalidad_text = getModalidadLabel(modalidad_val);
-  const descripcion_puesto = String(fd.get("descripcion_puesto")||"");
-  const responsabilidades  = splitLines(fd.get("responsabilidades"));
-  const requisitos_minimos = splitLines(fd.get("requisitos_minimos"));
-  const beneficios         = splitLines(fd.get("beneficios"));
-  const renta_desde = Number(String(fd.get("renta_desde")||"").replace(/[^0-9]/g,"")) || null;
-  const renta_hasta = Number(String(fd.get("renta_hasta")||"").replace(/[^0-9]/g,"")) || null;
-  const marcadas = Array.from(document.querySelectorAll('#checkbox-container input[type="checkbox"]:checked')).map(x=>x.value);
-  const otras = String(fd.get("otras_herramientas")||"").split(",").map(s=>s.trim()).filter(Boolean);
-  const herramientas = [...marcadas, ...otras].filter(Boolean);
-  const preguntasInputs = document.querySelectorAll('#preguntas-container input[name^="pregunta_"]');
-  const preguntas_personalizadas = Array.from(preguntasInputs).map(i=>i.value.trim()).filter(Boolean);
+  const titulo = String(fd.get("titulo") || "Aviso").slice(0, 255);
+
+  // 🧩 usar los mismos nombres del form (con prefijo data.)
+  const area_trabajo = String(fd.get("data.area_trabajo") || "");
+  const nivel_experiencia = String(fd.get("data.nivel_experiencia") || "");
+  const anios_experiencia = Number(fd.get("data.anios_experiencia") || 0) || null;
+  const direccion_trabajo = String(fd.get("data.direccion_trabajo") || "");
+  const region = String(fd.get("data.region") || "");
+  const tipo_contrato = String(fd.get("data.tipo_contrato") || "");
+  const educacion_requerida = String(fd.get("data.educacion_requerida") || "");
+  const modalidad_val = String(fd.get("data.modalidad") || "");
+  const descripcion_puesto = String(fd.get("data.descripcion_puesto") || "");
+  const responsabilidades = splitLines(fd.get("data.responsabilidades"));
+  const requisitos_minimos = splitLines(fd.get("data.requisitos_minimos"));
+  const beneficios = splitLines(fd.get("data.beneficios"));
+
+  // 💰 Renta Salarial
+  const renta_desde = Number(String(fd.get("renta_desde") || "").replace(/[^0-9]/g, "")) || null;
+  const renta_hasta = Number(String(fd.get("renta_hasta") || "").replace(/[^0-9]/g, "")) || null;
+  const de_acuerdo_al_mercado = !!fd.get("renta_de_mercado");
+
+  // ♿ Accesibilidad
+  const acepta_discapacitados = !!fd.get("acepta_discapacitados");
+
+  // 🧰 Herramientas básicas (usa texto del label)
+  const herramientas_basicas = Array.from(document.querySelectorAll(".tools-section input[type='checkbox']:checked"))
+    .map(el => el.parentElement.textContent.trim())
+    .filter(Boolean);
+
+  // ❓ Preguntas personalizadas
+  const preguntas_personalizadas = Array.from(
+    document.querySelectorAll('#preguntas-container input[name^="pregunta_"]')
+  )
+    .map(i => i.value.trim())
+    .filter(Boolean);
 
   return {
     titulo,
     dataObj: {
-      titulo,
       area_trabajo,
+      nivel_experiencia,
       anios_experiencia,
+      direccion_trabajo,
       region,
-      comuna,
-      tipo_contrato,
       educacion_requerida,
+      tipo_contrato,
       modalidad: modalidad_val,
-      modalidad_text,
       descripcion_puesto,
       responsabilidades,
       requisitos_minimos,
       beneficios,
-      renta_salarial: { desde: renta_desde, hasta: renta_hasta, de_acuerdo_al_mercado: true },
-      herramientas_basicas: herramientas,
+      acepta_discapacitados,
+      renta_salarial: {
+        desde: renta_desde,
+        hasta: renta_hasta,
+        de_acuerdo_al_mercado,
+      },
+      herramientas_basicas,
       preguntas_personalizadas,
-    }
+    },
   };
 }
+
+
 
 /* ====== STOCK ====== */
 let STOCK = { BASICO:0, ESTANDAR:0, PREMIUM:0 };
@@ -287,18 +309,18 @@ async function crearOfertaYConsumir(e){
   const token=getAnyToken();
   const headers={ "Content-Type":"application/json" };
   if(token) headers.Authorization=`Bearer ${token}`;
-
-  const payload={
+  const payload = {
     titulo,
-    empresa_id:empleadorCtx.empresaId,
-    empleador_id:empleadorCtx.employerId,
+    empresa_id: empleadorCtx.empresaId,
+    empleador_id: empleadorCtx.employerId,
     fecha_publicacion,
-    duracion_publicacion:30,
-    es_activa:true,
+    duracion_publicacion: 30,
+    es_activa: true,
     fecha_cierre,
-    tipo_aviso:selection.planKey==="FREE"?"GRATIS":selection.planKey,
-    data:JSON.stringify(dataObj)
+    tipo_aviso: selection.planKey === "FREE" ? "GRATIS" : selection.planKey,
+    data: dataObj // ✅ Envía el objeto anidado directamente
   };
+  
 
   try{
     const r=await fetch(OFERTAS_URL,{method:"POST",headers,body:JSON.stringify(payload)});

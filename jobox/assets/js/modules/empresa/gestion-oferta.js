@@ -90,7 +90,7 @@ async function renderOfertas(page = 1) {
   tbody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-muted">Cargando ofertas...</td></tr>`;
 
   try {
-    const res = await fetch(`${BASE_URL_API}/ofertas/empleador/${empleador_id}?page=${page}&take=${itemsPerPage}&order=DESC`, {
+    const res = await fetch(`${BASE_URL_API}/ofertas/empleador/${empleador_id}?page=${page}&take=${itemsPerPage}&order=ASC`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) throw new Error(`Error HTTP ${res.status}`);

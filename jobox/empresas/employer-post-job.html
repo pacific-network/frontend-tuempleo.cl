@@ -109,6 +109,133 @@
       padding: 4px 10px;
       border-radius: 8px;
     }
+
+    /* ======================================================
+📄 Estilos específicos: Formulario Publicar Trabajo
+Autor: Paulo Ramirez
+====================================================== */
+
+    /* === Estructura general === */
+    #formulario-publicar {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px 28px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+      margin-top: 20px;
+    }
+
+    /* === Títulos === */
+    #formulario-publicar label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #05264e;
+      margin-bottom: 6px;
+    }
+
+    /* === Inputs y selects === */
+    #formulario-publicar .form-control,
+    #formulario-publicar select {
+      border-radius: 8px;
+      border: 1px solid #e5e9f2;
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+
+    #formulario-publicar .form-control:focus,
+    #formulario-publicar select:focus {
+      border-color: #3c65f5;
+      box-shadow: 0 0 0 0.15rem rgba(60, 101, 245, 0.15);
+    }
+
+    /* === Textarea === */
+    #formulario-publicar textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    /* === Secciones especiales === */
+    #formulario-publicar .form-section {
+      border: 1px solid #e6eaf3;
+      border-radius: 10px;
+      background: #f9fafc;
+      padding: 16px 18px;
+      margin-bottom: 20px;
+    }
+
+    /* === Sección Salario + Accesibilidad + Herramientas === */
+    .salary-accessibility {
+      display: grid;
+      grid-template-columns: 2fr 1.2fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .salary-accessibility .card,
+    .salary-accessibility .form-group {
+      background: #fff;
+      border: 1px solid #e5e9f2;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+
+    .salary-accessibility label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #0b1437;
+    }
+
+    .salary-accessibility input[type="text"],
+    .salary-accessibility input[type="number"] {
+      width: 100%;
+      border: 1px solid #d8dee9;
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 0.9rem;
+    }
+
+    .salary-accessibility small {
+      color: #6b7280;
+      font-size: 0.8rem;
+    }
+
+    /* === Bloque de herramientas === */
+    .tools-section {
+      background: #fff;
+      border: 1px solid #e5e9f2;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+
+    .tools-section label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #0b1437;
+    }
+
+    .tools-section .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px 18px;
+      margin-top: 12px;
+    }
+
+    .tools-section input[type="checkbox"] {
+      accent-color: #3c65f5;
+      margin-right: 6px;
+    }
+
+    @media (max-width: 768px) {
+      .salary-accessibility {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    #formulario-publicar {
+      padding: 18px;
+    }
   </style>
 </head>
 
@@ -200,32 +327,60 @@
                               placeholder="Ingrese el título del trabajo" required />
                           </div>
                         </div>
+
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="area_cargo_select">Área del Trabajo</label>
-                            <select class="form-control" name="area_cargo" id="area_cargo_select"></select>
+                            <select class="form-control" name="data.area_trabajo" id="area_cargo_select"></select>
                           </div>
                         </div>
 
+                        <!-- 🆕 Nivel de experiencia -->
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="nivel_experiencia">Nivel de Experiencia</label>
+                            <select id="nivel_experiencia" name="data.nivel_experiencia" class="form-control">
+                              <option value="">-- Seleccione Nivel --</option>
+                              <option value="sin_experiencia">Sin experiencia</option>
+                              <option value="junior">Junior</option>
+                              <option value="semi_senior">Semi Senior</option>
+                              <option value="senior">Senior</option>
+                              <option value="experto">Experto</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <!-- Años de experiencia (opcional) -->
                         <div class="col-md-3">
                           <div class="form-group">
                             <label for="anios_experiencia">Años de Experiencia</label>
-                            <input id="anios_experiencia" name="anios_experiencia" class="form-control"
+                            <input id="anios_experiencia" name="data.anios_experiencia" class="form-control"
                               placeholder="Ingresa Exp..." />
                           </div>
                         </div>
+
+                        <!-- 🆕 Dirección del trabajo -->
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="direccion_trabajo">Dirección del Trabajo (opcional)</label>
+                            <input id="direccion_trabajo" name="data.direccion_trabajo" class="form-control"
+                              placeholder="Ej: Av. Providencia 1234" />
+                          </div>
+                        </div>
+
                         <div class="col-md-5">
                           <div class="form-group">
                             <label for="region-select">Región</label>
-                            <select id="region-select" name="region" class="form-control">
+                            <select id="region-select" name="data.region" class="form-control">
                               <option value="">-- Seleccione una región --</option>
                             </select>
                           </div>
                         </div>
+
                         <div class="col-md-4">
                           <div class="form-group">
                             <label for="educacion_requerida">Educación Requerida</label>
-                            <select id="educacion_requerida" name="educacion_requerida" class="form-control">
+                            <select id="educacion_requerida" name="data.educacion_requerida" class="form-control">
                               <option value="">-- Selecciona Educación --</option>
                               <option value="primario">Primario</option>
                               <option value="secundario">Secundario</option>
@@ -241,14 +396,14 @@
                         <div class="col-md-5">
                           <div class="form-group">
                             <label for="tipo_contrato">Tipo de Contratación</label>
-                            <select id="tipo_contrato" name="tipo_contrato" class="form-control">
+                            <select id="tipo_contrato" name="data.tipo_contrato" class="form-control">
                               <option value="">-- Seleccione tipo Contrato --</option>
                               <option value="plazo_fijo">Plazo Fijo</option>
-                              <option value="Indefinido">Indefinido</option>
-                              <option value="Temporal">Temporal</option>
-                              <option value="otro_contrato">Otro tipo de Contrato</option>
-                              <option value="Reemplazo">Reemplazo</option>
-                              <option value="Práctica">Práctica</option>
+                              <option value="indefinido">Indefinido</option>
+                              <option value="temporal">Temporal</option>
+                              <option value="reemplazo">Reemplazo</option>
+                              <option value="practica">Práctica</option>
+                              <option value="otro_tipo_de_contrato">Otro</option>
                             </select>
                           </div>
                         </div>
@@ -256,13 +411,11 @@
                         <div class="col-md-5">
                           <div class="form-group">
                             <label for="modalidad">Modalidad</label>
-                            <select id="modalidad" name="modalidad" class="form-control">
+                            <select id="modalidad" name="data.modalidad" class="form-control">
                               <option value="">-- Seleccione Modalidad --</option>
-                              <option value="1">Full Time</option>
-                              <option value="2">Part Time</option>
-                              <option value="3">Remoto</option>
-                              <option value="4">Freelancer</option>
-                              <option value="5">Temporal</option>
+                              <option value="presencial">Presencial</option>
+                              <option value="remoto">Remoto</option>
+                              <option value="hibrido">Híbrido</option>
                             </select>
                           </div>
                         </div>
@@ -270,7 +423,7 @@
                         <div class="col-md-12">
                           <div class="form-group">
                             <label for="descripcion">Descripción del puesto</label>
-                            <textarea id="descripcion" name="descripcion_puesto" class="form-control" rows="4"
+                            <textarea id="descripcion" name="data.descripcion_puesto" class="form-control" rows="4"
                               maxlength="500" placeholder="Escribe una descripción del trabajo"></textarea>
                             <small id="contadorDescripcionPuesto" class="form-text text-muted">0 / 500
                               caracteres</small>
@@ -280,7 +433,7 @@
                         <div class="col-md-12">
                           <div class="form-group">
                             <label for="responsabilidades">Responsabilidades (una por línea)</label>
-                            <textarea id="responsabilidades" name="responsabilidades" class="form-control" rows="3"
+                            <textarea id="responsabilidades" name="data.responsabilidades" class="form-control" rows="3"
                               placeholder="Ej: Desarrollar interfaces con React&#10;Crear APIs con Node.js"></textarea>
                           </div>
                         </div>
@@ -288,7 +441,7 @@
                         <div class="col-md-12">
                           <div class="form-group">
                             <label for="requisitos">Requisitos mínimos (uno por línea)</label>
-                            <textarea id="requisitos" name="requisitos_minimos" class="form-control" rows="3"
+                            <textarea id="requisitos" name="data.requisitos_minimos" class="form-control" rows="3"
                               placeholder="Ej: 3+ años de experiencia en desarrollo&#10;Conocimiento de metodologías ágiles"></textarea>
                           </div>
                         </div>
@@ -296,43 +449,70 @@
                         <div class="col-md-12">
                           <div class="form-group">
                             <label for="beneficios">Beneficios (uno por línea)</label>
-                            <textarea id="beneficios" name="beneficios" class="form-control" rows="3"
+                            <textarea id="beneficios" name="data.beneficios" class="form-control" rows="3"
                               placeholder="Ej: Modalidad híbrida&#10;Capacitaciones constantes"></textarea>
                           </div>
                         </div>
 
-                        <div class="col-md-4">
-                          <div class="form-group border p-3 rounded shadow-sm">
-                            <label class="font-weight-bold d-block mb-2">Renta Salarial</label>
+                        <!-- ✅ Bloque de Renta Salarial -->
+                        <div class="form-section salary-accessibility">
+                          <!-- 💰 Renta Salarial -->
+                          <div class="card">
+                            <label class="d-block mb-2">Renta Salarial</label>
                             <div class="mb-2">
-                              <label for="salaryFrom" class="small mb-1">Desde:</label>
+                              <label class="small fw-semibold">Desde:</label>
                               <input class="form-control form-control-sm" id="salaryFrom" name="renta_desde"
                                 placeholder="Ej: $900.000" />
                             </div>
                             <div class="mb-2">
-                              <label for="salaryTo" class="small mb-1">Hasta:</label>
+                              <label class="small fw-semibold">Hasta:</label>
                               <input class="form-control form-control-sm" id="salaryTo" name="renta_hasta"
                                 placeholder="Ej: $1.200.000" />
                             </div>
-                            <small class="text-muted">De acuerdo al mercado</small>
+                            <div class="form-check mt-2">
+                              <input class="form-check-input" type="checkbox" id="acuerdoMercado"
+                                name="renta_de_mercado" />
+                              <label class="form-check-label small" for="acuerdoMercado">De acuerdo al mercado</label>
+                            </div>
+                          </div>
+
+                          <!-- ♿ Accesibilidad -->
+                          <div class="card">
+                            <label class="d-block mb-2">Accesibilidad</label>
+                            <div class="form-check mt-2">
+                              <input class="form-check-input" type="checkbox" id="accesibilidad"
+                                name="acepta_discapacitados" />
+                              <label class="form-check-label small" for="accesibilidad">Acepta personas con
+                                discapacidad</label>
+                            </div>
                           </div>
                         </div>
 
-                        <div class="col-md-8">
-                          <div class="form-group border p-3 rounded shadow-sm">
-                            <label>Herramientas básicas</label>
-                            <div id="checkbox-container" class="row"></div>
-                            <input id="otras_herramientas" name="otras_herramientas" class="form-control mt-2"
-                              placeholder="Escribe otras herramientas separadas por coma" />
+                        <!-- 🧰 Herramientas -->
+                        <div class="form-section tools-section">
+                          <label class="d-block mb-2">Herramientas básicas</label>
+                          <div class="tool-grid">
+                            <label><input type="checkbox" /> Excel</label>
+                            <label><input type="checkbox" /> Word</label>
+                            <label><input type="checkbox" /> PowerPoint</label>
+                            <label><input type="checkbox" /> Correo electrónico</label>
+                            <label><input type="checkbox" /> Navegador Web</label>
+                            <label><input type="checkbox" /> Impresora</label>
+                            <label><input type="checkbox" /> Google Drive</label>
+                            <label><input type="checkbox" /> Trello</label>
+                            <label><input type="checkbox" /> Zoom</label>
+                            <label><input type="checkbox" /> Canva</label>
                           </div>
                         </div>
+
 
                         <div class="col-md-12">
                           <div class="form-group">
                             <label for="preguntas">Preguntas personalizadas (máximo 5)</label>
                             <div id="preguntas-container"></div>
-                            <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="agregar-pregunta">+
-                              Agregar pregunta</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="agregar-pregunta">
+                              + Agregar pregunta
+                            </button>
                           </div>
                         </div>
 
@@ -345,6 +525,7 @@
                         </div>
                       </div>
                     </form>
+
                   </div>
                 </div>
 
