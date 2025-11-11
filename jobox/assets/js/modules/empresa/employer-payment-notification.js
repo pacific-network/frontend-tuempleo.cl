@@ -1,8 +1,8 @@
 (function () {
   // ====== Configuración General ======
   const CONFIG = {
-    listId: "notificationsList",
-    countId: "notificationsCount",
+    listId: "notificationsListPay", // 👈 ID actualizado
+    countId: "notificationsCountPay", // 👈 ID actualizado
     refreshMs: 120000,
     pageSize: 5,
     storageKeyLastSeen: "tx_notif_last_seen",
@@ -13,7 +13,6 @@
   const token = localStorage.getItem("token") || sessionStorage.getItem("token") || "";
   const AUTH = token ? { Authorization: `Bearer ${token}` } : {};
 
-  // ====== Helpers DOM ======
   const $id = (id) => document.getElementById(id);
   const listEl = $id(CONFIG.listId);
   const countEl = $id(CONFIG.countId);
@@ -97,15 +96,14 @@
   }
 
   // ====== Render individual ======
-  function renderItem(tx, isNew) {
-    const when = timeAgo(tx.createdAt);
-    const icon = iconForStatus(tx.status);
-    const title = titleForStatus(tx.status);
-    const line = lineForStatus(tx.status, Number(tx.amount));
-    const comprobanteUrl = `http://127.0.0.1:5501/jobox/empresas/employer-transaction.html?order=${encodeURIComponent(tx.orderId || "")}`;
-  
-    return `
-    <div class="notification-card fade-in clickable" data-txid="${tx.id}" data-url="${comprobanteUrl}">
+function renderItem(tx, isNew) {
+  const when = timeAgo(tx.createdAt);
+  const icon = iconForStatus(tx.status);
+  const title = titleForStatus(tx.status);
+  const line = lineForStatus(tx.status, Number(tx.amount));
+
+  return `
+    <div class="notification-card fade-in" data-txid="${tx.id}">
       <div class="notification-icon"><i class="${icon}"></i></div>
       <div class="notification-content">
         <p class="notification-title">
@@ -121,7 +119,7 @@
     </div>
   `;
 }
-  
+
 
   // ====== Render total ======
   function renderList() {
@@ -149,7 +147,6 @@
     listEl.innerHTML = html + renderPagination(totalPages);
     attachDeleteListeners();
     attachPaginationListeners(totalPages);
-    attachClickListeners();
     updateCount();
   }
 
@@ -190,7 +187,7 @@
 
   // ====== Eliminar evento ======
   function attachDeleteListeners() {
-    listEl.querySelectorAll(".notification-delete").forEach((btn) => {
+    listEl.querySelectorAll(".btn-delete-noti").forEach((btn) => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
         const id = btn.dataset.id;
@@ -198,23 +195,6 @@
       });
     });
   }
-
-  function attachClickListeners() {
-    listEl.querySelectorAll(".notification-card.clickable").forEach((card) => {
-      card.addEventListener("click", (e) => {
-        // evita conflicto con el botón eliminar
-        if (e.target.closest(".notification-delete")) return;
-  
-        const url = card.dataset.url;
-        if (url) {
-          // redirige al comprobante con el parámetro orderId
-          window.location.href = url;
-        }
-      });
-    });
-  }
-  
-  
 
   // ====== Contador ======
   function updateCount() {

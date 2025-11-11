@@ -395,11 +395,48 @@
                     </div>
 
                     <div class="tab-pane d-none" id="tab-notificaciones">
+                      <div class="card border-0 shadow-sm mt-2">
+                        <div class="card-header bg-white border-bottom-0 pb-0">
+                          <ul class="nav nav-tabs border-0" id="subNotifTabs">
+                            <li class="nav-item">
+                              <a class="nav-link active" href="#" data-subtab="pagos">
+                                <i class="far fa-credit-card me-1 text-success"></i>
+                                Pagos
+                                <span id="notificationsCountPay" class="badge bg-light text-dark ms-2">0</span>
+                              </a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" href="#" data-subtab="postulaciones">
+                                <i class="far fa-user me-1 text-info"></i>
+                                Postulaciones
+                                <span id="notificationsCountPost" class="badge bg-light text-dark ms-2">0</span>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
 
-                      <div id="notificationsList">
-                        <p><i class="far fa-bell"></i> No tienes notificaciones nuevas.</p>
+                        <div class="card-body p-3">
+                          <!-- Sub-tab: Pagos -->
+                          <div class="subtab-content active" id="subtab-pagos">
+                            <div id="notificationsListPay" class="notification-list">
+                              <p class="text-muted small text-center py-2">
+                                <i class="far fa-inbox"></i> No hay pagos recientes.
+                              </p>
+                            </div>
+                          </div>
+
+                          <!-- Sub-tab: Postulaciones -->
+                          <div class="subtab-content d-none" id="subtab-postulaciones">
+                            <div id="notificationsListPost" class="notification-list">
+                              <p class="text-muted small text-center py-2">
+                                <i class="far fa-inbox"></i> No hay postulaciones nuevas.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
+
                   </div>
                 </div>
               </div>
