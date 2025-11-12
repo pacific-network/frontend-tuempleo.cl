@@ -6,8 +6,8 @@ import { getUserIdFromToken } from "../../utils/decode-jwt.js";
 
 (function () {
   const CONFIG = {
-    listId: "notificationsListPost", // 👈 ID actualizado
-    countId: "notificationsCountPost", // 👈 ID actualizado
+    listId: "notificationsListPost",
+    countId: "notificationsCountPost",
     refreshMs: 120000,
     pageSize: 5,
     storageKeyLastSeen: "postulaciones_last_seen",
@@ -21,18 +21,40 @@ import { getUserIdFromToken } from "../../utils/decode-jwt.js";
   const listEl = document.getElementById(CONFIG.listId);
   const countEl = document.getElementById(CONFIG.countId);
   if (!listEl) return;
+
   // ===== Estado =====
   let postulaciones = [];
   let currentPage = 1;
 
   // ===== Helpers LocalStorage =====
-  const getDeletedIds = () => JSON.parse(localStorage.getItem(CONFIG.storageKeyDeleted) || "[]");
-  const setDeletedIds = (ids) => localStorage.setItem(CONFIG.storageKeyDeleted, JSON.stringify(ids));
-  const isDeleted = (id) => getDeletedIds().includes(id);
+  const getDeletedIds = () =>
+    JSON.parse(localStorage.getItem(CONFIG.storageKeyDeleted) || "[]").map(String);
+
+  const setDeletedIds = (ids) =>
+    localStorage.setItem(
+      CONFIG.storageKeyDeleted,
+      JSON.stringify([...new Set(ids.map(String))])
+    );
+
+  const isDeleted = (id) => getDeletedIds().includes(String(id));
+
   const markDeleted = (id) => {
-    const updated = [...new Set([...getDeletedIds(), id])];
-    setDeletedIds(updated);
-    renderList();
+    const card = listEl.querySelector(`[data-postid="${id}"]`);
+    if (card) {
+      // animación de salida
+      card.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+      card.style.opacity = "0";
+      card.style.transform = "translateX(10px)";
+      setTimeout(() => {
+        const updated = [...new Set([...getDeletedIds(), String(id)])];
+        setDeletedIds(updated);
+        renderList();
+      }, 280);
+    } else {
+      const updated = [...new Set([...getDeletedIds(), String(id)])];
+      setDeletedIds(updated);
+      renderList();
+    }
   };
 
   const getLastSeen = () => localStorage.getItem(CONFIG.storageKeyLastSeen) || "";
@@ -117,7 +139,7 @@ import { getUserIdFromToken } from "../../utils/decode-jwt.js";
   function renderList() {
     const lastSeen = getLastSeen() ? new Date(getLastSeen()).getTime() : 0;
     const deleted = getDeletedIds();
-    const visible = postulaciones.filter((p) => !deleted.includes(p.id));
+    const visible = postulaciones.filter((p) => !deleted.includes(String(p.id)));
 
     const totalPages = Math.ceil(visible.length / CONFIG.pageSize);
     currentPage = Math.min(currentPage, totalPages) || 1;
@@ -203,6 +225,9 @@ import { getUserIdFromToken } from "../../utils/decode-jwt.js";
     if (postulaciones.length) {
       setLastSeen(new Date().toISOString());
       renderList();
+    } else {
+      listEl.innerHTML = `<div class="text-muted small px-3 py-2">No hay postulaciones.</div>`;
+      updateCount();
     }
   }
 

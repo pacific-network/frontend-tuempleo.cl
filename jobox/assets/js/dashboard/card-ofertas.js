@@ -163,42 +163,56 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Cargar página
-  async function loadPage(page = 1) {
-    if (!state.empresaId) return;
+  // Cargar página
+async function loadPage(page = 1) {
+  if (!state.empresaId) return;
 
-    loading("Cargando avisos...");
-    try {
-      const url = new URL(`${BASE_URL_API}/ofertas/empresa/${state.empresaId}`);
-      url.searchParams.set("page", page.toString());
-      url.searchParams.set("take", state.take.toString());
-      url.searchParams.set("order", state.order);
+  loading("Cargando avisos...");
+  try {
+    const url = new URL(`${BASE_URL_API}/ofertas/empresa/${state.empresaId}`);
+    // ⚠️ quitamos los params porque el backend no usa paginación
+    const res = await fetch(url.toString(), {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-      const res = await fetch(url.toString(), {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (!res.ok) {
-        const txt = await res.text();
-        console.error("❌ Error ofertas:", txt);
-        errorMsg("Error al cargar las ofertas.");
-        return;
-      }
-
-      // Esperamos { data: Oferta[], meta: {...} }
-      const payload = await res.json();
-      const ofertas = payload?.data ?? payload; // fallback por si el endpoint retorna array plano
-      const meta = payload?.meta ?? null;
-
-      state.page = meta?.page ?? page;
-      state.meta = meta;
-
-      renderCards(ofertas);
-      renderPagination(meta);
-    } catch (e) {
-      console.error("❌ Error general loadPage:", e);
-      errorMsg(`No se pudieron cargar los avisos (${e.message}).`);
+    if (!res.ok) {
+      const txt = await res.text();
+      console.error("❌ Error ofertas:", txt);
+      errorMsg("Error al cargar las ofertas.");
+      return;
     }
+
+    const payload = await res.json();
+    let ofertas = payload?.data ?? payload;
+
+    // 🔹 Ordenar por fecha de publicación (desc)
+    ofertas = ofertas.sort((a, b) => new Date(b.fecha_publicacion) - new Date(a.fecha_publicacion));
+
+    // Mostrar leyenda
+const infoLabelId = "ultimos-avisos-label";
+let infoLabel = document.getElementById(infoLabelId);
+if (!infoLabel) {
+  infoLabel = document.createElement("p");
+  infoLabel.id = infoLabelId;
+  infoLabel.className = "text-center text-muted small mt-2";
+  cardsContainer.insertAdjacentElement("beforebegin", infoLabel);
+}
+infoLabel.innerHTML = `Mostrando los <strong>últimos 5 avisos publicados</strong>.`;
+
+
+    // 🔹 Mostrar solo los 5 más recientes
+    const ultimas = ofertas.slice(0, 5);
+
+    renderCards(ultimas);
+
+    // 🔹 Quitar paginación
+    paginationContainer.innerHTML = "";
+  } catch (e) {
+    console.error("❌ Error general loadPage:", e);
+    errorMsg(`No se pudieron cargar los avisos (${e.message}).`);
   }
+}
+
 
   // Init
   (async function init() {
