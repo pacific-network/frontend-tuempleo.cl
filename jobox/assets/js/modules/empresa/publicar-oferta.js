@@ -10,6 +10,49 @@ let selection = null;
 const $  = (s, r=document)=>r.querySelector(s);
 const $$ = (s, r=document)=>Array.from(r.querySelectorAll(s));
 
+
+const selectedCustomTools = new Set(); // 🧠 Estado en memoria
+
+const input = document.getElementById("customToolsInput");
+const listContainer = document.getElementById("customToolsList");
+
+input.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    const value = e.target.value.trim();
+    if (value && !selectedCustomTools.has(value.toLowerCase())) {
+      selectedCustomTools.add(value.toLowerCase());
+      renderCustomTools();
+      e.target.value = "";
+    }
+  }
+});
+
+function renderCustomTools() {
+  listContainer.innerHTML = "";
+  selectedCustomTools.forEach((tool) => {
+    const badge = document.createElement("span");
+    badge.className = "badge bg-primary d-flex align-items-center gap-1";
+    badge.innerHTML = `${tool} <i class="fa-solid fa-xmark" style="cursor:pointer;"></i>`;
+    badge.querySelector("i").addEventListener("click", () => {
+      selectedCustomTools.delete(tool);
+      renderCustomTools();
+    });
+    listContainer.appendChild(badge);
+  });
+}
+
+// 🔹 Capturar todas las herramientas antes de enviar el formulario
+function getHerramientasSeleccionadas() {
+  const checks = Array.from(
+    document.querySelectorAll(".tools-section input[type='checkbox']:checked")
+  ).map(el => el.parentElement.textContent.trim());
+
+  const custom = Array.from(selectedCustomTools);
+  return [...new Set([...checks, ...custom])];
+}
+
+
 /* ====== TOKEN Y CONTEXTO ====== */
 function getAnyToken() {
   const keys = ["token","auth_token","authToken","accessToken","jwt","Authorization","authorization"];
@@ -82,52 +125,145 @@ function setAsterisk(fieldId, show){
   star.style.display = show ? "inline" : "none";
 }
 
+const otrasTools = new Set();
+const inputOtras = document.getElementById("customToolsInput");
+const listOtras = document.getElementById("customToolsList");
+
+// ➕ Agregar herramienta con Enter o coma
+if (inputOtras) {
+  inputOtras.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault();
+      const val = e.target.value.trim();
+      if (val && !otrasTools.has(val)) {
+        otrasTools.add(val);
+        renderOtras();
+      }
+      e.target.value = "";
+    }
+  });
+
+  // Guardar también si el usuario hace blur sin presionar Enter
+  inputOtras.addEventListener("blur", () => {
+    const val = inputOtras.value.trim();
+    if (val && !otrasTools.has(val)) {
+      otrasTools.add(val);
+      renderOtras();
+    }
+    inputOtras.value = "";
+  });
+}
+
+// 🧱 Renderizar los chips visualmente
+function renderOtras() {
+  listOtras.innerHTML = "";
+  if (otrasTools.size === 0) {
+    listOtras.innerHTML =
+      `<small class="text-muted">Agrega otras herramientas que manejes</small>`;
+    return;
+  }
+
+  Array.from(otrasTools).forEach((tool) => {
+    const chip = document.createElement("span");
+    chip.className =
+      "badge bg-primary text-light d-inline-flex align-items-center gap-1 px-2 py-1 me-1 mb-1";
+    chip.innerHTML = `${tool} <i class="fa-solid fa-xmark ms-1" style="cursor:pointer; font-size:13px;"></i>`;
+    chip.querySelector("i").addEventListener("click", () => {
+      otrasTools.delete(tool);
+      renderOtras();
+    });
+    listOtras.appendChild(chip);
+  });
+}
+
+// ✅ Captura también lo que el usuario dejó escrito sin confirmar
+function getOtrasHerramientas() {
+  const val = inputOtras?.value.trim();
+  if (val && !otrasTools.has(val)) {
+    otrasTools.add(val);
+    renderOtras();
+  }
+  return Array.from(otrasTools);
+}
+
+
+
 /* ====== FORMULARIO ====== */
-function collectOfferForm(){
+function collectOfferForm() {
   const fd = new FormData($("#formulario-publicar"));
-  const titulo = String(fd.get("titulo")||"Aviso").slice(0,255);
-  const area_trabajo = String(fd.get("area_cargo")||"");
-  const anios_experiencia = String(fd.get("anios_experiencia")||"");
-  const region = String(fd.get("region")||"");
-  const comuna = String(fd.get("comuna")||"");
-  const tipo_contrato = String(fd.get("tipo_contrato")||"");
-  const educacion_requerida = String(fd.get("educacion_requerida")||"");
-  const modalidad_val  = String(fd.get("modalidad") || "");
-  const modalidad_text = getModalidadLabel(modalidad_val);
-  const descripcion_puesto = String(fd.get("descripcion_puesto")||"");
-  const responsabilidades  = splitLines(fd.get("responsabilidades"));
-  const requisitos_minimos = splitLines(fd.get("requisitos_minimos"));
-  const beneficios         = splitLines(fd.get("beneficios"));
-  const renta_desde = Number(String(fd.get("renta_desde")||"").replace(/[^0-9]/g,"")) || null;
-  const renta_hasta = Number(String(fd.get("renta_hasta")||"").replace(/[^0-9]/g,"")) || null;
-  const marcadas = Array.from(document.querySelectorAll('#checkbox-container input[type="checkbox"]:checked')).map(x=>x.value);
-  const otras = String(fd.get("otras_herramientas")||"").split(",").map(s=>s.trim()).filter(Boolean);
-  const herramientas = [...marcadas, ...otras].filter(Boolean);
-  const preguntasInputs = document.querySelectorAll('#preguntas-container input[name^="pregunta_"]');
-  const preguntas_personalizadas = Array.from(preguntasInputs).map(i=>i.value.trim()).filter(Boolean);
+  const titulo = String(fd.get("titulo") || "Aviso").slice(0, 255);
+
+  // 🧩 usar los mismos nombres del form (con prefijo data.)
+  const area_trabajo = String(fd.get("data.area_trabajo") || "");
+  const nivel_experiencia = String(fd.get("data.nivel_experiencia") || "");
+  const anios_experiencia = Number(fd.get("data.anios_experiencia") || 0) || null;
+  const direccion_trabajo = String(fd.get("data.direccion_trabajo") || "");
+  const region = String(fd.get("data.region") || "");
+  const tipo_contrato = String(fd.get("data.tipo_contrato") || "");
+  const educacion_requerida = String(fd.get("data.educacion_requerida") || "");
+  const modalidad_val = String(fd.get("data.modalidad") || "");
+  const descripcion_puesto = String(fd.get("data.descripcion_puesto") || "");
+  const responsabilidades = splitLines(fd.get("data.responsabilidades"));
+  const requisitos_minimos = splitLines(fd.get("data.requisitos_minimos"));
+  const beneficios = splitLines(fd.get("data.beneficios"));
+
+  // 💰 Renta Salarial
+  const renta_desde = Number(String(fd.get("renta_desde") || "").replace(/[^0-9]/g, "")) || null;
+  const renta_hasta = Number(String(fd.get("renta_hasta") || "").replace(/[^0-9]/g, "")) || null;
+  const de_acuerdo_al_mercado = !!fd.get("renta_de_mercado");
+
+  // ♿ Accesibilidad
+  const acepta_discapacitados = !!fd.get("acepta_discapacitados");
+/* ============================================================
+   🧰 Herramientas básicas — checkboxes + input libre + chips (con cache)
+============================================================ */
+// 🧰 Herramientas básicas (checkboxes)
+const herramientas_basicas = Array.from(
+  document.querySelectorAll(".tools-section input[type='checkbox']:checked")
+)
+  .map((el) => el.parentElement.textContent.trim())
+  .filter(Boolean);
+
+  const otras_herramientas = getOtrasHerramientas();
+
+
+
+  // ❓ Preguntas personalizadas
+  const preguntas_personalizadas = Array.from(
+    document.querySelectorAll('#preguntas-container input[name^="pregunta_"]')
+  )
+    .map(i => i.value.trim())
+    .filter(Boolean);
 
   return {
     titulo,
     dataObj: {
-      titulo,
       area_trabajo,
+      nivel_experiencia,
       anios_experiencia,
+      direccion_trabajo,
       region,
-      comuna,
-      tipo_contrato,
       educacion_requerida,
+      tipo_contrato,
       modalidad: modalidad_val,
-      modalidad_text,
       descripcion_puesto,
       responsabilidades,
       requisitos_minimos,
       beneficios,
-      renta_salarial: { desde: renta_desde, hasta: renta_hasta, de_acuerdo_al_mercado: true },
-      herramientas_basicas: herramientas,
+      acepta_discapacitados,
+      renta_salarial: {
+        desde: renta_desde,
+        hasta: renta_hasta,
+        de_acuerdo_al_mercado,
+      },
+      herramientas_basicas,
+      otras_herramientas,
       preguntas_personalizadas,
-    }
+    },
   };
 }
+
+
 
 /* ====== STOCK ====== */
 let STOCK = { BASICO:0, ESTANDAR:0, PREMIUM:0 };
@@ -280,25 +416,34 @@ async function crearOfertaYConsumir(e){
   btn.innerHTML=`<span class="spinner-border spinner-border-sm me-2"></span> Publicando...`;
 
   const { titulo, dataObj }=collectOfferForm();
-  const now=new Date();
-  const fecha_publicacion=now.toISOString();
-  const fecha_cierre=new Date(now.getTime()+30*24*3600*1000).toISOString();
+  const now = new Date();
+  const fecha_publicacion = now.toISOString();
+  const fecha_cierre = new Date(now.getTime() + 30 * 24 * 3600 * 1000).toISOString();
+  
+  const fechaPublicacionFormateada = new Date(fecha_publicacion).toLocaleString("es-CL", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
 
   const token=getAnyToken();
   const headers={ "Content-Type":"application/json" };
   if(token) headers.Authorization=`Bearer ${token}`;
-
-  const payload={
+  const payload = {
     titulo,
-    empresa_id:empleadorCtx.empresaId,
-    empleador_id:empleadorCtx.employerId,
+    empresa_id: empleadorCtx.empresaId,
+    empleador_id: empleadorCtx.employerId,
     fecha_publicacion,
-    duracion_publicacion:30,
-    es_activa:true,
+    duracion_publicacion: 30,
+    es_activa: true,
     fecha_cierre,
-    tipo_aviso:selection.planKey==="FREE"?"GRATIS":selection.planKey,
-    data:JSON.stringify(dataObj)
+    tipo_aviso: selection.planKey === "FREE" ? "GRATIS" : selection.planKey,
+    data: dataObj // ✅ Envía el objeto anidado directamente
   };
+  
 
   try{
     const r=await fetch(OFERTAS_URL,{method:"POST",headers,body:JSON.stringify(payload)});
@@ -309,7 +454,10 @@ async function crearOfertaYConsumir(e){
     await Swal.fire({
       icon:"success",
       title:"¡Oferta publicada!",
-      html:`Tu aviso fue publicado correctamente.<br>ID de oferta: <code>${ofertaId}</code>`,
+      html:`Tu aviso fue publicado correctamente.<br>
+<strong>Oferta:</strong> <code>${titulo}</code><br>
+    📅 <b>Fecha de publicación:</b> ${fechaPublicacionFormateada}
+`,
       confirmButtonText:"Ir a gestionar aviso",
       showCancelButton:true,
       cancelButtonText:"Seguir aquí"

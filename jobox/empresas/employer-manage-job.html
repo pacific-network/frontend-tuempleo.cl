@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,18 +20,37 @@
   <link rel="stylesheet" href="../assets/css/nice-select.min.css">
   <link rel="stylesheet" href="../assets/css/style.css">
   <style>
-    .profile-job-content h6 a{white-space:normal;word-break:break-word;display:inline-block;max-width:27ch;}
-    .profile-job-list li{max-width:27ch;white-space:normal;word-wrap:break-word;overflow-wrap:break-word;}
+    .profile-job-content h6 a {
+      white-space: normal;
+      word-break: break-word;
+      display: inline-block;
+      max-width: 27ch;
+    }
+
+    .profile-job-list li {
+      max-width: 27ch;
+      white-space: normal;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+
+    #ofertas-body {
+      transition: opacity 0.3s ease-in-out;
+    }
   </style>
 </head>
 
 <body data-employer-id="" data-empresa-id="">
-  <div class="preloader"><div class="loader"><span></span><span></span><span></span></div></div>
+  <div class="preloader">
+    <div class="loader"><span></span><span></span><span></span></div>
+  </div>
   <div id="header-placeholder"></div>
 
   <main class="main">
     <div class="site-breadcrumb">
-      <div class="container"><h2 class="breadcrumb-title">Gestionar Avisos</h2></div>
+      <div class="container">
+        <h2 class="breadcrumb-title">Gestionar Avisos</h2>
+      </div>
       <div class="hero-shape">
         <img class="hero-shape-1" src="../assets/img/shape/03.svg" alt="">
         <img class="hero-shape-2" src="../assets/img/shape/05.svg" alt="">
@@ -48,7 +68,8 @@
               <ul class="user-profile-sidebar-list">
                 <li><a href="employer-dashboard.html"><i class="far fa-gauge-high"></i> Panel de Control</a></li>
                 <li><a href="employer-post-job.html"><i class="far fa-paper-plane"></i> Publicar un Trabajo</a></li>
-                <li><a class="active" href="employer-manage-job.html"><i class="far fa-briefcase"></i> Gestionar Avisos</a></li>
+                <li><a class="active" href="employer-manage-job.html"><i class="far fa-briefcase"></i> Gestionar
+                    Avisos</a></li>
                 <li><a href="employer-transaction.html"><i class="far fa-coins"></i> Transacción</a></li>
                 <li><a href="employer-profile.html"><i class="far fa-user-tie"></i> Perfil de Empresa</a></li>
                 <li><a href="employer-settings.html"><i class="far fa-cog"></i> Cambiar Contraseña</a></li>
@@ -69,23 +90,14 @@
               <div class="user-profile-card-header">
                 <h4 class="user-profile-card-title">Gestion de Avisos de Trabajos</h4>
                 <div class="user-profile-card-header-right">
-                  <div class="user-profile-search">
-                    <div class="form-group">
-                      <input type="text" class="form-control" placeholder="Search...">
-                      <i class="far fa-search"></i>
-                    </div>
-                  </div>
-                  <div class="user-profile-sort">
-                    <form action="#">
-                      <div class="form-group">
-                        <select class="select">
-                          <option value="1">Última semana</option>
-                          <option value="2">Último mes</option>
-                          <option value="3">Hace 2 meses</option>
-                        </select>
-                      </div>
-                    </form>
-                  </div>
+                  <select id="filterTipoAviso" class="form-select" style="max-width:180px;">
+                    <option value="">Tipo de Aviso</option>
+                    <option value="">Todos</option>
+                    <option value="BASICO">Básico</option>
+                    <option value="ESTANDAR">Estándar</option>
+                    <option value="PREMIUM">Premium</option>
+                  </select>
+
                 </div>
               </div>
 
@@ -105,13 +117,13 @@
                   </tbody>
                 </table>
               </div>
-                <div class="pagination-area mt-3">
-                  <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center mb-0"></ul>
-                  </nav>
-                </div>
-                <!-- 👇 Opcional (para texto tipo “Mostrando 1–7 de 18 ofertas”) -->
-                <div id="pagination-info" class="text-center text-muted mt-2"></div>
+              <div class="pagination-area mt-3">
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination justify-content-center mb-0"></ul>
+                </nav>
+              </div>
+              <!-- 👇 Opcional (para texto tipo “Mostrando 1–7 de 18 ofertas”) -->
+              <div id="pagination-info" class="text-center text-muted mt-2"></div>
 
             </div>
           </div> <!-- /col -->
@@ -122,27 +134,35 @@
 
   <!-- Modales -->
   <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
-      <div class="modal-header"><h5 class="modal-title" id="deleteConfirmLabel">Confirmar eliminación</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div>
-      <div class="modal-body">¿Estás seguro que deseas eliminar este aviso?</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteConfirmLabel">Confirmar eliminación</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">¿Estás seguro que deseas eliminar este aviso?</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+        </div>
       </div>
-    </div></div>
+    </div>
   </div>
 
   <div class="modal fade" id="logoutModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
-      <div class="modal-header"><h5 class="modal-title">¿Cerrar sesión?</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div>
-      <div class="modal-body">¿Estás seguro de que deseas cerrar sesión?</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar Sesión</button>
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">¿Cerrar sesión?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">¿Estás seguro de que deseas cerrar sesión?</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar Sesión</button>
+        </div>
       </div>
-    </div></div>
+    </div>
   </div>
 
   <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100; min-width: 300px;">
@@ -185,4 +205,5 @@
   <script src="../assets/js/modules/ofertas/publicar-oferta.js" defer></script>
   <script src="../assets/js/config/token-exp.js"></script>
 </body>
+
 </html>

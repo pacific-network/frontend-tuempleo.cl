@@ -1,8 +1,8 @@
 (function () {
   // ====== Configuración General ======
   const CONFIG = {
-    listId: "notificationsList",
-    countId: "notificationsCount",
+    listId: "notificationsListPay",
+    countId: "notificationsCountPay",
     refreshMs: 120000,
     pageSize: 5,
     storageKeyLastSeen: "tx_notif_last_seen",
@@ -13,7 +13,6 @@
   const token = localStorage.getItem("token") || sessionStorage.getItem("token") || "";
   const AUTH = token ? { Authorization: `Bearer ${token}` } : {};
 
-  // ====== Helpers DOM ======
   const $id = (id) => document.getElementById(id);
   const listEl = $id(CONFIG.listId);
   const countEl = $id(CONFIG.countId);
@@ -25,12 +24,20 @@
 
   // ====== Utilidades ======
   function plural(unit, n) {
-    const map = { año: "años", mes: "meses", día: "días", hora: "horas", minuto: "minutos", segundo: "segundos" };
+    const map = {
+      año: "años",
+      mes: "meses",
+      día: "días",
+      hora: "horas",
+      minuto: "minutos",
+      segundo: "segundos",
+    };
     return n === 1 ? unit : map[unit] || `${unit}s`;
   }
 
   function timeAgo(iso) {
     const d = new Date(iso);
+    if (isNaN(d)) return "-";
     const diffSec = (Date.now() - d.getTime()) / 1000;
     const abs = Math.abs(diffSec);
     const units = [
@@ -43,7 +50,8 @@
     ];
     for (const [u, s] of units) {
       const v = Math.floor(abs / s);
-      if (v >= 1) return diffSec >= 0 ? `hace ${v} ${plural(u, v)}` : `en ${v} ${plural(u, v)}`;
+      if (v >= 1)
+        return diffSec >= 0 ? `hace ${v} ${plural(u, v)}` : `en ${v} ${plural(u, v)}`;
     }
     return "justo ahora";
   }
@@ -52,14 +60,32 @@
   const getLastSeen = () => localStorage.getItem(CONFIG.storageKeyLastSeen) || "";
   const setLastSeen = (iso) => localStorage.setItem(CONFIG.storageKeyLastSeen, iso);
 
-  // ====== Eliminaciones virtuales ======
-  const getDeletedIds = () => JSON.parse(localStorage.getItem(CONFIG.storageKeyDeleted) || "[]");
-  const setDeletedIds = (ids) => localStorage.setItem(CONFIG.storageKeyDeleted, JSON.stringify(ids));
-  const isDeleted = (id) => getDeletedIds().includes(id);
+  // ====== Eliminaciones persistentes ======
+  const getDeletedIds = () =>
+    JSON.parse(localStorage.getItem(CONFIG.storageKeyDeleted) || "[]").map(String);
+
+  const setDeletedIds = (ids) =>
+    localStorage.setItem(CONFIG.storageKeyDeleted, JSON.stringify([...new Set(ids.map(String))]));
+
+  const isDeleted = (id) => getDeletedIds().includes(String(id));
+
   const deleteNotification = (id) => {
-    const updated = [...new Set([...getDeletedIds(), id])];
-    setDeletedIds(updated);
-    renderList(); // re-render virtual
+    const card = listEl.querySelector(`[data-txid="${id}"]`);
+    if (card) {
+      // animación salida
+      card.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+      card.style.opacity = "0";
+      card.style.transform = "translateX(10px)";
+      setTimeout(() => {
+        const updated = [...new Set([...getDeletedIds(), String(id)])];
+        setDeletedIds(updated);
+        renderList();
+      }, 280);
+    } else {
+      const updated = [...new Set([...getDeletedIds(), String(id)])];
+      setDeletedIds(updated);
+      renderList();
+    }
   };
 
   // ====== Iconos y textos ======
@@ -69,12 +95,14 @@
     if (s === "PENDING") return "far fa-hourglass text-warning";
     return "far fa-xmark text-danger";
   }
+
   function titleForStatus(status) {
     const s = String(status || "").toUpperCase();
     if (s === "AUTHORIZED") return "Pago aprobado";
     if (s === "PENDING") return "Pago pendiente";
     return "Pago rechazado";
   }
+
   function lineForStatus(status, amountCLP) {
     const s = String(status || "").toUpperCase();
     const amt =
@@ -88,7 +116,7 @@
 
   // ====== Fetch inicial ======
   async function fetchTransactions() {
-    const params = new URLSearchParams({ page: 1, take: 50, order: "DESC" }); // carga todo (hasta 50)
+    const params = new URLSearchParams({ page: 1, take: 50, order: "DESC" });
     const url = `${BASE}/transactions?${params.toString()}`;
     const res = await fetch(url, { headers: { ...AUTH, "Content-Type": "application/json" } });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -104,14 +132,17 @@
     const line = lineForStatus(tx.status, Number(tx.amount));
 
     return `
-      <div class="user-notification-item fade-in" data-txid="${tx.id}">
-        <div class="user-notification-icon"><i class="${icon}"></i></div>
-        <div class="user-notification-info">
-          <p>${title} ${isNew ? '<span class="badge bg-primary ms-2">nuevo</span>' : ''}</p>
-          <p class="mb-1">${line}</p>
-          <small class="text-muted">OC: <b>${tx.orderId || '-'}</b> · ${when}</small>
+      <div class="notification-card fade-in" data-txid="${tx.id}">
+        <div class="notification-icon"><i class="${icon}"></i></div>
+        <div class="notification-content">
+          <p class="notification-title">
+            ${title}
+            ${isNew ? '<span class="notification-badge">Nuevo</span>' : ""}
+          </p>
+          <p class="notification-text">${line}</p>
+          <p class="notification-meta">OC: <b>${tx.orderId || "-"}</b> · ${when}</p>
         </div>
-        <button class="btn btn-sm btn-outline-danger btn-delete-noti" data-id="${tx.id}" title="Eliminar notificación">
+        <button class="notification-delete" data-id="${tx.id}" title="Eliminar notificación">
           <i class="far fa-trash"></i>
         </button>
       </div>
@@ -122,7 +153,7 @@
   function renderList() {
     const lastSeen = getLastSeen() ? new Date(getLastSeen()).getTime() : 0;
     const deleted = getDeletedIds();
-    const visible = transactions.filter((tx) => !deleted.includes(tx.id));
+    const visible = transactions.filter((tx) => !deleted.includes(String(tx.id)));
 
     const totalPages = Math.ceil(visible.length / CONFIG.pageSize);
     currentPage = Math.min(currentPage, totalPages) || 1;
@@ -147,16 +178,20 @@
     updateCount();
   }
 
-  // ====== Paginación virtual ======
+  // ====== Paginación ======
   function renderPagination(totalPages) {
     if (totalPages <= 1) return "";
     return `
       <div class="d-flex justify-content-between align-items-center mt-3">
-        <button class="btn btn-sm btn-outline-secondary prev-page" ${currentPage === 1 ? "disabled" : ""}>
+        <button class="btn btn-sm btn-outline-secondary prev-page" ${
+          currentPage === 1 ? "disabled" : ""
+        }>
           <i class="far fa-angle-left"></i> Anterior
         </button>
         <span class="text-muted small">Página ${currentPage} de ${totalPages}</span>
-        <button class="btn btn-sm btn-outline-secondary next-page" ${currentPage >= totalPages ? "disabled" : ""}>
+        <button class="btn btn-sm btn-outline-secondary next-page" ${
+          currentPage >= totalPages ? "disabled" : ""
+        }>
           Siguiente <i class="far fa-angle-right"></i>
         </button>
       </div>
@@ -184,7 +219,7 @@
 
   // ====== Eliminar evento ======
   function attachDeleteListeners() {
-    listEl.querySelectorAll(".btn-delete-noti").forEach((btn) => {
+    listEl.querySelectorAll(".notification-delete").forEach((btn) => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
         const id = btn.dataset.id;
@@ -197,14 +232,20 @@
   function updateCount() {
     if (!countEl) return;
     const count = transactions.filter((tx) => !isDeleted(tx.id)).length;
-    countEl.textContent = String(count);
+    countEl.textContent = count > 0 ? String(count) : "";
   }
 
   // ====== Refresh ======
   async function paintNotifications() {
-    if (!BASE || !token) throw new Error("Sin BASE_URL_API o token");
+    if (!BASE || !token) return;
     transactions = await fetchTransactions();
-    renderList();
+    if (transactions.length) {
+      setLastSeen(new Date().toISOString());
+      renderList();
+    } else {
+      listEl.innerHTML = `<div class="text-muted small px-3 py-2">No hay notificaciones.</div>`;
+      updateCount();
+    }
   }
 
   let busy = false;

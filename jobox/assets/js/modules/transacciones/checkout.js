@@ -189,59 +189,131 @@ async function getUserIdFromToken() {
 }
 
 // ✅ Función principal para iniciar el pago con Mercado Pago
+// async function iniciarPagoMercadoPago() {
+//   const carrito = getCart();
+//   if (!carrito.length) {
+//     Swal.fire("Carrito vacío", "Agrega productos antes de pagar.", "warning");
+//     return;
+//   }
+
+//   // ⚠️ Aquí había un error: estabas haciendo getItem(token) en lugar de getItem("token")
+//   const token = localStorage.getItem("token");
+//   const userId = await getUserIdFromToken();
+
+//   if (!token || !userId) {
+//     Swal.fire("Sesión requerida", "Inicia sesión para continuar.", "info");
+//     return;
+//   }
+
+//   try {
+//     Swal.fire({
+//       title: "Creando preferencia...",
+//       html: "Conectando con Mercado Pago...",
+//       didOpen: () => Swal.showLoading(),
+//       allowOutsideClick: false,
+//     });
+
+//     const carrito = getCart();
+//     const tipoAviso = normalizarTipoAviso(carrito[0]?.nombre);
+
+// const res = await fetch(`${BASE_URL_API}/mercadopago/preferences`, {
+//   method: "POST",
+//   headers: {
+//     "Content-Type": "application/json",
+//     Authorization: `Bearer ${token}`,
+//   },
+//   body: JSON.stringify({
+//     tipo: tipoAviso,
+//     userId,
+//     items: carrito.map(i => ({
+//       tipoAviso: normalizarTipoAviso(i.nombre),
+//       cantidad: i.cantidad,
+//       precioUnitario: i.precio,
+//       subtotal: i.precio * i.cantidad,
+//     })),
+//   }),
+// });
+
+
+//     const data = await res.json();
+
+//     if (!res.ok || !data.init_point) {
+//       throw new Error(data.message || "Error al crear preferencia de pago.");
+//     }
+
+//     // 🔹 Guardamos carrito temporal para mostrar en el resultado
+//     localStorage.setItem("cart_items", JSON.stringify(carrito));
+
+//     Swal.update({
+//       title: "Redirigiendo a Mercado Pago...",
+//       html: "<p>Abriendo el checkout seguro...</p>",
+//     });
+
+//     // ✅ Redirigir al checkout seguro de Mercado Pago
+//     setTimeout(() => {
+//       window.location.href = data.init_point;
+//     }, 1000);
+//   } catch (err) {
+//     console.error("❌ Error procesando pago:", err);
+//     Swal.fire("Error", err.message || "No se pudo iniciar el pago en Mercado Pago.", "error");
+//   }
+// }
 async function iniciarPagoMercadoPago() {
   const carrito = getCart();
-  if (!carrito.length) {
+
+  if (!carrito || carrito.length === 0) {
     Swal.fire("Carrito vacío", "Agrega productos antes de pagar.", "warning");
     return;
   }
 
-  // ⚠️ Aquí había un error: estabas haciendo getItem(token) en lugar de getItem("token")
-  const token = localStorage.getItem("token");
-  const userId = await getUserIdFromToken();
+  // 🔹 Obtener token JWT y userId desde el localStorage o helper
+  const token = localStorage.getItem("token"); // asegúrate de usar la misma clave que al guardar
+  const userId = await getUserIdFromToken?.(); // opcional si lo usas para otros fines
 
-  if (!token || !userId) {
+  if (!token) {
     Swal.fire("Sesión requerida", "Inicia sesión para continuar.", "info");
     return;
   }
 
   try {
+    // 🧠 Mostrar loader
     Swal.fire({
       title: "Creando preferencia...",
-      html: "Conectando con Mercado Pago...",
-      didOpen: () => Swal.showLoading(),
+      html: "<p>Conectando con Mercado Pago...</p>",
       allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
     });
 
-    const carrito = getCart();
-const tipoAviso = normalizarTipoAviso(carrito[0]?.nombre);
+    // 🔹 Normalizar tipos únicos (máximo uno de cada tipo)
+    const tiposSeleccionados = [
+      ...new Set(carrito.map(i => normalizarTipoAviso(i.nombre)))
+    ];
 
-const res = await fetch(`${BASE_URL_API}/mercadopago/preferences`, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
-  },
-  body: JSON.stringify({
-    tipo: tipoAviso,
-    userId,
-    items: carrito.map(i => ({
-      tipoAviso: normalizarTipoAviso(i.nombre),
-      cantidad: i.cantidad,
-      precioUnitario: i.precio,
-      subtotal: i.precio * i.cantidad,
-    })),
-  }),
-});
+    if (tiposSeleccionados.length === 0) {
+      Swal.close();
+      throw new Error("No se pudo determinar el tipo de aviso en el carrito.");
+    }
 
+    // 🔹 Crear preferencia en el backend
+    const res = await fetch(`${BASE_URL_API}/mercadopago/preferences`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        tipos: tiposSeleccionados, // ✅ ahora el backend recibe un array de tipos
+      }),
+    });
 
     const data = await res.json();
 
     if (!res.ok || !data.init_point) {
+      Swal.close();
       throw new Error(data.message || "Error al crear preferencia de pago.");
     }
 
-    // 🔹 Guardamos carrito temporal para mostrar en el resultado
+    // 🔹 Guardar carrito temporal para mostrar en la página de resultado
     localStorage.setItem("cart_items", JSON.stringify(carrito));
 
     Swal.update({
@@ -249,15 +321,17 @@ const res = await fetch(`${BASE_URL_API}/mercadopago/preferences`, {
       html: "<p>Abriendo el checkout seguro...</p>",
     });
 
-    // ✅ Redirigir al checkout seguro de Mercado Pago
+    // ✅ Redirigir al checkout de Mercado Pago
     setTimeout(() => {
       window.location.href = data.init_point;
     }, 1000);
+
   } catch (err) {
     console.error("❌ Error procesando pago:", err);
     Swal.fire("Error", err.message || "No se pudo iniciar el pago en Mercado Pago.", "error");
   }
 }
+
 
 // ===============================
 // 🔘 Listeners

@@ -50,9 +50,31 @@ function formatoRegion(regionValor) {
 }
 
 // ===============================
+// INCREMENTAR CONTADOR DE VISITAS
+// ===============================
+async function registrarVisita(ofertaId) {
+  try {
+    const res = await fetch(`${BASE_URL_API}/ofertas/${ofertaId}/visit`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+    if (!res.ok) {
+      console.warn("⚠️ No se pudo registrar la visita:", await res.text());
+    } else {
+      console.log("👁️ Visita registrada correctamente.");
+    }
+  } catch (err) {
+    console.error("❌ Error al registrar la visita:", err);
+  }
+}
+
+
+// ===============================
 // CARGA DE DATOS DE LA OFERTA
 // ===============================
 document.addEventListener('DOMContentLoaded', async () => {
+
+  
   const params = new URLSearchParams(window.location.search);
   const ofertaId = params.get('id');
 
@@ -60,6 +82,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.error('ID de oferta no encontrado en la URL');
     return;
   }
+
+  // ✅ Registrar visita automáticamente
+  registrarVisita(ofertaId);
+  
 
   try {
     const res = await fetch(`${BASE_URL_API}/ofertas/${ofertaId}`);
