@@ -125,6 +125,68 @@ function setAsterisk(fieldId, show){
   star.style.display = show ? "inline" : "none";
 }
 
+const otrasTools = new Set();
+const inputOtras = document.getElementById("customToolsInput");
+const listOtras = document.getElementById("customToolsList");
+
+// ➕ Agregar herramienta con Enter o coma
+if (inputOtras) {
+  inputOtras.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault();
+      const val = e.target.value.trim();
+      if (val && !otrasTools.has(val)) {
+        otrasTools.add(val);
+        renderOtras();
+      }
+      e.target.value = "";
+    }
+  });
+
+  // Guardar también si el usuario hace blur sin presionar Enter
+  inputOtras.addEventListener("blur", () => {
+    const val = inputOtras.value.trim();
+    if (val && !otrasTools.has(val)) {
+      otrasTools.add(val);
+      renderOtras();
+    }
+    inputOtras.value = "";
+  });
+}
+
+// 🧱 Renderizar los chips visualmente
+function renderOtras() {
+  listOtras.innerHTML = "";
+  if (otrasTools.size === 0) {
+    listOtras.innerHTML =
+      `<small class="text-muted">Agrega otras herramientas que manejes</small>`;
+    return;
+  }
+
+  Array.from(otrasTools).forEach((tool) => {
+    const chip = document.createElement("span");
+    chip.className =
+      "badge bg-primary text-light d-inline-flex align-items-center gap-1 px-2 py-1 me-1 mb-1";
+    chip.innerHTML = `${tool} <i class="fa-solid fa-xmark ms-1" style="cursor:pointer; font-size:13px;"></i>`;
+    chip.querySelector("i").addEventListener("click", () => {
+      otrasTools.delete(tool);
+      renderOtras();
+    });
+    listOtras.appendChild(chip);
+  });
+}
+
+// ✅ Captura también lo que el usuario dejó escrito sin confirmar
+function getOtrasHerramientas() {
+  const val = inputOtras?.value.trim();
+  if (val && !otrasTools.has(val)) {
+    otrasTools.add(val);
+    renderOtras();
+  }
+  return Array.from(otrasTools);
+}
+
+
 
 /* ====== FORMULARIO ====== */
 function collectOfferForm() {
@@ -152,78 +214,17 @@ function collectOfferForm() {
 
   // ♿ Accesibilidad
   const acepta_discapacitados = !!fd.get("acepta_discapacitados");
-
 /* ============================================================
-   🧰 Herramientas básicas — checkboxes + input libre + chips
+   🧰 Herramientas básicas — checkboxes + input libre + chips (con cache)
 ============================================================ */
-const customTools = new Set();
-const customInput = document.getElementById("customToolsInput");
-const customList = document.getElementById("customToolsList");
+// 🧰 Herramientas básicas (checkboxes)
+const herramientas_basicas = Array.from(
+  document.querySelectorAll(".tools-section input[type='checkbox']:checked")
+)
+  .map((el) => el.parentElement.textContent.trim())
+  .filter(Boolean);
 
-// 🧩 Agregar herramienta al presionar Enter o coma
-if (customInput) {
-  customInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === ",") {
-      e.preventDefault();
-      addCustomTool(e.target.value);
-      e.target.value = "";
-    }
-  });
-}
-
-// 🧩 Agregar manualmente texto pendiente antes de enviar
-function syncCustomInput() {
-  const value = customInput?.value.trim();
-  if (value) {
-    addCustomTool(value);
-    customInput.value = "";
-  }
-}
-
-// 🧩 Agregar herramienta al Set
-function addCustomTool(value) {
-  const val = value.trim();
-  if (val && !customTools.has(val)) {
-    customTools.add(val);
-    renderCustomTools();
-  }
-}
-
-// 🧩 Renderizar los chips visuales
-function renderCustomTools() {
-  customList.innerHTML = "";
-  if (customTools.size === 0) {
-    customList.innerHTML = `<small class="text-muted">Agrega otras herramientas que manejes</small>`;
-    return;
-  }
-
-  customTools.forEach((tool) => {
-    const chip = document.createElement("span");
-    chip.className = "badge bg-primary text-light d-flex align-items-center gap-1 px-2 py-1";
-    chip.innerHTML = `${tool} <i class="far fa-times-circle ms-1" style="cursor:pointer; font-size: 14px;"></i>`;
-    chip.querySelector("i").addEventListener("click", () => {
-      customTools.delete(tool);
-      renderCustomTools();
-    });
-    customList.appendChild(chip);
-  });
-}
-
-// ✅ Combinar herramientas seleccionadas y escritas
-function getHerramientasBasicas() {
-  // 1️⃣ Capturar seleccionadas del listado
-  const seleccionadas = Array.from(
-    document.querySelectorAll(".tools-section input[type='checkbox']:checked")
-  )
-    .map((el) => el.parentElement.textContent.trim())
-    .filter(Boolean);
-
-  // 2️⃣ Capturar cualquier texto pendiente no confirmado
-  syncCustomInput();
-
-  // 3️⃣ Unir todo y limpiar duplicados
-  return [...new Set([...seleccionadas, ...Array.from(customTools)])];
-}
+  const otras_herramientas = getOtrasHerramientas();
 
 
 
@@ -255,7 +256,8 @@ function getHerramientasBasicas() {
         hasta: renta_hasta,
         de_acuerdo_al_mercado,
       },
-      herramientas_basicas : getHerramientasBasicas(),
+      herramientas_basicas,
+      otras_herramientas,
       preguntas_personalizadas,
     },
   };
