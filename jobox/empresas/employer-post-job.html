@@ -227,6 +227,8 @@ Autor: Paulo Ramirez
       margin-right: 6px;
     }
 
+
+
     @media (max-width: 768px) {
       .salary-accessibility {
         grid-template-columns: 1fr;
@@ -490,20 +492,38 @@ Autor: Paulo Ramirez
 
                         <!-- 🧰 Herramientas -->
                         <div class="form-section tools-section">
-                          <label class="d-block mb-2">Herramientas básicas</label>
-                          <div class="tool-grid">
-                            <label><input type="checkbox" /> Excel</label>
-                            <label><input type="checkbox" /> Word</label>
-                            <label><input type="checkbox" /> PowerPoint</label>
-                            <label><input type="checkbox" /> Correo electrónico</label>
-                            <label><input type="checkbox" /> Navegador Web</label>
-                            <label><input type="checkbox" /> Impresora</label>
-                            <label><input type="checkbox" /> Google Drive</label>
-                            <label><input type="checkbox" /> Trello</label>
-                            <label><input type="checkbox" /> Zoom</label>
-                            <label><input type="checkbox" /> Canva</label>
+                          <label class="d-block mb-2 fw-semibold">Herramientas utilizadas en el trabajo</label>
+
+                          <div class="tool-grid mb-3">
+                            <label><input type="checkbox" /> Microsoft Office (Word, Excel, PowerPoint)</label>
+                            <label><input type="checkbox" /> Google Workspace (Docs, Sheets, Slides, Drive)</label>
+                            <label><input type="checkbox" /> PDF (Adobe Reader u otros)</label>
+                            <label><input type="checkbox" /> Correo electrónico (Outlook, Gmail, Yahoo Mail)</label>
+                            <label><input type="checkbox" /> Reuniones en línea (Zoom, Meet, Teams)</label>
+                            <label><input type="checkbox" /> WhatsApp o chat corporativo</label>
+                            <label><input type="checkbox" /> Calendario o agenda digital</label>
+                            <label><input type="checkbox" /> Plataformas de colaboración (Google Drive, OneDrive,
+                              Dropbox)</label>
+                            <label><input type="checkbox" /> Sistemas de gestión (ERP, CRM, software interno)</label>
+                            <label><input type="checkbox" /> Navegador web (Chrome, Edge, Firefox)</label>
+                          </div>
+
+                          <!-- 🔸 Campo adicional -->
+                          <div class="specific-tools mt-4">
+                            <label class="fw-semibold d-block mb-1">Otras herramientas específicas</label>
+                            <small class="text-muted d-block mb-2">
+                              Escribe una herramienta y presiona <b>Enter</b> o <b>coma</b> para agregarla.
+                            </small>
+
+                            <div class="custom-tools-container border rounded p-2" style="max-width: 100%;">
+                              <input id="customToolsInput" type="text" class="form-control border-0"
+                                placeholder="Ej: SAP, AutoCAD, Photoshop..." style="box-shadow:none; outline:none;" />
+                              <div id="customToolsList" class="mt-2 d-flex flex-wrap gap-2"></div>
+                            </div>
                           </div>
                         </div>
+
+
 
 
                         <div class="col-md-12">

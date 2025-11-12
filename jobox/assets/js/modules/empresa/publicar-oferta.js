@@ -10,6 +10,49 @@ let selection = null;
 const $  = (s, r=document)=>r.querySelector(s);
 const $$ = (s, r=document)=>Array.from(r.querySelectorAll(s));
 
+
+const selectedCustomTools = new Set(); // 🧠 Estado en memoria
+
+const input = document.getElementById("customToolsInput");
+const listContainer = document.getElementById("customToolsList");
+
+input.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    const value = e.target.value.trim();
+    if (value && !selectedCustomTools.has(value.toLowerCase())) {
+      selectedCustomTools.add(value.toLowerCase());
+      renderCustomTools();
+      e.target.value = "";
+    }
+  }
+});
+
+function renderCustomTools() {
+  listContainer.innerHTML = "";
+  selectedCustomTools.forEach((tool) => {
+    const badge = document.createElement("span");
+    badge.className = "badge bg-primary d-flex align-items-center gap-1";
+    badge.innerHTML = `${tool} <i class="fa-solid fa-xmark" style="cursor:pointer;"></i>`;
+    badge.querySelector("i").addEventListener("click", () => {
+      selectedCustomTools.delete(tool);
+      renderCustomTools();
+    });
+    listContainer.appendChild(badge);
+  });
+}
+
+// 🔹 Capturar todas las herramientas antes de enviar el formulario
+function getHerramientasSeleccionadas() {
+  const checks = Array.from(
+    document.querySelectorAll(".tools-section input[type='checkbox']:checked")
+  ).map(el => el.parentElement.textContent.trim());
+
+  const custom = Array.from(selectedCustomTools);
+  return [...new Set([...checks, ...custom])];
+}
+
+
 /* ====== TOKEN Y CONTEXTO ====== */
 function getAnyToken() {
   const keys = ["token","auth_token","authToken","accessToken","jwt","Authorization","authorization"];
@@ -110,10 +153,79 @@ function collectOfferForm() {
   // ♿ Accesibilidad
   const acepta_discapacitados = !!fd.get("acepta_discapacitados");
 
-  // 🧰 Herramientas básicas (usa texto del label)
-  const herramientas_basicas = Array.from(document.querySelectorAll(".tools-section input[type='checkbox']:checked"))
-    .map(el => el.parentElement.textContent.trim())
+/* ============================================================
+   🧰 Herramientas básicas — checkboxes + input libre + chips
+============================================================ */
+const customTools = new Set();
+const customInput = document.getElementById("customToolsInput");
+const customList = document.getElementById("customToolsList");
+
+// 🧩 Agregar herramienta al presionar Enter o coma
+if (customInput) {
+  customInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault();
+      addCustomTool(e.target.value);
+      e.target.value = "";
+    }
+  });
+}
+
+// 🧩 Agregar manualmente texto pendiente antes de enviar
+function syncCustomInput() {
+  const value = customInput?.value.trim();
+  if (value) {
+    addCustomTool(value);
+    customInput.value = "";
+  }
+}
+
+// 🧩 Agregar herramienta al Set
+function addCustomTool(value) {
+  const val = value.trim();
+  if (val && !customTools.has(val)) {
+    customTools.add(val);
+    renderCustomTools();
+  }
+}
+
+// 🧩 Renderizar los chips visuales
+function renderCustomTools() {
+  customList.innerHTML = "";
+  if (customTools.size === 0) {
+    customList.innerHTML = `<small class="text-muted">Agrega otras herramientas que manejes</small>`;
+    return;
+  }
+
+  customTools.forEach((tool) => {
+    const chip = document.createElement("span");
+    chip.className = "badge bg-primary text-light d-flex align-items-center gap-1 px-2 py-1";
+    chip.innerHTML = `${tool} <i class="far fa-times-circle ms-1" style="cursor:pointer; font-size: 14px;"></i>`;
+    chip.querySelector("i").addEventListener("click", () => {
+      customTools.delete(tool);
+      renderCustomTools();
+    });
+    customList.appendChild(chip);
+  });
+}
+
+// ✅ Combinar herramientas seleccionadas y escritas
+function getHerramientasBasicas() {
+  // 1️⃣ Capturar seleccionadas del listado
+  const seleccionadas = Array.from(
+    document.querySelectorAll(".tools-section input[type='checkbox']:checked")
+  )
+    .map((el) => el.parentElement.textContent.trim())
     .filter(Boolean);
+
+  // 2️⃣ Capturar cualquier texto pendiente no confirmado
+  syncCustomInput();
+
+  // 3️⃣ Unir todo y limpiar duplicados
+  return [...new Set([...seleccionadas, ...Array.from(customTools)])];
+}
+
+
 
   // ❓ Preguntas personalizadas
   const preguntas_personalizadas = Array.from(
@@ -143,7 +255,7 @@ function collectOfferForm() {
         hasta: renta_hasta,
         de_acuerdo_al_mercado,
       },
-      herramientas_basicas,
+      herramientas_basicas : getHerramientasBasicas(),
       preguntas_personalizadas,
     },
   };
@@ -302,9 +414,18 @@ async function crearOfertaYConsumir(e){
   btn.innerHTML=`<span class="spinner-border spinner-border-sm me-2"></span> Publicando...`;
 
   const { titulo, dataObj }=collectOfferForm();
-  const now=new Date();
-  const fecha_publicacion=now.toISOString();
-  const fecha_cierre=new Date(now.getTime()+30*24*3600*1000).toISOString();
+  const now = new Date();
+  const fecha_publicacion = now.toISOString();
+  const fecha_cierre = new Date(now.getTime() + 30 * 24 * 3600 * 1000).toISOString();
+  
+  const fechaPublicacionFormateada = new Date(fecha_publicacion).toLocaleString("es-CL", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
 
   const token=getAnyToken();
   const headers={ "Content-Type":"application/json" };
@@ -333,7 +454,7 @@ async function crearOfertaYConsumir(e){
       title:"¡Oferta publicada!",
       html:`Tu aviso fue publicado correctamente.<br>
 <strong>Oferta:</strong> <code>${titulo}</code><br>
-📅 Fecha de publicación: <strong>${fecha_publicacion}</strong>
+    📅 <b>Fecha de publicación:</b> ${fechaPublicacionFormateada}
 `,
       confirmButtonText:"Ir a gestionar aviso",
       showCancelButton:true,
