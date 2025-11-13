@@ -288,9 +288,10 @@ async function loadFreeRemaining(){
 }
 
 /* ====== REGLAS POR PLAN ====== */
-function aplicarReglasPorPlan(plan){
-  const preguntasBtn=$("#agregar-pregunta");
-  const preguntasCont=$("#preguntas-container");
+function aplicarReglasPorPlan(plan) {
+  const preguntasSection = document.getElementById("preguntas-section");
+  const preguntasBtn = document.getElementById("agregar-pregunta");
+  const preguntasCont = document.getElementById("preguntas-container");
 
   // Todos los campos del formulario
   const fieldIds = [
@@ -300,43 +301,55 @@ function aplicarReglasPorPlan(plan){
     "salaryFrom","salaryTo","otras_herramientas"
   ];
 
-  // 🔁 Reset: todos obligatorios
-  fieldIds.forEach(id=>{
+  // 🔁 Reset: todos obligatorios + mostramos sección por defecto
+  fieldIds.forEach(id => {
     const el = document.getElementById(id);
-    if(el) el.required = true;
-    setAsterisk(id,true);
+    if (el) el.required = true;
+    setAsterisk(id, true);
   });
 
-  preguntasBtn.disabled = false;
-  preguntasCont.classList.remove("opacity-50");
+  // Mostrar sección completa por defecto
+  if (preguntasSection) preguntasSection.style.display = "block";
+  if (preguntasBtn) preguntasBtn.style.display = "inline-block";
+  if (preguntasCont) preguntasCont.style.display = "block";
 
-  switch(plan){
+  switch (plan) {
+
+    /* =============================
+       🆓 PLAN FREE → OCULTAR TODO
+       ============================= */
     case "FREE":
-      // Todo obligatorio, sin preguntas
-      preguntasBtn.disabled = true;
-      preguntasCont.classList.add("opacity-50");
+      if (preguntasSection) preguntasSection.style.display = "none";
       break;
 
+    /* =============================
+       🅱️ PLAN BÁSICO → FULL
+       ============================= */
     case "BASICO":
-      // Todo obligatorio, puede agregar preguntas
+      // sin cambios, todo visible
       break;
 
+    /* =============================
+       🅴 PLAN ESTÁNDAR
+       ============================= */
     case "ESTANDAR":
-      // Sueldo y herramientas no obligatorios
-      ["salaryFrom","salaryTo","otras_herramientas"].forEach(id=>{
-        const el=document.getElementById(id);
-        if(el) el.required=false;
-        setAsterisk(id,false);
+      ["salaryFrom","salaryTo","otras_herramientas"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.required = false;
+        setAsterisk(id, false);
       });
       break;
 
+    /* =============================
+       🅿️ PLAN PREMIUM
+       ============================= */
     case "PREMIUM":
-      // Contrato, modalidad, sueldo, herramientas no obligatorios
-      ["tipo_contrato","modalidad","salaryFrom","salaryTo","otras_herramientas"].forEach(id=>{
-        const el=document.getElementById(id);
-        if(el) el.required=false;
-        setAsterisk(id,false);
-      });
+      ["tipo_contrato","modalidad","salaryFrom","salaryTo","otras_herramientas"]
+        .forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.required = false;
+          setAsterisk(id, false);
+        });
       break;
   }
 }
