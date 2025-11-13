@@ -28,312 +28,251 @@
 
   <!-- Ajustes de tamaño + separación -->
   <style>
-    /* ===== GRID GENERAL ===== */
     .user-profile-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 18px;
-      margin-top: 12px;
-    }
-
-    /* ===== CARD ===== */
-    .job-card {
-      background: #fff;
-      border-radius: 14px;
-      border: 1px solid #e5e9f2;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-      padding: 18px 20px;
-      position: relative;
-      transition: all 0.25s ease-in-out;
-    }
-
-    .job-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 16px rgba(60, 101, 245, 0.12);
-    }
-
-    /* 🔹 Línea de color superior según estado */
-    .job-card::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 4px;
-      width: 100%;
-      border-radius: 14px 14px 0 0;
-    }
-
-    .job-card.badge-active::before {
-      background: linear-gradient(90deg, #22c55e, #16a34a);
-    }
-
-    .job-card.badge-warning::before {
-      background: linear-gradient(90deg, #facc15, #eab308);
-    }
-
-    .job-card.badge-expired::before {
-      background: linear-gradient(90deg, #ef4444, #b91c1c);
-    }
-
-    /* ===== HEADER ===== */
-    .job-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .job-card-title {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #0b2341;
-      margin: 0;
-      line-height: 1.3;
-      flex: 1;
-    }
-
-    .job-badge {
-      font-size: 0.75rem;
-      padding: 5px 10px;
-      border-radius: 8px;
-      display: inline-flex;
-      align-items: center;
-      font-weight: 600;
-      text-transform: uppercase;
-      gap: 5px;
-    }
-
-    .job-badge.badge-active {
-      background: rgba(34, 197, 94, 0.1);
-      color: #15803d;
-    }
-
-    .job-badge.badge-warning {
-      background: rgba(250, 204, 21, 0.15);
-      color: #854d0e;
-    }
-
-    .job-badge.badge-expired {
-      background: rgba(239, 68, 68, 0.12);
-      color: #b91c1c;
-    }
-
-    .job-divider {
-      height: 1px;
-      background: #edf1f7;
-      margin: 10px 0 14px;
-    }
-
-    /* ===== INFO AREA ===== */
-    .job-info {
       display: flex;
       flex-direction: column;
       gap: 10px;
+      margin-top: 14px;
+
     }
 
+    /* ===== CARD PRINCIPAL ===== */
+    /* =====================================================
+   💼 JOB CARD — Estilo consistente con notificaciones
+   ===================================================== */
+    .job-card {
+      display: grid;
+      grid-template-columns: 260px 100px 180px 180px 120px 140px;
+      align-items: center;
+      justify-content: space-between;
+      background: #ffffff;
+      /* Siempre blanco */
+      color: #1a1a1a;
+      border: 1px solid rgba(82, 85, 116, 0.25);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      box-shadow: 0 3px 6px rgba(82, 85, 116, 0.25);
+      transition: all 0.25s ease;
+      min-height: 60px;
+    }
+
+    .job-card:hover {
+      background: #eee8e8;
+      /* Hover sutil gris */
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(60, 101, 245, 0.08);
+    }
+
+    /* ===== COLUMNA 1 — TÍTULO ===== */
+    .job-card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #0b2341;
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ===== BADGE DE ESTADO ===== */
+    .job-badge {
+      font-size: 0.75rem;
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      width: 90px;
+      text-align: center;
+      border: 1px solid transparent;
+    }
+
+    /* 🟩 Activo */
+    .badge-active {
+      background: rgba(34, 197, 94, 0.12);
+      color: #15803d;
+      border-color: rgba(34, 197, 94, 0.3);
+    }
+
+    /* 🟥 Expirado */
+    .badge-expired {
+      background: rgba(239, 68, 68, 0.12);
+      color: #b91c1c;
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    /* 🟨 Pendiente */
+    .badge-pending {
+      background: rgba(234, 179, 8, 0.12);
+      color: #b45309;
+      border-color: rgba(234, 179, 8, 0.3);
+    }
+
+    /* 🟦 Publicado / Aprobado */
+    .badge-published {
+      background: rgba(59, 130, 246, 0.12);
+      color: #1d4ed8;
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    /* ===== COLUMNAS DE INFO ===== */
     .info-row {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 6px;
+      font-size: 0.85rem;
+      color: #334155;
+      font-weight: 500;
+      white-space: nowrap;
     }
 
     .info-row i {
       color: #3c65f5;
       font-size: 1rem;
-      width: 20px;
-      text-align: center;
-      flex-shrink: 0;
     }
 
-    .info-text {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 992px) {
+      .job-card {
+        grid-template-columns: 1fr;
+        grid-row-gap: 6px;
+        padding: 14px;
+      }
+
+      .job-badge {
+        width: auto;
+      }
     }
 
-    .info-text strong {
-      color: #0b2341;
-      font-weight: 600;
-      font-size: 0.9rem;
-      line-height: 1.2;
-    }
 
-    .info-text span {
-      color: #334155;
-      font-weight: 500;
-      font-size: 0.9rem;
-    }
-
-    /* ===============================
-   💎 ESTILO ELEGANTE NOTIFICACIONES
-   =============================== */
-    .user-notification-item {
+    /* =====================================================
+   📨 NOTIFICATION CARDS — Nueva paleta Pacific
+   ===================================================== */
+    .notification-card {
       display: flex;
       align-items: center;
-      gap: 16px;
+      justify-content: space-between;
       background: #ffffff;
-      border-radius: 16px;
-      border: 1px solid #e5e9f2;
-      padding: 16px 20px;
-      margin-bottom: 14px;
-      box-shadow: 0 2px 12px rgba(60, 101, 245, 0.05);
+      /* Verde claro base */
+      color: #1a1a1a;
+      border: 1px solid rgba(82, 85, 116, 0.25);
+      /* Gris azulado suave */
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      box-shadow: 0 3px 6px rgba(82, 85, 116, 0.25);
       transition: all 0.25s ease;
-      position: relative;
     }
 
-    .user-notification-item:hover {
+    .notification-card:hover {
+      background: #eee8e8;
+      /* Verde medio al hover */
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(60, 101, 245, 0.12);
     }
 
-    /* 🔹 Línea lateral de estado */
-    .user-notification-item::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 4px;
-      border-radius: 16px 0 0 16px;
-    }
-
-    .user-notification-item[data-txid*="AUTHORIZED"]::before {
-      background: linear-gradient(180deg, #22c55e, #15803d);
-    }
-
-    .user-notification-item[data-txid*="PENDING"]::before {
-      background: linear-gradient(180deg, #facc15, #eab308);
-    }
-
-    .user-notification-item[data-txid*="REJECTED"],
-    .user-notification-item[data-txid*="FAILED"]::before {
-      background: linear-gradient(180deg, #ef4444, #b91c1c);
-    }
-
-    /* Icono circular */
-    .user-notification-icon {
+    /* ===== ICONO ===== */
+    .notification-icon {
       flex-shrink: 0;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-      font-weight: 500;
-      background: #f9fafb;
-      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+      font-size: 1.5rem;
+      margin-right: 14px;
+      color: #5c3e62;
+      /* Morado oscuro */
     }
 
-    .user-notification-icon i.text-success {
-      color: #22c55e;
-    }
-
-    .user-notification-icon i.text-warning {
-      color: #eab308;
-    }
-
-    .user-notification-icon i.text-danger {
-      color: #ef4444;
-    }
-
-    /* Información */
-    .user-notification-info {
+    /* ===== CONTENIDO PRINCIPAL ===== */
+    .notification-content {
       flex: 1;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      gap: 3px;
     }
 
-    .user-notification-info p:first-child {
-      font-size: 1rem;
+    .notification-content p {
+      margin: 0;
+      line-height: 1.3;
+    }
+
+    .notification-title {
       font-weight: 600;
-      color: #0b2341;
-      margin-bottom: 2px;
+      font-size: 0.95rem;
+      color: #5c3e62;
+      /* Morado oscuro */
     }
 
-    .user-notification-info p.mb-1 {
-      color: #111827;
-      font-weight: 500;
-      margin-bottom: 4px;
-    }
-
-    .user-notification-info small {
-      color: #6b7280;
+    .notification-text {
       font-size: 0.85rem;
+      color: #525574;
+      /* Gris azulado */
     }
 
-    /* Botón eliminar */
-    .btn-delete-noti {
+    .notification-meta {
+      font-size: 0.75rem;
+      color: #666;
+    }
+
+    /* ===== BOTÓN ELIMINAR ===== */
+    .notification-delete {
+      flex-shrink: 0;
+      margin-left: 10px;
+      border: 1px solid #9b5f7b;
+      /* Rosado vino */
+      color: #9b5f7b;
       background: transparent;
-      border: none;
-      color: #ef4444;
-      font-size: 1.1rem;
-      padding: 6px;
-      border-radius: 8px;
+      border-radius: 6px;
+      padding: 4px 8px;
+      cursor: pointer;
       transition: all 0.2s ease;
     }
 
-    .btn-delete-noti:hover {
-      background: rgba(239, 68, 68, 0.1);
-      color: #b91c1c;
+    .notification-delete i {
+      font-size: 0.85rem;
     }
 
-    /* Badge “nuevo” */
-    .badge.bg-primary {
-      background-color: #3c65f5 !important;
-      font-size: 0.7rem;
-      padding: 3px 7px;
+    .notification-delete:hover {
+      background: #9b5f7b;
+      color: #fff;
+    }
+
+    /* ===== NUEVO BADGE ===== */
+    .notification-badge {
+      background: #5c3e62;
+      /* Morado oscuro */
+      color: #fff;
       border-radius: 6px;
+      padding: 2px 6px;
+      font-size: 0.7rem;
       font-weight: 600;
+      text-transform: uppercase;
+      margin-left: 6px;
     }
 
-    /* Animación */
+    /* ===== EFECTO DE APARICIÓN ===== */
     .fade-in {
-      animation: fadeIn 0.4s ease both;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .notification-card.clickable {
+      cursor: pointer;
+    }
+
+    .notification-card.clickable:hover {
+      background: #f8f9ff;
+      /* tono leve azul */
     }
 
     @keyframes fadeIn {
       from {
         opacity: 0;
-        transform: translateY(6px);
+        transform: translateY(4px);
       }
 
       to {
         opacity: 1;
         transform: translateY(0);
-      }
-    }
-
-    /* Paginación */
-    .user-notification-item+.d-flex {
-      border-top: 1px solid #edf1f7;
-      margin-top: 18px;
-      padding-top: 14px;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .user-notification-item {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 14px;
-      }
-
-      .btn-delete-noti {
-        position: absolute;
-        top: 10px;
-        right: 12px;
-      }
-    }
-
-
-
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 768px) {
-      .job-card {
-        padding: 14px 16px;
       }
     }
   </style>
@@ -447,20 +386,58 @@
 
                   <div class="tab-content mt-3">
                     <div class="tab-pane active" id="tab-hoy">
-                      <p>Últimos avisos publicados:</p>
+
                       <div id="candidatos-container" class="user-profiles-grid"></div>
                     </div>
 
                     <div class="tab-pane d-none" id="tab-semana">
-                      <p>Historial de ofertas <strong>0</strong></p>
+
                     </div>
 
                     <div class="tab-pane d-none" id="tab-notificaciones">
-                      <p><strong>Notificaciones recientes</strong></p>
-                      <div id="notificationsList">
-                        <p><i class="far fa-bell"></i> No tienes notificaciones nuevas.</p>
+                      <div class="card border-0 shadow-sm mt-2">
+                        <div class="card-header bg-white border-bottom-0 pb-0">
+                          <ul class="nav nav-tabs border-0" id="subNotifTabs">
+                            <li class="nav-item">
+                              <a class="nav-link" href="#" data-subtab="postulaciones">
+                                <i class="far fa-user me-1 text-info"></i>
+                                Postulaciones
+                                <span id="notificationsCountPost" class="badge bg-light text-dark ms-2">0</span>
+                              </a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link active" href="#" data-subtab="pagos">
+                                <i class="far fa-credit-card me-1 text-success"></i>
+                                Pagos
+                                <span id="notificationsCountPay" class="badge bg-light text-dark ms-2">0</span>
+                              </a>
+                            </li>
+
+                          </ul>
+                        </div>
+
+                        <div class="card-body p-3">
+                          <!-- Sub-tab: Pagos -->
+                          <div class="subtab-content active" id="subtab-pagos">
+                            <div id="notificationsListPay" class="notification-list">
+                              <p class="text-muted small text-center py-2">
+                                <i class="far fa-inbox"></i> No hay pagos recientes.
+                              </p>
+                            </div>
+                          </div>
+
+                          <!-- Sub-tab: Postulaciones -->
+                          <div class="subtab-content d-none" id="subtab-postulaciones">
+                            <div id="notificationsListPost" class="notification-list">
+                              <p class="text-muted small text-center py-2">
+                                <i class="far fa-inbox"></i> No hay postulaciones nuevas.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
+
                   </div>
                 </div>
               </div>
@@ -521,6 +498,7 @@
   <script src="../assets/js/modules/empresa/employer-kpi-applications.js"></script>
   <script src="../assets/js/config/token-exp.js"></script>
   <script src="../assets/js/dashboard/card-ofertas.js" type="module"></script>
+  <script src="../assets/js/modules/empresa/postulaciones/notificaciones-postulacion.js" type="module"></script>
 
 
 

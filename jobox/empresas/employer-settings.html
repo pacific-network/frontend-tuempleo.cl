@@ -27,6 +27,61 @@
     <link rel="stylesheet" href="../assets/css/style.css">
 
 </head>
+<style>
+    .password-card {
+        max-width: 600px;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: 14px;
+        border: 1px solid #e8eaf3;
+    }
+
+    .password-form .input-group .form-control {
+        border-right: none;
+        height: 46px;
+    }
+
+    .password-form .input-group .btn {
+        border-left: none;
+        background-color: #f8f9fa;
+    }
+
+    .password-requirements {
+        background: #f9fbff;
+        border-radius: 8px;
+        border: 1px solid #e3e8f0;
+        padding: 10px 14px;
+    }
+
+    .password-requirements div {
+        display: flex;
+        align-items: center;
+        margin-bottom: 4px;
+    }
+
+    .password-requirements i {
+        font-size: 7px;
+    }
+
+    .password-card h4 {
+        font-weight: 600;
+        color: #05264e;
+    }
+
+    .theme-btn {
+        background-color: #3C65F5;
+        border: none;
+        padding: 12px 18px;
+        border-radius: 10px;
+        font-weight: 600;
+        color: #fff;
+        transition: 0.3s ease;
+    }
+
+    .theme-btn:hover {
+        background-color: #2f50c9;
+    }
+</style>
 
 <body>
 
@@ -75,7 +130,8 @@
 
                             </div>
                             <ul class="user-profile-sidebar-list">
-                                <li><a href="employer-dashboard.html"><i class="far fa-gauge-high"></i> Panel de Control</a>
+                                <li><a href="employer-dashboard.html"><i class="far fa-gauge-high"></i> Panel de
+                                        Control</a>
                                 </li>
                                 <li><a href="employer-post-job.html"><i class="far fa-paper-plane"></i> Publicar un
                                         Trabajo</a></li>
@@ -93,83 +149,80 @@
                         <div class="user-profile-sidebar">
                             <div class="user-profile">
                                 <ul class="user-profile-sidebar-list">
-                                    <li><a href="https://wa.me/56991836445"><i class="far fa-headset"></i>Whatsapp</a></li>
+                                    <li><a href="https://wa.me/56991836445"><i class="far fa-headset"></i>Whatsapp</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-9">
                         <div class="user-profile-wrapper">
-                            <div class="col-lg-6">
-                                <div class="user-profile-card">
-                                    <h4 class="user-profile-card-title">Cambiar Contraseña</h4>
-                                    <div class="profile-form">
-                                        <form id="passwordChangeForm" action="#">
-                                            <!-- Contraseña actual -->
-                                            <div class="form-group">
-                                                <label for="old_password">Contraseña Actual</label>
-                                                <div class="input-group">
-                                                    <input type="password" id="old_password" class="form-control"
-                                                        placeholder="Contraseña actual" required>
-                                                    <button class="btn btn-outline-secondary" type="button"
-                                                        id="toggleOldPass">
-                                                        <i class="far fa-eye"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
+                            <div class="user-profile-card password-card shadow-sm p-4">
+                                <h4 class="user-profile-card-title mb-4">
+                                    <i class="far fa-lock me-2 text-primary"></i> Cambiar Contraseña
+                                </h4>
 
-                                            <!-- Nueva contraseña -->
-                                            <div class="form-group">
-                                                <label for="new_password">Nueva Contraseña</label>
-                                                <div class="input-group">
-                                                    <input type="password" id="new_password" class="form-control"
-                                                        placeholder="Nueva contraseña" required>
-                                                    <button class="btn btn-outline-secondary" type="button"
-                                                        id="toggleNewPass">
-                                                        <i class="far fa-eye"></i>
-                                                    </button>
-                                                </div>
-                                                <div id="password-requirements"
-                                                    class="mt-2 p-2 border rounded bg-light small text-dark">
-                                                    <div id="req-char"><i
-                                                            class="fas fa-exclamation-triangle text-warning me-1"></i>
-                                                        Al menos 8 caracteres</div>
-                                                    <div id="req-upper"><i
-                                                            class="fas fa-exclamation-triangle text-warning me-1"></i>
-                                                        Al menos una mayúscula</div>
-                                                    <div id="req-lower"><i
-                                                            class="fas fa-exclamation-triangle text-warning me-1"></i>
-                                                        Al menos una minúscula</div>
-                                                    <div id="req-alnum"><i
-                                                            class="fas fa-exclamation-triangle text-warning me-1"></i>
-                                                        Alfanumérica (letras y números)</div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Confirmar nueva contraseña -->
-                                            <div class="form-group">
-                                                <label for="confirm_password">Repetir Contraseña</label>
-                                                <div class="input-group">
-                                                    <input type="password" id="confirm_password" class="form-control"
-                                                        placeholder="Repetir contraseña" required>
-                                                    <button class="btn btn-outline-secondary" type="button"
-                                                        id="toggleConfirmPass">
-                                                        <i class="far fa-eye"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-
-                                            <button type="submit" id="changePasswordBtn" class="theme-btn mt-4">Cambiar
-                                                Contraseña <i class="far fa-key"></i></button>
-
-                                        </form>
+                                <form id="passwordChangeForm" class="password-form">
+                                    <!-- Contraseña actual -->
+                                    <div class="form-group mb-3">
+                                        <label for="old_password" class="form-label fw-semibold">Contraseña
+                                            Actual</label>
+                                        <div class="input-group">
+                                            <input type="password" id="old_password" class="form-control"
+                                                placeholder="Contraseña actual" required>
+                                            <button class="btn btn-outline-secondary" type="button" id="toggleOldPass">
+                                                <i class="far fa-eye"></i>
+                                            </button>
+                                        </div>
                                     </div>
 
-                                </div>
+                                    <!-- Nueva contraseña -->
+                                    <div class="form-group mb-3">
+                                        <label for="new_password" class="form-label fw-semibold">Nueva
+                                            Contraseña</label>
+                                        <div class="input-group">
+                                            <input type="password" id="new_password" class="form-control"
+                                                placeholder="Nueva contraseña" required>
+                                            <button class="btn btn-outline-secondary" type="button" id="toggleNewPass">
+                                                <i class="far fa-eye"></i>
+                                            </button>
+                                        </div>
 
+                                        <!-- Indicadores de requisitos -->
+                                        <div id="password-requirements" class="password-requirements mt-2 small">
+                                            <div id="req-char"><i class="fas fa-circle text-warning me-1"></i> Al menos
+                                                8 caracteres</div>
+                                            <div id="req-upper"><i class="fas fa-circle text-warning me-1"></i> Una
+                                                mayúscula</div>
+                                            <div id="req-lower"><i class="fas fa-circle text-warning me-1"></i> Una
+                                                minúscula</div>
+                                            <div id="req-alnum"><i class="fas fa-circle text-warning me-1"></i> Letras y
+                                                números</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Confirmar nueva contraseña -->
+                                    <div class="form-group mb-4">
+                                        <label for="confirm_password" class="form-label fw-semibold">Repetir
+                                            Contraseña</label>
+                                        <div class="input-group">
+                                            <input type="password" id="confirm_password" class="form-control"
+                                                placeholder="Repetir contraseña" required>
+                                            <button class="btn btn-outline-secondary" type="button"
+                                                id="toggleConfirmPass">
+                                                <i class="far fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" id="changePasswordBtn" class="theme-btn w-100">
+                                        <i class="far fa-key me-2"></i> Cambiar Contraseña
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
