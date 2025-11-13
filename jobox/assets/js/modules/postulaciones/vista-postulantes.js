@@ -1,13 +1,12 @@
-// assets/js/modules/postulaciones/vista-postulantes.js
 (() => {
   // ====== Config ======
   const PATHS = {
-    OFERTA: '/postulaciones/oferta',   // GET {BASE_URL_API}/postulaciones/oferta/:idOferta
-    SELECCION: '/seleccion',           // PATCH {BASE_URL_API}/seleccion/:postId/{preseleccionar|descartar|contratar}
-    POSTULACIONES: '/postulaciones'    // DELETE {BASE_URL_API}/postulaciones/:postId
+    OFERTA: '/postulaciones/oferta',
+    SELECCION: '/seleccion',
+    POSTULACIONES: '/postulaciones'
   };
 
-  // ====== Tokens (robusto) ======
+  // ====== Tokens ======
   const TOKEN_KEYS = ['auth_token_emp','auth_token','empleador_token','access_token','token','jwt','jwtToken'];
   function getAuthToken() {
     for (const k of TOKEN_KEYS) {
@@ -28,6 +27,7 @@
     const n = Number(v || 0);
     return n.toLocaleString('es-CL');
   }
+
   function estadoBadge(estado) {
     const map = {
       postulado: 'badge bg-light text-dark',
@@ -40,53 +40,34 @@
     const cls = map[estado] || 'badge bg-light text-dark';
     return `<span class="${cls}" data-role="estado-badge">${estado}</span>`;
   }
-  function showToast(msg, type = 'success') {
-    const el = document.getElementById('liveToast');
-    const title = document.getElementById('toastTitle');
-    const body = document.getElementById('toastBody');
-    if (!el || !title || !body) {
-      if (type === 'error') alert(`Error: ${msg}`); else alert(msg);
-      return;
-    }
-    body.textContent = msg;
-    if (type === 'success') {
-      title.textContent = '✅ Éxito';
-      el.classList.remove('bg-danger');
-      el.classList.add('bg-success');
-    } else if (type === 'error') {
-      title.textContent = '❌ Error';
-      el.classList.remove('bg-success');
-      el.classList.add('bg-danger');
-    } else {
-      title.textContent = '⚠️ Aviso';
-      el.classList.remove('bg-success', 'bg-danger');
-    }
-    new bootstrap.Toast(el).show();
+
+  // Reemplazamos alert/confirm por SweetAlert2
+  function popup(title, msg, icon = 'success') {
+    return Swal.fire({
+      title: title,
+      text: msg,
+      icon: icon,
+      confirmButtonColor: '#0d6efd',
+      confirmButtonText: 'Aceptar',
+      timer: icon === 'success' ? 1800 : undefined
+    });
   }
 
-  // Quita id/ofertaId de la URL y lo guarda
+  // ====== Obtener id oferta ======
   function resolveOfferId() {
     const sp = new URLSearchParams(location.search);
     let id = sp.get('id') || sp.get('ofertaId');
-
     if (id) {
       sessionStorage.setItem('sel_offer_id', id);
-      // fallback para nueva pestaña (1 min)
       localStorage.setItem('tmp_sel_offer_id', JSON.stringify({ v: id, t: Date.now() }));
-
-      // limpiamos la URL
       sp.delete('id'); sp.delete('ofertaId');
       const qs = sp.toString();
       const newUrl = location.pathname + (qs ? '?' + qs : '') + location.hash;
       history.replaceState(null, '', newUrl);
       return id;
     }
-
-    // sin query: usar sessionStorage
     id = sessionStorage.getItem('sel_offer_id');
     if (id) return id;
-
-    // último recurso: nueva pestaña en la última 1 min
     try {
       const raw = localStorage.getItem('tmp_sel_offer_id');
       if (raw) {
@@ -100,24 +81,23 @@
   // ====== API ======
   async function fetchPostulantesPorOferta(ofertaId) {
     const url = `${BASE_URL_API}${PATHS.OFERTA}/${ofertaId}`;
-
-    // 1) Con Bearer si hay token
     if (token) {
       const r1 = await fetch(url, { headers: AUTH_HEADERS });
       if (r1.ok) return r1.json();
       if (r1.status !== 401 && r1.status !== 403) throw new Error(`Error ${r1.status}: ${await r1.text()}`);
     }
-    // 2) Reintento con cookies (sesión por cookie)
     const r2 = await fetch(url, { credentials: 'include' });
     if (!r2.ok) throw new Error(`Error ${r2.status}: ${await r2.text()}`);
     return r2.json();
   }
+
   async function patchSeleccion(postulacionId, accion, observaciones = '') {
     const url = `${BASE_URL_API}${PATHS.SELECCION}/${postulacionId}/${accion}`;
     const res = await fetch(url, { method: 'PATCH', headers: JSON_HEADERS, body: JSON.stringify({ observaciones }) });
     if (!res.ok) throw new Error(`Error ${res.status}: ${await res.text()}`);
     return res.json();
   }
+
   async function borrarPostulacion(postulacionId) {
     const url = `${BASE_URL_API}${PATHS.POSTULACIONES}/${postulacionId}`;
     const res = await fetch(url, { method: 'DELETE', headers: AUTH_HEADERS });
@@ -142,168 +122,163 @@
   }
   function nextActionByEstado(estado) {
     if (estado === 'preseleccionado') return 'contratar';
-    if (estado === 'contratado') return ''; // no hay siguiente
+    if (estado === 'contratado') return '';
     return 'preseleccionar';
   }
 
   function cardTemplate(post) {
-    const postulacionId = post.id;
-    const estado = post.estado || 'postulado';
-    const postulante = post.postulante || {};
-    const usuario = postulante.usuario || {};
-    const data = postulante.data || {};
-    const personales = data.datos_personales || {};
+  const postulacionId = post.id;
+  const estado = post.estado || 'postulado';
+  const postulante = post.postulante || {};
+  const usuario = postulante.usuario || {};
+  const data = postulante.data || {};
+  const personales = data.datos_personales || {};
 
-    const nombre = (usuario.nombres && usuario.apellidos)
-      ? `${usuario.nombres} ${usuario.apellidos}`
-      : (usuario.nombres || 'Nombre no disponible');
+  const nombre = (usuario.nombres && usuario.apellidos)
+    ? `${usuario.nombres} ${usuario.apellidos}`
+    : (usuario.nombres || 'Nombre no disponible');
 
-    const cargo   = data.experiencias?.[0]?.cargo || 'Sin cargo';
-    const comuna  = personales.comuna || 'Comuna no especificada';
-    const salario = data.preferencias?.salario_esperado || 0;
-    const idiomasHTML = Array.isArray(data.idiomas)
-      ? data.idiomas.map(i => `<a href="#" class="btn btn-xs btn-light me-1 mb-1">${i.idioma}</a>`).join('')
-      : '';
+  const categoria_empleo = data.preferencias?.categoria_empleo || 'Sin cargo';
+  const region = personales.region || 'Región no especificada';
+  const comuna = personales.comuna || 'Comuna no especificada';
+  const salario = data.preferencias?.salario_esperado || 0;
 
-    const usuarioId = usuario.id || '';
-    const btnLabel = labelByEstado(estado);
-    const btnIcon  = iconByEstado(estado);
-    const nextAct  = nextActionByEstado(estado);
-    const disabledAttr = (estado === 'contratado') ? 'disabled' : '';
+  const usuarioId = usuario.id || '';
+  const btnLabel = labelByEstado(estado);
+  const btnIcon = iconByEstado(estado);
+  const nextAct = nextActionByEstado(estado);
+  const disabledAttr = (estado === 'contratado') ? 'disabled' : '';
 
-    return `
-      <div class="col-md-6 col-lg-6" data-postulacion-id="${postulacionId}">
-        <div class="candidate-item">
-          <div class="candidate-bio">
-            <div class="candidate-img">
-              <img src="../assets/img/candidate/default.jpg" alt="thumb">
-            </div>
-            <div class="candidate-bio-content">
-              <h5 class="mb-1">
-                <a href="employer-view-candidate.html" class="view-btn" data-user-id="${usuarioId}">
-                  ${nombre}
-                </a>
-              </h5>
-              <div class="small text-muted mb-1">${estadoBadge(estado)}</div>
-              <span>${cargo}</span>
-            </div>
+  return `
+    <div class="col-12 px-1" data-postulacion-id="${postulacionId}">
+      <div class="candidate-item border-bottom bg-white px-2" 
+           style="min-height:42px; padding-top:3px; padding-bottom:3px;">
+        <div class="row align-items-center text-center gx-0" style="font-size:13px;">
+          
+          <!-- Nombre -->
+          <div class="col-md-2 fw-semibold text-dark" style="font-size:14px; line-height:1.1;">
+            <a href="employer-view-candidate.html"
+               class="view-btn text-decoration-none text-dark"
+               data-user-id="${usuarioId}">
+              ${nombre}
+            </a>
+            <div class="mt-1" style="font-size:11px;">${estadoBadge(estado)}</div>
           </div>
-          <div class="candidate-content">
-            <p><i class="far fa-location-dot"></i> ${comuna}</p>
-            <div class="candidate-skill">${idiomasHTML}</div>
-            <div class="candidate-bottom">
-              <div class="candidate-salary">
-                $ ${moneyCL(salario)} <span>Mensual</span>
-              </div>
-              <div class="profile-btns d-flex gap-2">
+
+          <!-- Cargo -->
+          <div class="col-md-2 text-muted" style="font-size:11px;">${categoria_empleo}</div>
+
+          <!-- Región -->
+          <div class="col-md-2 text-muted" style="font-size:11.5px;">${region}</div>
+
+          <!-- Comuna -->
+          <div class="col-md-2 text-muted" style="font-size:12.5px;">${comuna}</div>
+
+          <!-- Pretensiones -->
+          <div class="col-md-2 fw-semibold" style="font-size:14px;">$ ${moneyCL(salario)}</div>
+
+          <!-- Acciones -->
+          <div class="col-md-2">
+            <div class="d-flex flex-column align-items-center justify-content-center" style="gap:2px;">
+              <div class="d-flex justify-content-center gap-1 w-100">
                 <a href="employer-view-candidate.html"
-                   class="btn btn-outline-secondary btn-sm view-btn"
-                   data-user-id="${usuarioId}" title="Ver candidato">
-                  <i class="far fa-eye"></i>
+                   class="btn btn-outline-secondary btn-sm view-btn flex-fill"
+                   data-user-id="${usuarioId}" title="Ver CV"
+                   style="min-width:70px; padding:1px 4px; font-size:11px;">
+                  <i class="far fa-eye me-1"></i>Ver CV
                 </a>
-                <button class="btn btn-primary btn-sm next-btn"
-                        data-next-action="${nextAct}"
-                        title="${nextAct === 'contratar' ? 'Contratar' : (nextAct ? 'Preseleccionar' : 'Sin acciones')}"
-                        ${disabledAttr}>
+                <button class="btn btn-primary btn-sm next-btn flex-fill"
+                        data-next-action="${nextAct}" ${disabledAttr}
+                        title="${btnLabel}" style="min-width:70px; padding:1px 4px; font-size:11px;">
                   <i class="far ${btnIcon} me-1"></i>${btnLabel}
                 </button>
-                <button class="btn btn-outline-secondary btn-sm discard-btn" data-action="descartar" title="Descartar">
+              </div>
+              <div class="d-flex justify-content-center gap-1 w-100">
+                <button class="btn btn-outline-secondary btn-sm discard-btn flex-fill"
+                        title="Descartar" style="min-width:70px; padding:1px 4px; font-size:11px;">
                   <i class="far fa-xmark me-1"></i>Descartar
                 </button>
-                <button class="btn btn-outline-danger btn-sm delete-btn" data-candidate="${nombre}" title="Eliminar">
-                  <i class="far fa-trash-can"></i>
+                <button class="btn btn-outline-danger btn-sm delete-btn flex-fill"
+                        title="Eliminar" data-candidate="${nombre}" 
+                        style="min-width:70px; padding:1px 4px; font-size:11px;">
+                  <i class="far fa-trash-can me-1"></i>Eliminar
                 </button>
               </div>
             </div>
           </div>
+
         </div>
-      </div>`;
-  }
+      </div>
+    </div>`;
+}
 
   async function renderPostulantes(ofertaId) {
     if (!container) return;
     if (!ofertaId) {
-      container.innerHTML = `<div class="col-12"><div class="alert alert-danger">No se encontró el ID de la oferta. Abre esta página desde la gestión de avisos.</div></div>`;
+      container.innerHTML = `<div class="col-12"><div class="alert alert-danger">No se encontró el ID de la oferta.</div></div>`;
       return;
     }
-    container.innerHTML = `<div class="col-12"><div class="alert alert-light border">Cargando candidatos...</div></div>`;
+    container.innerHTML = `<div class="col-12 text-center py-4"><i class="fas fa-spinner fa-spin me-2"></i>Cargando candidatos...</div>`;
     try {
-      const data  = await fetchPostulantesPorOferta(ofertaId);
+      const data = await fetchPostulantesPorOferta(ofertaId);
       const lista = Array.isArray(data) ? data : (data.items || []);
       if (!lista.length) {
-        container.innerHTML = `<div class="col-12"><div class="alert alert-light border">No hay candidatos para esta oferta.</div></div>`;
+        container.innerHTML = `<div class="col-12 text-center text-muted py-3">No hay candidatos para esta oferta.</div>`;
         return;
       }
-      container.innerHTML = lista.map(cardTemplate).join('');
+      container.innerHTML = lista.slice(0, 20).map(cardTemplate).join('');
     } catch (e) {
-      console.error(e);
-      container.innerHTML = `<div class="col-12"><div class="alert alert-danger">No se pudieron cargar los candidatos.</div></div>`;
+      popup('Error', 'No se pudieron cargar los candidatos', 'error');
+      container.innerHTML = `<div class="col-12 text-center text-danger py-3">Error al cargar candidatos.</div>`;
     }
   }
 
-  // ====== Eventos (delegación) ======
+  // ====== Eventos ======
   function wireEvents() {
     if (!container) return;
 
-    // Navegar al perfil SIN id en la URL: guardamos sel_cand_id
     document.addEventListener('click', (e) => {
       const view = e.target.closest('a.view-btn');
       if (!view) return;
       e.preventDefault();
-      const uid = view.dataset.userId || view.getAttribute('data-user-id');
+      const uid = view.dataset.userId;
       if (!uid) return;
-
-      // Guarda candidato y página de retorno; navega sin querystring
       sessionStorage.setItem('sel_cand_id', uid);
       localStorage.setItem('tmp_sel_cand_id', JSON.stringify({ v: uid, t: Date.now() }));
-      // A dónde volver desde el perfil
       sessionStorage.setItem('return_to_offer_page', location.pathname);
       location.href = 'employer-view-candidate.html';
     }, true);
-
-    // Modal eliminar
-    const deleteModalEl = document.getElementById('confirmDeleteModal');
-    const deleteModal   = deleteModalEl ? new bootstrap.Modal(deleteModalEl) : null;
-    const candidateNameSpan = document.getElementById('candidateName');
-    const confirmDeleteBtn  = document.getElementById('confirmDeleteBtn');
-    let pendingDeleteId = null;
 
     container.addEventListener('click', async (e) => {
       const card = e.target.closest('[data-postulacion-id]');
       if (!card) return;
       const postulacionId = card.getAttribute('data-postulacion-id');
 
-      // Botón siguiente estado
+      // siguiente estado
       const nextBtn = e.target.closest('.next-btn');
       if (nextBtn) {
         e.preventDefault();
         if (nextBtn.disabled) return;
-        const accion = nextBtn.getAttribute('data-next-action'); // '', 'preseleccionar', 'contratar'
+        const accion = nextBtn.getAttribute('data-next-action');
         if (!accion) return;
         try {
           await patchSeleccion(postulacionId, accion, `Cambio desde UI (${accion})`);
           let nuevoEstado = (accion === 'preseleccionar') ? 'preseleccionado'
-                        : (accion === 'contratar') ? 'contratado'
-                        : 'postulado';
-
+                        : (accion === 'contratar') ? 'contratado' : 'postulado';
           const badge = card.querySelector('[data-role="estado-badge"]');
           if (badge) badge.outerHTML = estadoBadge(nuevoEstado);
-
-          nextBtn.innerHTML = `<i class="far ${iconByEstado(nuevoEstado)} me-1"></i>${labelByEstado(nuevoEstado)}`;
+          nextBtn.innerHTML = `<i class="far ${iconByEstado(nuevoEstado)}"></i>${labelByEstado(nuevoEstado)}`;
           const siguienteAccion = (nuevoEstado === 'preseleccionado') ? 'contratar' : (nuevoEstado === 'contratado' ? '' : 'preseleccionar');
           nextBtn.setAttribute('data-next-action', siguienteAccion || '');
-          nextBtn.title = siguienteAccion ? (siguienteAccion === 'contratar' ? 'Contratar' : 'Preseleccionar') : 'Sin acciones';
           if (!siguienteAccion) nextBtn.disabled = true;
-
-          showToast('Estado actualizado correctamente');
+          popup('Éxito', 'Estado actualizado correctamente', 'success');
         } catch (err) {
-          console.error(err);
-          showToast(err.message || 'No se pudo actualizar el estado', 'error');
+          popup('Error', err.message || 'Error al actualizar estado', 'error');
         }
         return;
       }
 
-      // Descartar
+      // descartar
       const discardBtn = e.target.closest('.discard-btn');
       if (discardBtn) {
         e.preventDefault();
@@ -311,72 +286,51 @@
           await patchSeleccion(postulacionId, 'descartar', 'Descartado desde UI');
           const badge = card.querySelector('[data-role="estado-badge"]');
           if (badge) badge.outerHTML = estadoBadge('descartado');
-
           const nextBtn2 = card.querySelector('.next-btn');
           if (nextBtn2) {
             nextBtn2.disabled = false;
             nextBtn2.setAttribute('data-next-action', 'preseleccionar');
-            nextBtn2.title = 'Preseleccionar';
-            nextBtn2.innerHTML = `<i class="far ${iconByEstado('postulado')} me-1"></i>${labelByEstado('postulado')}`;
+            nextBtn2.innerHTML = `<i class="far ${iconByEstado('postulado')}"></i>Preseleccionar`;
           }
-          showToast('Candidato descartado');
-        } catch (err) {
-          console.error(err);
-          showToast(err.message || 'No se pudo descartar', 'error');
+          popup('Hecho', 'Candidato descartado', 'info');
+        } catch {
+          popup('Error', 'No se pudo descartar al candidato', 'error');
         }
         return;
       }
 
-      // Eliminar
+      // eliminar
       const delBtn = e.target.closest('.delete-btn');
       if (delBtn) {
         e.preventDefault();
         const nombre = delBtn.getAttribute('data-candidate') || 'este candidato';
-        if (candidateNameSpan) candidateNameSpan.textContent = nombre;
-        pendingDeleteId = postulacionId;
-
-        if (deleteModal) {
-          deleteModal.show();
-        } else if (confirm(`¿Desea eliminar a ${nombre}?`)) {
-          try {
-            await borrarPostulacion(pendingDeleteId);
-            card.remove();
-            showToast('Candidato eliminado');
-          } catch (err) {
-            console.error(err);
-            showToast('No se pudo eliminar', 'error');
-          } finally {
-            pendingDeleteId = null;
+        Swal.fire({
+          title: '¿Eliminar candidato?',
+          html: `Se eliminará <b>${nombre}</b> de la lista.`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Eliminar',
+          cancelButtonText: 'Cancelar',
+          confirmButtonColor: '#dc3545',
+          cancelButtonColor: '#6c757d'
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            try {
+              await borrarPostulacion(postulacionId);
+              card.remove();
+              popup('Eliminado', 'El candidato fue eliminado correctamente', 'success');
+            } catch {
+              popup('Error', 'No se pudo eliminar al candidato', 'error');
+            }
           }
-        }
-        return;
+        });
       }
     });
-
-    if (confirmDeleteBtn && deleteModal) {
-      confirmDeleteBtn.addEventListener('click', async () => {
-        if (!pendingDeleteId) return;
-        try {
-          await borrarPostulacion(pendingDeleteId);
-          const card = container.querySelector(`[data-postulacion-id="${pendingDeleteId}"]`);
-          if (card) card.remove();
-          showToast('Candidato eliminado');
-        } catch (err) {
-          console.error(err);
-          showToast('No se pudo eliminar', 'error');
-        } finally {
-          pendingDeleteId = null;
-          deleteModal.hide();
-        }
-      });
-    }
   }
 
   // ====== Init ======
   document.addEventListener('DOMContentLoaded', async () => {
-    // Guardar “ruta de retorno” (para el botón Volver del perfil)
     sessionStorage.setItem('return_to_offer_page', location.pathname);
-
     const ofertaId = resolveOfferId();
     await renderPostulantes(ofertaId);
     wireEvents();

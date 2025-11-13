@@ -424,58 +424,78 @@
   }
 
   async function loadOfertas(signal) {
-    const cont = document.getElementById('ofertas-container');
+  const cont = document.getElementById('ofertas-container');
 
-    try {
-      if (hasAnyFilter()) {
-        // 1) Hay filtros: trae primera página (segura) para saber total
-        const first = await fetchFilteredPage(TAKE_SAFE, 1, signal);
-        const total = first.meta?.total ?? first.meta?.itemCount ?? first.items.length;
+  try {
+    // Trae todas las ofertas disponibles (hasta 500)
+    const url = `${API}?take=500&_=${Date.now()}`;
+    const json = await fetchJson(url, signal);
+    let items = json.data || json.items || [];
 
-        if (total >= FILL_THRESHOLD) {
-          // A) >=10 ⇒ traer TODOS los filtrados y solo esos
-          const allFiltered = (first.items.length >= total)
-            ? first.items
-            : await fetchAllFilteredPaged(signal);
-          renderOfertas(allFiltered);
-          renderPagination({ itemCount: allFiltered.length, page: 1, take: allFiltered.length });
-          if (STATE.q_raw) pushBusqueda(STATE.q_raw);
-          return;
-        } else {
-          // B) <10 ⇒ filtrados + relleno hasta 15
-          const filtered = first.items.slice(0, total);
-          const need = Math.max(0, FILL_TARGET - filtered.length);
-          const exclude = new Set(filtered.map(o => o.id));
-          const fillers = need > 0 ? await fetchFillers(need, exclude, signal) : [];
-          const combined = [...filtered, ...fillers];
-          renderOfertas(combined);
-          renderPagination({ itemCount: combined.length, page: 1, take: combined.length });
-          if (STATE.q_raw) pushBusqueda(STATE.q_raw);
-          return;
-        }
+    // Si no hay ninguna oferta
+    if (!items.length) {
+      cont.innerHTML = `<p class="text-center text-muted py-4">No hay ofertas disponibles.</p>`;
+      return;
+    }
+
+    // ✅ Normaliza data antes de filtrar
+    const filtradas = items.filter(o => {
+      const d = typeof o.data === 'string' ? safeParse(o.data) : (o.data || {});
+      let ok = true;
+
+      // Palabra clave
+      if (STATE.q) {
+        const q = STATE.q.toLowerCase();
+        ok = ok && (
+          (o.titulo || '').toLowerCase().includes(q) ||
+          (d.area_trabajo || '').toLowerCase().includes(q) ||
+          (d.descripcion || '').toLowerCase().includes(q)
+        );
       }
 
-      // 2) Sin filtros: lista normal (paginado)
-      const baseParams = {
-        page: STATE.page,
-        take: STATE.take,
-        sortBy: STATE.sortBy,
-        order: STATE.order
-      };
-      const url = buildUrl(baseParams);
-      const json = await fetchJson(url, signal);
-      const ofertas = json.data || json.items || [];
-      const meta = json.meta || json.pagination || {};
-      renderOfertas(ofertas);
-      renderPagination(meta);
+      // Región
+      if (!isBlank(STATE.region)) {
+        const regionOferta = (o.empleador?.data?.region || '').toLowerCase();
+        ok = ok && regionOferta.includes(STATE.region.toLowerCase());
+      }
 
-    } catch (err) {
-      if (err?.name === 'AbortError') return;
-      console.error('❌ Error cargando ofertas:', err);
-      if (cont) cont.innerHTML = `<p class="text-danger text-center">No se pudieron cargar las ofertas.</p>`;
-      renderPagination({ itemCount: 0, page: 1, take: 1 });
+      // Categoría
+      if (!isBlank(STATE.categoria)) {
+        const area = (d.area_trabajo || '').toLowerCase();
+        ok = ok && area.includes(STATE.categoria.toLowerCase());
+      }
+
+      // Modalidad
+      if (STATE.modalidad.length) {
+        const mod = String(d.modalidad || o.modalidad || '').trim();
+        ok = ok && STATE.modalidad.includes(mod);
+      }
+
+      // Sueldo
+      if (STATE.salarioMin !== undefined || STATE.salarioMax !== undefined) {
+        const desde = parseInt(d.renta_salarial?.desde || 0);
+        const hasta = parseInt(d.renta_salarial?.hasta || 0);
+        if (STATE.salarioMin !== undefined) ok = ok && hasta >= STATE.salarioMin;
+        if (STATE.salarioMax !== undefined) ok = ok && desde <= STATE.salarioMax;
+      }
+
+      return ok;
+    });
+
+    // Resultado
+    if (!filtradas.length) {
+      cont.innerHTML = `<p class="text-center text-muted py-4">Sin resultados con los filtros aplicados.</p>`;
+      // Si querís mostrar todas igual, descomentá esto:
+      // renderOfertas(items);
+    } else {
+      renderOfertas(filtradas);
     }
+
+  } catch (err) {
+    console.error('❌ Error cargando ofertas:', err);
+    cont.innerHTML = `<p class="text-danger text-center">Error al cargar las ofertas.</p>`;
   }
+}
 
   // ---------------- Eventos UI ----------------
   window.aplicarFiltro = function () {

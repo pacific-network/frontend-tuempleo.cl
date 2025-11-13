@@ -85,9 +85,16 @@
             </div>
           </aside>
 
+          
           <main class="col-lg-9">
             <section class="user-profile-card">
               <header class="user-profile-card-header mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+  <button id="btn-volver" class="btn btn-outline-primary btn-sm">
+    <i class="far fa-arrow-left me-1"></i> Volver
+  </button>
+</div>
+
                 <h4 class="user-profile-card-title">Todos los Candidatos</h4>
                 <div class="text-muted">Total postulantes: <span id="total-postulantes">0</span></div>
               </header>
@@ -236,5 +243,27 @@
     });
   </script>
   <script src="../assets/js/config/token-exp.js"></script>
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const btnVolver = document.getElementById('btn-volver');
+  if (btnVolver) {
+    btnVolver.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      // 1. Si se guardó una ruta anterior en sessionStorage (desde vista-postulantes.js)
+      const prev = sessionStorage.getItem('return_to_offer_page');
+      if (prev) {
+        // 2. Regresar con scroll exacto
+        history.back();
+        return;
+      }
+
+      // 3. Fallback: si no hay sessionStorage, volver al listado principal
+      window.location.href = 'employer-manage-job.html';
+    });
+  }
+});
+</script>
+
 </body>
 </html>

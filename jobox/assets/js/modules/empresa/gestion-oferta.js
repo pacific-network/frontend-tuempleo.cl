@@ -93,59 +93,112 @@ async function renderOfertas(page = 1) {
       return;
     }
 
-    const filas = await Promise.all(
-      ofertas.map(async (oferta) => {
-        let totalPostulantes = 0;
-        try {
-          totalPostulantes = await getPostulantesCount(oferta.id);
-        } catch {}
+    // Mapa de regiones chilenas
+const regionesChile = [
+  { numero: 1, nombre: "Región de Arica y Parinacota" },
+  { numero: 2, nombre: "Región de Tarapacá" },
+  { numero: 3, nombre: "Región de Antofagasta" },
+  { numero: 4, nombre: "Región de Atacama" },
+  { numero: 5, nombre: "Región de Coquimbo" },
+  { numero: 6, nombre: "Región de Valparaíso" },
+  { numero: 7, nombre: "Región Metropolitana de Santiago" },
+  { numero: 8, nombre: "Región del Libertador General Bernardo O’Higgins" },
+  { numero: 9, nombre: "Región del Maule" },
+  { numero: 10, nombre: "Región de Ñuble" },
+  { numero: 11, nombre: "Región del Biobío" },
+  { numero: 12, nombre: "Región de La Araucanía" },
+  { numero: 13, nombre: "Región de Los Ríos" },
+  { numero: 14, nombre: "Región de Los Lagos" },
+  { numero: 15, nombre: "Región de Aysén del General Carlos Ibáñez del Campo" },
+  { numero: 16, nombre: "Región de Magallanes y de la Antártica Chilena" }
+];
 
-        const fecha = oferta.fecha_cierre
-          ? new Date(oferta.fecha_cierre).toLocaleDateString('es-CL', {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric',
-            })
-          : '-';
+function obtenerNombreRegion(numero) {
+  const region = regionesChile.find(r => Number(r.numero) === Number(numero));
+  return region ? region.nombre : "Sin región";
+}
 
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>
-            <div class="profile-job-info">
-              <div class="profile-job-content">
-                <h6><a href="#">${oferta.titulo}</a></h6>
-                <ul class="profile-job-list">
-                  <li><i class="far fa-location-dot"></i> ${oferta.empleador?.data?.region || 'Sin región'}</li>
-                </ul>
-              </div>
-            </div>
-          </td>
-          <td>
-            <a href="employer-candidate.html?id=${oferta.id}"
-               class="btn btn-outline-primary btn-sm rounded-pill position-relative px-2 py-1">
-              <i class="far fa-users me-1 fs-6"></i>
-              <span>Postulantes</span>
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
-                    style="font-size: 1em;">${totalPostulantes}</span>
-            </a>
-          </td>
-          <td>${fecha}</td>
-          <td>
-            <span class="badge ${oferta.es_activa ? 'bg-success' : 'bg-secondary'}">
-              ${oferta.es_activa ? 'Activo' : 'Inactivo'}
-            </span>
-          </td>
-          <td>
-            <a href="employer-view-job.html?id=${oferta.id}" class="btn btn-outline-secondary btn-sm">
-              <i class="far fa-eye"></i></a>
-            <a href="employer-edit-job.html?id=${oferta.id}" class="btn btn-outline-secondary btn-sm">
-              <i class="far fa-pen"></i></a>
-            <a href="#" class="btn btn-outline-danger btn-sm btn-delete" data-id="${oferta.id}">
-              <i class="far fa-trash-can"></i></a>
-          </td>`;
-        return tr;
-      })
-    );
+const filas = await Promise.all(
+  ofertas.map(async (oferta) => {
+    let totalPostulantes = 0;
+    try {
+      totalPostulantes = await getPostulantesCount(oferta.id);
+    } catch {}
+
+    // Intentar parsear la data (viene como string JSON)
+    let data = {};
+    try {
+      if (oferta.data)
+        data = typeof oferta.data === "string" ? JSON.parse(oferta.data) : oferta.data;
+    } catch (err) {
+      console.warn("Error al parsear data de oferta:", err);
+    }
+
+    // Región
+    const regionNumero = data.region || oferta.empleador?.data?.region;
+    const regionNombre = obtenerNombreRegion(regionNumero);
+
+    // Sueldo
+    let sueldoTexto = "De acuerdo al mercado";
+    if (data.renta) {
+      const desde = data.renta.desde || 0;
+      const hasta = data.renta.hasta || 0;
+
+      const formato = (n) => Number(n).toLocaleString("es-CL");
+      if (desde && hasta && desde !== hasta) sueldoTexto = `$${formato(desde)} - $${formato(hasta)}`;
+      else if (desde && !hasta) sueldoTexto = `$${formato(desde)}`;
+    }
+
+    const fecha = oferta.fecha_cierre
+      ? new Date(oferta.fecha_cierre).toLocaleDateString("es-CL", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })
+      : "-";
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>
+        <div class="profile-job-info">
+          <div class="profile-job-content">
+            <h6><a href="#">${oferta.titulo}</a></h6>
+            <ul class="profile-job-list mb-0">
+              <li><i class="far fa-location-dot"></i> ${regionNombre}</li>
+            </ul>
+          </div>
+        </div>
+      </td>
+      <td>
+        <a href="employer-candidate.html?id=${oferta.id}"
+           class="btn btn-outline-primary btn-sm rounded-pill position-relative px-2 py-1">
+          <i class="far fa-users me-1 fs-6"></i>
+          <span>Postulantes</span>
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
+                style="font-size: 1em;">${totalPostulantes}</span>
+        </a>
+      </td>
+      <td>${sueldoTexto}</td>
+      <td>${fecha}</td>
+      <td>
+        <span class="badge ${oferta.es_activa ? "bg-success" : "bg-secondary"}">
+          ${oferta.es_activa ? "Activo" : "Inactivo"}
+        </span>
+      </td>
+      <td>
+        <a href="employer-view-job.html?id=${oferta.id}" class="btn btn-outline-secondary btn-sm">
+          <i class="far fa-eye"></i>
+        </a>
+        <a href="employer-edit-job.html?id=${oferta.id}" class="btn btn-outline-secondary btn-sm">
+          <i class="far fa-pen"></i>
+        </a>
+        <a href="#" class="btn btn-outline-danger btn-sm btn-delete" data-id="${oferta.id}">
+          <i class="far fa-trash-can"></i>
+        </a>
+      </td>`;
+    return tr;
+  })
+);
 
     tbody.innerHTML = '';
     filas.forEach((tr) => tbody.appendChild(tr));
