@@ -66,7 +66,23 @@
                                 </div>
                             </div>
                             <div class="job-single-list">
-                                <h5>Descripción</h5>
+                                <h5>
+                                    <div class="user-profile-card-header d-flex justify-content-between align-items-center p-3 mb-3 rounded shadow-sm" 
+     style="background:#f9fafc; border:1px solid #e4e7eb;">
+  <div class="d-flex align-items-center">
+    <i class="text-primary me-2" style="font-size:20px;"></i>
+    <h4 class="user-profile-card-title mb-0 fw-semibold" style="font-size:22px; color:#333;">
+      Descripción
+    </h4>
+  </div>
+  <a id="downloadCandidateCv" href="#" 
+     class="btn btn-outline-primary d-flex align-items-center gap-2 px-3 py-1 shadow-sm"
+     style="border-radius:6px; font-size:15px;">
+    <i class="far fa-file-arrow-down"></i>
+    <span>Descargar CV</span>
+  </a>
+</div>
+                                </h5>
                                 <ul>
                                     <li>
                                         <div class="job-single-list-icon">
@@ -124,15 +140,6 @@
                                     </li>
                                     <li>
                                         <div class="job-single-list-icon">
-                                            <i class="fas fa-file-user"></i>
-                                        </div>
-                                        <div class="job-single-list-info">
-                                            <h6>Curriculum Candidato</h6>
-                                            <p><a href="#" id="downloadEmptyPdf">Descargar aquí</a></p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="job-single-list-icon">
                                             <i class="fas fa-language"></i>
                                         </div>
                                         <div class="job-single-list-info">
@@ -179,9 +186,6 @@
                 </div>
             </div>
         </div>
-
-        </div>
-
     </main>
     <!-- footer area -->
     <div id="footer-placeholder">
@@ -216,6 +220,72 @@
         <script src="../assets/js/modules/ofertas/hide-offer-id.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="../assets/js/config/token-exp.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", async () => {
+  const btnDescargar = document.getElementById("downloadCandidateCv");
+  if (!btnDescargar) return;
+
+  // ID del candidato desde sessionStorage (guardado en vista de lista)
+  const candidatoId = sessionStorage.getItem("sel_cand_id");
+  if (!candidatoId) {
+    btnDescargar.style.display = "none";
+    return;
+  }
+
+  const tokenKeys = ["auth_token_emp", "auth_token", "empleador_token", "token", "jwt"];
+  let token = null;
+  for (const key of tokenKeys) {
+    const v = localStorage.getItem(key);
+    if (v) {
+      token = v;
+      break;
+    }
+  }
+
+  // Base URL de API
+  const API_BASE = typeof BASE_URL_API !== "undefined" ? BASE_URL_API : window.location.origin + "/api/v1";
+  const PUBLIC_BASE = API_BASE.replace(/\/v1$/, "");
+
+  try {
+    // 1️⃣ Obtener datos del postulante por ID
+    const resPost = await fetch(`${API_BASE}/postulante/${candidatoId}`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+    if (!resPost.ok) throw new Error("No se pudo obtener datos del candidato");
+    const postData = await resPost.json();
+
+    const rut = postData?.usuario?.rut;
+    if (!rut) throw new Error("RUT no encontrado");
+
+    // 2️⃣ Obtener datos del curriculum
+    const resCv = await fetch(`${API_BASE}/curriculum/${rut}`);
+    if (!resCv.ok) throw new Error("Error al obtener CV");
+    const cvList = await resCv.json();
+    const cv = Array.isArray(cvList) ? cvList[0] : cvList;
+    const cvPath = cv?.cv_path || "";
+
+    // 3️⃣ Construir URL pública
+    let cvUrl;
+    if (cvPath.startsWith("/uploads/")) {
+      cvUrl = `${PUBLIC_BASE}${cvPath}`;
+    } else if (cvPath.startsWith("/var/www/html/")) {
+      cvUrl = `${PUBLIC_BASE}${cvPath.replace("/var/www/html", "")}`;
+    } else {
+      cvUrl = `${API_BASE}/curriculum/${encodeURIComponent(rut)}/view`;
+    }
+
+    // 4️⃣ Asignar acción de descarga / apertura
+    btnDescargar.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.open(cvUrl, "_blank");
+    });
+  } catch (err) {
+    console.error("Error al preparar descarga de CV:", err);
+    btnDescargar.style.display = "none";
+  }
+});
+
+        </script>
 
 
 </body>
