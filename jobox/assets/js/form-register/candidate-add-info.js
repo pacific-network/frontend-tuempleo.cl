@@ -300,8 +300,9 @@ function prepareFormData() {
     estado_civil: document.getElementById('estado_civil').value,
     region: document.getElementById('region').value,
     comuna: document.getElementById('comuna').value,
+    direccion: document.getElementById('direccion').value,
     nacionalidad: document.getElementById('nacionalidad').value,
-    descripcion_bio: document.getElementById('descripcion_bio').value,
+    objetivo_laboral: document.getElementById('objetivo_laboral').value,
     // también por si lees desde datos_personales
     nombre: nombreVal,
     apellido: apellidoVal,
@@ -356,8 +357,6 @@ function prepareFormData() {
 
   return {
     rut: cleanRUT(document.getElementById('rut').value),
-    nombre: nombreVal,
-    apellido: apellidoVal,
     email: document.getElementById('correo').value,
     data: {
       nombre: nombreVal,
