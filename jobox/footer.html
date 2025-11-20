@@ -1,9 +1,176 @@
+<!-- ===================================================== -->
+<!--   CHAT N8N ESTILIZADO (DEBE IR ANTES DEL FOOTER)       -->
+<!-- ===================================================== -->
+
+<link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+
+<style>
+  :root {
+    /* ====== COLORES CORPORATIVOS ====== */
+    --chat--color--primary: #3C65F5;
+    --chat--color--primary-shade-50: #2F4FD6;
+    --chat--color--primary--shade-100: #243CB0;
+
+    --chat--color--secondary: #3C65F5;
+    --chat--color-secondary-shade-50: #2F4FD6;
+
+    --chat--color-white: #ffffff;
+    --chat--color-light: #F4F6FC;
+    --chat--color-light-shade-50: #E6E9F7;
+    --chat--color-light-shade-100: #D7DCED;
+
+    --chat--color-medium: #C6CBE0;
+    --chat--color-dark: #1C1F2A;
+    --chat--color-disabled: #9CA3AF;
+
+    /* ====== GENERAL ====== */
+    --chat--border-radius: 0.8rem;
+    --chat--spacing: 1rem;
+    --chat--window--width: 430px;
+    --chat--window--height: 620px;
+
+    /* ====== HEADER ====== */
+    --chat--header--background: #1C1F2A;
+    --chat--header--color: #FFFFFF;
+    --chat--heading--font-size: 1.9em;
+    --chat--subtitle--font-size: 1em;
+    --chat--subtitle--color: #C8CBD6;
+
+    /* ====== MENSAJES ====== */
+    --chat--message--font-size: 1.05rem;
+    --chat--message--padding: 1rem;
+    --chat--message--border-radius: 1rem;
+
+    /* Bot */
+    --chat--message--bot--background: #FFFFFF;
+    --chat--message--bot--color: #1C1F2A;
+    --chat--message--bot--border: 1px solid #E6E9F7;
+
+    /* Usuario */
+    --chat--message--user--background: #3C65F5;
+    --chat--message--user--color: #FFFFFF;
+
+    /* ====== INPUT ====== */
+    --chat--textarea--height: 55px;
+    --chat--textarea--background: #FFFFFF;
+    --chat--textarea--color: #1C1F2A;
+    --chat--textarea--border: 1px solid #C8CCDA;
+
+    /* ====== BOTÓN ====== */
+    --chat--toggle--background: #3C65F5;
+    --chat--toggle--hover--background: #2F4FD6;
+    --chat--toggle--active--background: #243CB0;
+    --chat--toggle--color: #FFFFFF;
+    --chat--toggle--size: 64px;
+  }
+
+  /* =============== SOMBRA Y BORDE GLOBAL =============== */
+  n8n-chat {
+    z-index: 999999 !important;
+    --chat--window-background: var(--chat--color-light);
+    box-shadow: 0px 10px 28px rgba(0, 0, 0, 0.18) !important;
+    border-radius: 1rem !important;
+    overflow: hidden !important;
+  }
+
+  /* =============== HEADER INTERNO =============== */
+  n8n-chat header {
+    padding-top: 1.7rem !important;
+    padding-bottom: 1.7rem !important;
+    border-bottom: none !important;
+  }
+
+  n8n-chat header h1 {
+    font-weight: 700 !important;
+    letter-spacing: -0.5px !important;
+  }
+
+  n8n-chat header p {
+    opacity: 0.9;
+  }
+
+  /* =============== MENSAJES BOT =============== */
+  n8n-chat .message.bot {
+    background: var(--chat--message--bot--background) !important;
+    border: var(--chat--message--bot--border) !important;
+    color: var(--chat--message--bot--color) !important;
+    border-radius: 1rem !important;
+    max-width: 75% !important;
+  }
+
+  /* =============== MENSAJES USUARIO =============== */
+  n8n-chat .message.user {
+    background: var(--chat--message--user--background) !important;
+    color: var(--chat--message--user--color) !important;
+    border-radius: 1rem !important;
+    max-width: 75% !important;
+  }
+
+  /* =============== ESPACIADO ENTRE MENSAJES =============== */
+  n8n-chat .message {
+    margin-bottom: 0.9rem !important;
+    font-size: 1.06rem !important;
+  }
+
+  /* =============== INPUT =============== */
+  n8n-chat textarea {
+    background: var(--chat--textarea--background) !important;
+    border: var(--chat--textarea--border) !important;
+    font-size: 1.05rem !important;
+    border-radius: 0.6rem !important;
+  }
+
+  /* Placeholder */
+  n8n-chat textarea::placeholder {
+    color: #A1A6B3 !important;
+  }
+
+  /* =============== BOTÓN DE ENVIAR =============== */
+  n8n-chat button.send {
+    color: #3C65F5 !important;
+    transition: 0.2s ease;
+  }
+
+  n8n-chat button.send:hover {
+    color: #243CB0 !important;
+  }
+
+  /* =============== SCROLLBAR =============== */
+  n8n-chat .messages::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  n8n-chat .messages::-webkit-scrollbar-thumb {
+    background: #C6CBE0;
+    border-radius: 8px;
+  }
+</style>
+
+<script type="module">
+  import { createChat } from "https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js";
+
+  createChat({
+    webhookUrl: "https://pacificnetwork.app.n8n.cloud/webhook/956d750b-1b5d-4e35-942c-cb236ad264a8/chat",
+    defaultOpen: false
+  });
+</script>
+
+
+
+
+
+
+
+<!-- ===================================================== -->
+<!--                    FOOTER COMPLETO                    -->
+<!-- ===================================================== -->
 <footer class="footer-area pt-2 pb-1">
   <div class="footer-widget">
     <div class="container">
       <div class="row footer-widget-wrapper pt-2 pb-1">
-        <!-- Columna 1: Información -->
+
         <div class="row">
+
           <div class="col-md-6 col-lg-3">
             <div class="footer-widget-box about-us text-center text-lg-start">
               <a href="#" class="footer-logo d-inline-block mb-3">
@@ -11,7 +178,7 @@
               </a>
             </div>
           </div>
-        
+
           <div class="col-md-6 col-lg-3">
             <div class="footer-widget-box about-us text-center text-lg-start">
               <ul class="footer-contact list-unstyled mb-0">
@@ -22,7 +189,7 @@
               </ul>
             </div>
           </div>
-        
+
           <div class="col-md-6 col-lg-3">
             <div class="footer-widget-box about-us text-center text-lg-start">
               <ul class="footer-contact list-unstyled mb-0">
@@ -35,7 +202,7 @@
               </ul>
             </div>
           </div>
-        
+
           <div class="col-md-6 col-lg-3">
             <div class="footer-widget-box about-us text-center text-lg-start">
               <ul class="footer-contact list-unstyled mb-0">
@@ -46,34 +213,9 @@
               </ul>
             </div>
           </div>
-        </div>
 
+        </div> <!-- row -->
 
-        <!-- Columna 2: Soporte -->
-        <!--<div class="col-md-6 col-lg-4 col-xl-3">  -->
-        <!--  <div class="footer-widget-box list">  -->
-        <!--    <h4 class="footer-widget-title">Soporte</h4>  -->
-        <!--    <ul class="footer-list">  -->
-        <!--      <li><a href="contact.html">Contáctanos</a></li>  -->
-        <!--      <li><a href="faq.html">Preguntas Frecuentes</a></li>  -->
-        <!--      <li><a href="privacy.html">Política de Privacidad</a></li>  -->
-        <!--      <li><a href="terms.html">Términos de Servicio</a></li>  -->
-        <!--    </ul>  -->
-        <!--  </div>  -->
-        <!--</div>  -->
-
-        <!-- Columna 3: Descarga (alineado completamente a la derecha) -->
-        <!--<div class="col-md-12 col-lg-4 col-xl-6 d-flex justify-content-lg-end"> -->
-        <!--  <div class="footer-widget-box list text-lg-end"> -->
-        <!--    <div class="footer-download"> -->
-        <!--      <h5>Descarga</h5> -->
-        <!--      <div class="footer-download-content"> -->
-        <!--        <a href="#"><img src="assets/img/download/google-play.png" alt=""></a> -->
-        <!--        <a href="#"><img src="assets/img/download/app-store.png" alt=""></a> -->
-        <!--      </div> -->
-        <!--    </div> -->
-        <!--  </div> -->
-        <!--</div> -->
       </div>
     </div>
   </div>
@@ -84,7 +226,9 @@
       <div class="row">
         <div class="col-md-6 align-self-center">
           <p class="copyright-text">
-            Copyright &copy; 2025 <span id="date"></span> <a href="https://www.pacificnetwork.cl">PacificNetwork.cl®.</a> Todos los derechos reservados.
+            Copyright © 2025 
+            <a href="https://www.pacificnetwork.cl">PacificNetwork.cl.</a>
+            Todos los derechos reservados.
           </p>
         </div>
         <div class="col-md-6 align-self-center text-md-end">

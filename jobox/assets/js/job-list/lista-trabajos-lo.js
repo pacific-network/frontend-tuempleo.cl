@@ -200,24 +200,19 @@ function safeParseData(data) {
 }
 
 function formatModalidad(val) {
-  // acepta números, strings o textos ya normalizados
+  if (!val) return 'No especificado';
+
+  const k = String(val).trim().toLowerCase();
+
   const mapa = {
-    '1': 'Full Time',
-    '2': 'Part Time',
-    '3': 'Remoto',
-    '4': 'Freelance',
-    '5': 'Híbrido',
-    'Full Time': 'Full Time',
-    'Part Time': 'Part Time',
-    'Remoto': 'Remoto',
-    'Freelancer': 'Freelance',
-    'Freelance': 'Freelance',
-    'Híbrido': 'Híbrido',
-    'Hibrido': 'Híbrido'
+    presencial: 'Presencial',
+    remoto: 'Remoto',
+    hibrido: 'Híbrido'
   };
-  const k = String(val ?? '').trim();
+
   return mapa[k] || 'No especificado';
 }
+
 
 function formatFecha(fechaStr) {
   if (!fechaStr) return 'Sin fecha';
