@@ -207,42 +207,48 @@
 
   // ================== RENDER ==================
   function renderOfertas(list) {
-    const cont = document.getElementById("ofertas-container");
-    cont.innerHTML = "";
+  const cont = document.getElementById("ofertas-container");
+  cont.innerHTML = "";
 
-    if (!list.length) {
-      cont.innerHTML = `<p class="text-center text-muted py-4">Sin resultados.</p>`;
-      return;
-    }
+  if (!list.length) {
+    cont.innerHTML = `
+      <div class="col-12 text-center py-4">
+        <p class="text-muted" style="font-size:1.1rem;">
+          ❌ No se han encontrado puestos de trabajo con estas características.
+        </p>
+      </div>
+    `;
+    return;
+  }
 
-    list.forEach(o => {
-      const d = safeParse(o.data);
-      const url = `job-single-2.html?id=${o.id}`;
+  list.forEach(o => {
+    const d = safeParse(o.data);
+    const url = `job-single-2.html?id=${o.id}`;
 
-      cont.insertAdjacentHTML("beforeend", `
-        <div class="col-lg-12">
-          <div class="job-item" onclick="location.href='${url}'" style="cursor:pointer;">
-            <div class="job-img">
-              <img src="assets/img/job/01.jpg" alt="">
-            </div>
+    cont.insertAdjacentHTML("beforeend", `
+      <div class="col-lg-12">
+        <div class="job-item" onclick="location.href='${url}'" style="cursor:pointer;">
+          <div class="job-img">
+            <img src="assets/img/job/01.jpg" alt="">
+          </div>
 
-            <div class="job-content">
-              <h5>${o.titulo}</h5>
-              <span class="job-employer"><i class="far fa-building"></i> ${o.empresa?.nombre_fantasia}</span>
+          <div class="job-content">
+            <h5>${o.titulo}</h5>
+            <span class="job-employer"><i class="far fa-building"></i> ${o.empresa?.nombre_fantasia}</span>
 
-              <ul class="job-info-list">
-                <li><i class="fe-briefcase"></i> ${d.area_trabajo || "Sin categoría"}</li>
-                <li><i class="fe-check-circle"></i> ${formatModalidad(d.modalidad)}</li>
-                <li><i class="fe-clock"></i> ${diasDesde(o.fecha_publicacion)}</li>
-                <li><i class="fe-dollar-sign"></i> ${formatRango(d.renta_salarial)}</li>
-                <li><i class="fe-map-pin"></i> ${o.empleador?.data?.region || "Región no disponible"}</li>
-              </ul>
-            </div>
+            <ul class="job-info-list">
+              <li><i class="fe-briefcase"></i> ${d.area_trabajo || "Sin categoría"}</li>
+              <li><i class="fe-check-circle"></i> ${formatModalidad(d.modalidad)}</li>
+              <li><i class="fe-clock"></i> ${diasDesde(o.fecha_publicacion)}</li>
+              <li><i class="fe-dollar-sign"></i> ${formatRango(d.renta_salarial)}</li>
+              <li><i class="fe-map-pin"></i> ${o.empleador?.data?.region || "Región no disponible"}</li>
+            </ul>
           </div>
         </div>
-      `);
-    });
-  }
+      </div>
+    `);
+  });
+}
 
   function renderPagination(meta) {
     const pagUl = document.querySelector('.pagination');

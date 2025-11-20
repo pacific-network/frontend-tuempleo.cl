@@ -170,67 +170,86 @@
 
   // ---------- Render ----------
   function renderOfertas(ofertas) {
-    const cont = document.getElementById('ofertas-container');
-    if (!cont) return;
-    cont.innerHTML = '';
+  const cont = document.getElementById('ofertas-container');
+  if (!cont) return;
+  cont.innerHTML = '';
 
-    if (!ofertas || ofertas.length === 0) {
-      cont.innerHTML = `<p class="text-center">No hay resultados con esos filtros.</p>`;
-      return;
-    }
+  // ===========================
+  //   SIN RESULTADOS — MENSAJE
+  // ===========================
+  if (!ofertas || ofertas.length === 0) {
+    cont.innerHTML = `
+      <div class="col-12 text-center py-5">
+        <p class="text-muted" style="font-size:1.1rem;">
+          ❌ No se han encontrado puestos de trabajo con estas características.
+        </p>
+      </div>
+    `;
+    return;
+  }
 
-    ofertas.forEach(oferta => {
-      const data = safeParse(oferta.data);
-      const herramientas = (data.herramientas_basicas || [])
-        .filter(h => !!h?.trim())
-        .map(h => `<a><span>${h}</span></a>`)
-        .join('');
+  // ===========================
+  //       RENDER NORMAL
+  // ===========================
+  ofertas.forEach(oferta => {
+    const data = safeParse(oferta.data);
+    const herramientas = (data.herramientas_basicas || [])
+      .filter(h => !!h?.trim())
+      .map(h => `<a><span>${h}</span></a>`)
+      .join('');
 
-      const modalidadLegible = data.modalidad ? formatModalidad(data.modalidad) : null;
-      const detailUrl = `job-single-2-si.html?id=${oferta.id}`;
+    const modalidadLegible = data.modalidad ? formatModalidad(data.modalidad) : null;
+    const detailUrl = `job-single-2-si.html?id=${oferta.id}`;
 
-      // --- campos opcionales ---
-      const areaTrabajo = data.area_trabajo && data.area_trabajo.trim() !== '' ? data.area_trabajo : null;
-      const fechaPublicacion = oferta.fecha_publicacion ? diasDesde(oferta.fecha_publicacion) : null;
-      const fechaCierre = oferta.fecha_cierre ? formatFecha(oferta.fecha_cierre) : null;
-      const salarioRango = (data.renta_salarial?.desde && data.renta_salarial?.hasta)
-        ? `$${parseInt(data.renta_salarial.desde).toLocaleString('es-CL')} - $${parseInt(data.renta_salarial.hasta).toLocaleString('es-CL')}`
-        : null;
-      const region = oferta.empleador?.data?.region && oferta.empleador.data.region.trim() !== ''
-        ? oferta.empleador.data.region
-        : null;
+    const areaTrabajo = data.area_trabajo && data.area_trabajo.trim() !== '' ? data.area_trabajo : null;
+    const fechaPublicacion = oferta.fecha_publicacion ? diasDesde(oferta.fecha_publicacion) : null;
+    const fechaCierre = oferta.fecha_cierre ? formatFecha(oferta.fecha_cierre) : null;
+    const salarioRango = (data.renta_salarial?.desde && data.renta_salarial?.hasta)
+      ? `$${parseInt(data.renta_salarial.desde).toLocaleString('es-CL')} - $${parseInt(data.renta_salarial.hasta).toLocaleString('es-CL')}`
+      : null;
 
-      // --- generar <li> sólo si existen ---
-      const infoItems = [];
-      if (areaTrabajo) infoItems.push(`<li><i class="fe-briefcase"></i> ${areaTrabajo}</li>`);
-      if (modalidadLegible) infoItems.push(`<li><i class="fe-check-circle"></i> ${modalidadLegible}</li>`);
-      if (fechaPublicacion) infoItems.push(`<li><i class="fe-clock"></i> ${fechaPublicacion}</li>`);
-      if (fechaCierre) infoItems.push(`<li><i class="fas fa-timer"></i> Exp: ${fechaCierre}</li>`);
-      if (salarioRango) infoItems.push(`<li><i class="fe-dollar-sign"></i> Salario: ${salarioRango}</li>`);
-      if (region) infoItems.push(`<li><i class="fe-map-pin"></i> ${region}</li>`);
+    const region = oferta.empleador?.data?.region && oferta.empleador.data.region.trim() !== ''
+      ? oferta.empleador.data.region
+      : null;
 
-      // --- generar bloque completo ---
-      cont.insertAdjacentHTML('beforeend', `
-        <div class="col-lg-12" id="oferta-${oferta.id}">
-          <div class="job-item" data-id="${oferta.id}" onclick="window.location.href='${detailUrl}'" style="cursor: pointer;">
-            <div class="job-img"><img src="assets/img/job/01.jpg" alt=""></div>
-            <div class="job-content">
-              <div class="job-top">
-                <div class="job-title">
-                  <h5>${oferta.titulo || 'Sin título'}</h5>
-                  <span class="job-employer"><i class="far fa-building"></i> ${oferta.empresa?.nombre_fantasia || 'Empresa'}</span>
-                </div>
+    // Items dinámicos
+    const infoItems = [];
+    if (areaTrabajo) infoItems.push(`<li><i class="fe-briefcase"></i> ${areaTrabajo}</li>`);
+    if (modalidadLegible) infoItems.push(`<li><i class="fe-check-circle"></i> ${modalidadLegible}</li>`);
+    if (fechaPublicacion) infoItems.push(`<li><i class="fe-clock"></i> ${fechaPublicacion}</li>`);
+    if (fechaCierre) infoItems.push(`<li><i class="fas fa-timer"></i> Exp: ${fechaCierre}</li>`);
+    if (salarioRango) infoItems.push(`<li><i class="fe-dollar-sign"></i> Salario: ${salarioRango}</li>`);
+    if (region) infoItems.push(`<li><i class="fe-map-pin"></i> ${region}</li>`);
+
+    cont.insertAdjacentHTML('beforeend', `
+      <div class="col-lg-12" id="oferta-${oferta.id}">
+        <div class="job-item" data-id="${oferta.id}" onclick="window.location.href='${detailUrl}'" style="cursor: pointer;">
+          
+          <div class="job-img">
+            <img src="assets/img/job/01.jpg" alt="">
+          </div>
+          
+          <div class="job-content">
+            <div class="job-top">
+              <div class="job-title">
+                <h5>${oferta.titulo || 'Sin título'}</h5>
+                <span class="job-employer">
+                  <i class="far fa-building"></i> ${oferta.empresa?.nombre_fantasia || 'Empresa'}
+                </span>
               </div>
-              <ul class="job-info-list">
-                ${infoItems.join('')}
-              </ul>
-              ${herramientas ? `<div class="job-skill">${herramientas}</div>` : ''}
             </div>
+
+            <ul class="job-info-list">
+              ${infoItems.join('')}
+            </ul>
+
+            ${herramientas ? `<div class="job-skill">${herramientas}</div>` : ''}
           </div>
         </div>
-      `);
-    });
-  }
+      </div>
+    `);
+  });
+}
 
   function renderPagination(meta) {
     const pag = document.querySelector('.pagination');

@@ -162,77 +162,81 @@
                 <br><br><br><br>
                 <h2 class="breadcrumb-title">Lista de Trabajos</h2>
 
-                <div class="job-list2 search-form mt-5 mb-3">
-                    <div class="col-lg-9 mx-auto">
-                        <div class="search-form-wrapper">
-                            <form id="form-busqueda" action="#">
-                                <div class="row">
-                                    <div class="col-md-4 px-0">
-                                        <div class="form-group">
-                                            <div class="form-group-icon">
-                                                <input type="text" id="input-keyword" class="form-control"
-                                                    placeholder="Buscar empleo por puesto o palabra clave">
-                                                <i class="fe-search"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 px-0">
-                                      <div class="form-group">
-                                        <div class="form-group-icon">
-                                          <select type="text" class="form-control" id="region-select" data-region-seleccionada="0">
-                                            <option value="">Ubicación</option>
-                                          </select>
-                                          <i class="fe-map-pin"></i>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div class="col-md-3 px-0">
-                                        <div class="form-group">
-                                            <div class="form-group-icon">
-                                                <select id="categoria-select" class="form-control ps-5" aria-label="Filtrar por categoría">
-                                                    <option value="">Categoría</option>
-                                                    <option value="Abastecimiento y Logistica">Abastecimiento y Logistica</option>
-                                                    <option value="Administración, Contabilidad y Finanzas">Administración, Contabilidad y Finanzas</option>
-                                                    <option value="Aduana y Comercio Exterior">Aduana y Comercio Exterior</option>
-                                                    <option value="Atención al Cliente, Call Center y Telemarketing">Atención al Cliente, Call Center y Telemarketing</option>
-                                                    <option value="Comercial, Ventas y Negocios">Comercial, Ventas y Negocios</option>
-                                                    <option value="Comunicación, Relaciones Institucionales y Públicas">Comunicación, Relaciones Institucionales y Públicas</option>
-                                                    <option value="Departamento Técnico">Departamento Técnico</option>
-                                                    <option value="Diseño">Diseño</option>
-                                                    <option value="Educación, Docencia e Investigación">Educación, Docencia e Investigación</option>
-                                                    <option value="Enfermería">Enfermería</option>
-                                                    <option value="Gastronomía y Turismo">Gastronomía y Turismo</option>
-                                                    <option value="Gerencia y Dirección General">Gerencia y Dirección General</option>
-                                                    <option value="Ingeniería Civil y Construcción">Ingeniería Civil y Construcción</option>
-                                                    <option value="Ingenierías">Ingenierías</option>
-                                                    <option value="Legales">Legales</option>
-                                                    <option value="Marketing y Publicidad">Marketing y Publicidad</option>
-                                                    <option value="Minería, Petróleo y Gas">Minería, Petróleo y Gas</option>
-                                                    <option value="Navierio, Marítimo, Porutuario">Navierio, Marítimo, Porutuario</option>
-                                                    <option value="Oficios y Otros">Oficios y Otros</option>
-                                                    <option value="Producción y Manufactura">Producción y Manufactura</option>
-                                                    <option value="RRHH  y Capacitación">RRHH  y Capacitación</option>
-                                                    <option value="Salud, Medicina y Farmacia">Salud, Medicina y Farmacia</option>
-                                                    <option value="Secretaria y Recepción">Secretaria y Recepción</option>
-                                                    <option value="Seguros">Seguros</option>
-                                                    <option value="Sociología / Trabajo Social">Sociología / Trabajo Social</option>
-                                                    <option value="Tecnologías, Sistemas y Telecomunicaciones">Tecnologías, Sistemas y Telecomunicaciones</option>
-                                                </select>
-                                                <i class="fe-briefcase"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-1 px-1">
-                                        <div class="form-group">
-                                            <button type="submit" class="theme-btn w-100"><span
-                                                    class="fe-search"></span>Buscar</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+                <div class="job-list2 search-form mt-4 mb-2">
+    <div class="col-lg-9 mx-auto">
+        <div class="search-form-wrapper container">
+            <form id="form-busqueda">
+                <div class="row g-3">
+
+                    <!-- Keyword -->
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="form-group position-relative">
+                            <input type="text" id="input-keyword" class="form-control ps-5"
+                                   placeholder="Buscar empleo por puesto o palabra clave"
+                                   autocomplete="off">
+                            <i class="fe-search position-absolute top-50 translate-middle-y" style="left: 15px;"></i>
                         </div>
                     </div>
+
+                    <!-- Región -->
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="form-group position-relative">
+                            <select class="form-control ps-5" id="region-select">
+                                <option value="">Ubicación</option>
+                            </select>
+                            <i class="fe-map-pin position-absolute top-50 translate-middle-y" style="left: 15px;"></i>
+                        </div>
+                    </div>
+
+                    <!-- Categoría -->
+                    <div class="col-12 col-md-6 col-lg-3">
+                    <div class="form-group position-relative">
+                      <i class="fe-briefcase position-absolute" style="left: 15px; top: 50%; transform: translateY(-50%);"></i>
+                      <select id="categoria-select" class="form-control ps-5" aria-label="Filtrar por categoría">
+                        <option value="">Categoría</option>
+                        <option value="Abastecimiento y Logistica">Abastecimiento y Logistica</option>
+                        <option value="Administración, Contabilidad y Finanzas">Administración, Contabilidad y Finanzas</option>
+                        <option value="Aduana y Comercio Exterior">Aduana y Comercio Exterior</option>
+                        <option value="Atención al Cliente, Call Center y Telemarketing">Atención al Cliente, Call Center y Telemarketing</option>
+                        <option value="Comercial, Ventas y Negocios">Comercial, Ventas y Negocios</option>
+                        <option value="Comunicación, Relaciones Institucionales y Públicas">Comunicación, Relaciones Institucionales y Públicas</option>
+                        <option value="Departamento Técnico">Departamento Técnico</option>
+                        <option value="Diseño">Diseño</option>
+                        <option value="Educación, Docencia e Investigación">Educación, Docencia e Investigación</option>
+                        <option value="Enfermería">Enfermería</option>
+                        <option value="Gastronomía y Turismo">Gastronomía y Turismo</option>
+                        <option value="Gerencia y Dirección General">Gerencia y Dirección General</option>
+                        <option value="Ingeniería Civil y Construcción">Ingeniería Civil y Construcción</option>
+                        <option value="Ingenierías">Ingenierías</option>
+                        <option value="Legales">Legales</option>
+                        <option value="Marketing y Publicidad">Marketing y Publicidad</option>
+                        <option value="Minería, Petróleo y Gas">Minería, Petróleo y Gas</option>
+                        <option value="Navierio, Marítimo, Porutuario">Navierio, Marítimo, Porutuario</option>
+                        <option value="Oficios y Otros">Oficios y Otros</option>
+                        <option value="Producción y Manufactura">Producción y Manufactura</option>
+                        <option value="RRHH  y Capacitación">RRHH  y Capacitación</option>
+                        <option value="Salud, Medicina y Farmacia">Salud, Medicina y Farmacia</option>
+                        <option value="Secretaria y Recepción">Secretaria y Recepción</option>
+                        <option value="Seguros">Seguros</option>
+                        <option value="Sociología / Trabajo Social">Sociología / Trabajo Social</option>
+                        <option value="Tecnologías, Sistemas y Telecomunicaciones">Tecnologías, Sistemas y Telecomunicaciones</option>
+                      </select>
+                    </div>
+                  </div>
+
+                    <!-- Botón buscar -->
+                    <div class="col-12 col-md-6 col-lg-1">
+                        <button type="submit" class="theme-btn w-100">
+                            <span class="fe-search"></span>Buscar
+                        </button>
+                    </div>
+
                 </div>
+            </form>
+        </div>
+    </div>
+</div>
+
             </div>
             <div class="hero-shape">
                 <img class="hero-shape-1" src="assets/img/shape/03.svg" alt="">
@@ -256,115 +260,116 @@
                         </div>
 
                         <div class="job-sidebar">
-                            <div class="job-sidebar-item">
-                                <div id="ultimas-busquedas" class="bg-light border rounded px-3 py-2 small shadow-sm">
-                                    <strong class="text-muted d-block mb-1">Últimas búsquedas:</strong>
-                                    <ul class="list-unstyled mb-0" id="lista-busquedas" style="font-size: 0.85rem;"></ul>
-                                </div>
-                            </div>
-                            <div class="job-sidebar-item">
-                                <h4 class="job-sidebar-title">Modalidad</h4>
-                                <div class="job-type">
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-type" type="checkbox" value="3"
-                                            id="job-type3">
-                                        <label class="form-check-label" for="job-type3">
-                                            Híbrido <span>(0)</span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-type" type="checkbox" value="4"
-                                            id="job-type4">
-                                        <label class="form-check-label" for="job-type4">
-                                            Part-Time <span>(0)</span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-type" type="checkbox" value="5"
-                                            id="job-type5">
-                                        <label class="form-check-label" for="job-type5">
-                                            Full-time <span>(0)</span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-type" type="checkbox" value="6"
-                                            id="job-type6">
-                                        <label class="form-check-label" for="job-type6">
-                                            Freelance <span>(0)</span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-type" type="checkbox" value="7"
-                                            id="job-type7">
-                                        <label class="form-check-label" for="job-type6">
-                                            Remoto <span>(0)</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <button class="btn-filtro w-100" onclick="aplicarFiltro('modalidad')">Aplicar filtro</button>
-                            </div>
-                            <div class="job-sidebar-item">
-                                <h4 class="job-sidebar-title">Salario</h4>
-                                <div class="job-salary">
-                                    <div class="price-range-slider">
-                                        <div class="price-range-info">
-                                            <label for="priceRange1">Desde:</label>
-                                            <input type="text" class="priceRange" id="priceRange1" readonly>
-                                        </div>
-                                        <div id="price-range1" class="price-range slider"></div>
-                                    </div>
-                                </div>
-                                <button class="btn-filtro w-100" onclick="aplicarFiltro('salario')">Aplicar filtro</button>
-                            </div>
-                            <div class="job-sidebar-item">
-                                <h4 class="job-sidebar-title">Trabajos Publicados</h4>
-                                <div class="job-posted">
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-posted" type="checkbox" value="1"
-                                            id="job-posted1">
-                                        <label class="form-check-label" for="job-posted1">
-                                            Todos <span>(0)</span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-posted" type="checkbox" value="2"
-                                            id="job-posted2">
-                                        <label class="form-check-label" for="job-posted2">
-                                            Recientes <span>(0)</span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-posted" type="checkbox" value="3"
-                                            id="job-posted3">
-                                        <label class="form-check-label" for="job-posted3">
-                                            Ultimas 24 horas <span>(0)</span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-posted" type="checkbox" value="4"
-                                            id="job-posted4">
-                                        <label class="form-check-label" for="job-posted4">
-                                            Ultimos 7 días <span>(0)</span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-posted" type="checkbox" value="5"
-                                            id="job-posted5">
-                                        <label class="form-check-label" for="job-posted5">
-                                            Ultimos 30 días <span>(0)</span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="job-posted" type="checkbox" value="6"
-                                            id="job-posted5">
-                                        <label class="form-check-label" for="job-posted5">
-                                            Ultimos 60 días <span>(0)</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <button class="btn-filtro w-100" onclick="aplicarFiltro('lastjobs')">Aplicar filtro</button>
-                            </div>
-                        </div>
+
+    <!-- Últimas búsquedas -->
+    <div class="job-sidebar-item">
+        <div id="ultimas-busquedas" class="bg-light border rounded px-3 py-2 small shadow-sm">
+            <strong class="text-muted d-block mb-1">Últimas búsquedas:</strong>
+            <ul class="list-unstyled mb-0" id="lista-busquedas" style="font-size: 0.85rem;"></ul>
+        </div>
+    </div>
+
+    <!-- Modalidad -->
+    <div class="job-sidebar-item">
+        <h4 class="job-sidebar-title">Modalidad</h4>
+        <div class="job-type">
+
+            <div class="form-check">
+                <input class="form-check-input" name="modalidad" type="checkbox" value="hibrido" id="mod-hibrido">
+                <label class="form-check-label" for="mod-hibrido">Híbrido</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" name="modalidad" type="checkbox" value="presencial" id="mod-presencial">
+                <label class="form-check-label" for="mod-presencial">Presencial</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" name="modalidad" type="checkbox" value="remoto" id="mod-remoto">
+                <label class="form-check-label" for="mod-remoto">Remoto</label>
+            </div>
+
+        </div>
+        <button class="btn-filtro w-100" onclick="aplicarFiltro()">Aplicar filtro</button>
+    </div>
+
+    <!-- Salario -->
+    <div class="job-sidebar-item">
+        <h4 class="job-sidebar-title">Salario</h4>
+        <div class="job-salary">
+            <label>Rango:</label>
+            <input type="text" class="priceRange" id="priceRange1" readonly>
+            <div id="price-range1" class="price-range slider"></div>
+        </div>
+        <button class="btn-filtro w-100" onclick="aplicarFiltro()">Aplicar filtro</button>
+    </div>
+
+    <!-- Tipo de contrato -->
+    <div class="job-sidebar-item">
+        <h4 class="job-sidebar-title">Tipo de Contrato</h4>
+
+        <div class="form-check">
+            <input class="form-check-input" name="tipo-contrato" type="checkbox" value="plazo_fijo" id="tc-plazo">
+            <label class="form-check-label" for="tc-plazo">Plazo Fijo</label>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" name="tipo-contrato" type="checkbox" value="indefinido" id="tc-ind">
+            <label class="form-check-label" for="tc-ind">Indefinido</label>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" name="tipo-contrato" type="checkbox" value="temporal" id="tc-temp">
+            <label class="form-check-label" for="tc-temp">Temporal</label>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" name="tipo-contrato" type="checkbox" value="reemplazo" id="tc-reem">
+            <label class="form-check-label" for="tc-reem">Reemplazo</label>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" name="tipo-contrato" type="checkbox" value="practica" id="tc-prac">
+            <label class="form-check-label" for="tc-prac">Práctica</label>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" name="tipo-contrato" type="checkbox" value="otro_tipo_de_contrato" id="tc-otro">
+            <label class="form-check-label" for="tc-otro">Otro</label>
+        </div>
+
+        <button class="btn-filtro w-100" onclick="aplicarFiltro()">Aplicar filtro</button>
+    </div>
+
+    <!-- Publicados -->
+    <div class="job-sidebar-item">
+        <h4 class="job-sidebar-title">Trabajos Publicados</h4>
+
+        <div class="form-check">
+            <input class="form-check-input" name="job-posted" type="checkbox" value="1" id="job-posted1">
+            <label class="form-check-label" for="job-posted1">Todos</label>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" name="job-posted" type="checkbox" value="2" id="job-posted2">
+            <label class="form-check-label" for="job-posted2">Recientes</label>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" name="job-posted" type="checkbox" value="3" id="job-posted3">
+            <label class="form-check-label" for="job-posted3">Últimas 24 horas</label>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" name="job-posted" type="checkbox" value="5" id="job-posted5">
+            <label class="form-check-label" for="job-posted5">Últimos 30 días</label>
+        </div>
+
+        <button class="btn-filtro w-100" onclick="aplicarFiltro()">Aplicar filtro</button>
+    </div>
+
+</div>
+
                     </div>
 
                     <div class="col-lg-8 col-xl-9">
