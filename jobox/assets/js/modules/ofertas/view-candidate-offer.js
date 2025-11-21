@@ -15,42 +15,50 @@
   }
 
   function renderPostulante(c, container){
-    // Si el candidato ya fue cualificado, lo mandamos directo al tab de "potenciales" y no al principal
-    if (c.estado === 'cualificado') {
-      container = wrapPotenciales; // append directamente al tab de cualificados
-    }
-  
     const usuario = c.postulante?.usuario || {};
     const dataPostulante = c.postulante?.data || {};
   
     const card = document.createElement('div');
     card.className = 'col-md-6 col-lg-6';
+  
     card.innerHTML = `
       <div class="candidate-card p-3 border rounded d-flex align-items-center" data-postulante-id="${c.id}">
         <img alt="" class="me-3 rounded-circle" 
              src="${usuario.perfil_foto || '../assets/img/placeholder/user.png'}" width="64" height="64">
+  
         <div class="flex-grow-1">
-          <div class="fw-bold">${dataPostulante.nombre || usuario.nombres} ${dataPostulante.apellido || usuario.apellidos}</div>
-          <div class="small text-muted">${c.estado || ''}</div>
+          <div class="fw-bold">
+            ${dataPostulante.nombre || usuario.nombres} 
+            ${dataPostulante.apellido || usuario.apellidos}
+          </div>
+          <div class="small text-muted">${c.estado}</div>
           <div class="small text-muted">${new Date(c.fechaPostulacion).toLocaleDateString()}</div>
         </div>
+  
         <div class="profile-btns ms-3 d-flex flex-column align-items-end">
           <button class="btn btn-sm btn-outline-primary mb-1 ver-cv">Ver CV</button>
-          ${c.estado !== 'cualificado' ? '<button class="btn btn-sm btn-outline-danger toggle-heart">❤</button>' : ''}
+  
+          ${c.estado === 'enviada' 
+            ? '<button class="btn btn-sm btn-outline-danger toggle-heart">❤</button>'
+            : ''}
         </div>
       </div>
     `;
   
-    // Corazón toggle solo si no está cualificado
+    // Acción de cualificar
     const heartBtn = card.querySelector('.toggle-heart');
     if (heartBtn) {
       heartBtn.addEventListener('click', async () => {
         try {
-          await fetch(`${BASE}/seleccion/${c.id}/cualificar`, { method: 'POST', credentials:'include' });
-          // Mover al tab de candidatos cualificados
+          await fetch(`${BASE}/seleccion/${c.id}/cualificar`, { 
+            method: 'POST',
+            credentials: 'include'
+          });
+          
+          // Mover la card al tab de potenciales
           wrapPotenciales.appendChild(card);
           actualizarTotal();
-        } catch(e){
+        } catch (e) {
           console.error('Error cualificando:', e);
         }
       });
@@ -58,6 +66,8 @@
   
     container.appendChild(card);
   }
+  
+  
   
 
   function actualizarTotal(){
@@ -71,15 +81,15 @@
     wrapPotenciales.innerHTML = '';
   
     data?.forEach(c => {
-      // Solo renderizar en el tab principal si está "enviada"
       if (c.estado === 'enviada') {
         renderPostulante(c, wrap);
-      } 
-      // Si ya está cualificado, lo mandamos al tab de potenciales
-      else if (c.estado === 'cualificado') {
-        renderPostulante(c, wrapPotenciales);
+        return;
       }
-      // Ignorar otros estados
+    
+      if (c.estado === 'cualificado') {
+        renderPostulante(c, wrapPotenciales);
+        return;
+      }
     });
   
     actualizarTotal();

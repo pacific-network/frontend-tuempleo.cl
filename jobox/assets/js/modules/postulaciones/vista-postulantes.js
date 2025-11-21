@@ -1,12 +1,6 @@
 (() => {
   // ====== Config ======
-  const PATHS = {
-    OFERTA: '/postulaciones/oferta',
-    SELECCION: '/seleccion',
-    POSTULACIONES: '/postulaciones'
-  };
 
-  const BASE_URL_API = 'http://localhost:3000/v1';
 
   // ====== Tokens ======
   const TOKEN_KEYS = ['auth_token_emp','auth_token','empleador_token','access_token','token','jwt','jwtToken'];
@@ -92,13 +86,15 @@
     return r2.json();
   }
 
-  async function patchSeleccion(postulacionId, accion, comentario = '') {
-    const url = `${BASE_URL_API}${PATHS.SELECCION}/${postulacionId}/${accion}`;
-    const body = comentario ? JSON.stringify({ comentario }) : undefined;
-    const res = await fetch(url, { method: 'PATCH', headers: JSON_HEADERS, body });
-    if (!res.ok) throw new Error(`Error ${res.status}: ${await res.text()}`);
+  async function fetchCualificados(ofertaId) {
+    const url = `${BASE}/postulaciones/oferta/${ofertaId}/cualificados`;
+    const res = await fetch(url, { credentials: 'include' });
+  
+    if (!res.ok) throw new Error('Error al cargar cualificados');
     return res.json();
   }
+
+
 
   async function cualificarPostulante(postulacionId) {
     const url = `${BASE_URL_API}${PATHS.SELECCION}/${postulacionId}/cualificar`;
@@ -111,14 +107,26 @@
     return res.json();
   }
 
-  async function borrarPostulacion(postulacionId) {
-    const url = `${BASE_URL_API}${PATHS.POSTULACIONES}/${postulacionId}`;
-    const res = await fetch(url, { method: 'DELETE', headers: JSON_HEADERS });
-    if (!res.ok) throw new Error(`Error ${res.status}: ${await res.text()}`);
-    return res.json();
-  }
+
 
   // ====== Render ======
+
+  function renderCualificadosLista(lista) {
+    const cont = document.getElementById('candidates-container-potenciales');
+    cont.innerHTML = '';
+  
+    if (!lista.length) {
+      cont.innerHTML = `
+        <div class="text-center text-muted mt-3">No hay candidatos cualificados.</div>
+      `;
+      return;
+    }
+  
+    lista.forEach((c) => {
+      cont.appendChild(renderCardCualificado(c));
+    });
+  }
+  
   function labelByEstado(estado) {
     switch (estado) {
       case 'preseleccionado': return 'Seleccionado';
@@ -204,25 +212,41 @@
   }
 
   async function renderPostulantes(ofertaId) {
-    if (!container) return;
+    if (!contPostulantes) return;
     if (!ofertaId) {
-      container.innerHTML = `<div class="col-12"><div class="alert alert-danger">No se encontró el ID de la oferta.</div></div>`;
+      contPostulantes.innerHTML = `<div class="col-12"><div class="alert alert-danger">No se encontró el ID de la oferta.</div></div>`;
       return;
     }
-    container.innerHTML = `<div class="col-12 text-center py-4"><i class="fas fa-spinner fa-spin me-2"></i>Cargando candidatos...</div>`;
+  
+    contPostulantes.innerHTML = `<div class="col-12 text-center py-4"><i class="fas fa-spinner fa-spin me-2"></i>Cargando candidatos...</div>`;
+    contCualificados.innerHTML = '';
+  
     try {
       const data = await fetchPostulantesPorOferta(ofertaId);
       const lista = Array.isArray(data) ? data : (data.items || []);
-      if (!lista.length) {
-        container.innerHTML = `<div class="col-12 text-center text-muted py-3">No hay candidatos para esta oferta.</div>`;
-        return;
-      }
-      container.innerHTML = lista.slice(0, 20).map(cardTemplate).join('');
+  
+      // ================================
+      // SEPARACIÓN POR ESTADO
+      // ================================
+      const postulantes = lista.filter(x => x.estado !== 'cualificado');
+      const cualificados = lista.filter(x => x.estado === 'cualificado');
+  
+      // ==== TAB Postulantes ====
+      contPostulantes.innerHTML = postulantes.length
+        ? postulantes.map(cardTemplate).join('')
+        : `<div class="col-12 text-center text-muted py-3">No hay postulantes.</div>`;
+  
+      // ==== TAB Cualificados ====
+      contCualificados.innerHTML = cualificados.length
+        ? cualificados.map(cardTemplate).join('')
+        : `<div class="col-12 text-center text-muted py-3">No hay candidatos cualificados.</div>`;
+  
     } catch (e) {
       popup('Error', 'No se pudieron cargar los candidatos', 'error');
-      container.innerHTML = `<div class="col-12 text-center text-danger py-3">Error al cargar candidatos.</div>`;
+      contPostulantes.innerHTML = `<div class="col-12 text-center text-danger py-3">Error al cargar candidatos.</div>`;
     }
   }
+  
 
   // ====== Eventos ======
   function wireEvents() {
@@ -268,78 +292,6 @@
         return;
       }
       
-
-      // ===== Botón siguiente / preseleccionar / contratar =====
-      const nextBtn = e.target.closest('.next-btn');
-      if (nextBtn) {
-        e.preventDefault();
-        if (nextBtn.disabled) return;
-        const accion = nextBtn.getAttribute('data-next-action');
-        if (!accion) return;
-        try {
-          await patchSeleccion(postulacionId, accion, `Cambio desde UI (${accion})`);
-          let nuevoEstado = (accion === 'preseleccionar') ? 'preseleccionado'
-                        : (accion === 'contratar') ? 'contratado' : 'postulado';
-          const badge = card.querySelector('[data-role="estado-badge"]');
-          if (badge) badge.outerHTML = estadoBadge(nuevoEstado);
-          nextBtn.innerHTML = `<i class="far ${iconByEstado(nuevoEstado)}"></i>${labelByEstado(nuevoEstado)}`;
-          const siguienteAccion = (nuevoEstado === 'preseleccionado') ? 'contratar' : (nuevoEstado === 'contratado' ? '' : 'preseleccionar');
-          nextBtn.setAttribute('data-next-action', siguienteAccion || '');
-          if (!siguienteAccion) nextBtn.disabled = true;
-          popup('Éxito', 'Estado actualizado correctamente', 'success');
-        } catch (err) {
-          popup('Error', err.message || 'Error al actualizar estado', 'error');
-        }
-        return;
-      }
-
-      // ===== Botón descartar =====
-      const discardBtn = e.target.closest('.discard-btn');
-      if (discardBtn) {
-        e.preventDefault();
-        try {
-          await patchSeleccion(postulacionId, 'descartar', 'Descartado desde UI');
-          const badge = card.querySelector('[data-role="estado-badge"]');
-          if (badge) badge.outerHTML = estadoBadge('descartado');
-          const nextBtn2 = card.querySelector('.next-btn');
-          if (nextBtn2) {
-            nextBtn2.disabled = false;
-            nextBtn2.setAttribute('data-next-action', 'preseleccionar');
-            nextBtn2.innerHTML = `<i class="far ${iconByEstado('postulado')}"></i>Preseleccionar`;
-          }
-          popup('Hecho', 'Candidato descartado', 'info');
-        } catch {
-          popup('Error', 'No se pudo descartar al candidato', 'error');
-        }
-        return;
-      }
-
-      // ===== Botón eliminar =====
-      const delBtn = e.target.closest('.delete-btn');
-      if (delBtn) {
-        e.preventDefault();
-        const nombre = delBtn.getAttribute('data-candidate') || 'este candidato';
-        Swal.fire({
-          title: '¿Eliminar candidato?',
-          html: `Se eliminará <b>${nombre}</b> de la lista.`,
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonText: 'Eliminar',
-          cancelButtonText: 'Cancelar',
-          confirmButtonColor: '#dc3545',
-          cancelButtonColor: '#6c757d'
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            try {
-              await borrarPostulacion(postulacionId);
-              card.remove();
-              popup('Eliminado', 'El candidato fue eliminado correctamente', 'success');
-            } catch {
-              popup('Error', 'No se pudo eliminar al candidato', 'error');
-            }
-          }
-        });
-      }
 
     });
   }

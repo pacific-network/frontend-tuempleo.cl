@@ -75,12 +75,181 @@
       border-radius: 12px
     }
 
-    .tu-locked-box {
-      background: #fff;
-      padding: 10px 14px;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
-      text-align: center
+    /* Contenedor principal */
+    .help-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Botón azul con letras blancas */
+    .help-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 18px;
+      background: #3b82f6;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 400;
+      color: white;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 12px;
+    }
+
+    .help-trigger:hover {
+      background: #2563eb;
+    }
+
+    .help-trigger i {
+      font-size: 16px;
+    }
+
+    /* Panel minimalista */
+    .help-panel {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      opacity: 0;
+      transition: all 0.3s ease;
+      max-height: 0;
+      overflow: hidden;
+    }
+
+    .help-panel.show {
+      opacity: 1;
+      max-height: 500px;
+    }
+
+    .help-panel h5 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a202c;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    /* Sección de tabs */
+    .tabs-section {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .nav-tabs {
+      border-bottom: 2px solid #e5e7eb;
+      margin-bottom: 20px;
+    }
+
+    .nav-tabs .nav-link {
+      color: #6b7280;
+      border: none;
+      padding: 12px 24px;
+      font-weight: 500;
+    }
+
+    .nav-tabs .nav-link.active {
+      color: #3b82f6;
+      background: transparent;
+      border-bottom: 2px solid #3b82f6;
+    }
+
+    .badge {
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 12px;
+    }
+
+    /* Grid 3 columnas x 2 filas (6 estados) */
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .status-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 16px 12px;
+      border-radius: 8px;
+      background: #f8f9fa;
+      transition: background 0.2s ease;
+    }
+
+    .status-item:hover {
+      background: #e9ecef;
+    }
+
+    /* Dot minimalista */
+    .status-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .status-dot i {
+      color: white;
+      font-size: 14px;
+    }
+
+    .status-dot.enviada {
+      background: #3b82f6;
+    }
+
+    .status-dot.cualificado {
+      background: #ef4444;
+    }
+
+    .status-dot.preseleccionado {
+      background: #f59e0b;
+    }
+
+    .status-dot.seleccionado {
+      background: #06b6d4;
+    }
+
+    .status-dot.descartado {
+      background: #6b7280;
+    }
+
+    .status-dot.contratado {
+      background: #10b981;
+    }
+
+    .status-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: #1f2937;
+      margin-bottom: 4px;
+    }
+
+    .status-desc {
+      font-size: 11px;
+      color: #6b7280;
+      line-height: 1.4;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .status-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .help-panel {
+        padding: 20px 16px;
+      }
     }
   </style>
 </head>
@@ -143,63 +312,129 @@
                   </button>
                 </div>
 
+
                 <h4 class="user-profile-card-title">Todos los Candidatos</h4>
+
 
               </header>
 
 
+              <!-- SIMBOLOGIA DE ESTADOS DE PROCESO DE POSTULACION -->
 
-              <div class="user-profile-candidate">
+              <div class="help-container">
+                <button class="help-trigger" id="helpToggle">
+                  <i class="fas fa-circle-question"></i>
+                  <span>¿Tienes dudas sobre los estados?</span>
+                </button>
 
-                <!-- Tabs -->
-                <ul class="nav nav-tabs" id="candidateTabs" role="tablist">
-                  <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="postulantes-tab" data-bs-toggle="tab"
-                      data-bs-target="#postulantes" type="button" role="tab">
-                      Postulantes <span id="total-postulantes" class="badge bg-primary">0</span>
-                    </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="potenciales-tab" data-bs-toggle="tab" data-bs-target="#potenciales"
-                      type="button" role="tab">
-                      Candidatos Cualificados <span id="total-potenciales" class="badge bg-primary">0</span>
-                    </button>
-                  </li>
-                </ul>
+                <div class="help-panel" id="helpPanel">
+                  <h5>Simbología de Estados</h5>
 
-                <!-- Contenido de Tabs -->
-                <div class="tab-content mt-3">
-
-                  <!-- Tab Postulantes -->
-                  <div class="tab-pane fade show active" id="postulantes" role="tabpanel"
-                    aria-labelledby="postulantes-tab">
-                    <div class="row" id="candidates-container-postulantes">
-                      <div class="row" id="candidates-container">
-                        <!-- Cada card idealmente con data-postulante-id="N" -->
+                  <div class="status-grid">
+                    <div class="status-item">
+                      <div class="status-dot enviada">
+                        <i class="fas fa-paper-plane"></i>
                       </div>
+                      <div class="status-title">Enviada</div>
+                      <div class="status-desc">Postulación recibida y en revisión inicial</div>
                     </div>
-                    <div class="text-center text-muted mt-3" id="postulantes-empty-msg" style="display:none;">
-                      No hay postulantes en esta oferta.
+
+                    <div class="status-item">
+                      <div class="status-dot cualificado">
+                        <i class="fas fa-star"></i>
+                      </div>
+                      <div class="status-title">Cualificado</div>
+                      <div class="status-desc">Candidato marcado como potencial</div>
+                    </div>
+
+                    <div class="status-item">
+                      <div class="status-dot preseleccionado">
+                        <i class="fas fa-user-check"></i>
+                      </div>
+                      <div class="status-title">Preseleccionado</div>
+                      <div class="status-desc">Ha avanzado a la siguiente etapa</div>
+                    </div>
+
+                    <div class="status-item">
+                      <div class="status-dot seleccionado">
+                        <i class="fas fa-clipboard-check"></i>
+                      </div>
+                      <div class="status-title">Seleccionado</div>
+                      <div class="status-desc">Convocado para entrevista final</div>
+                    </div>
+
+                    <div class="status-item">
+                      <div class="status-dot descartado">
+                        <i class="fas fa-xmark"></i>
+                      </div>
+                      <div class="status-title">Descartado</div>
+                      <div class="status-desc">No continúa en el proceso</div>
+                    </div>
+
+                    <div class="status-item">
+                      <div class="status-dot contratado">
+                        <i class="fas fa-circle-check"></i>
+                      </div>
+                      <div class="status-title">Contratado</div>
+                      <div class="status-desc">Proceso finalizado exitosamente</div>
                     </div>
                   </div>
-
-                  <!-- Tab Candidatos Cualificados -->
-                  <div class="tab-pane fade" id="potenciales" role="tabpanel" aria-labelledby="potenciales-tab">
-                    <div class="row" id="candidates-container-potenciales"></div>
-                    <div class="text-center text-muted mt-3" id="potenciales-empty-msg" style="display:none;">
-                      No hay candidatos cualificados todavía.
-                    </div>
-                  </div>
-
                 </div>
               </div>
 
 
 
 
+
+              <!-- Tabs -->
+              <ul class="nav nav-tabs" id="candidateTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="postulantes-tab" data-bs-toggle="tab"
+                    data-bs-target="#postulantes" type="button" role="tab">
+                    Postulantes <span id="total-postulantes" class="badge bg-primary">0</span>
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="potenciales-tab" data-bs-toggle="tab" data-bs-target="#potenciales"
+                    type="button" role="tab">
+                    Candidatos Cualificados <span id="total-potenciales" class="badge bg-primary">0</span>
+                  </button>
+                </li>
+              </ul>
+
+              <!-- Contenido de Tabs -->
+              <div class="tab-content mt-3">
+
+                <!-- Tab Postulantes -->
+                <div class="tab-pane fade show active" id="postulantes" role="tabpanel"
+                  aria-labelledby="postulantes-tab">
+                  <div class="row" id="candidates-container-postulantes">
+                    <div class="row" id="candidates-container">
+                      <!-- Cada card idealmente con data-postulante-id="N" -->
+                    </div>
+                  </div>
+                  <div class="text-center text-muted mt-3" id="postulantes-empty-msg" style="display:none;">
+                    No hay postulantes en esta oferta.
+                  </div>
+                </div>
+
+                <!-- Tab Candidatos Cualificados -->
+                <div class="tab-pane fade" id="potenciales" role="tabpanel" aria-labelledby="potenciales-tab">
+                  <div class="row" id="candidates-container-potenciales"></div>
+                  <div class="text-center text-muted mt-3" id="potenciales-empty-msg" style="display:none;">
+                    No hay candidatos cualificados todavía.
+                  </div>
+                </div>
+
+              </div>
         </div>
+
+
+
+
       </div>
-      </section>
+    </div>
+    </section>
   </main>
   </div>
   </div>
@@ -265,98 +500,9 @@
   <script src="../assets/js/modules/empresa/dinamic-sidebar.js"></script>
   <script src="../assets/js/logout-button-emp.js"></script>
   <script src="../assets/js/modules/ofertas/view-candidate-offer.js"></script>
+  <script src="../assets/js/modules/utils/dinamic-dropdown.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <!-- FRONT: limitación FREE (5 primeros) + total -->
-  <script type="module">
-    const API_BASE = window.PUBLICATION_API_BASE || '/api/v1/publication';
-    const $ = (s, r = document) => r.querySelector(s);
-    const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-
-    async function getJSON(url, opts) {
-      const r = await fetch(url, opts);
-      const isJSON = r.headers.get('content-type')?.includes('application/json');
-      const data = isJSON ? await r.json() : null;
-      if (!r.ok) throw new Error(data?.error || data?.message || `HTTP ${r.status}`);
-      return data;
-    }
-
-    function ofertaIdFromContext() {
-      const b = document.body || document.documentElement;
-      let id = Number(b.dataset.ofertaId || 0);
-      if (!id) {
-        const qs = new URLSearchParams(location.search);
-        id = Number(qs.get('ofertaId') || qs.get('id') || 0);
-      }
-      return id;
-    }
-
-    function lockCard(card) {
-      card.classList.add('tu-locked');
-      if (!card.querySelector('.tu-locked-overlay')) {
-        const layer = document.createElement('div');
-        layer.className = 'tu-locked-overlay';
-        layer.innerHTML = `
-          <div class="tu-locked-box">
-            <strong>Plan FREE:</strong> solo puedes ver los <b>5 primeros postulantes</b> de esta oferta.
-            <div class="mt-2"><a href="carrito.html" class="btn btn-sm btn-primary">Mejorar plan</a></div>
-          </div>`;
-        card.style.position = 'relative';
-        card.appendChild(layer);
-      }
-    }
-
-    function applyPermissions(perms) {
-      const totalSpan = $('#total-postulantes');
-      if (totalSpan) totalSpan.textContent = String(perms.total ?? 0);
-
-      if (perms.allowedPostulanteIds === 'ALL') return;
-
-      const allowed = new Set(perms.allowedPostulanteIds || []);
-      const cards = $$('[data-postulante-id]');
-      if (cards.length) {
-        for (const c of cards) {
-          const pid = Number(c.getAttribute('data-postulante-id'));
-          if (!allowed.has(pid)) lockCard(c);
-        }
-        return;
-      }
-      // fallback si no hay data-postulante-id: deja visibles solo los 5 primeros del DOM
-      const items = $$('.candidate-card, .candidate-item, .list-group-item, [data-candidate]');
-      items.forEach((c, i) => { if (i >= 5) lockCard(c); });
-    }
-
-    document.addEventListener('DOMContentLoaded', async () => {
-      const ofertaId = ofertaIdFromContext();
-      if (!ofertaId) return;
-      try {
-        const perms = await getJSON(`${API_BASE}/offer-candidate-permissions?ofertaId=${ofertaId}`);
-        applyPermissions(perms);
-      } catch (e) { console.error(e); }
-    });
-  </script>
-  <script src="../assets/js/config/token-exp.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const btnVolver = document.getElementById('btn-volver');
-      if (btnVolver) {
-        btnVolver.addEventListener('click', (e) => {
-          e.preventDefault();
-
-          // 1. Si se guardó una ruta anterior en sessionStorage (desde vista-postulantes.js)
-          const prev = sessionStorage.getItem('return_to_offer_page');
-          if (prev) {
-            // 2. Regresar con scroll exacto
-            history.back();
-            return;
-          }
-
-          // 3. Fallback: si no hay sessionStorage, volver al listado principal
-          window.location.href = 'employer-manage-job.html';
-        });
-      }
-    });
-  </script>
 
 </body>
 
