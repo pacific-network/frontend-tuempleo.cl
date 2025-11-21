@@ -6,6 +6,8 @@
     POSTULACIONES: '/postulaciones'
   };
 
+  const BASE_URL_API = 'http://localhost:3000/v1';
+
   // ====== Tokens ======
   const TOKEN_KEYS = ['auth_token_emp','auth_token','empleador_token','access_token','token','jwt','jwtToken'];
   function getAuthToken() {
@@ -41,7 +43,6 @@
     return `<span class="${cls}" data-role="estado-badge">${estado}</span>`;
   }
 
-  // Reemplazamos alert/confirm por SweetAlert2
   function popup(title, msg, icon = 'success') {
     return Swal.fire({
       title: title,
@@ -91,18 +92,30 @@
     return r2.json();
   }
 
-  async function patchSeleccion(postulacionId, accion, observaciones = '') {
+  async function patchSeleccion(postulacionId, accion, comentario = '') {
     const url = `${BASE_URL_API}${PATHS.SELECCION}/${postulacionId}/${accion}`;
-    const res = await fetch(url, { method: 'PATCH', headers: JSON_HEADERS, body: JSON.stringify({ observaciones }) });
+    const body = comentario ? JSON.stringify({ comentario }) : undefined;
+    const res = await fetch(url, { method: 'PATCH', headers: JSON_HEADERS, body });
+    if (!res.ok) throw new Error(`Error ${res.status}: ${await res.text()}`);
+    return res.json();
+  }
+
+  async function cualificarPostulante(postulacionId) {
+    const url = `${BASE_URL_API}${PATHS.SELECCION}/${postulacionId}/cualificar`;
+    const res = await fetch(url, {
+      method: 'PATCH',
+      headers: JSON_HEADERS,
+      body: JSON.stringify({ estado: 'cualificado' })
+    });
     if (!res.ok) throw new Error(`Error ${res.status}: ${await res.text()}`);
     return res.json();
   }
 
   async function borrarPostulacion(postulacionId) {
     const url = `${BASE_URL_API}${PATHS.POSTULACIONES}/${postulacionId}`;
-    const res = await fetch(url, { method: 'DELETE', headers: AUTH_HEADERS });
+    const res = await fetch(url, { method: 'DELETE', headers: JSON_HEADERS });
     if (!res.ok) throw new Error(`Error ${res.status}: ${await res.text()}`);
-    return true;
+    return res.json();
   }
 
   // ====== Render ======
@@ -127,90 +140,68 @@
   }
 
   function cardTemplate(post) {
-  const postulacionId = post.id;
-  const estado = post.estado || 'postulado';
-  const postulante = post.postulante || {};
-  const usuario = postulante.usuario || {};
-  const data = postulante.data || {};
-  const personales = data.datos_personales || {};
+    const postulacionId = post.id;
+    const estado = post.estado || 'postulado';
+    const postulante = post.postulante || {};
+    const usuario = postulante.usuario || {};
+    const data = postulante.data || {};
+    const personales = data.datos_personales || {};
 
-  const nombre = (usuario.nombres && usuario.apellidos)
-    ? `${usuario.nombres} ${usuario.apellidos}`
-    : (usuario.nombres || 'Nombre no disponible');
+    const nombre = (usuario.nombres && usuario.apellidos)
+      ? `${usuario.nombres} ${usuario.apellidos}`
+      : (usuario.nombres || 'Nombre no disponible');
 
-  const categoria_empleo = data.preferencias?.categoria_empleo || 'Sin cargo';
-  const region = personales.region || 'Región no especificada';
-  const comuna = personales.comuna || 'Comuna no especificada';
-  const salario = data.preferencias?.salario_esperado || 0;
+    const categoria_empleo = data.preferencias?.categoria_empleo || 'Sin cargo';
+    const region = personales.region || 'Región no especificada';
+    const comuna = personales.comuna || 'Comuna no especificada';
+    const salario = data.preferencias?.salario_esperado || 0;
 
-  const usuarioId = usuario.id || '';
-  const btnLabel = labelByEstado(estado);
-  const btnIcon = iconByEstado(estado);
-  const nextAct = nextActionByEstado(estado);
-  const disabledAttr = (estado === 'contratado') ? 'disabled' : '';
+    const usuarioId = usuario.id || '';
 
-  return `
-    <div class="col-12 px-1" data-postulacion-id="${postulacionId}">
-      <div class="candidate-item border-bottom bg-white px-2" 
-           style="min-height:42px; padding-top:3px; padding-bottom:3px;">
-        <div class="row align-items-center text-center gx-0" style="font-size:13px;">
-          
-          <!-- Nombre -->
-          <div class="col-md-2 fw-semibold text-dark" style="font-size:14px; line-height:1.1;">
-            <a href="employer-view-candidate.html"
-               class="view-btn text-decoration-none text-dark"
-               data-user-id="${usuarioId}">
-              ${nombre}
-            </a>
-            <div class="mt-1" style="font-size:11px;">${estadoBadge(estado)}</div>
-          </div>
+    return `
+      <div class="col-12 px-1" data-postulacion-id="${postulacionId}">
+        <div class="candidate-item border-bottom bg-white px-2" style="min-height:50px; padding-top:5px; padding-bottom:5px;">
+          <div class="row align-items-center text-center gx-0" style="font-size:14px;">
 
-          <!-- Cargo -->
-          <div class="col-md-2 text-muted" style="font-size:11px;">${categoria_empleo}</div>
+            <div class="col-md-2 fw-semibold text-dark" style="font-size:16px; line-height:1.2;">
+              <a href="employer-view-candidate.html"
+                 class="view-btn text-decoration-none text-dark"
+                 data-user-id="${usuarioId}">
+                ${nombre}
+              </a>
+              <div class="mt-1" style="font-size:12px;">${estadoBadge(estado)}</div>
+            </div>
 
-          <!-- Región -->
-          <div class="col-md-2 text-muted" style="font-size:11.5px;">${region}</div>
+            <div class="col-md-2 text-muted" style="font-size:13px;">${categoria_empleo}</div>
+            <div class="col-md-2 text-muted" style="font-size:13px;">${region}</div>
+            <div class="col-md-2 text-muted" style="font-size:13px;">${comuna}</div>
+            <div class="col-md-2 fw-semibold" style="font-size:16px;">$ ${moneyCL(salario)}</div>
 
-          <!-- Comuna -->
-          <div class="col-md-2 text-muted" style="font-size:12.5px;">${comuna}</div>
+            <div class="col-md-2">
+              <div class="d-flex flex-column align-items-center justify-content-center" style="gap:4px;">
+                <div class="d-flex justify-content-center gap-2 w-100">
+                  <a href="employer-view-candidate.html"
+                     class="btn btn-outline-secondary btn-sm view-btn flex-fill"
+                     data-user-id="${usuarioId}" title="Ver CV"
+                     style="min-width:80px; padding:2px 6px; font-size:12px;">
+                    <i class="far fa-eye me-1"></i>Ver CV
+                  </a>
 
-          <!-- Pretensiones -->
-          <div class="col-md-2 fw-semibold" style="font-size:14px;">$ ${moneyCL(salario)}</div>
-
-          <!-- Acciones -->
-          <div class="col-md-2">
-            <div class="d-flex flex-column align-items-center justify-content-center" style="gap:2px;">
-              <div class="d-flex justify-content-center gap-1 w-100">
-                <a href="employer-view-candidate.html"
-                   class="btn btn-outline-secondary btn-sm view-btn flex-fill"
-                   data-user-id="${usuarioId}" title="Ver CV"
-                   style="min-width:70px; padding:1px 4px; font-size:11px;">
-                  <i class="far fa-eye me-1"></i>Ver CV
-                </a>
-                <button class="btn btn-primary btn-sm next-btn flex-fill"
-                        data-next-action="${nextAct}" ${disabledAttr}
-                        title="${btnLabel}" style="min-width:70px; padding:1px 4px; font-size:11px;">
-                  <i class="far ${btnIcon} me-1"></i>${btnLabel}
-                </button>
-              </div>
-              <div class="d-flex justify-content-center gap-1 w-100">
-                <button class="btn btn-outline-secondary btn-sm discard-btn flex-fill"
-                        title="Descartar" style="min-width:70px; padding:1px 4px; font-size:11px;">
-                  <i class="far fa-xmark me-1"></i>Descartar
-                </button>
-                <button class="btn btn-outline-danger btn-sm delete-btn flex-fill"
-                        title="Eliminar" data-candidate="${nombre}" 
-                        style="min-width:70px; padding:1px 4px; font-size:11px;">
-                  <i class="far fa-trash-can me-1"></i>Eliminar
-                </button>
+                  <button class="btn btn-outline-danger btn-sm favorite-btn flex-fill"
+                          data-postulacion-id="${postulacionId}"
+                          title="Marcar como favorito"
+                          style="min-width:80px; padding:2px 6px; font-size:12px;">
+                    <i class="far fa-heart"></i>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
 
+          </div>
         </div>
       </div>
-    </div>`;
-}
+    `;
+  }
 
   async function renderPostulantes(ofertaId) {
     if (!container) return;
@@ -254,7 +245,31 @@
       if (!card) return;
       const postulacionId = card.getAttribute('data-postulacion-id');
 
-      // siguiente estado
+      // ===== Botón corazón / cualificar =====
+      const favBtn = e.target.closest('.favorite-btn');
+      if (favBtn) {
+        e.preventDefault();
+        if (favBtn.disabled) return;
+        favBtn.disabled = true;
+      
+        try {
+          await cualificarPostulante(postulacionId);
+      
+          // Eliminar tarjeta del DOM
+          const card = favBtn.closest('[data-postulacion-id]');
+          if (card) card.remove();
+      
+          popup('Éxito', 'Candidato cualificado correctamente', 'success');
+        } catch (err) {
+          popup('Error', err.message || 'No se pudo cualificar al candidato', 'error');
+        } finally {
+          favBtn.disabled = false;
+        }
+        return;
+      }
+      
+
+      // ===== Botón siguiente / preseleccionar / contratar =====
       const nextBtn = e.target.closest('.next-btn');
       if (nextBtn) {
         e.preventDefault();
@@ -278,7 +293,7 @@
         return;
       }
 
-      // descartar
+      // ===== Botón descartar =====
       const discardBtn = e.target.closest('.discard-btn');
       if (discardBtn) {
         e.preventDefault();
@@ -299,7 +314,7 @@
         return;
       }
 
-      // eliminar
+      // ===== Botón eliminar =====
       const delBtn = e.target.closest('.delete-btn');
       if (delBtn) {
         e.preventDefault();
@@ -325,6 +340,7 @@
           }
         });
       }
+
     });
   }
 
