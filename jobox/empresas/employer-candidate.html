@@ -136,7 +136,7 @@
     .tabs-section {
       background: white;
       border-radius: 12px;
-      padding: 24px;
+      padding: 20px;
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
     }
 
@@ -239,6 +239,27 @@
       color: #6b7280;
       line-height: 1.4;
     }
+
+    .status-note {
+      margin-top: 10px;
+      background: #f5f9ff;
+      border-left: 4px solid #3a7afe;
+      padding: 12px 16px;
+      border-radius: 6px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: #2a3a4b;
+      line-height: 1.45;
+    }
+
+    .status-note i {
+      color: #3a7afe;
+      font-size: 18px;
+      margin-top: 2px;
+    }
+
 
     /* Responsive */
     @media (max-width: 768px) {
@@ -343,8 +364,8 @@
                       <div class="status-dot cualificado">
                         <i class="fas fa-star"></i>
                       </div>
-                      <div class="status-title">Cualificado</div>
-                      <div class="status-desc">Candidato marcado como potencial</div>
+                      <div class="status-title">Compatible</div>
+                      <div class="status-desc">Candidato potencial o apto para el cargo</div>
                     </div>
 
                     <div class="status-item">
@@ -379,8 +400,21 @@
                       <div class="status-desc">Proceso finalizado exitosamente</div>
                     </div>
                   </div>
+
+                  <!-- Nota destacada -->
+                  <div class="status-note">
+                    <i class="fas fa-info-circle"></i>
+                    <span>
+                      Al seleccionar un candidato con estado <strong>Compatible</strong>, no se descontará ningún cupo.
+                      Ten en consideración que al cambiarlo a <strong>Preseleccionado</strong> o
+                      <strong>Seleccionado</strong>
+                      sí utilizarás un cupo disponible según tu tipo de aviso, y esta acción no puede revertirse.
+                    </span>
+                  </div>
+
                 </div>
               </div>
+
 
 
 
@@ -394,13 +428,22 @@
                     Postulantes <span id="total-postulantes" class="badge bg-primary">0</span>
                   </button>
                 </li>
+
                 <li class="nav-item" role="presentation">
                   <button class="nav-link" id="potenciales-tab" data-bs-toggle="tab" data-bs-target="#potenciales"
                     type="button" role="tab">
-                    Candidatos Cualificados <span id="total-potenciales" class="badge bg-primary">0</span>
+                    Candidatos Compatibles <span id="total-potenciales" class="badge bg-primary">0</span>
                   </button>
                 </li>
+
+                <!-- Indicador sin acción -->
+                <li class="nav-item" role="presentation">
+                  <span class="nav-link disabled" style="cursor: default;">
+                    Cupos Restantes <span id="total-cupos" class="badge bg-success">0</span>
+                  </span>
+                </li>
               </ul>
+
 
               <!-- Contenido de Tabs -->
               <div class="tab-content mt-3">
