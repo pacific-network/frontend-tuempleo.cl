@@ -42,21 +42,33 @@ function extractPostulantesCount(json) {
 const postulantesCache = new Map();
 
 async function getPostulantesCount(ofertaId) {
+  // Si está en caché, retornarlo
   if (postulantesCache.has(ofertaId)) return postulantesCache.get(ofertaId);
 
   try {
     const res = await fetch(`${BASE_URL_API}/postulaciones/oferta/${ofertaId}`);
+
+    // 404 → Oferta sin postulantes
+    if (res.status === 404) {
+      postulantesCache.set(ofertaId, 0);
+      return 0;
+    }
+
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
     const json = await res.json();
     const count = extractPostulantesCount(json);
+
     postulantesCache.set(ofertaId, count);
     return count;
-  } catch (err) {
-    console.warn(`⚠️ Error obteniendo postulantes para oferta ${ofertaId}:`, err);
+
+  } catch {
+    // Error inesperado → retornar 0 igual
     postulantesCache.set(ofertaId, 0);
     return 0;
   }
 }
+
 
 /* ───── Variables globales ───── */
 let currentPage = 1;

@@ -260,6 +260,44 @@
       margin-top: 2px;
     }
 
+    .candidate-tabs .nav-link {
+      font-size: 14px;
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .candidate-tabs .badge {
+      font-size: 12px;
+    }
+
+    .cupos-box {
+      background: #f8f9fa;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid #dee2e6;
+      font-size: 14px;
+    }
+
+    .cupos-label {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .cupos-value {
+      font-weight: 700;
+      color: #198754;
+    }
+
+    .empty-msg {
+      display: none;
+      text-align: center;
+      color: #777;
+      margin-top: 20px;
+    }
+
+
 
     /* Responsive */
     @media (max-width: 768px) {
@@ -362,7 +400,7 @@
 
                     <div class="status-item">
                       <div class="status-dot cualificado">
-                        <i class="fas fa-star"></i>
+                        <i class="fas fa-heart"></i>
                       </div>
                       <div class="status-title">Compatible</div>
                       <div class="status-desc">Candidato potencial o apto para el cargo</div>
@@ -414,77 +452,113 @@
 
                 </div>
               </div>
-
-
-
-
-
-
               <!-- Tabs -->
-              <ul class="nav nav-tabs" id="candidateTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link active" id="postulantes-tab" data-bs-toggle="tab"
-                    data-bs-target="#postulantes" type="button" role="tab">
-                    Postulantes <span id="total-postulantes" class="badge bg-primary">0</span>
-                  </button>
-                </li>
+              <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
 
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="potenciales-tab" data-bs-toggle="tab" data-bs-target="#potenciales"
-                    type="button" role="tab">
-                    Candidatos Compatibles <span id="total-potenciales" class="badge bg-primary">0</span>
-                  </button>
-                </li>
+                <!-- TABS DE ESTADOS -->
+                <ul class="nav nav-tabs candidate-tabs" id="candidateTabs" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link active" data-state="enviadas" data-bs-toggle="tab"
+                      data-bs-target="#tab-enviadas">
+                      Enviadas <span class="badge bg-primary" id="count-enviadas">0</span>
+                    </button>
+                  </li>
 
-                <!-- Indicador sin acción -->
-                <li class="nav-item" role="presentation">
-                  <span class="nav-link disabled" style="cursor: default;">
-                    Cupos Restantes <span id="total-cupos" class="badge bg-success">0</span>
-                  </span>
-                </li>
-              </ul>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-state="compatibles" data-bs-toggle="tab"
+                      data-bs-target="#tab-compatibles">
+                      Compatibles <span class="badge bg-primary" id="count-compatibles">0</span>
+                    </button>
+                  </li>
 
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-state="preseleccionados" data-bs-toggle="tab"
+                      data-bs-target="#tab-preseleccionados">
+                      Preseleccionados <span class="badge bg-primary" id="count-preseleccionados">0</span>
+                    </button>
+                  </li>
 
-              <!-- Contenido de Tabs -->
-              <div class="tab-content mt-3">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-state="seleccionados" data-bs-toggle="tab"
+                      data-bs-target="#tab-seleccionados">
+                      Seleccionados <span class="badge bg-primary" id="count-seleccionados">0</span>
+                    </button>
+                  </li>
 
-                <!-- Tab Postulantes -->
-                <div class="tab-pane fade show active" id="postulantes" role="tabpanel"
-                  aria-labelledby="postulantes-tab">
-                  <div class="row" id="candidates-container-postulantes">
-                    <div class="row" id="candidates-container">
-                      <!-- Cada card idealmente con data-postulante-id="N" -->
-                    </div>
-                  </div>
-                  <div class="text-center text-muted mt-3" id="postulantes-empty-msg" style="display:none;">
-                    No hay postulantes en esta oferta.
-                  </div>
-                </div>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-state="contratados" data-bs-toggle="tab"
+                      data-bs-target="#tab-contratados">
+                      Contratados <span class="badge bg-primary" id="count-contratados">0</span>
+                    </button>
+                  </li>
 
-                <!-- Tab Candidatos Cualificados -->
-                <div class="tab-pane fade" id="potenciales" role="tabpanel" aria-labelledby="potenciales-tab">
-                  <div class="row" id="candidates-container-potenciales"></div>
-                  <div class="text-center text-muted mt-3" id="potenciales-empty-msg" style="display:none;">
-                    No hay candidatos cualificados todavía.
-                  </div>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-state="descartados" data-bs-toggle="tab"
+                      data-bs-target="#tab-descartados">
+                      Descartados <span class="badge bg-secondary" id="count-descartados">0</span>
+                    </button>
+                  </li>
+                </ul>
+
+                <!-- CONTADOR DE CUPOS -->
+                <div class="cupos-box ms-auto mt-2 mt-md-0">
+                  <span class="cupos-label">Cupos disponibles:</span>
+                  <span class="cupos-value" id="cupos-restantes">0</span>
                 </div>
 
               </div>
+
+
+              <!-- CONTENIDO DE CADA TAB -->
+              <div class="tab-content mt-3">
+
+                <div class="tab-pane fade show active" id="tab-enviadas">
+                  <div id="lista-enviadas" class="row"></div>
+                  <div class="empty-msg" id="empty-enviadas">No hay postulaciones enviadas.</div>
+                </div>
+
+                <div class="tab-pane fade" id="tab-compatibles">
+                  <div id="lista-compatibles" class="row"></div>
+                  <div class="empty-msg" id="empty-compatibles">No hay candidatos compatibles.</div>
+                </div>
+
+                <div class="tab-pane fade" id="tab-preseleccionados">
+                  <div id="lista-preseleccionados" class="row"></div>
+                  <div class="empty-msg" id="empty-preseleccionados">No hay preseleccionados.</div>
+                </div>
+
+                <div class="tab-pane fade" id="tab-seleccionados">
+                  <div id="lista-seleccionados" class="row"></div>
+                  <div class="empty-msg" id="empty-seleccionados">No hay seleccionados.</div>
+                </div>
+
+                <div class="tab-pane fade" id="tab-contratados">
+                  <div id="lista-contratados" class="row"></div>
+                  <div class="empty-msg" id="empty-contratados">No hay contratados.</div>
+                </div>
+
+                <div class="tab-pane fade" id="tab-descartados">
+                  <div id="lista-descartados" class="row"></div>
+                  <div class="empty-msg" id="empty-descartados">No hay descartados.</div>
+                </div>
+
+              </div>
+
+
+
+
+
+
         </div>
-
-
-
-
       </div>
-    </div>
-    </section>
+      </section>
   </main>
   </div>
   </div>
   </div>
   </main>
 
-  Modales
+  <!-- Modales -->
   <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -539,13 +613,19 @@
   <script src="../assets/js/main.js"></script>
   <script src="../assets/js/config/config.js"></script>
   <script src="../assets/js/header-footer/loadHeaderFooterEmp.js"></script>
-  <script src="../assets/js/modules/postulaciones/vista-postulantes.js"></script>
   <script src="../assets/js/modules/empresa/dinamic-sidebar.js"></script>
   <script src="../assets/js/logout-button-emp.js"></script>
-  <script src="../assets/js/modules/ofertas/view-candidate-offer.js"></script>
   <script src="../assets/js/modules/utils/dinamic-dropdown.js"></script>
+
+  <!-- Librería externa -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+  <!-- API centralizada de postulaciones (antes que los módulos que dependen de ella) -->
+  <script src="../assets/js/modules/postulaciones/core/api-postulaciones.js"></script>
+
+  <!-- Módulo ENVIADAS (usa todo lo anterior) -->
+  <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/enviadas-cualificar.js"></script>
+  <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/cualificados.js"></script>
 
 </body>
 
