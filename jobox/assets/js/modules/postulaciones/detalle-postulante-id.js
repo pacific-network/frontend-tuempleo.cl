@@ -38,20 +38,27 @@
 
   // Resuelve el ID del candidato: primero sessionStorage; luego URL (y limpia)
   function resolveCandidateId() {
+    // 1) revisar sessionStorage
     const cached = sessionStorage.getItem('sel_cand_id');
-    if (cached) return cached;
-
+    if (cached && cached !== "null" && cached !== "undefined") {
+      return cached;
+    }
+  
+    // 2) revisar parámetros de la URL
     try {
       const p = new URLSearchParams(location.search);
       const fromUrl = p.get('id') || p.get('userId');
-      if (fromUrl) {
+  
+      if (fromUrl && fromUrl !== "null" && fromUrl !== "undefined") {
         sessionStorage.setItem('sel_cand_id', fromUrl);
-        stripIdFromUrl(); // limpia inmediatamente
+        stripIdFromUrl(); // limpia la URL sin romper la carga
         return fromUrl;
       }
     } catch (_) {}
-    return null;
+  
+    return undefined;
   }
+  
 
   // Busca token en varias claves comunes
   const TOKEN_KEYS = [

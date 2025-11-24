@@ -1,5 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+    .candidate-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        /* un poco más de espacio entre iconos y botón */
+        padding: 16px 0;
+    }
+
+    /* Contenedor de los iconos horizontales */
+    .action-icons {
+        display: flex;
+        gap: 32px;
+        /* más espacio entre los iconos */
+        justify-content: center;
+        width: 100%;
+    }
+
+    /* Cada icono con label */
+    .action-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    .action-item:hover {
+        transform: translateY(-3px);
+    }
+
+    .action-circle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        /* ligeramente más grande */
+        height: 60px;
+        border-radius: 50%;
+        border: 2px solid #ccc;
+        transition: all 0.2s;
+        font-size: 22px;
+        color: #555;
+        background: #fff;
+    }
+
+    .action-circle:hover {
+        border-color: currentColor;
+        /* el color del icono */
+        color: currentColor;
+    }
+
+    /* Colores según acción */
+    .action-circle.preseleccionado i {
+        color: #198754;
+    }
+
+    .action-circle.seleccionado i {
+        color: #0d6efd;
+    }
+
+    .action-circle.descartado i {
+        color: #dc3545;
+    }
+
+    /* Leyenda debajo */
+    .action-label {
+        font-size: 13px;
+        color: #333;
+        margin-top: 6px;
+        text-align: center;
+        max-width: 70px;
+        word-wrap: break-word;
+    }
+
+    /* Botón descargar CV */
+    .btn-download {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 12px 20px;
+        width: 100%;
+        max-width: 260px;
+        border-radius: 6px;
+        background-color: #0d6efd;
+        color: #fff;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .btn-download:hover {
+        background-color: #0b5ed7;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Deshabilitado */
+    .btn-download.disabled,
+    .btn-download:disabled {
+        opacity: 0.5;
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+
+    /* Tooltip oculto por defecto */
+    .help-tooltip {
+        display: none;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 220px;
+        background: #fff;
+        border: 1px solid #e4e7eb;
+        font-size: 13px;
+        color: #333;
+        z-index: 10;
+    }
+
+    /* Mostrar tooltip al pasar el mouse */
+    .help-icon:hover .help-tooltip {
+        display: block;
+    }
+</style>
 
 <head>
     <!-- meta tags -->
@@ -66,23 +192,55 @@
                                 </div>
                             </div>
                             <div class="job-single-list">
-                                <h5>
-                                    <div class="user-profile-card-header d-flex justify-content-between align-items-center p-3 mb-3 rounded shadow-sm" 
-     style="background:#f9fafc; border:1px solid #e4e7eb;">
-  <div class="d-flex align-items-center">
-    <i class="text-primary me-2" style="font-size:20px;"></i>
-    <h4 class="user-profile-card-title mb-0 fw-semibold" style="font-size:22px; color:#333;">
-      Descripción
-    </h4>
-  </div>
-  <a id="downloadCandidateCv" href="#" 
-     class="btn btn-outline-primary d-flex align-items-center gap-2 px-3 py-1 shadow-sm"
-     style="border-radius:6px; font-size:15px;">
-    <i class="far fa-file-arrow-down"></i>
-    <span>Descargar CV</span>
-  </a>
-</div>
-                                </h5>
+                                <div class="candidate-management">
+                                    <div class="candidate-management position-relative">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <h4 class="me-2">Gestión Candidato</h4>
+                                            <!-- Botón de ayuda -->
+                                            <div class="help-icon position-relative" style="cursor:pointer;">
+                                                <i class="fas fa-question-circle text-secondary"></i>
+                                                <div class="help-tooltip position-absolute p-2 rounded shadow-sm">
+                                                    Aquí puedes pre-seleccionar, seleccionar, descartar al candidato o
+                                                    descargar su CV.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            class="user-profile-card-header d-flex flex-column align-items-center p-3 mb-3 rounded shadow-sm">
+                                            <div class="candidate-actions">
+                                                <div class="action-icons">
+                                                    <div class="action-item" id="preselectCandidate">
+                                                        <div class="action-circle preseleccionado">
+                                                            <i class="fas fa-user-check"></i>
+                                                        </div>
+                                                        <span class="action-label">Pre-seleccionar</span>
+                                                    </div>
+
+                                                    <div class="action-item" id="selectCandidate">
+                                                        <div class="action-circle seleccionado">
+                                                            <i class="fas fa-clipboard-check"></i>
+                                                        </div>
+                                                        <span class="action-label">Seleccionar</span>
+                                                    </div>
+
+                                                    <div class="action-item" id="discardCandidate">
+                                                        <div class="action-circle descartado">
+                                                            <i class="fas fa-xmark"></i>
+                                                        </div>
+                                                        <span class="action-label">Descartar</span>
+                                                    </div>
+                                                </div>
+
+                                                <a id="downloadCandidateCv" href="#" class="btn-download mt-3">
+                                                    <i class="far fa-file-arrow-down"></i>
+                                                    <span>Descargar CV</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <ul>
                                     <li>
                                         <div class="job-single-list-icon">
@@ -222,68 +380,68 @@
         <script src="../assets/js/config/token-exp.js"></script>
         <script>
             document.addEventListener("DOMContentLoaded", async () => {
-  const btnDescargar = document.getElementById("downloadCandidateCv");
-  if (!btnDescargar) return;
+                const btnDescargar = document.getElementById("downloadCandidateCv");
+                if (!btnDescargar) return;
 
-  // ID del candidato desde sessionStorage (guardado en vista de lista)
-  const candidatoId = sessionStorage.getItem("sel_cand_id");
-  if (!candidatoId) {
-    btnDescargar.style.display = "none";
-    return;
-  }
+                // ID del candidato desde sessionStorage (guardado en vista de lista)
+                const candidatoId = sessionStorage.getItem("sel_cand_id");
+                if (!candidatoId) {
+                    btnDescargar.style.display = "none";
+                    return;
+                }
 
-  const tokenKeys = ["auth_token_emp", "auth_token", "empleador_token", "token", "jwt"];
-  let token = null;
-  for (const key of tokenKeys) {
-    const v = localStorage.getItem(key);
-    if (v) {
-      token = v;
-      break;
-    }
-  }
+                const tokenKeys = ["auth_token_emp", "auth_token", "empleador_token", "token", "jwt"];
+                let token = null;
+                for (const key of tokenKeys) {
+                    const v = localStorage.getItem(key);
+                    if (v) {
+                        token = v;
+                        break;
+                    }
+                }
 
-  // Base URL de API
-  const API_BASE = typeof BASE_URL_API !== "undefined" ? BASE_URL_API : window.location.origin + "/api/v1";
-  const PUBLIC_BASE = API_BASE.replace(/\/v1$/, "");
+                // Base URL de API
+                const API_BASE = typeof BASE_URL_API !== "undefined" ? BASE_URL_API : window.location.origin + "/api/v1";
+                const PUBLIC_BASE = API_BASE.replace(/\/v1$/, "");
 
-  try {
-    // 1️⃣ Obtener datos del postulante por ID
-    const resPost = await fetch(`${API_BASE}/postulante/${candidatoId}`, {
-      headers: token ? { Authorization: `Bearer ${token}` } : {}
-    });
-    if (!resPost.ok) throw new Error("No se pudo obtener datos del candidato");
-    const postData = await resPost.json();
+                try {
+                    // 1️⃣ Obtener datos del postulante por ID
+                    const resPost = await fetch(`${API_BASE}/postulante/${candidatoId}`, {
+                        headers: token ? { Authorization: `Bearer ${token}` } : {}
+                    });
+                    if (!resPost.ok) throw new Error("No se pudo obtener datos del candidato");
+                    const postData = await resPost.json();
 
-    const rut = postData?.usuario?.rut;
-    if (!rut) throw new Error("RUT no encontrado");
+                    const rut = postData?.usuario?.rut;
+                    if (!rut) throw new Error("RUT no encontrado");
 
-    // 2️⃣ Obtener datos del curriculum
-    const resCv = await fetch(`${API_BASE}/curriculum/${rut}`);
-    if (!resCv.ok) throw new Error("Error al obtener CV");
-    const cvList = await resCv.json();
-    const cv = Array.isArray(cvList) ? cvList[0] : cvList;
-    const cvPath = cv?.cv_path || "";
+                    // 2️⃣ Obtener datos del curriculum
+                    const resCv = await fetch(`${API_BASE}/curriculum/${rut}`);
+                    if (!resCv.ok) throw new Error("Error al obtener CV");
+                    const cvList = await resCv.json();
+                    const cv = Array.isArray(cvList) ? cvList[0] : cvList;
+                    const cvPath = cv?.cv_path || "";
 
-    // 3️⃣ Construir URL pública
-    let cvUrl;
-    if (cvPath.startsWith("/uploads/")) {
-      cvUrl = `${PUBLIC_BASE}${cvPath}`;
-    } else if (cvPath.startsWith("/var/www/html/")) {
-      cvUrl = `${PUBLIC_BASE}${cvPath.replace("/var/www/html", "")}`;
-    } else {
-      cvUrl = `${API_BASE}/curriculum/${encodeURIComponent(rut)}/view`;
-    }
+                    // 3️⃣ Construir URL pública
+                    let cvUrl;
+                    if (cvPath.startsWith("/uploads/")) {
+                        cvUrl = `${PUBLIC_BASE}${cvPath}`;
+                    } else if (cvPath.startsWith("/var/www/html/")) {
+                        cvUrl = `${PUBLIC_BASE}${cvPath.replace("/var/www/html", "")}`;
+                    } else {
+                        cvUrl = `${API_BASE}/curriculum/${encodeURIComponent(rut)}/view`;
+                    }
 
-    // 4️⃣ Asignar acción de descarga / apertura
-    btnDescargar.addEventListener("click", (e) => {
-      e.preventDefault();
-      window.open(cvUrl, "_blank");
-    });
-  } catch (err) {
-    console.error("Error al preparar descarga de CV:", err);
-    btnDescargar.style.display = "none";
-  }
-});
+                    // 4️⃣ Asignar acción de descarga / apertura
+                    btnDescargar.addEventListener("click", (e) => {
+                        e.preventDefault();
+                        window.open(cvUrl, "_blank");
+                    });
+                } catch (err) {
+                    console.error("Error al preparar descarga de CV:", err);
+                    btnDescargar.style.display = "none";
+                }
+            });
 
         </script>
 
