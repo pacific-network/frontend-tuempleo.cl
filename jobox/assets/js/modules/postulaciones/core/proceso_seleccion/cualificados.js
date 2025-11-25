@@ -247,21 +247,25 @@ function crearCardCualificado(item) {
   const comuna = data?.datos_personales?.comuna || "N/A";
   const area = data?.preferencias?.categoria_empleo || "N/A";
   const renta = data?.preferencias?.salario_esperado || 0;
+  const postulacionId = item.id;
+
 
   const rentaFormateada = renta.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
   const estadoMapa = {
     enviada: "Enviada",
-    rechazada: "Rechazada",
-    pendiente: "Pendiente",
+    descartado: "Descartado",
+    preseleccionado: "Pre-Seleccionado",
+    seleccionado: 'Seleccionado',
     cualificado: "Calificado"
   };
 
   const estadoTexto = estadoMapa[estado] || estado;
   const estadoColor = {
     enviada: "text-success",
-    rechazada: "text-danger",
-    pendiente: "text-warning",
+    descartado: "text-danger",
+    preseleccionado: "text-success",
+    seleccionado: "text-success",
     cualificado: "text-primary"
   }[estado] || "text-muted";
 
@@ -303,6 +307,8 @@ function crearCardCualificado(item) {
         <div class="ms-3">
           <button 
             class="btn btn-sm btn-outline-primary ver-cv" 
+            data-estado="${estado}"
+            data-postulacion-id="${postulacionId}"
             data-user-id="${usuarioId}"
             style="width: 80px; height: 35px;">
             Ver CV
@@ -317,20 +323,22 @@ function crearCardCualificado(item) {
 // =============================
 // Evento → Redirección correcta
 // =============================
+
 function attachVerCvEvents() {
   document.querySelectorAll(".ver-cv").forEach(btn => {
     btn.addEventListener("click", e => {
       const userId = e.target.getAttribute("data-user-id");
+      const postulacionId = e.target.getAttribute("data-postulacion-id");
 
-      if (!userId) {
-        console.error("❌ No userId encontrado");
+      if (!userId || !postulacionId) {
+        console.error("❌ Faltan datos para la redirección");
         return;
       }
 
-      console.log("➡️ Redirigiendo a candidato:", userId);
+      console.log("➡️ Redirigiendo:", { userId, postulacionId });
 
-      // RUTA CORRECTA SIN INVENTAR RUTAS
-      window.location.href = `/jobox/empresas/employer-view-candidate.html?id=${userId}`;
+      window.location.href = `/jobox/empresas/employer-view-candidate.html?id=${userId}&postulacion=${postulacionId}`;
     });
   });
 }
+

@@ -183,6 +183,30 @@
         font-size: 13px;
         color: #555;
     }
+
+    .toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #333;
+        color: #fff;
+        padding: 14px 20px;
+        border-radius: 10px;
+        font-size: 15px;
+        opacity: 0;
+        transition: opacity 0.4s ease, transform 0.4s ease;
+        transform: translateY(20px);
+        z-index: 9999;
+    }
+
+    .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .hidden {
+        display: none;
+    }
 </style>
 
 <head>
@@ -408,6 +432,7 @@
                 </div>
             </div>
         </div>
+        <div id="toast" class="toast hidden"></div>
     </main>
     <!-- footer area -->
     <div id="footer-placeholder">
@@ -442,6 +467,9 @@
         <script src="../assets/js/modules/ofertas/hide-offer-id.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="../assets/js/config/token-exp.js"></script>
+        <script type="module"
+            src="../assets/js/modules/postulaciones/core/proceso_seleccion/pre-seleccionados.js"></script>
+        <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/utils/toast.js"></script>
         <script>
             document.addEventListener("DOMContentLoaded", async () => {
                 const btnDescargar = document.getElementById("downloadCandidateCv");

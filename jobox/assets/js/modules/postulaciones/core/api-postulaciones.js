@@ -42,6 +42,14 @@ if (typeof window.isDev === "undefined") {
     });
     return res.json();
   }
+
+  export async function getPreseleccionados(ofertaId) {
+    const res = await fetch(`${window.BASE_URL_API}/postulaciones/oferta/${ofertaId}/preseleccionados`,{
+      credentials: "include",
+      headers: getAuthHeaders()
+    });
+    return res.json();
+  }
   
   // =======================
   // ACCIONES DE SELECCIÓN
