@@ -125,6 +125,64 @@
     .help-icon:hover .help-tooltip {
         display: block;
     }
+
+    /* Contenedor tipo tarjeta */
+    .contact-card {
+        background: #fff;
+        padding: 24px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        margin-top: 21px;
+    }
+
+    /* Convertir UL en grilla */
+    .contact-card ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 22px 32px;
+        /* GAP entre filas y columnas */
+    }
+
+    /* Mantener estructura original de cada fila */
+    .contact-card li {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    /* Iconos */
+    .contact-card .job-single-list-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        background: #eef2ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .contact-card .job-single-list-icon i {
+        font-size: 18px;
+        color: #3758f9;
+    }
+
+    /* Títulos */
+    .contact-card .job-single-list-info h6 {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1d1d1f;
+        margin: 0;
+    }
+
+    /* Valores */
+    .contact-card .job-single-list-info p {
+        margin: 2px 0 0;
+        font-size: 13px;
+        color: #555;
+    }
 </style>
 
 <head>
@@ -178,7 +236,7 @@
                         <div class="job-sidebar mb-5">
                             <div class="job-single-heading">
                                 <div class="job-single-employer">
-                                    <img src="assets/img/job/01.jpg" alt="Foto postulante">
+                                    <img src="jobox/assets/img/candidate/01.jpg" alt="Foto postulante">
                                     <div class="job-single-employer-info">
                                         <h5><!-- Nombre dinámico --></h5>
                                         <p><!-- Categoría dinámica --></p>
@@ -241,71 +299,77 @@
                                     </div>
                                 </div>
 
-                                <ul>
-                                    <li>
-                                        <div class="job-single-list-icon">
-                                            <i class="fas fa-at"></i>
-                                        </div>
-                                        <div class="job-single-list-info">
-                                            <h6>Correo</h6>
-                                            <p></p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="job-single-list-icon">
-                                            <i class="fas fa-phone"></i>
-                                        </div>
-                                        <div class="job-single-list-info">
-                                            <h6>Teléfono</h6>
-                                            <p></p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="job-single-list-icon">
-                                            <i class="fas fa-user-check"></i>
-                                        </div>
-                                        <div class="job-single-list-info">
-                                            <h6>Estado Civil</h6>
-                                            <p></p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="job-single-list-icon">
-                                            <i class="fas fa-calendar"></i>
-                                        </div>
-                                        <div class="job-single-list-info">
-                                            <h6>Edad</h6>
-                                            <p></p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="job-single-list-icon">
-                                            <i class="fas fa-dollar"></i>
-                                        </div>
-                                        <div class="job-single-list-info">
-                                            <h6>Expectativa Salarial</h6>
-                                            <p></p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="job-single-list-icon">
-                                            <i class="fas fa-briefcase"></i>
-                                        </div>
-                                        <div class="job-single-list-info">
-                                            <h6>Categoría</h6>
-                                            <p></p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="job-single-list-icon">
-                                            <i class="fas fa-language"></i>
-                                        </div>
-                                        <div class="job-single-list-info">
-                                            <h6>Idiomas</h6>
-                                            <!-- Aquí se inyectarán los idiomas dinámicamente -->
-                                        </div>
-                                    </li>
-                                </ul>
+                                <!-- Informacion de contacto -->
+                                <h4 class="pb-2 m-2">Informacion de Contacto</h4>
+                                <div class="contact-card">
+                                    <ul>
+                                        <li>
+                                            <div class="job-single-list-icon">
+                                                <i class="fas fa-at"></i>
+                                            </div>
+                                            <div class="job-single-list-info">
+                                                <h6>Correo</h6>
+                                                <p></p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="job-single-list-icon">
+                                                <i class="fas fa-phone"></i>
+                                            </div>
+                                            <div class="job-single-list-info">
+                                                <h6>Teléfono</h6>
+                                                <p></p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="job-single-list-icon">
+                                                <i class="fas fa-user-check"></i>
+                                            </div>
+                                            <div class="job-single-list-info">
+                                                <h6>Estado Civil</h6>
+                                                <p></p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="job-single-list-icon">
+                                                <i class="fas fa-calendar"></i>
+                                            </div>
+                                            <div class="job-single-list-info">
+                                                <h6>Edad</h6>
+                                                <p></p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="job-single-list-icon">
+                                                <i class="fas fa-dollar"></i>
+                                            </div>
+                                            <div class="job-single-list-info">
+                                                <h6>Expectativa Salarial</h6>
+                                                <p></p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="job-single-list-icon">
+                                                <i class="fas fa-briefcase"></i>
+                                            </div>
+                                            <div class="job-single-list-info">
+                                                <h6>Categoría</h6>
+                                                <p></p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="job-single-list-icon">
+                                                <i class="fas fa-language"></i>
+                                            </div>
+                                            <div class="job-single-list-info">
+                                                <h6>Idiomas</h6>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+
+
+
                             </div>
                         </div>
                     </div>
