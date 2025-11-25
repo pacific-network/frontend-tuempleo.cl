@@ -38,26 +38,36 @@
 
   // Resuelve el ID del candidato: primero sessionStorage; luego URL (y limpia)
   function resolveCandidateId() {
-    // 1) revisar sessionStorage
     const cached = sessionStorage.getItem('sel_cand_id');
-    if (cached && cached !== "null" && cached !== "undefined") {
-      return cached;
+    if (cached && cached !== "null" && cached !== "undefined") return cached;
+  
+    const params = new URLSearchParams(location.search);
+  
+    // 1️⃣ leer data base64
+    if (params.has('data')) {
+      try {
+        const decoded = atob(params.get('data'));
+        const obj = JSON.parse(decoded);
+        const userId = obj.userId;
+        const postulacionId = obj.postulacionId;
+        if (userId) sessionStorage.setItem('sel_cand_id', userId);
+        if (postulacionId) sessionStorage.setItem('sel_post_id', postulacionId);
+        return userId;
+      } catch (err) {
+        console.error("Error decodificando data base64:", err);
+      }
     }
   
-    // 2) revisar parámetros de la URL
-    try {
-      const p = new URLSearchParams(location.search);
-      const fromUrl = p.get('id') || p.get('userId');
-  
-      if (fromUrl && fromUrl !== "null" && fromUrl !== "undefined") {
-        sessionStorage.setItem('sel_cand_id', fromUrl);
-        stripIdFromUrl(); // limpia la URL sin romper la carga
-        return fromUrl;
-      }
-    } catch (_) {}
+    // 2️⃣ fallback a id/userId en URL
+    const fromUrl = params.get('id') || params.get('userId');
+    if (fromUrl) {
+      sessionStorage.setItem('sel_cand_id', fromUrl);
+      return fromUrl;
+    }
   
     return undefined;
   }
+  
   
 
   // Busca token en varias claves comunes

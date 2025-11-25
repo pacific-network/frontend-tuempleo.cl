@@ -65,6 +65,7 @@ export function attachVerCvEvents() {
     btn.addEventListener("click", () => {
       const userId = btn.getAttribute("data-user-id");
       const postulacionId = btn.getAttribute("data-postulacion-id");
+      const estado = btn.getAttribute("data-estado");
 
       if (!userId || !postulacionId) {
         console.error("❌ Faltan datos para la redirección");
@@ -72,7 +73,7 @@ export function attachVerCvEvents() {
       }
 
       // Parámetros a encodear
-      const params = { userId, postulacionId };
+      const params = { userId, postulacionId, estado};
 
       // Base64 encode
       const encoded = btoa(JSON.stringify(params));
@@ -138,7 +139,7 @@ function crearCardPreSeleccionado(item) {
           </div>
         </div>
         <div class="ms-3">
-          <button class="btn btn-sm btn-outline-primary ver-cv" data-postulacion-id="${postulacionId}" data-user-id="${usuarioId}" style="width: 80px; height: 35px;">Ver CV</button>
+          <button class="btn btn-sm btn-outline-primary ver-cv" data-postulacion-id="${postulacionId}" data-user-id="${usuarioId}" data-estado="${estado}" style="width: 80px; height: 35px;">Ver CV</button>
         </div>
       </div>
     </div>
