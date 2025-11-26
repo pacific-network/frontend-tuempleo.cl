@@ -1,213 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<style>
-    .candidate-actions {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
-        /* un poco más de espacio entre iconos y botón */
-        padding: 16px 0;
-    }
 
-    /* Contenedor de los iconos horizontales */
-    .action-icons {
-        display: flex;
-        gap: 32px;
-        /* más espacio entre los iconos */
-        justify-content: center;
-        width: 100%;
-    }
-
-    /* Cada icono con label */
-    .action-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        cursor: pointer;
-        transition: transform 0.2s;
-    }
-
-    .action-item:hover {
-        transform: translateY(-3px);
-    }
-
-    .action-circle {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 60px;
-        /* ligeramente más grande */
-        height: 60px;
-        border-radius: 50%;
-        border: 2px solid #ccc;
-        transition: all 0.2s;
-        font-size: 22px;
-        color: #555;
-        background: #fff;
-    }
-
-    .action-circle:hover {
-        border-color: currentColor;
-        /* el color del icono */
-        color: currentColor;
-    }
-
-    /* Colores según acción */
-    .action-circle.preseleccionado i {
-        color: #198754;
-    }
-
-    .action-circle.seleccionado i {
-        color: #0d6efd;
-    }
-
-    .action-circle.descartado i {
-        color: #dc3545;
-    }
-
-    /* Leyenda debajo */
-    .action-label {
-        font-size: 13px;
-        color: #333;
-        margin-top: 6px;
-        text-align: center;
-        max-width: 70px;
-        word-wrap: break-word;
-    }
-
-    /* Botón descargar CV */
-    .btn-download {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        padding: 12px 20px;
-        width: 100%;
-        max-width: 260px;
-        border-radius: 6px;
-        background-color: #0d6efd;
-        color: #fff;
-        font-weight: 600;
-        text-decoration: none;
-        transition: all 0.2s;
-    }
-
-    .btn-download:hover {
-        background-color: #0b5ed7;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
-    }
-
-    /* Deshabilitado */
-    .btn-download.disabled,
-    .btn-download:disabled {
-        opacity: 0.5;
-        pointer-events: none;
-        cursor: not-allowed;
-    }
-
-    /* Tooltip oculto por defecto */
-    .help-tooltip {
-        display: none;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 220px;
-        background: #fff;
-        border: 1px solid #e4e7eb;
-        font-size: 13px;
-        color: #333;
-        z-index: 10;
-    }
-
-    /* Mostrar tooltip al pasar el mouse */
-    .help-icon:hover .help-tooltip {
-        display: block;
-    }
-
-    /* Contenedor tipo tarjeta */
-    .contact-card {
-        background: #fff;
-        padding: 24px;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-        margin-top: 21px;
-    }
-
-    /* Convertir UL en grilla */
-    .contact-card ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px 30px;
-        /* GAP entre filas y columnas */
-    }
-
-    /* Mantener estructura original de cada fila */
-    .contact-card li {
-        display: flex;
-        align-items: center;
-        gap: 2px;
-    }
-
-    /* Iconos */
-    .contact-card .job-single-list-icon {
-        width: 30px;
-        height: 30px;
-        border-radius: 10px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .contact-card .job-single-list-icon i {
-        font-size: 28px;
-        color: #3758f9;
-    }
-
-    /* Títulos */
-    .contact-card .job-single-list-info h6 {
-        font-size: 14px;
-        font-weight: 600;
-        color: #1d1d1f;
-        margin: 0;
-    }
-
-    /* Valores */
-    .contact-card .job-single-list-info p {
-        margin: 2px 0 0;
-        font-size: 13px;
-        color: #555;
-    }
-
-    .toast {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #333;
-        color: #fff;
-        padding: 14px 20px;
-        border-radius: 10px;
-        font-size: 15px;
-        opacity: 0;
-        transition: opacity 0.4s ease, transform 0.4s ease;
-        transform: translateY(20px);
-        z-index: 9999;
-    }
-
-    .toast.show {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    .hidden {
-        display: none;
-    }
-</style>
 
 <head>
     <!-- meta tags -->
@@ -222,7 +15,7 @@
 
     <!-- favicon -->
     <link rel="icon" type="image/x-icon" href="../assets/img/logo/favicon.png">
-
+    <link rel="stylesheet" href="../assets/css/proceso-postulacion/proceso-postulacion.css">
     <!-- css -->
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/all-fontawesome.min.css">
@@ -433,6 +226,17 @@
             </div>
         </div>
         <div id="toast" class="toast hidden"></div>
+
+        <!-- Botón Flotante → Contratar / Finalizar Proceso -->
+        <button class="floating-action-btn hidden" id="btnContratar">
+            <svg viewBox="0 0 24 24" class="icon">
+                <path d="M9 11l3 3L22 4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" />
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h11" stroke="currentColor"
+                    stroke-width="2" fill="none" stroke-linecap="round" />
+            </svg>
+            Contratar / Finalizar Proceso
+        </button>
+
     </main>
     <!-- footer area -->
     <div id="footer-placeholder">
