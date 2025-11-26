@@ -50,6 +50,14 @@ if (typeof window.isDev === "undefined") {
     });
     return res.json();
   }
+
+  export async function getSeleccionados(OfertaId){
+    const res = await fetch(`${window.BASE_URL_API}/postulaciones/oferta/${OfertaId}/seleccionados`,{
+      credentials: "include",
+      headers: getAuthHeaders()
+    });
+    return res.json();
+  }
   
   // =======================
   // ACCIONES DE SELECCIÓN
@@ -70,6 +78,15 @@ if (typeof window.isDev === "undefined") {
       credentials: "include",
       headers: getAuthHeaders(),
       body: JSON.stringify({ estado: "preseleccionado" })
+    });
+  }
+
+  export async function seleccionar(id) {
+    return fetch (`${window.BASE_URL_API}/seleccion/${id}/seleccionar`,{
+      method: "PATCH",
+      credentials: "include",
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ estado: "seleccionado" })
     });
   }
   

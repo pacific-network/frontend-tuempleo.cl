@@ -142,7 +142,7 @@
         margin: 0;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 22px 32px;
+        gap: 10px 30px;
         /* GAP entre filas y columnas */
     }
 
@@ -150,7 +150,7 @@
     .contact-card li {
         display: flex;
         align-items: center;
-        gap: 5px;
+        gap: 2px;
     }
 
     /* Iconos */
@@ -444,6 +444,7 @@
 
 
         <!-- js -->
+        <script src="../../assets/js/modules/utils/fetch-interceptor.js"></script>
         <script src="../assets/js/jquery-3.6.0.min.js"></script>
         <script src="../assets/js/modernizr.min.js"></script>
         <script src="../assets/js/bootstrap.bundle.min.js"></script>
@@ -472,6 +473,7 @@
         <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/utils/toast.js"></script>
         <script
             src="../assets/js/modules/postulaciones/core/proceso_seleccion/manejo-estado/estado-candidato.js"></script>
+        <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/seleccionar.js"></script>
         <script>
             document.addEventListener("DOMContentLoaded", async () => {
                 const btnDescargar = document.getElementById("downloadCandidateCv");
