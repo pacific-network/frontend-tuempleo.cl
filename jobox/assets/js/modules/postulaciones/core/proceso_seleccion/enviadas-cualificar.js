@@ -299,7 +299,7 @@ function bindViewCVEvents() {
       console.log("👤 Redirigiendo a candidato usuario ID:", userId);
 
       // 🔥 RESPETA EXACTAMENTE TU RUTA
-      window.location.href = `/jobox/empresas/employer-view-candidate.html?id=${userId}`;
+      window.location.href = `/empresas/employer-view-candidate.html?id=${userId}`;
     });
   });
 }

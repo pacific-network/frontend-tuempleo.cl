@@ -170,7 +170,7 @@ function attachVerCvEvents() {
 
       console.log("➡️ Redirigiendo:", { userId, postulacionId });
 
-      window.location.href = `/jobox/empresas/employer-view-candidate.html?id=${userId}&postulacion=${postulacionId}`;
+      window.location.href = `/empresas/employer-view-candidate.html?id=${userId}&postulacion=${postulacionId}`;
     });
   });
 }
