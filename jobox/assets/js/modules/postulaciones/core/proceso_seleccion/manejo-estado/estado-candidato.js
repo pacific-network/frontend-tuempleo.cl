@@ -65,10 +65,20 @@ function renderEstadoCandidato(estado) {
       });
       break;
 
+    case "contratado":
+      // 🔒 Desactivamos TODOS los botones
+      [preselectBtn, selectBtn, discardBtn].forEach(btn => {
+        btn.classList.add("disabled");
+        btn.style.pointerEvents = "none";
+        btn.style.opacity = "0.35"; // un poco más apagado
+      });
+      break;
+
     default:
       break;
   }
 }
+
 
 
 // ----------------- INIT -----------------

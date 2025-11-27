@@ -250,3 +250,170 @@
         outline: 3px solid rgba(0, 102, 255, 0.4);
         outline-offset: 3px;
     }
+
+/* ================================
+   MODAL ELEGANTE / MODERNO
+   (ESTRUCTURA ORIGINAL INTACTA)
+================================ */
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex !important; /* no se toca */
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(6px);
+    z-index: 99999;
+
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.25s ease, visibility 0.25s;
+}
+
+/* Ocultar */
+.modal.hidden {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Contenedor del modal */
+.modal-content {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(10px);
+
+    padding: 26px 30px;
+    border-radius: 16px;
+
+    width: 90%;
+    max-width: 420px;
+    text-align: center;
+
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.22);
+
+    animation: modalFade 0.25s ease-out;
+}
+
+/* Texto */
+.modal-content h2 {
+    font-size: 1.45rem;
+    margin-bottom: 10px;
+    color: #1d1d1f;
+    font-weight: 700;
+}
+
+.modal-content p {
+    color: #3a3a3c;
+    font-size: 1.05rem;
+    line-height: 1.45;
+}
+
+/* Animación */
+@keyframes modalFade {
+    from {
+        transform: translateY(12px) scale(0.97);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Botones */
+.modal-actions {
+    margin-top: 26px;
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.btn-cancelar,
+.btn-confirmar {
+    flex: 1;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+
+    transition: background 0.2s, transform 0.2s;
+}
+
+/* Botón gris */
+.btn-cancelar {
+    background: #e5e5ea;
+    color: #1c1c1e;
+}
+
+.btn-cancelar:hover {
+    background: #d1d1d6;
+    transform: translateY(-1px);
+}
+
+/* Botón azul moderno */
+.btn-confirmar {
+    background: linear-gradient(135deg, #0b74ff, #0056d6);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(11, 116, 255, 0.35);
+}
+
+.btn-confirmar:hover {
+    background: linear-gradient(135deg, #0069d9, #004bb5);
+    box-shadow: 0 6px 16px rgba(0, 110, 230, 0.45);
+    transform: translateY(-1.5px);
+}
+
+
+/* blur */
+.contact-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Solo blur al contenido */
+.contact-card.locked .locked-content {
+    filter: blur(8px);
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+/* Overlay centrado */
+.locked-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(2px);
+}
+
+/* Botón */
+.unlock-btn {
+    background: #4d8dff;
+    border: none;
+    padding: 14px 26px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    transition: background 0.2s;
+}
+
+.unlock-btn:hover {
+    background: #3c78e6;
+}

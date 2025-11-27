@@ -58,6 +58,22 @@ if (typeof window.isDev === "undefined") {
     });
     return res.json();
   }
+
+  export async function getContratados(OfertaId){
+    const res = await fetch(`${window.BASE_URL_API}/postulaciones/oferta/${OfertaId}/contratados`,{
+      credentials: "include",
+      headers: getAuthHeaders()
+    });
+    return res.json();
+  }
+
+  export async function getDescartados(OfertaId){
+    const res = await fetch(`${window.BASE_URL_API}/postulaciones/oferta/${OfertaId}/descartados`,{
+      credentials: "include",
+      headers: getAuthHeaders()
+    });
+    return res.json();
+  }
   
   // =======================
   // ACCIONES DE SELECCIÓN

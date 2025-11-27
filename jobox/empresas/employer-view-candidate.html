@@ -118,72 +118,90 @@
 
                                 <!-- Informacion de contacto -->
                                 <h4 class="pb-2 m-2">Informacion de Contacto</h4>
-                                <div class="contact-card">
-                                    <ul>
-                                        <li>
-                                            <div class="job-single-list-icon">
-                                                <i class="fas fa-at"></i>
-                                            </div>
-                                            <div class="job-single-list-info">
-                                                <h6>Correo</h6>
-                                                <p></p>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="job-single-list-icon">
-                                                <i class="fas fa-phone"></i>
-                                            </div>
-                                            <div class="job-single-list-info">
-                                                <h6>Teléfono</h6>
-                                                <p></p>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="job-single-list-icon">
-                                                <i class="fas fa-user-check"></i>
-                                            </div>
-                                            <div class="job-single-list-info">
-                                                <h6>Estado Civil</h6>
-                                                <p></p>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="job-single-list-icon">
-                                                <i class="fas fa-calendar"></i>
-                                            </div>
-                                            <div class="job-single-list-info">
-                                                <h6>Edad</h6>
-                                                <p></p>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="job-single-list-icon">
-                                                <i class="fas fa-dollar"></i>
-                                            </div>
-                                            <div class="job-single-list-info">
-                                                <h6>Expectativa Salarial</h6>
-                                                <p></p>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="job-single-list-icon">
-                                                <i class="fas fa-briefcase"></i>
-                                            </div>
-                                            <div class="job-single-list-info">
-                                                <h6>Categoría</h6>
-                                                <p></p>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="job-single-list-icon">
-                                                <i class="fas fa-language"></i>
-                                            </div>
-                                            <div class="job-single-list-info">
-                                                <h6>Idiomas</h6>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <div class="contact-card locked" id="contactCard">
+
+                                    <!-- Overlay con botón (NO se blurea) -->
+                                    <div class="locked-overlay" id="lockedOverlay">
+                                        <button id="unlockBtn" class="unlock-btn">🔓 Desbloquear información de
+                                            contacto</button>
+                                    </div>
+
+                                    <!-- Contenido original (blureado cuando está locked) -->
+                                    <div class="locked-content">
+                                        <ul>
+                                            <li>
+                                                <div class="job-single-list-icon">
+                                                    <i class="fas fa-at"></i>
+                                                </div>
+                                                <div class="job-single-list-info">
+                                                    <h6>Correo</h6>
+                                                    <p></p>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="job-single-list-icon">
+                                                    <i class="fas fa-phone"></i>
+                                                </div>
+                                                <div class="job-single-list-info">
+                                                    <h6>Teléfono</h6>
+                                                    <p></p>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="job-single-list-icon">
+                                                    <i class="fas fa-user-check"></i>
+                                                </div>
+                                                <div class="job-single-list-info">
+                                                    <h6>Estado Civil</h6>
+                                                    <p></p>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="job-single-list-icon">
+                                                    <i class="fas fa-calendar"></i>
+                                                </div>
+                                                <div class="job-single-list-info">
+                                                    <h6>Edad</h6>
+                                                    <p></p>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="job-single-list-icon">
+                                                    <i class="fas fa-dollar"></i>
+                                                </div>
+                                                <div class="job-single-list-info">
+                                                    <h6>Expectativa Salarial</h6>
+                                                    <p></p>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="job-single-list-icon">
+                                                    <i class="fas fa-briefcase"></i>
+                                                </div>
+                                                <div class="job-single-list-info">
+                                                    <h6>Categoría</h6>
+                                                    <p></p>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="job-single-list-icon">
+                                                    <i class="fas fa-language"></i>
+                                                </div>
+                                                <div class="job-single-list-info">
+                                                    <h6>Idiomas</h6>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+
                                 </div>
+
 
 
 
@@ -237,6 +255,21 @@
             Contratar / Finalizar Proceso
         </button>
 
+        <div id="modalContratar" class="modal hidden">
+            <div class="modal-content">
+                <h2>Confirmar Contratación</h2>
+                <p>
+                    ¿Estás seguro de que deseas **contratar al candidato**?<br>
+                    Esta acción es <strong>irreversible</strong> y finalizará el proceso de selección.
+                </p>
+
+                <div class="modal-actions">
+                    <button id="cancelarContratacion" class="btn-cancelar">Cancelar</button>
+                    <button id="confirmarContratacion" class="btn-confirmar">Confirmar</button>
+                </div>
+            </div>
+        </div>
+
     </main>
     <!-- footer area -->
     <div id="footer-placeholder">
@@ -278,6 +311,10 @@
         <script
             src="../assets/js/modules/postulaciones/core/proceso_seleccion/manejo-estado/estado-candidato.js"></script>
         <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/seleccionar.js"></script>
+        <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/contratar.js"
+            defer></script>
+        <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/descartar.js"></script>
+
         <script>
             document.addEventListener("DOMContentLoaded", async () => {
                 const btnDescargar = document.getElementById("downloadCandidateCv");
