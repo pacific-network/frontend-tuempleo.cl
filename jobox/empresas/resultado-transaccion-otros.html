@@ -229,11 +229,13 @@
             const qs = new URLSearchParams(location.search);
             const paymentId = qs.get("payment_id") || qs.get("collection_id");
             const prefId = qs.get("preference_id") || qs.get("pref_id") || qs.get("token");
+
             const cont = document.getElementById("contenedor");
             const acc = document.getElementById("acciones");
             const btnCopy = document.getElementById("copyBtn");
             const btnDown = document.getElementById("downloadBtn");
             const btnGo = document.getElementById("continueBtn");
+
             const REDIRECT_OK = "./employer-post-job.html";
             const REDIRECT_FAIL = "./shopping-cart.html";
 
@@ -268,16 +270,33 @@
                 if (!res.ok) throw new Error(data.message || "Error consultando detalle");
 
                 const tx = data.data || {};
-                const status = (tx.status || tx.response_data?.status || tx.response_data?.collection_status || "")
+                const resp = tx.response_data || {};
+
+                // ===============================
+                // ✔ Obtener correctamente los items
+                // ===============================
+                const items =
+                    resp?.additional_info?.items ??
+                    resp?.items ??
+                    [];
+
+                // Normalizar items
+                const cleanItems = items.map(it => ({
+                    title: it.title ?? it.description ?? it.id ?? "Producto",
+                    quantity: Number(it.quantity ?? 1),
+                    unit_price: Number(it.unit_price ?? 0)
+                }));
+
+                const status = (tx.status || resp.status || resp.collection_status || "")
                     .toString()
                     .toLowerCase();
 
                 const ok = ["approved", "authorized"].includes(status);
                 const pending = ["pending", "in_process"].includes(status);
 
-                const items = tx.response_data?.items || [];
-                const subtotal = Math.round((tx.amount || 0) / 1.19);
-                const iva = (tx.amount || 0) - subtotal;
+                const total = Number(tx.amount || 0);
+                const subtotal = Math.round(total / 1.19);
+                const iva = total - subtotal;
 
                 cont.innerHTML = renderInvoice({
                     status,
@@ -285,17 +304,20 @@
                     pending,
                     buyOrder: tx.orderId,
                     fecha: new Date(tx.updatedAt).toLocaleString("es-CL"),
-                    total: tx.amount,
+                    total,
                     subtotal,
                     iva,
-                    items,
+                    items: cleanItems,
                 });
 
                 acc.style.display = "flex";
                 btnGo.href = ok ? REDIRECT_OK : REDIRECT_FAIL;
+
                 if (ok) localStorage.removeItem("cart_items");
+
                 bindCopy();
                 bindDownload(tx.orderId);
+
             } catch (e) {
                 console.error(e);
                 Swal.close();
@@ -303,7 +325,10 @@
                 acc.style.display = "flex";
             }
 
-            function renderInvoice({ status, ok, pending, buyOrder, fecha, total, subtotal, iva, items = [] }) {
+            // ===============================
+            // 📌 Render del comprobante
+            // ===============================
+            function renderInvoice({ status, ok, pending, buyOrder, fecha, total, subtotal, iva, items }) {
                 let badgeClass = "badge--fail";
                 let label = "NO APROBADO";
 
@@ -322,59 +347,70 @@
                     ? items
                         .map(
                             (it) =>
-                                `<tr><td>${it.title}</td><td class="right">${it.quantity}</td><td class="right">${fmtCLP(
-                                    it.unit_price
-                                )}</td></tr>`
+                                `<tr>
+                                    <td>${it.title}</td>
+                                    <td class="right">${it.quantity}</td>
+                                    <td class="right">${fmtCLP(it.unit_price)}</td>
+                                </tr>`
                         )
                         .join("")
                     : `<tr><td colspan="3" class="right muted">Sin detalle disponible</td></tr>`;
 
                 return `
-          <section class="invoice" id="invoice">
-            <header class="invoice__header">
-              <div class="brand">
-                <div class="brand__logo"><img src="../assets/img/logo/favicon.png" alt="Logo Tu Empleo" /></div>
-                <div class="brand__text">
-                  <p class="brand__title">Tu Empleo</p>
-                  <p class="brand__subtitle">Comprobante de pago (Mercado Pago)</p>
+              <section class="invoice" id="invoice">
+                <header class="invoice__header">
+                  <div class="brand">
+                    <div class="brand__logo"><img src="../assets/img/logo/favicon.png" alt="Logo Tu Empleo" /></div>
+                    <div class="brand__text">
+                      <p class="brand__title">Tu Empleo</p>
+                      <p class="brand__subtitle">Comprobante de pago (Mercado Pago)</p>
+                    </div>
+                  </div>
+                  <div class="badge ${badgeClass}">${label}</div>
+                </header>
+        
+                <div class="invoice__body">
+                  <div class="grid">
+                    <div class="panel">
+                      <h4>Detalle de la compra</h4>
+                      <ul class="kv">
+                        <li><b>Orden de compra</b> <span>${buyOrder}</span></li>
+                        <li><b>Fecha</b> <span>${fecha}</span></li>
+                        <li><b>Pasarela</b> <span>Mercado Pago</span></li>
+                        <li><b>Estado</b> <span>${label}</span></li>
+                      </ul>
+        
+                      <h4 style="margin-top:16px">Planes adquiridos</h4>
+                      <table class="table">
+                        <thead>
+                            <tr><th>Producto</th><th class="right">Cant.</th><th class="right">Importe</th></tr>
+                        </thead>
+                        <tbody>${rows}</tbody>
+                      </table>
+                    </div>
+        
+                    <div class="panel">
+                      <h4>Resumen</h4>
+                      <table class="table">
+                        <tbody>
+                          <tr><td>Subtotal</td><td class="right">${fmtCLP(subtotal)}</td></tr>
+                          <tr><td>IVA (19%)</td><td class="right">${fmtCLP(iva)}</td></tr>
+                          <tr><td><strong>Total</strong></td><td class="right money">${fmtCLP(total)}</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="badge ${badgeClass}">${label}</div>
-            </header>
-            <div class="invoice__body">
-              <div class="grid">
-                <div class="panel">
-                  <h4>Detalle de la compra</h4>
-                  <ul class="kv">
-                    <li><b>Orden de compra</b> <span>${buyOrder}</span></li>
-                    <li><b>Fecha</b> <span>${fecha}</span></li>
-                    <li><b>Pasarela</b> <span>Mercado Pago</span></li>
-                    <li><b>Estado</b> <span>${label}</span></li>
-                  </ul>
-                  <h4 style="margin-top:16px">Planes adquiridos</h4>
-                  <table class="table">
-                    <thead><tr><th>Producto</th><th class="right">Cant.</th><th class="right">Importe</th></tr></thead>
-                    <tbody>${rows}</tbody>
-                  </table>
-                </div>
-                <div class="panel">
-                  <h4>Resumen</h4>
-                  <table class="table">
-                    <tbody>
-                      <tr><td>Subtotal</td><td class="right">${fmtCLP(subtotal)}</td></tr>
-                      <tr><td>IVA (19%)</td><td class="right">${fmtCLP(iva)}</td></tr>
-                      <tr><td><strong>Total</strong></td><td class="right money">${fmtCLP(total)}</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-            <footer class="invoice__footer" style="padding:12px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:#64748b;font-size:12px;background:#fcfdff">
-              <div>Soporte: soporte@tuempleo.cl</div>
-            </footer>
-          </section>`;
+        
+                <footer class="invoice__footer" style="padding:12px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:#64748b;font-size:12px;background:#fcfdff">
+                  <div>Soporte: soporte@tuempleo.cl</div>
+                </footer>
+              </section>`;
             }
 
+            // ===============================
+            // 📌 Copiar comprobante
+            // ===============================
             function bindCopy() {
                 btnCopy.onclick = async () => {
                     const ul = document.querySelector("#invoice .kv");
@@ -385,6 +421,7 @@
                             return `• ${b}: ${s}`;
                         })
                         .join("\n");
+
                     try {
                         await navigator.clipboard.writeText(bullets);
                         toast("success", "Comprobante copiado");
@@ -394,6 +431,9 @@
                 };
             }
 
+            // ===============================
+            // 📌 Descargar PDF
+            // ===============================
             function bindDownload(numeroTransaccion = "SinNumero") {
                 btnDown.onclick = async () => {
                     try {
@@ -401,25 +441,41 @@
                         const fallback = new Date().toISOString().replace(/[-:T.Z]/g, "").slice(0, 14);
                         const safeNumber = (raw || fallback).replace(/[^A-Za-z0-9_-]/g, "");
                         const filename = `ComprobanteTransaccion_${safeNumber}.pdf`;
+
                         const area = document.getElementById("invoice");
                         const canvas = await html2canvas(area, {
                             scale: 2,
                             useCORS: true,
                             backgroundColor: "#fff",
                         });
+
                         const imgData = canvas.toDataURL("image/png");
                         const { jsPDF } = window.jspdf;
                         const pdf = new jsPDF("p", "mm", "a4");
+
                         const pageW = pdf.internal.pageSize.getWidth();
                         const pageH = pdf.internal.pageSize.getHeight();
                         const margin = 10;
+
                         let imgW = pageW - margin * 2;
                         let imgH = (canvas.height * imgW) / canvas.width;
+
                         if (imgH > pageH - margin * 2) {
                             imgH = pageH - margin * 2;
                             imgW = (canvas.width * imgH) / canvas.height;
                         }
-                        pdf.addImage(imgData, "PNG", (pageW - imgW) / 2, margin, imgW, imgH, undefined, "FAST");
+
+                        pdf.addImage(
+                            imgData,
+                            "PNG",
+                            (pageW - imgW) / 2,
+                            margin,
+                            imgW,
+                            imgH,
+                            undefined,
+                            "FAST"
+                        );
+
                         pdf.save(filename);
                         toast("success", "Descarga lista");
                     } catch (err) {
@@ -430,6 +486,7 @@
             }
         })();
     </script>
+
 </body>
 
 </html>

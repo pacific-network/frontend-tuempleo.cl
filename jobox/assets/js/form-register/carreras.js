@@ -122,6 +122,7 @@ const opcionesCarreras = [
     { value: "Ingeniería Eléctrica", text: "Ingeniería Eléctrica" },
     { value: "Ingeniería Electrónica", text: "Ingeniería Electrónica" },
     { value: "Ingeniería Industrial", text: "Ingeniería Industrial" },
+    { value: "Ingeniería en Administración de Empresas", text: "Ingeniería en administración de empresas" },
     { value: "Ingeniería en Informática", text: "Ingeniería en Informática" },
     { value: "Ingeniería en Materiales", text: "Ingeniería en Materiales" },
     { value: "Ingeniería Mecánica", text: "Ingeniería Mecánica" },
@@ -224,27 +225,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const select = document.getElementById("todas_carreras_chile");
   if (!select) return;
 
-  // Poblar como siempre
   select.innerHTML = "";
+
   opcionesCarreras.forEach(({ value, text }) => {
     const opt = document.createElement("option");
     opt.value = value;
     opt.textContent = text;
     select.appendChild(opt);
-  });
-
-  // Si nice-select se aplicó globalmente, lo destruimos SOLO aquí
-  try { $(select).niceSelect && $(select).niceSelect('destroy'); } catch (e) {}
-
-  // Inicializa Select2 con tema Bootstrap-5
-  $(select).select2({
-    theme: 'bootstrap-5',
-    width: '100%',
-    placeholder: select.dataset.placeholder || '-- Selecciona una carrera --',
-    allowClear: false,                 // sin la X
-    minimumResultsForSearch: 0,        // siempre con buscador
-    selectionCssClass: ':all:'         // <- copia TODAS las clases del <select>
-    // si prefieres solo una: selectionCssClass: 'form-control'
   });
 });
 

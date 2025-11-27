@@ -10,6 +10,8 @@
 
     <!-- favicon -->
     <link rel="icon" type="image/x-icon" href="assets/img/logo/favicon.png">
+    <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+
 
     <!-- css -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -24,6 +26,7 @@
     <link rel="stylesheet" href="assets/css/indexnav.css">
 
 </head>
+
 
 <body>
 
@@ -54,7 +57,8 @@
                                 </h1>
                                 <!-- opcion b: "Encuentra el trabajo ideal para dar el siguiente paso en tu vida." -->
                                 <p>
-                                    Tu talento está buscando el lugar perfecto para brillar... y ese lugar también te está buscando a ti.
+                                    Tu talento está buscando el lugar perfecto para brillar... y ese lugar también te
+                                    está buscando a ti.
                                 </p>
                                 <div class="search-form">
                                     <div class="search-form-wrapper w-150">
@@ -72,8 +76,9 @@
                                                 <div class="col-md-3 px-0">
                                                     <div class="form-group">
                                                         <div class="form-group-icon">
-                                                            <select type="text" class="form-control" id="region-select" data-region-seleccionada="0">
-                                                              <option value="">Ubicación</option>
+                                                            <select type="text" class="form-control" id="region-select"
+                                                                data-region-seleccionada="0">
+                                                                <option value="">Ubicación</option>
                                                             </select>
                                                             <i class="fe-map-pin"></i>
                                                         </div>
@@ -82,7 +87,8 @@
                                                 <div class="col-md-3 px-0">
                                                     <div class="form-group">
                                                         <div class="form-group-icon">
-                                                            <select type="text" id="categoria-index" class="form-control">
+                                                            <select type="text" id="categoria-index"
+                                                                class="form-control">
                                                                 <option value="">Categoría</option>
                                                                 <option value="1">Informática / Tecnología</option>
                                                                 <option value="2">Administración / Oficina</option>
@@ -121,7 +127,8 @@
                                                 </div>
                                                 <div class="col-md-2 px-1">
                                                     <div class="form-group">
-                                                        <button type="submit" class="theme-btn"><span class="fe-search"></span>Buscar</button>
+                                                        <button type="submit" class="theme-btn"><span
+                                                                class="fe-search"></span>Buscar</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -214,6 +221,39 @@
     <script src="assets/js/main.js"></script>
     <script src="assets/js/header-footer/loadHeaderFooter.js" defer></script>
     <script src="assets/js/form-register/regiones.js"></script>
+    <script type="module">
+        import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+        createChat({
+            webhookUrl: 'https://pacificnetwork.app.n8n.cloud/webhook/956d750b-1b5d-4e35-942c-cb236ad264a8/chat',
+            webhookConfig: {
+                method: 'POST',
+                headers: {}
+            },
+            target: '#n8n-chat',
+            mode: 'window',
+            chatInputKey: 'chatInput',
+            chatSessionKey: 'sessionId',
+            loadPreviousSession: true,
+            metadata: {},
+            showWelcomeScreen: false,
+            defaultLanguage: 'en',
+            initialMessages: [
+                'HOLA! 👋',
+                'MI nombre es Tomy. en que puedo ayudarte hoy?'
+            ],
+            i18n: {
+                en: {
+                    title: 'Hi there! 👋',
+                    subtitle: "Start a chat. We're here to help you 24/7.",
+                    footer: '',
+                    getStarted: 'New Conversation',
+                    inputPlaceholder: 'Type your question..',
+                },
+            },
+            enableStreaming: false,
+        });
+    </script>
 
     <script>
         $(document).ready(function () {
@@ -226,50 +266,50 @@
     <script src="assets/js/busqueda/busqueda-logout.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const formIndex = document.getElementById('form-busqueda-index');
-  if (!formIndex) return;
+        document.addEventListener('DOMContentLoaded', () => {
+            const formIndex = document.getElementById('form-busqueda-index');
+            if (!formIndex) return;
 
-  formIndex.addEventListener('submit', async (e) => {
-    e.preventDefault();
+            formIndex.addEventListener('submit', async (e) => {
+                e.preventDefault();
 
-    const keyword = document.getElementById('keyword-index')?.value.trim() || '';
-    const region = document.getElementById('region-select')?.value.trim() || '';
-    const categoria = document.getElementById('categoria-index')?.value.trim() || '';
+                const keyword = document.getElementById('keyword-index')?.value.trim() || '';
+                const region = document.getElementById('region-select')?.value.trim() || '';
+                const categoria = document.getElementById('categoria-index')?.value.trim() || '';
 
-    const busqueda = { keyword, region, categoria };
+                const busqueda = { keyword, region, categoria };
 
-    try {
-      let busquedas = JSON.parse(localStorage.getItem('busquedas_recientes')) || [];
-      busquedas.unshift(busqueda);
+                try {
+                    let busquedas = JSON.parse(localStorage.getItem('busquedas_recientes')) || [];
+                    busquedas.unshift(busqueda);
 
-      // Evita duplicados exactos
-      busquedas = busquedas.filter((b, i, arr) =>
-        i === arr.findIndex(x =>
-          x.keyword === b.keyword &&
-          x.region === b.region &&
-          x.categoria === b.categoria
-        )
-      );
+                    // Evita duplicados exactos
+                    busquedas = busquedas.filter((b, i, arr) =>
+                        i === arr.findIndex(x =>
+                            x.keyword === b.keyword &&
+                            x.region === b.region &&
+                            x.categoria === b.categoria
+                        )
+                    );
 
-      // Limitar a 5 registros
-      if (busquedas.length > 5) busquedas.length = 5;
+                    // Limitar a 5 registros
+                    if (busquedas.length > 5) busquedas.length = 5;
 
-      // Guardar en localStorage
-      localStorage.setItem('busquedas_recientes', JSON.stringify(busquedas));
+                    // Guardar en localStorage
+                    localStorage.setItem('busquedas_recientes', JSON.stringify(busquedas));
 
-      // ✅ Asegurar persistencia antes de salir
-      await new Promise((resolve) => setTimeout(resolve, 200));
+                    // ✅ Asegurar persistencia antes de salir
+                    await new Promise((resolve) => setTimeout(resolve, 200));
 
-      // Redirigir a job-list con parámetros visibles
-      const params = new URLSearchParams({ keyword, region, categoria }).toString();
-      window.location.href = `job-list-2.html?${params}`;
-    } catch (err) {
-      console.error('Error guardando búsqueda:', err);
-    }
-  });
-});
-</script>
+                    // Redirigir a job-list con parámetros visibles
+                    const params = new URLSearchParams({ keyword, region, categoria }).toString();
+                    window.location.href = `job-list-2.html?${params}`;
+                } catch (err) {
+                    console.error('Error guardando búsqueda:', err);
+                }
+            });
+        });
+    </script>
 
 </body>
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,26 +21,300 @@
   <link rel="stylesheet" href="../assets/css/style.css">
 
   <style>
-    .secure-text{color:transparent;text-shadow:0 0 8px rgba(0,0,0,.5);user-select:none}
-    .secure-img{filter:blur(5px);opacity:.8;transition:filter .3s ease,opacity .3s ease}
-    .show-data .secure-text{color:inherit;text-shadow:none}
-    .show-data .secure-img{filter:none;opacity:1}
-    .profile-btns .btn{transition:all .3s ease}
-    .profile-btns .btn:hover{transform:scale(1.1)}
-    .toggle-secure-btn{margin-left:5px}
+    .secure-text {
+      color: transparent;
+      text-shadow: 0 0 8px rgba(0, 0, 0, .5);
+      user-select: none
+    }
+
+    .secure-img {
+      filter: blur(5px);
+      opacity: .8;
+      transition: filter .3s ease, opacity .3s ease
+    }
+
+    .show-data .secure-text {
+      color: inherit;
+      text-shadow: none
+    }
+
+    .show-data .secure-img {
+      filter: none;
+      opacity: 1
+    }
+
+    .profile-btns .btn {
+      transition: all .3s ease
+    }
+
+    .profile-btns .btn:hover {
+      transform: scale(1.1)
+    }
+
+    .toggle-secure-btn {
+      margin-left: 5px
+    }
 
     /* Overlay de bloqueo */
-    .tu-locked{filter:blur(1.5px)}
-    .tu-locked .tu-locked-overlay{display:block}
-    .tu-locked-overlay{
-      position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-      background:rgba(255,255,255,.85); border:1px dashed #bdbdbd; border-radius:12px
+    .tu-locked {
+      filter: blur(1.5px)
     }
-    .tu-locked-box{background:#fff;padding:10px 14px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);text-align:center}
+
+    .tu-locked .tu-locked-overlay {
+      display: block
+    }
+
+    .tu-locked-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, .85);
+      border: 1px dashed #bdbdbd;
+      border-radius: 12px
+    }
+
+    /* Contenedor principal */
+    .help-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Botón azul con letras blancas */
+    .help-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 18px;
+      background: #3b82f6;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 400;
+      color: white;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 12px;
+    }
+
+    .help-trigger:hover {
+      background: #2563eb;
+    }
+
+    .help-trigger i {
+      font-size: 16px;
+    }
+
+    /* Panel minimalista */
+    .help-panel {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      opacity: 0;
+      transition: all 0.3s ease;
+      max-height: 0;
+      overflow: hidden;
+    }
+
+    .help-panel.show {
+      opacity: 1;
+      max-height: 500px;
+    }
+
+    .help-panel h5 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a202c;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    /* Sección de tabs */
+    .tabs-section {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .nav-tabs {
+      border-bottom: 2px solid #e5e7eb;
+      margin-bottom: 20px;
+    }
+
+    .nav-tabs .nav-link {
+      color: #6b7280;
+      border: none;
+      padding: 12px 24px;
+      font-weight: 500;
+    }
+
+    .nav-tabs .nav-link.active {
+      color: #3b82f6;
+      background: transparent;
+      border-bottom: 2px solid #3b82f6;
+    }
+
+    .badge {
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 12px;
+    }
+
+    /* Grid 3 columnas x 2 filas (6 estados) */
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .status-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 16px 12px;
+      border-radius: 8px;
+      background: #f8f9fa;
+      transition: background 0.2s ease;
+    }
+
+    .status-item:hover {
+      background: #e9ecef;
+    }
+
+    /* Dot minimalista */
+    .status-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .status-dot i {
+      color: white;
+      font-size: 14px;
+    }
+
+    .status-dot.enviada {
+      background: #3b82f6;
+    }
+
+    .status-dot.cualificado {
+      background: #ef4444;
+    }
+
+    .status-dot.preseleccionado {
+      background: #f59e0b;
+    }
+
+    .status-dot.seleccionado {
+      background: #06b6d4;
+    }
+
+    .status-dot.descartado {
+      background: #6b7280;
+    }
+
+    .status-dot.contratado {
+      background: #10b981;
+    }
+
+    .status-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: #1f2937;
+      margin-bottom: 4px;
+    }
+
+    .status-desc {
+      font-size: 11px;
+      color: #6b7280;
+      line-height: 1.4;
+    }
+
+    .status-note {
+      margin-top: 10px;
+      background: #f5f9ff;
+      border-left: 4px solid #3a7afe;
+      padding: 12px 16px;
+      border-radius: 6px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: #2a3a4b;
+      line-height: 1.45;
+    }
+
+    .status-note i {
+      color: #3a7afe;
+      font-size: 18px;
+      margin-top: 2px;
+    }
+
+    .candidate-tabs .nav-link {
+      font-size: 14px;
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .candidate-tabs .badge {
+      font-size: 12px;
+    }
+
+    .cupos-box {
+      background: #f8f9fa;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid #dee2e6;
+      font-size: 14px;
+    }
+
+    .cupos-label {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .cupos-value {
+      font-weight: 700;
+      color: #198754;
+    }
+
+    .empty-msg {
+      display: none;
+      text-align: center;
+      color: #777;
+      margin-top: 20px;
+    }
+
+
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .status-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .help-panel {
+        padding: 20px 16px;
+      }
+    }
   </style>
 </head>
 
 <!-- Agrega data-oferta-id si quieres evitar querystring -->
+
 <body data-oferta-id="">
   <div class="preloader">
     <div class="loader"><span></span><span></span><span></span></div>
@@ -69,7 +344,8 @@
               <ul class="user-profile-sidebar-list">
                 <li><a href="employer-dashboard.html"><i class="far fa-gauge-high"></i> Panel de Control</a></li>
                 <li><a href="employer-post-job.html"><i class="far fa-paper-plane"></i> Publicar un Trabajo</a></li>
-                <li><a class="active" href="employer-manage-job.html"><i class="far fa-briefcase"></i> Gestionar Avisos</a></li>
+                <li><a class="active" href="employer-manage-job.html"><i class="far fa-briefcase"></i> Gestionar
+                    Avisos</a></li>
                 <li><a href="employer-transaction.html"><i class="far fa-coins"></i> Transacción</a></li>
                 <li><a href="employer-profile.html"><i class="far fa-user-tie"></i> Perfil de Empresa</a></li>
                 <li><a href="employer-settings.html"><i class="far fa-cog"></i> Cambiar Contraseña</a></li>
@@ -85,67 +361,237 @@
             </div>
           </aside>
 
-          
+
           <main class="col-lg-9">
             <section class="user-profile-card">
               <header class="user-profile-card-header mb-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-  <button id="btn-volver" class="btn btn-outline-primary btn-sm">
-    <i class="far fa-arrow-left me-1"></i> Volver
-  </button>
-</div>
+                  <button id="btn-volver" class="btn btn-outline-primary btn-sm">
+                    <i class="far fa-arrow-left me-1"></i> Volver
+                  </button>
+                </div>
+
 
                 <h4 class="user-profile-card-title">Todos los Candidatos</h4>
-                <div class="text-muted">Total postulantes: <span id="total-postulantes">0</span></div>
+
+
               </header>
 
-              <div class="user-profile-candidate">
-                <div class="row" id="candidates-container">
-                  <!-- Cada card idealmente con data-postulante-id="N" -->
-                </div>
 
-                <div class="pagination-area">
-                  <div aria-label="Page navigation example">
-                    <ul class="pagination">
-                      <li class="page-item"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true"><i class="far fa-angle-double-left"></i></span></a></li>
-                      <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                      <li class="page-item"><a class="page-link" href="#">2</a></li>
-                      <li class="page-item"><a class="page-link" href="#">3</a></li>
-                      <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true"><i class="far fa-angle-double-right"></i></span></a></li>
-                    </ul>
+              <!-- SIMBOLOGIA DE ESTADOS DE PROCESO DE POSTULACION -->
+
+              <div class="help-container">
+                <button class="help-trigger" id="helpToggle">
+                  <i class="fas fa-circle-question"></i>
+                  <span>¿Tienes dudas sobre los estados?</span>
+                </button>
+
+                <div class="help-panel" id="helpPanel">
+                  <h5>Simbología de Estados</h5>
+
+                  <div class="status-grid">
+                    <div class="status-item">
+                      <div class="status-dot enviada">
+                        <i class="fas fa-paper-plane"></i>
+                      </div>
+                      <div class="status-title">Enviada</div>
+                      <div class="status-desc">Postulación recibida y en revisión inicial</div>
+                    </div>
+
+                    <div class="status-item">
+                      <div class="status-dot cualificado">
+                        <i class="fas fa-heart"></i>
+                      </div>
+                      <div class="status-title">Compatible</div>
+                      <div class="status-desc">Candidato potencial o apto para el cargo</div>
+                    </div>
+
+                    <div class="status-item">
+                      <div class="status-dot preseleccionado">
+                        <i class="fas fa-user-check"></i>
+                      </div>
+                      <div class="status-title">Preseleccionado</div>
+                      <div class="status-desc">Ha avanzado a la siguiente etapa</div>
+                    </div>
+
+                    <div class="status-item">
+                      <div class="status-dot seleccionado">
+                        <i class="fas fa-clipboard-check"></i>
+                      </div>
+                      <div class="status-title">Seleccionado</div>
+                      <div class="status-desc">Convocado para entrevista final</div>
+                    </div>
+
+                    <div class="status-item">
+                      <div class="status-dot descartado">
+                        <i class="fas fa-xmark"></i>
+                      </div>
+                      <div class="status-title">Descartado</div>
+                      <div class="status-desc">No continúa en el proceso</div>
+                    </div>
+
+                    <div class="status-item">
+                      <div class="status-dot contratado">
+                        <i class="fas fa-circle-check"></i>
+                      </div>
+                      <div class="status-title">Contratado</div>
+                      <div class="status-desc">Proceso finalizado exitosamente</div>
+                    </div>
                   </div>
+
+                  <!-- Nota destacada -->
+                  <div class="status-note">
+                    <i class="fas fa-info-circle"></i>
+                    <span>
+                      El estado <strong>Compatible</strong> no consume cupos.
+                      Ten presente que los cupos solo se descuentan cuando decides
+                      <strong>desbloquear la información de contacto</strong> del candidato
+                      o <strong>descargar su currículum</strong>.
+                      Estas acciones son permanentes y no pueden revertirse.
+                    </span>
+                  </div>
+
                 </div>
               </div>
-            </section>
-          </main>
+              <!-- Tabs -->
+              <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+
+                <!-- TABS DE ESTADOS -->
+                <ul class="nav nav-tabs candidate-tabs" id="candidateTabs" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link active" data-state="enviadas" data-bs-toggle="tab"
+                      data-bs-target="#tab-enviadas">
+                      Enviadas <span class="badge bg-primary" id="count-enviadas">0</span>
+                    </button>
+                  </li>
+
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-state="compatibles" data-bs-toggle="tab"
+                      data-bs-target="#tab-compatibles">
+                      Compatibles <span class="badge bg-primary" id="count-compatibles">0</span>
+                    </button>
+                  </li>
+
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-state="preseleccionados" data-bs-toggle="tab"
+                      data-bs-target="#tab-preseleccionados">
+                      Preseleccionados <span class="badge bg-primary" id="count-preseleccionados">0</span>
+                    </button>
+                  </li>
+
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-state="seleccionados" data-bs-toggle="tab"
+                      data-bs-target="#tab-seleccionados">
+                      Seleccionados <span class="badge bg-primary" id="count-seleccionados">0</span>
+                    </button>
+                  </li>
+
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-state="contratados" data-bs-toggle="tab"
+                      data-bs-target="#tab-contratados">
+                      Contratados <span class="badge bg-primary" id="count-contratados">0</span>
+                    </button>
+                  </li>
+
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-state="descartados" data-bs-toggle="tab"
+                      data-bs-target="#tab-descartados">
+                      Descartados <span class="badge bg-secondary" id="count-descartados">0</span>
+                    </button>
+                  </li>
+                </ul>
+
+                <!-- CONTADOR DE CUPOS -->
+                <div class="cupos-box ms-auto mt-2 mt-md-0">
+                  <span class="cupos-label">Cupos disponibles:</span>
+                  <span class="cupos-value" id="cupos-restantes">0</span>
+                </div>
+
+              </div>
+
+
+              <!-- CONTENIDO DE CADA TAB -->
+              <div class="tab-content mt-3">
+
+                <div class="tab-pane fade show active" id="tab-enviadas">
+                  <div id="lista-enviadas" class="row"></div>
+                  <div class="empty-msg" id="empty-enviadas">No hay postulaciones enviadas.</div>
+                </div>
+
+                <div class="tab-pane fade" id="tab-compatibles">
+                  <div id="lista-compatibles" class="row"></div>
+                  <div class="empty-msg" id="empty-compatibles">No hay candidatos compatibles.</div>
+                </div>
+
+                <div class="tab-pane fade" id="tab-preseleccionados">
+                  <div id="lista-preseleccionados" class="row"></div>
+                  <div class="empty-msg" id="empty-preseleccionados">No hay preseleccionados.</div>
+                </div>
+
+                <div class="tab-pane fade" id="tab-seleccionados">
+                  <div id="lista-seleccionados" class="row"></div>
+                  <div class="empty-msg" id="empty-seleccionados">No hay seleccionados.</div>
+                </div>
+
+                <div class="tab-pane fade" id="tab-contratados">
+                  <div id="lista-contratados" class="row"></div>
+                  <div class="empty-msg" id="empty-contratados">No hay contratados.</div>
+                </div>
+
+                <div class="tab-pane fade" id="tab-descartados">
+                  <div id="lista-descartados" class="row"></div>
+                  <div class="empty-msg" id="empty-descartados">No hay descartados.</div>
+                </div>
+
+              </div>
+
+
+
+
+
+
         </div>
       </div>
-    </div>
+      </section>
+  </main>
+  </div>
+  </div>
+  </div>
   </main>
 
   <!-- Modales -->
   <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog"><div class="modal-content">
-      <div class="modal-header"><h5 class="modal-title">Confirmar eliminación</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-      <div class="modal-body"><p>¿Desea eliminar al candidato <span id="candidateName"></span> de la lista?</p></div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirmar eliminación</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>¿Desea eliminar al candidato <span id="candidateName"></span> de la lista?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+        </div>
       </div>
-    </div></div>
+    </div>
   </div>
 
   <div class="modal fade" id="logoutModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
-      <div class="modal-header"><h5 class="modal-title">¿Cerrar sesión?</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div>
-      <div class="modal-body">¿Estás seguro de que deseas cerrar sesión?</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar Sesión</button>
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">¿Cerrar sesión?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">¿Estás seguro de que deseas cerrar sesión?</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar Sesión</button>
+        </div>
       </div>
-    </div></div>
+    </div>
   </div>
 
   <div id="footer-placeholder"></div>
@@ -168,102 +614,23 @@
   <script src="../assets/js/main.js"></script>
   <script src="../assets/js/config/config.js"></script>
   <script src="../assets/js/header-footer/loadHeaderFooterEmp.js"></script>
-  <script src="../assets/js/modules/postulaciones/vista-postulantes.js"></script>
   <script src="../assets/js/modules/empresa/dinamic-sidebar.js"></script>
   <script src="../assets/js/logout-button-emp.js"></script>
-  <script src="../assets/js/modules/ofertas/view-candidate-offer.js"></script>
+  <script src="../assets/js/modules/utils/dinamic-dropdown.js"></script>
+
+  <!-- Librería externa -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <!-- FRONT: limitación FREE (5 primeros) + total -->
-  <script type="module">
-    const API_BASE = window.PUBLICATION_API_BASE || '/api/v1/publication';
-    const $ = (s,r=document)=>r.querySelector(s);
-    const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
+  <!-- API centralizada de postulaciones (antes que los módulos que dependen de ella) -->
+  <script type="module" src="../assets/js/modules/postulaciones/core/api-postulaciones.js"></script>
 
-    async function getJSON(url,opts){
-      const r = await fetch(url,opts);
-      const isJSON = r.headers.get('content-type')?.includes('application/json');
-      const data = isJSON ? await r.json() : null;
-      if(!r.ok) throw new Error(data?.error || data?.message || `HTTP ${r.status}`);
-      return data;
-    }
-
-    function ofertaIdFromContext(){
-      const b = document.body || document.documentElement;
-      let id = Number(b.dataset.ofertaId || 0);
-      if (!id){
-        const qs = new URLSearchParams(location.search);
-        id = Number(qs.get('ofertaId') || qs.get('id') || 0);
-      }
-      return id;
-    }
-
-    function lockCard(card){
-      card.classList.add('tu-locked');
-      if (!card.querySelector('.tu-locked-overlay')){
-        const layer = document.createElement('div');
-        layer.className = 'tu-locked-overlay';
-        layer.innerHTML = `
-          <div class="tu-locked-box">
-            <strong>Plan FREE:</strong> solo puedes ver los <b>5 primeros postulantes</b> de esta oferta.
-            <div class="mt-2"><a href="carrito.html" class="btn btn-sm btn-primary">Mejorar plan</a></div>
-          </div>`;
-        card.style.position='relative';
-        card.appendChild(layer);
-      }
-    }
-
-    function applyPermissions(perms){
-      const totalSpan = $('#total-postulantes');
-      if (totalSpan) totalSpan.textContent = String(perms.total ?? 0);
-
-      if (perms.allowedPostulanteIds === 'ALL') return;
-
-      const allowed = new Set(perms.allowedPostulanteIds || []);
-      const cards = $$('[data-postulante-id]');
-      if (cards.length){
-        for (const c of cards){
-          const pid = Number(c.getAttribute('data-postulante-id'));
-          if (!allowed.has(pid)) lockCard(c);
-        }
-        return;
-      }
-      // fallback si no hay data-postulante-id: deja visibles solo los 5 primeros del DOM
-      const items = $$('.candidate-card, .candidate-item, .list-group-item, [data-candidate]');
-      items.forEach((c, i)=>{ if (i>=5) lockCard(c); });
-    }
-
-    document.addEventListener('DOMContentLoaded', async ()=>{
-      const ofertaId = ofertaIdFromContext();
-      if (!ofertaId) return;
-      try{
-        const perms = await getJSON(`${API_BASE}/offer-candidate-permissions?ofertaId=${ofertaId}`);
-        applyPermissions(perms);
-      }catch(e){ console.error(e); }
-    });
-  </script>
-  <script src="../assets/js/config/token-exp.js"></script>
-  <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const btnVolver = document.getElementById('btn-volver');
-  if (btnVolver) {
-    btnVolver.addEventListener('click', (e) => {
-      e.preventDefault();
-
-      // 1. Si se guardó una ruta anterior en sessionStorage (desde vista-postulantes.js)
-      const prev = sessionStorage.getItem('return_to_offer_page');
-      if (prev) {
-        // 2. Regresar con scroll exacto
-        history.back();
-        return;
-      }
-
-      // 3. Fallback: si no hay sessionStorage, volver al listado principal
-      window.location.href = 'employer-manage-job.html';
-    });
-  }
-});
-</script>
-
+  <!-- Módulo ENVIADAS (usa todo lo anterior) -->
+  <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/enviadas-cualificar.js"></script>
+  <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/cualificados.js"></script>
+  <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/pre-seleccionados.js"></script>
+  <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/seleccionados.js"></script>
+  <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/contratados.js"></script>
+  <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/descartados.js"></script>
 </body>
+
 </html>

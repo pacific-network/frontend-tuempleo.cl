@@ -421,6 +421,17 @@ Autor: Paulo Ramirez
                             </select>
                           </div>
                         </div>
+                        <!-- 🧑‍🤝‍🧑 Gestión de Vacantes -->
+                        <div class="col-md-2">
+                          <label for="numero_vacantes">Vacantes Disponibles</label>
+
+                          <!-- Campo Número de Vacantes -->
+                          <input type="number" min="1" max="50" class="form-control" id="numeroVacantes"
+                            name="data.numero_vacantes" placeholder="Ej: 3" />
+                        </div>
+
+
+
 
                         <div class="col-md-12">
                           <div class="form-group">
@@ -529,9 +540,9 @@ Autor: Paulo Ramirez
                         <div class="col-md-12" id="preguntas-section">
                           <div class="form-group">
                             <label class="fw-semibold">Preguntas personalizadas (máximo 5)</label>
-                          
+
                             <div id="preguntas-container" class="mt-2"></div>
-                          
+
                             <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="agregar-pregunta">
                               + Agregar pregunta
                             </button>

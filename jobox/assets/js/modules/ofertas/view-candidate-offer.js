@@ -1,13 +1,11 @@
-// assets/js/modules/ofertas/view-candidate-offer.js
-// Aplica la política de oferta (p.ej. FREE -> ver solo 5) en la vista de candidatos.
+(async function(){
+  const BASE = `${window.API_BASE || ''}/api/v1`;
+  const wrap = document.getElementById('candidates-container-postulantes');
+  const wrapPotenciales = document.getElementById('candidates-container-potenciales');
+  if (!wrap || !wrapPotenciales) return;
 
-(function(){
-  const BASE = `${window.API_BASE || ''}/api/v1/publication`;
-  const wrap = document.getElementById('candidates-container');
-  if (!wrap) return;
-
-  const params   = new URLSearchParams(location.search);
-  const ofertaId = Number(params.get('ofertaId') || params.get('id') || 0);
+  const ofertaId = Number(new URLSearchParams(location.search).get('ofertaId') || 0);
+  if (!ofertaId) return;
 
   async function getJSON(url, opts){
     const r = await fetch(url, { credentials:'include', ...(opts||{}) });
@@ -16,63 +14,88 @@
     return j;
   }
 
-  async function loadPolicy(){
-    try{ return await getJSON(`${BASE}/ofertas/${ofertaId}/policy`); }
-    catch{ return { planKey:'FREE', policy:{ profilesLimit:5 } }; }
-  }
-
-  function lockCard(card){
-    card.classList.add('position-relative');
-    const o = document.createElement('div');
-    o.className = 'position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center';
-    o.style.background = 'rgba(255,255,255,.85)';
-    o.style.border = '1px dashed #bdbdbd';
-    o.style.borderRadius = '12px';
-    o.innerHTML = `
-      <div class="bg-white p-3 rounded shadow-sm text-center">
-        <div class="fw-bold">Plan FREE</div>
-        <div class="small mb-2">Solo puedes ver los 5 primeros postulantes</div>
-        <a href="carrito.html" class="btn btn-sm btn-primary">Mejorar plan</a>
-      </div>`;
-    card.appendChild(o);
-  }
-
-  async function boot(){
-    if (!ofertaId) return;
-
-    const pol = await loadPolicy();
-    const limit = Number(pol?.policy?.profilesLimit || 0);
-
-    const data = await getJSON(`${BASE}/ofertas/${ofertaId}/postulaciones`);
-    document.getElementById('total-postulantes')?.replaceChildren(document.createTextNode(String(data.length || 0)));
-
-    wrap.innerHTML = '';
-    data.forEach((c, idx)=>{
-      const lock = limit>0 && idx>=limit;
-      wrap.insertAdjacentHTML('beforeend', `
-        <div class="col-md-6 col-lg-6">
-          <div class="candidate-card p-3 border rounded d-flex align-items-center" data-postulante-id="${c.id}">
-            <img alt="" class="me-3 rounded-circle ${lock?'opacity-75':''}" src="${c.avatar || '../assets/img/placeholder/user.png'}" width="64" height="64">
-            <div>
-              <div class="${lock?'text-muted':''} fw-bold">${lock?'****':(c.nombre || 'Candidato')}</div>
-              <div class="${lock?'text-muted':''} small">${lock?'correo oculto':(c.email || 'correo@dominio')}</div>
-              <div class="${lock?'text-muted':''} small">${lock?'+56 ****':(c.telefono || '')}</div>
-            </div>
+  function renderPostulante(c, container){
+    const usuario = c.postulante?.usuario || {};
+    const dataPostulante = c.postulante?.data || {};
+  
+    const card = document.createElement('div');
+    card.className = 'col-md-6 col-lg-6';
+  
+    card.innerHTML = `
+      <div class="candidate-card p-3 border rounded d-flex align-items-center" data-postulante-id="${c.id}">
+        <img alt="" class="me-3 rounded-circle" 
+             src="${usuario.perfil_foto || '../assets/img/placeholder/user.png'}" width="64" height="64">
+  
+        <div class="flex-grow-1">
+          <div class="fw-bold">
+            ${dataPostulante.nombre || usuario.nombres} 
+            ${dataPostulante.apellido || usuario.apellidos}
           </div>
+          <div class="small text-muted">${c.estado}</div>
+          <div class="small text-muted">${new Date(c.fechaPostulacion).toLocaleDateString()}</div>
         </div>
-      `);
-      if (lock) lockCard(wrap.lastElementChild.firstElementChild);
-    });
-
-    if (limit>0 && data.length>limit) {
-      wrap.insertAdjacentHTML('afterend', `
-        <div class="alert alert-warning mt-3">
-          Tu plan <b>${pol.planKey}</b> permite ver solo los primeros <b>${limit}</b> perfiles.
-          Puedes <a href="carrito.html">mejorar tu plan</a> para verlos todos.
+  
+        <div class="profile-btns ms-3 d-flex flex-column align-items-end">
+          <button class="btn btn-sm btn-outline-primary mb-1 ver-cv">Ver CV</button>
+  
+          ${c.estado === 'enviada' 
+            ? '<button class="btn btn-sm btn-outline-danger toggle-heart">❤</button>'
+            : ''}
         </div>
-      `);
+      </div>
+    `;
+  
+    // Acción de cualificar
+    const heartBtn = card.querySelector('.toggle-heart');
+    if (heartBtn) {
+      heartBtn.addEventListener('click', async () => {
+        try {
+          await fetch(`${BASE}/seleccion/${c.id}/cualificar`, { 
+            method: 'POST',
+            credentials: 'include'
+          });
+          
+          // Mover la card al tab de potenciales
+          wrapPotenciales.appendChild(card);
+          actualizarTotal();
+        } catch (e) {
+          console.error('Error cualificando:', e);
+        }
+      });
     }
+  
+    container.appendChild(card);
+  }
+  
+  
+  
+
+  function actualizarTotal(){
+    document.getElementById('total-postulantes').textContent = wrap.children.length;
+    document.getElementById('total-potenciales').textContent = wrapPotenciales.children.length;
   }
 
-  boot();
+  try {
+    const data = await getJSON(`${BASE}/postulaciones/oferta/${ofertaId}`);
+    wrap.innerHTML = '';
+    wrapPotenciales.innerHTML = '';
+  
+    data?.forEach(c => {
+      if (c.estado === 'enviada') {
+        renderPostulante(c, wrap);
+        return;
+      }
+    
+      if (c.estado === 'cualificado') {
+        renderPostulante(c, wrapPotenciales);
+        return;
+      }
+    });
+  
+    actualizarTotal();
+  } catch(e){
+    console.error('Error cargando postulantes:', e);
+    wrap.innerHTML = '<div class="text-muted">No hay postulantes por mostrar.</div>';
+  }
+  
 })();

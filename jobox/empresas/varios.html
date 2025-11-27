@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>n8n Chat</title>
+
+    <!-- Estilos del chat de n8n -->
+    <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <!-- Chat de n8n -->
+    <script type="module">
+        import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+        createChat({
+            webhookUrl: 'https://pacificnetwork.app.n8n.cloud/webhook/956d750b-1b5d-4e35-942c-cb236ad264a8/chat'
+        });
+    </script>
+
+</body>
+
+</html>

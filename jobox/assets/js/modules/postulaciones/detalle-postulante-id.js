@@ -39,19 +39,36 @@
   // Resuelve el ID del candidato: primero sessionStorage; luego URL (y limpia)
   function resolveCandidateId() {
     const cached = sessionStorage.getItem('sel_cand_id');
-    if (cached) return cached;
-
-    try {
-      const p = new URLSearchParams(location.search);
-      const fromUrl = p.get('id') || p.get('userId');
-      if (fromUrl) {
-        sessionStorage.setItem('sel_cand_id', fromUrl);
-        stripIdFromUrl(); // limpia inmediatamente
-        return fromUrl;
+    if (cached && cached !== "null" && cached !== "undefined") return cached;
+  
+    const params = new URLSearchParams(location.search);
+  
+    // 1️⃣ leer data base64
+    if (params.has('data')) {
+      try {
+        const decoded = atob(params.get('data'));
+        const obj = JSON.parse(decoded);
+        const userId = obj.userId;
+        const postulacionId = obj.postulacionId;
+        if (userId) sessionStorage.setItem('sel_cand_id', userId);
+        if (postulacionId) sessionStorage.setItem('sel_post_id', postulacionId);
+        return userId;
+      } catch (err) {
+        console.error("Error decodificando data base64:", err);
       }
-    } catch (_) {}
-    return null;
+    }
+  
+    // 2️⃣ fallback a id/userId en URL
+    const fromUrl = params.get('id') || params.get('userId');
+    if (fromUrl) {
+      sessionStorage.setItem('sel_cand_id', fromUrl);
+      return fromUrl;
+    }
+  
+    return undefined;
   }
+  
+  
 
   // Busca token en varias claves comunes
   const TOKEN_KEYS = [

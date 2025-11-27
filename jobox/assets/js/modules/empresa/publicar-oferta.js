@@ -202,6 +202,7 @@ function collectOfferForm() {
   const tipo_contrato = String(fd.get("data.tipo_contrato") || "");
   const educacion_requerida = String(fd.get("data.educacion_requerida") || "");
   const modalidad_val = String(fd.get("data.modalidad") || "");
+  const numero_vacantes = Number(fd.get("data.numero_vacantes") || 0) || null;
   const descripcion_puesto = String(fd.get("data.descripcion_puesto") || "");
   const responsabilidades = splitLines(fd.get("data.responsabilidades"));
   const requisitos_minimos = splitLines(fd.get("data.requisitos_minimos"));
@@ -246,6 +247,7 @@ const herramientas_basicas = Array.from(
       educacion_requerida,
       tipo_contrato,
       modalidad: modalidad_val,
+      numero_vacantes,
       descripcion_puesto,
       responsabilidades,
       requisitos_minimos,
@@ -454,6 +456,7 @@ async function crearOfertaYConsumir(e){
     es_activa: true,
     fecha_cierre,
     tipo_aviso: selection.planKey === "FREE" ? "GRATIS" : selection.planKey,
+    estado: "PUBLICADA",
     data: dataObj // ✅ Envía el objeto anidado directamente
   };
   

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
     <!-- meta tags -->
     <meta charset="UTF-8">
@@ -14,7 +15,7 @@
 
     <!-- favicon -->
     <link rel="icon" type="image/x-icon" href="../assets/img/logo/favicon.png">
-
+    <link rel="stylesheet" href="../assets/css/proceso-postulacion/proceso-postulacion.css">
     <!-- css -->
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/all-fontawesome.min.css">
@@ -52,7 +53,7 @@
                         <div class="job-sidebar mb-5">
                             <div class="job-single-heading">
                                 <div class="job-single-employer">
-                                    <img src="assets/img/job/01.jpg" alt="Foto postulante">
+                                    <img src="jobox/assets/img/candidate/01.jpg" alt="Foto postulante">
                                     <div class="job-single-employer-info">
                                         <h5><!-- Nombre dinámico --></h5>
                                         <p><!-- Categoría dinámica --></p>
@@ -66,88 +67,144 @@
                                 </div>
                             </div>
                             <div class="job-single-list">
-                                <h5>
-                                    <div class="user-profile-card-header d-flex justify-content-between align-items-center p-3 mb-3 rounded shadow-sm" 
-     style="background:#f9fafc; border:1px solid #e4e7eb;">
-  <div class="d-flex align-items-center">
-    <i class="text-primary me-2" style="font-size:20px;"></i>
-    <h4 class="user-profile-card-title mb-0 fw-semibold" style="font-size:22px; color:#333;">
-      Descripción
-    </h4>
-  </div>
-  <a id="downloadCandidateCv" href="#" 
-     class="btn btn-outline-primary d-flex align-items-center gap-2 px-3 py-1 shadow-sm"
-     style="border-radius:6px; font-size:15px;">
-    <i class="far fa-file-arrow-down"></i>
-    <span>Descargar CV</span>
-  </a>
-</div>
-                                </h5>
-                                <ul>
-                                    <li>
-                                        <div class="job-single-list-icon">
-                                            <i class="fas fa-at"></i>
+                                <div class="candidate-management">
+                                    <div class="candidate-management position-relative">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <h4 class="me-2">Gestión Candidato</h4>
+                                            <!-- Botón de ayuda -->
+                                            <div class="help-icon position-relative" style="cursor:pointer;">
+                                                <i class="fas fa-question-circle text-secondary"></i>
+                                                <div class="help-tooltip position-absolute p-2 rounded shadow-sm">
+                                                    Aquí puedes pre-seleccionar, seleccionar, descartar al candidato o
+                                                    descargar su CV.
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="job-single-list-info">
-                                            <h6>Correo</h6>
-                                            <p></p>
+
+                                        <div
+                                            class="user-profile-card-header d-flex flex-column align-items-center p-3 mb-3 rounded shadow-sm">
+                                            <div class="candidate-actions">
+                                                <div class="action-icons">
+                                                    <div class="action-item" id="preselectCandidate">
+                                                        <div class="action-circle preseleccionado">
+                                                            <i class="fas fa-user-check"></i>
+                                                        </div>
+                                                        <span class="action-label">Pre-seleccionar</span>
+                                                    </div>
+
+                                                    <div class="action-item" id="selectCandidate">
+                                                        <div class="action-circle seleccionado">
+                                                            <i class="fas fa-clipboard-check"></i>
+                                                        </div>
+                                                        <span class="action-label">Seleccionar</span>
+                                                    </div>
+
+                                                    <div class="action-item" id="discardCandidate">
+                                                        <div class="action-circle descartado">
+                                                            <i class="fas fa-xmark"></i>
+                                                        </div>
+                                                        <span class="action-label">Descartar</span>
+                                                    </div>
+                                                </div>
+
+                                                <a id="downloadCandidateCv" href="#" class="btn-download mt-3">
+                                                    <i class="far fa-file-arrow-down"></i>
+                                                    <span>Descargar CV</span>
+                                                </a>
+                                            </div>
                                         </div>
-                                    </li>
-                                    <li>
-                                        <div class="job-single-list-icon">
-                                            <i class="fas fa-phone"></i>
-                                        </div>
-                                        <div class="job-single-list-info">
-                                            <h6>Teléfono</h6>
-                                            <p></p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="job-single-list-icon">
-                                            <i class="fas fa-user-check"></i>
-                                        </div>
-                                        <div class="job-single-list-info">
-                                            <h6>Estado Civil</h6>
-                                            <p></p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="job-single-list-icon">
-                                            <i class="fas fa-calendar"></i>
-                                        </div>
-                                        <div class="job-single-list-info">
-                                            <h6>Edad</h6>
-                                            <p></p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="job-single-list-icon">
-                                            <i class="fas fa-dollar"></i>
-                                        </div>
-                                        <div class="job-single-list-info">
-                                            <h6>Expectativa Salarial</h6>
-                                            <p></p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="job-single-list-icon">
-                                            <i class="fas fa-briefcase"></i>
-                                        </div>
-                                        <div class="job-single-list-info">
-                                            <h6>Categoría</h6>
-                                            <p></p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="job-single-list-icon">
-                                            <i class="fas fa-language"></i>
-                                        </div>
-                                        <div class="job-single-list-info">
-                                            <h6>Idiomas</h6>
-                                            <!-- Aquí se inyectarán los idiomas dinámicamente -->
-                                        </div>
-                                    </li>
-                                </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Informacion de contacto -->
+                                <h4 class="pb-2 m-2">Informacion de Contacto</h4>
+                                <div class="contact-card locked" id="contactCard">
+
+                                    <!-- Overlay con botón (NO se blurea) -->
+                                    <div class="locked-overlay" id="lockedOverlay">
+                                        <button id="unlockBtn" class="unlock-btn">🔓 Desbloquear información de
+                                            contacto</button>
+                                    </div>
+
+                                    <!-- Contenido original (blureado cuando está locked) -->
+                                    <div class="locked-content">
+                                        <ul>
+                                            <li>
+                                                <div class="job-single-list-icon">
+                                                    <i class="fas fa-at"></i>
+                                                </div>
+                                                <div class="job-single-list-info">
+                                                    <h6>Correo</h6>
+                                                    <p></p>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="job-single-list-icon">
+                                                    <i class="fas fa-phone"></i>
+                                                </div>
+                                                <div class="job-single-list-info">
+                                                    <h6>Teléfono</h6>
+                                                    <p></p>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="job-single-list-icon">
+                                                    <i class="fas fa-user-check"></i>
+                                                </div>
+                                                <div class="job-single-list-info">
+                                                    <h6>Estado Civil</h6>
+                                                    <p></p>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="job-single-list-icon">
+                                                    <i class="fas fa-calendar"></i>
+                                                </div>
+                                                <div class="job-single-list-info">
+                                                    <h6>Edad</h6>
+                                                    <p></p>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="job-single-list-icon">
+                                                    <i class="fas fa-dollar"></i>
+                                                </div>
+                                                <div class="job-single-list-info">
+                                                    <h6>Expectativa Salarial</h6>
+                                                    <p></p>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="job-single-list-icon">
+                                                    <i class="fas fa-briefcase"></i>
+                                                </div>
+                                                <div class="job-single-list-info">
+                                                    <h6>Categoría</h6>
+                                                    <p></p>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="job-single-list-icon">
+                                                    <i class="fas fa-language"></i>
+                                                </div>
+                                                <div class="job-single-list-info">
+                                                    <h6>Idiomas</h6>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+
+
+
+
                             </div>
                         </div>
                     </div>
@@ -186,6 +243,33 @@
                 </div>
             </div>
         </div>
+        <div id="toast" class="toast hidden"></div>
+
+        <!-- Botón Flotante → Contratar / Finalizar Proceso -->
+        <button class="floating-action-btn hidden" id="btnContratar">
+            <svg viewBox="0 0 24 24" class="icon">
+                <path d="M9 11l3 3L22 4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" />
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h11" stroke="currentColor"
+                    stroke-width="2" fill="none" stroke-linecap="round" />
+            </svg>
+            Contratar / Finalizar Proceso
+        </button>
+
+        <div id="modalContratar" class="modal hidden">
+            <div class="modal-content">
+                <h2>Confirmar Contratación</h2>
+                <p>
+                    ¿Estás seguro de que deseas **contratar al candidato**?<br>
+                    Esta acción es <strong>irreversible</strong> y finalizará el proceso de selección.
+                </p>
+
+                <div class="modal-actions">
+                    <button id="cancelarContratacion" class="btn-cancelar">Cancelar</button>
+                    <button id="confirmarContratacion" class="btn-confirmar">Confirmar</button>
+                </div>
+            </div>
+        </div>
+
     </main>
     <!-- footer area -->
     <div id="footer-placeholder">
@@ -197,6 +281,7 @@
 
 
         <!-- js -->
+        <script src="../../assets/js/modules/utils/fetch-interceptor.js"></script>
         <script src="../assets/js/jquery-3.6.0.min.js"></script>
         <script src="../assets/js/modernizr.min.js"></script>
         <script src="../assets/js/bootstrap.bundle.min.js"></script>
@@ -220,70 +305,80 @@
         <script src="../assets/js/modules/ofertas/hide-offer-id.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="../assets/js/config/token-exp.js"></script>
+        <script type="module"
+            src="../assets/js/modules/postulaciones/core/proceso_seleccion/pre-seleccionar.js"></script>
+        <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/utils/toast.js"></script>
+        <script
+            src="../assets/js/modules/postulaciones/core/proceso_seleccion/manejo-estado/estado-candidato.js"></script>
+        <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/seleccionar.js"></script>
+        <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/contratar.js"
+            defer></script>
+        <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/descartar.js"></script>
+
         <script>
             document.addEventListener("DOMContentLoaded", async () => {
-  const btnDescargar = document.getElementById("downloadCandidateCv");
-  if (!btnDescargar) return;
+                const btnDescargar = document.getElementById("downloadCandidateCv");
+                if (!btnDescargar) return;
 
-  // ID del candidato desde sessionStorage (guardado en vista de lista)
-  const candidatoId = sessionStorage.getItem("sel_cand_id");
-  if (!candidatoId) {
-    btnDescargar.style.display = "none";
-    return;
-  }
+                // ID del candidato desde sessionStorage (guardado en vista de lista)
+                const candidatoId = sessionStorage.getItem("sel_cand_id");
+                if (!candidatoId) {
+                    btnDescargar.style.display = "none";
+                    return;
+                }
 
-  const tokenKeys = ["auth_token_emp", "auth_token", "empleador_token", "token", "jwt"];
-  let token = null;
-  for (const key of tokenKeys) {
-    const v = localStorage.getItem(key);
-    if (v) {
-      token = v;
-      break;
-    }
-  }
+                const tokenKeys = ["auth_token_emp", "auth_token", "empleador_token", "token", "jwt"];
+                let token = null;
+                for (const key of tokenKeys) {
+                    const v = localStorage.getItem(key);
+                    if (v) {
+                        token = v;
+                        break;
+                    }
+                }
 
-  // Base URL de API
-  const API_BASE = typeof BASE_URL_API !== "undefined" ? BASE_URL_API : window.location.origin + "/api/v1";
-  const PUBLIC_BASE = API_BASE.replace(/\/v1$/, "");
+                // Base URL de API
+                const API_BASE = typeof BASE_URL_API !== "undefined" ? BASE_URL_API : window.location.origin + "/api/v1";
+                const PUBLIC_BASE = API_BASE.replace(/\/v1$/, "");
 
-  try {
-    // 1️⃣ Obtener datos del postulante por ID
-    const resPost = await fetch(`${API_BASE}/postulante/${candidatoId}`, {
-      headers: token ? { Authorization: `Bearer ${token}` } : {}
-    });
-    if (!resPost.ok) throw new Error("No se pudo obtener datos del candidato");
-    const postData = await resPost.json();
+                try {
+                    // 1️⃣ Obtener datos del postulante por ID
+                    const resPost = await fetch(`${API_BASE}/postulante/${candidatoId}`, {
+                        headers: token ? { Authorization: `Bearer ${token}` } : {}
+                    });
+                    if (!resPost.ok) throw new Error("No se pudo obtener datos del candidato");
+                    const postData = await resPost.json();
 
-    const rut = postData?.usuario?.rut;
-    if (!rut) throw new Error("RUT no encontrado");
+                    const rut = postData?.usuario?.rut;
+                    if (!rut) throw new Error("RUT no encontrado");
 
-    // 2️⃣ Obtener datos del curriculum
-    const resCv = await fetch(`${API_BASE}/curriculum/${rut}`);
-    if (!resCv.ok) throw new Error("Error al obtener CV");
-    const cvList = await resCv.json();
-    const cv = Array.isArray(cvList) ? cvList[0] : cvList;
-    const cvPath = cv?.cv_path || "";
+                    // 2️⃣ Obtener datos del curriculum
+                    const resCv = await fetch(`${API_BASE}/curriculum/${rut}`);
+                    if (!resCv.ok) throw new Error("Error al obtener CV");
+                    const cvList = await resCv.json();
+                    const cv = Array.isArray(cvList) ? cvList[0] : cvList;
+                    const cvPath = cv?.cv_path || "";
 
-    // 3️⃣ Construir URL pública
-    let cvUrl;
-    if (cvPath.startsWith("/uploads/")) {
-      cvUrl = `${PUBLIC_BASE}${cvPath}`;
-    } else if (cvPath.startsWith("/var/www/html/")) {
-      cvUrl = `${PUBLIC_BASE}${cvPath.replace("/var/www/html", "")}`;
-    } else {
-      cvUrl = `${API_BASE}/curriculum/${encodeURIComponent(rut)}/view`;
-    }
+                    // 3️⃣ Construir URL pública
+                    let cvUrl;
+                    if (cvPath.startsWith("/uploads/")) {
+                        cvUrl = `${PUBLIC_BASE}${cvPath}`;
+                    } else if (cvPath.startsWith("/var/www/html/")) {
+                        cvUrl = `${PUBLIC_BASE}${cvPath.replace("/var/www/html", "")}`;
+                    } else {
+                        cvUrl = `${API_BASE}/curriculum/${encodeURIComponent(rut)}/view`;
+                    }
 
-    // 4️⃣ Asignar acción de descarga / apertura
-    btnDescargar.addEventListener("click", (e) => {
-      e.preventDefault();
-      window.open(cvUrl, "_blank");
-    });
-  } catch (err) {
-    console.error("Error al preparar descarga de CV:", err);
-    btnDescargar.style.display = "none";
-  }
-});
+                    // 4️⃣ Asignar acción de descarga / apertura
+                    btnDescargar.addEventListener("click", (e) => {
+                        e.preventDefault();
+                        window.open(cvUrl, "_blank");
+                    });
+                } catch (err) {
+                    console.error("Error al preparar descarga de CV:", err);
+                    btnDescargar.style.display = "none";
+                }
+            });
 
         </script>
 

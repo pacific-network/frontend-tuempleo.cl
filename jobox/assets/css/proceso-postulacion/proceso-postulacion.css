@@ -1,0 +1,419 @@
+
+    .candidate-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        /* un poco más de espacio entre iconos y botón */
+        padding: 16px 0;
+    }
+
+    /* Contenedor de los iconos horizontales */
+    .action-icons {
+        display: flex;
+        gap: 32px;
+        /* más espacio entre los iconos */
+        justify-content: center;
+        width: 100%;
+    }
+
+    /* Cada icono con label */
+    .action-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    .action-item:hover {
+        transform: translateY(-3px);
+    }
+
+    .action-circle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        /* ligeramente más grande */
+        height: 60px;
+        border-radius: 50%;
+        border: 2px solid #ccc;
+        transition: all 0.2s;
+        font-size: 22px;
+        color: #555;
+        background: #fff;
+    }
+
+    .action-circle:hover {
+        border-color: currentColor;
+        /* el color del icono */
+        color: currentColor;
+    }
+
+    /* Colores según acción */
+    .action-circle.preseleccionado i {
+        color: #198754;
+    }
+
+    .action-circle.seleccionado i {
+        color: #0d6efd;
+    }
+
+    .action-circle.descartado i {
+        color: #dc3545;
+    }
+
+    /* Leyenda debajo */
+    .action-label {
+        font-size: 13px;
+        color: #333;
+        margin-top: 6px;
+        text-align: center;
+        max-width: 70px;
+        word-wrap: break-word;
+    }
+
+    /* Botón descargar CV */
+    .btn-download {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 12px 20px;
+        width: 100%;
+        max-width: 260px;
+        border-radius: 6px;
+        background-color: #0d6efd;
+        color: #fff;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .btn-download:hover {
+        background-color: #0b5ed7;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Deshabilitado */
+    .btn-download.disabled,
+    .btn-download:disabled {
+        opacity: 0.5;
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+
+    /* Tooltip oculto por defecto */
+    .help-tooltip {
+        display: none;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 220px;
+        background: #fff;
+        border: 1px solid #e4e7eb;
+        font-size: 13px;
+        color: #333;
+        z-index: 10;
+    }
+
+    /* Mostrar tooltip al pasar el mouse */
+    .help-icon:hover .help-tooltip {
+        display: block;
+    }
+
+    /* Contenedor tipo tarjeta */
+    .contact-card {
+        background: #fff;
+        padding: 24px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        margin-top: 21px;
+    }
+
+    /* Convertir UL en grilla */
+    .contact-card ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px 30px;
+        /* GAP entre filas y columnas */
+    }
+
+    /* Mantener estructura original de cada fila */
+    .contact-card li {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+    }
+
+    /* Iconos */
+    .contact-card .job-single-list-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 10px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .contact-card .job-single-list-icon i {
+        font-size: 28px;
+        color: #3758f9;
+    }
+
+    /* Títulos */
+    .contact-card .job-single-list-info h6 {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1d1d1f;
+        margin: 0;
+    }
+
+    /* Valores */
+    .contact-card .job-single-list-info p {
+        margin: 2px 0 0;
+        font-size: 13px;
+        color: #555;
+    }
+
+    .toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #333;
+        color: #fff;
+        padding: 14px 20px;
+        border-radius: 10px;
+        font-size: 15px;
+        opacity: 0;
+        transition: opacity 0.4s ease, transform 0.4s ease;
+        transform: translateY(20px);
+        z-index: 9999;
+    }
+
+    .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .hidden {
+        display: none !important;
+    }
+
+    .floating-action-btn {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: #16A34A; /* verde elegante */
+        color: white;
+
+        padding: 16px 26px;
+        border-radius: 40px;
+        font-size: 15px;
+        font-weight: 600;
+        font-family: "Inter", sans-serif;
+
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        border: none;
+        cursor: pointer;
+
+        box-shadow: 0 8px 18px rgba(0, 102, 255, 0.25);
+        transition: all 0.25s ease;
+        z-index: 9999;
+    }
+
+    .floating-action-btn .icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .floating-action-btn:hover {
+        background: #0052cc;
+        transform: translateY(-3px);
+        box-shadow: 0 12px 24px rgba(0, 82, 204, 0.35);
+    }
+
+    .floating-action-btn:active {
+        transform: scale(0.97);
+    }
+
+    .floating-action-btn:focus {
+        outline: 3px solid rgba(0, 102, 255, 0.4);
+        outline-offset: 3px;
+    }
+
+/* ================================
+   MODAL ELEGANTE / MODERNO
+   (ESTRUCTURA ORIGINAL INTACTA)
+================================ */
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex !important; /* no se toca */
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(6px);
+    z-index: 99999;
+
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.25s ease, visibility 0.25s;
+}
+
+/* Ocultar */
+.modal.hidden {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Contenedor del modal */
+.modal-content {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(10px);
+
+    padding: 26px 30px;
+    border-radius: 16px;
+
+    width: 90%;
+    max-width: 420px;
+    text-align: center;
+
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.22);
+
+    animation: modalFade 0.25s ease-out;
+}
+
+/* Texto */
+.modal-content h2 {
+    font-size: 1.45rem;
+    margin-bottom: 10px;
+    color: #1d1d1f;
+    font-weight: 700;
+}
+
+.modal-content p {
+    color: #3a3a3c;
+    font-size: 1.05rem;
+    line-height: 1.45;
+}
+
+/* Animación */
+@keyframes modalFade {
+    from {
+        transform: translateY(12px) scale(0.97);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Botones */
+.modal-actions {
+    margin-top: 26px;
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.btn-cancelar,
+.btn-confirmar {
+    flex: 1;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+
+    transition: background 0.2s, transform 0.2s;
+}
+
+/* Botón gris */
+.btn-cancelar {
+    background: #e5e5ea;
+    color: #1c1c1e;
+}
+
+.btn-cancelar:hover {
+    background: #d1d1d6;
+    transform: translateY(-1px);
+}
+
+/* Botón azul moderno */
+.btn-confirmar {
+    background: linear-gradient(135deg, #0b74ff, #0056d6);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(11, 116, 255, 0.35);
+}
+
+.btn-confirmar:hover {
+    background: linear-gradient(135deg, #0069d9, #004bb5);
+    box-shadow: 0 6px 16px rgba(0, 110, 230, 0.45);
+    transform: translateY(-1.5px);
+}
+
+
+/* blur */
+.contact-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Solo blur al contenido */
+.contact-card.locked .locked-content {
+    filter: blur(8px);
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+/* Overlay centrado */
+.locked-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(2px);
+}
+
+/* Botón */
+.unlock-btn {
+    background: #4d8dff;
+    border: none;
+    padding: 14px 26px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    transition: background 0.2s;
+}
+
+.unlock-btn:hover {
+    background: #3c78e6;
+}
