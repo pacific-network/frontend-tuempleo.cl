@@ -255,7 +255,7 @@
             Contratar / Finalizar Proceso
         </button>
 
-        <div id="modalContratar" class="modal hidden">
+        <!-- <div id="modalContratar" class="modal hidden">
             <div class="modal-content">
                 <h2>Confirmar Contratación</h2>
                 <p>
@@ -268,7 +268,25 @@
                     <button id="confirmarContratacion" class="btn-confirmar">Confirmar</button>
                 </div>
             </div>
+        </div> -->
+        <div id="modalContratar" class="modal hidden">
+            <div class="modal-content">
+                <h2>Confirmar Contratación</h2>
+
+                <p class="modal-user-info"></p> <!-- 🔥 aquí irá el nombre, rut, email -->
+
+                <p>
+                    ¿Estás seguro de que deseas <strong>contratar al candidato</strong>?<br>
+                    Esta acción es <strong>irreversible</strong>.
+                </p>
+
+                <div class="modal-actions">
+                    <button id="cancelarContratacion" class="btn-cancelar">Cancelar</button>
+                    <button id="confirmarContratacion" class="btn-confirmar">Confirmar</button>
+                </div>
+            </div>
         </div>
+
 
     </main>
     <!-- footer area -->
