@@ -24,6 +24,10 @@ async function loadContratados() {
   try {
     const data = await getContratados(OFERTA_ID);
     console.log("📌 Contratados:", data);
+
+    // 🔥 Nuevo → actualizar las vacantes cubiertas en el DOM
+    actualizarVacantesCubiertas(data.length);
+
     renderContratados(data || []);
     attachVerCvEvents();
   } catch (error) {
@@ -139,5 +143,12 @@ export function attachVerCvEvents() {
         </div>
       </div>
     `;
+  }
+
+  function actualizarVacantesCubiertas(total) {
+    const el = document.getElementById("vacantes-cubiertas");
+    if (el) {
+      el.textContent = total;
+    }
   }
   

@@ -297,6 +297,67 @@
       margin-top: 20px;
     }
 
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #333;
+    }
+
+    .offer-stats {
+      display: flex;
+      align-items: center;
+      padding: 16px 20px;
+      background: #e7e4d5;
+      border-radius: 14px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      gap: 22px;
+      margin: 10px;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ← NUEVO: proporciones */
+    .stat:nth-child(1) {
+      flex: 2;
+    }
+
+    /* Vacantes a cubrir */
+    .stat:nth-child(3) {
+      flex: 2;
+    }
+
+    /* Cupos del plan */
+    .stat:nth-child(5) {
+      flex: 1;
+    }
+
+    /* Vacantes cubiertas (más pequeña) */
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+    .stat-divider {
+      width: 1px;
+      height: 32px;
+      background: #e5e7eb;
+    }
+
+
+
+
 
 
     /* Responsive */
@@ -453,6 +514,34 @@
 
                 </div>
               </div>
+
+              <!-- INFO RESUMEN DE LA OFERTA -->
+              <h4 class="section-title">Información básica de tu oferta</h4>
+
+              <div class="offer-stats">
+                <div class="stat">
+                  <span class="stat-label">Vacantes a cubrir</span>
+                  <span class="stat-value" id="vacantes-total">0</span>
+                </div>
+
+                <div class="stat-divider"></div>
+
+                <div class="stat">
+                  <span class="stat-label">Cupos Disponibles</span>
+                  <span class="stat-value" id="cupos-plan">0</span>
+                </div>
+
+                <div class="stat-divider"></div>
+
+                <div class="stat">
+                  <span class="stat-label">Vacantes cubiertas</span>
+                  <span class="stat-value" id="vacantes-cubiertas">0</span>
+                </div>
+              </div>
+
+
+
+
               <!-- Tabs -->
               <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
 
@@ -502,10 +591,10 @@
                 </ul>
 
                 <!-- CONTADOR DE CUPOS -->
-                <div class="cupos-box ms-auto mt-2 mt-md-0">
+                <!-- <div class="cupos-box ms-auto mt-2 mt-md-0">
                   <span class="cupos-label">Cupos disponibles:</span>
                   <span class="cupos-value" id="cupos-restantes">0</span>
-                </div>
+                </div> -->
 
               </div>
 
@@ -631,6 +720,7 @@
   <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/seleccionados.js"></script>
   <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/contratados.js"></script>
   <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/descartados.js"></script>
+  <script type="module" src="../assets/js/modules/postulaciones/core/cupos/cupo-ofertas.js"></script>
 </body>
 
 </html>

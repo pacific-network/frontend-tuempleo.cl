@@ -1,4 +1,4 @@
-import { get, getDescartados } from "../api-postulaciones.js";
+import { getDescartados } from "../api-postulaciones.js";
 
 let OFERTA_ID = null;
 
