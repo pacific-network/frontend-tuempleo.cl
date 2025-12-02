@@ -121,9 +121,9 @@ export function attachVerCvEvents() {
     }[estado] || "text-muted";
   
     return `
-      <div class="candidate-card border rounded shadow-sm p-3 mb-3 bg-white" data-user-id="${usuarioId}">
+      <div class="candidate-card border rounded shadow-sm p-2 mb-2 bg-white" data-user-id="${usuarioId}">
         <div class="d-flex align-items-center justify-content-between w-100">
-          <img src="${perfil}" class="rounded-circle me-3 border border-secondary" width="60" height="60" style="object-fit: cover;">
+          <img src="${perfil}" class="rounded-circle me-2 border border-secondary" width="60" height="60" style="object-fit: cover;">
           <div class="flex-grow-1 d-flex align-items-center justify-content-between">
             <div class="text-center" style="width: 160px;">
               <div class="fw-bold fs-6">${nombre}</div>

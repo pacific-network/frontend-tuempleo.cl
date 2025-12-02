@@ -150,6 +150,7 @@
       border: none;
       padding: 12px 24px;
       font-weight: 500;
+      margin-top: 30px;
     }
 
     .nav-tabs .nav-link.active {
@@ -274,7 +275,7 @@
 
     .cupos-box {
       background: #f8f9fa;
-      padding: 6px 12px;
+      padding: 4px 10px;
       border-radius: 6px;
       border: 1px solid #dee2e6;
       font-size: 14px;
@@ -307,12 +308,17 @@
     .offer-stats {
       display: flex;
       align-items: center;
-      padding: 16px 20px;
-      background: #e7e4d5;
-      border-radius: 14px;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-      gap: 22px;
-      margin: 10px;
+      padding: 8px 14px;
+      /* ↓ antes 16px 20px */
+      background: #ffff;
+      border-radius: 12px;
+      /* ↓ un poco menos redondeado */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      /* ↓ sombra más baja */
+      gap: 14px;
+      /* ↓ antes 22px */
+      margin: 8px;
+      /* ↓ antes 10px */
     }
 
     .stat {
@@ -344,7 +350,7 @@
     }
 
     .stat-value {
-      font-size: 1.6rem;
+      font-size: 1.2rem;
       font-weight: 700;
       color: #1f2937;
     }
@@ -400,8 +406,15 @@
       <div class="container">
         <div class="row">
           <aside class="col-lg-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <button id="btn-volver" class="btn btn-outline-primary btn-xl w-100">
+                <i class="far fa-arrow-left me-1"></i> Volver
+              </button>
+            </div>
             <div class="user-profile-sidebar">
+
               <div class="user-profile-sidebar-top"></div>
+
               <ul class="user-profile-sidebar-list">
                 <li><a href="employer-dashboard.html"><i class="far fa-gauge-high"></i> Panel de Control</a></li>
                 <li><a href="employer-post-job.html"><i class="far fa-paper-plane"></i> Publicar un Trabajo</a></li>
@@ -426,11 +439,7 @@
           <main class="col-lg-9">
             <section class="user-profile-card">
               <header class="user-profile-card-header mb-4">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <button id="btn-volver" class="btn btn-outline-primary btn-sm">
-                    <i class="far fa-arrow-left me-1"></i> Volver
-                  </button>
-                </div>
+
 
 
                 <h4 class="user-profile-card-title">Todos los Candidatos</h4>
