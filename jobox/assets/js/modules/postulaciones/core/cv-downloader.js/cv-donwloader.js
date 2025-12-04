@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const downloadBtn = document.getElementById("downloadCandidateCv");
     if (!downloadBtn) return;
   
-    // Obtenemos los parámetros de la URL
+    // 1. Obtener "data" desde la URL (Codificada en Base64)
     const params = new URLSearchParams(window.location.search);
     const dataParam = params.get("data");
   
@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
     let parsedData;
     try {
-      parsedData = JSON.parse(atob(dataParam)); // asumimos Base64
+      parsedData = JSON.parse(atob(dataParam));
     } catch (err) {
       console.error("❌ Error parseando data:", err);
       return;
@@ -25,8 +25,45 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
   
+    // ----------------------------------------------------------
+    // 2. Traer datos del postulante para obtener nombre/apellido
+    // ----------------------------------------------------------
+    async function fetchPostulante() {
+      try {
+        const res = await fetch(`${BASE_URL_API}/postulante/${userId}`, {
+          headers: {
+            "Authorization": `Bearer ${localStorage.getItem("token") || ""}`
+          }
+        });
+  
+        if (!res.ok) throw new Error("No se pudo obtener postulante");
+  
+        return res.json(); // { usuario:{nombres, apellidos}, data:{...} }
+      } catch (err) {
+        console.error("❌ Error obteniendo postulante:", err);
+        return null;
+      }
+    }
+  
+    // ----------------------------------------------------------
+    // 3. Descargar el CV desde backend
+    // ----------------------------------------------------------
     async function downloadCv() {
       try {
+        // Obtener datos reales del postulante
+        const postulante = await fetchPostulante();
+  
+        let nombreArchivo = "CV_sin_nombre.pdf";
+  
+        if (postulante?.usuario) {
+          const nom = postulante.usuario.nombres || "";
+          const ape = postulante.usuario.apellidos || "";
+          nombreArchivo = `CV_${nom}_${ape}.pdf`
+            .replace(/\s+/g, "_")
+            .replace(/[^a-zA-Z0-9_\-\.]/g, ""); // limpiar caracteres raros
+        }
+  
+        // Llamar al generador del CV (PDF)
         const response = await fetch(`${window.BASE_URL_API}/cv-generator/${userId}`, {
           method: "GET",
           headers: {
@@ -42,9 +79,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
   
+        // Crear descarga
         const a = document.createElement("a");
         a.href = url;
-        a.download = `CV_${parsedData.nombre || userId}.pdf`;
+        a.download = nombreArchivo; // 👈 NOMBRE FINAL DEL ARCHIVO
         document.body.appendChild(a);
         a.click();
         a.remove();
@@ -56,8 +94,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   
+    // ----------------------------------------------------------
+    // 4. Evento click del botón — evitar abrir enlaces
+    // ----------------------------------------------------------
     downloadBtn.addEventListener("click", (e) => {
-      e.preventDefault(); // evitamos navegación del <a>
+      e.preventDefault();
+      e.stopImmediatePropagation(); // 👈 evita el redirect al /view
       downloadCv();
     });
   });
