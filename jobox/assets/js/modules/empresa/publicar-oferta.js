@@ -268,25 +268,27 @@ const herramientas_basicas = Array.from(
 
 
 /* ====== STOCK ====== */
+/* ====== STOCK ====== */
 let STOCK = { BASICO:0, ESTANDAR:0, PREMIUM:0 };
 let FREE_REMAINING = 0;
-async function loadStock(){
+
+async function loadStock() {
   const token = getAnyToken();
-  const res = await fetch(`${STOCK_URL}/${empleadorCtx.empresaId}`,{
-    headers:{ Authorization:`Bearer ${token}` }
+  const res = await fetch(`${STOCK_URL}/${empleadorCtx.empresaId}`, {
+    headers: { Authorization: `Bearer ${token}` }
   });
   const j = await res.json();
+
+  // Stock pagado
   const map = { BASICO:0, ESTANDAR:0, PREMIUM:0 };
-  (j?.stock||[]).forEach(s=>{
-    const k = String(s?.tipoAviso||"").toUpperCase();
-    if(map[k]!==undefined) map[k]=Number(s?.cantidad_disponible||0);
+  (j?.pagados || []).forEach(s => {
+    const k = String(s?.tipoAviso || "").toUpperCase();
+    if (map[k] !== undefined) map[k] = Number(s?.cantidad_disponible || 0);
   });
   STOCK = map;
-}
-async function loadFreeRemaining(){
-  const res = await fetch(`${PUB_URL}/free/remaining?employerId=${empleadorCtx.employerId}`);
-  const j = await res.json();
-  FREE_REMAINING = Number(j?.remaining ?? 0);
+
+  // Stock gratis
+  FREE_REMAINING = Number(j?.gratis?.cantidad_disponible ?? 0);
 }
 
 /* ====== REGLAS POR PLAN ====== */
@@ -295,7 +297,6 @@ function aplicarReglasPorPlan(plan) {
   const preguntasBtn = document.getElementById("agregar-pregunta");
   const preguntasCont = document.getElementById("preguntas-container");
 
-  // Todos los campos del formulario
   const fieldIds = [
     "titulo","area_cargo_select","anios_experiencia","region-select",
     "educacion_requerida","tipo_contrato","modalidad","descripcion",
@@ -303,118 +304,118 @@ function aplicarReglasPorPlan(plan) {
     "salaryFrom","salaryTo","otras_herramientas"
   ];
 
-  // 🔁 Reset: todos obligatorios + mostramos sección por defecto
   fieldIds.forEach(id => {
     const el = document.getElementById(id);
     if (el) el.required = true;
     setAsterisk(id, true);
   });
 
-  // Mostrar sección completa por defecto
   if (preguntasSection) preguntasSection.style.display = "block";
   if (preguntasBtn) preguntasBtn.style.display = "inline-block";
   if (preguntasCont) preguntasCont.style.display = "block";
 
-  switch (plan) {
-
-    /* =============================
-       🆓 PLAN FREE → OCULTAR TODO
-       ============================= */
+  switch(plan){
     case "FREE":
       if (preguntasSection) preguntasSection.style.display = "none";
       break;
-
-    /* =============================
-       🅱️ PLAN BÁSICO → FULL
-       ============================= */
-    case "BASICO":
-      // sin cambios, todo visible
-      break;
-
-    /* =============================
-       🅴 PLAN ESTÁNDAR
-       ============================= */
     case "ESTANDAR":
       ["salaryFrom","salaryTo","otras_herramientas"].forEach(id => {
         const el = document.getElementById(id);
-        if (el) el.required = false;
-        setAsterisk(id, false);
+        if (el) { el.required = false; setAsterisk(id,false); }
       });
       break;
-
-    /* =============================
-       🅿️ PLAN PREMIUM
-       ============================= */
     case "PREMIUM":
       ["tipo_contrato","modalidad","salaryFrom","salaryTo","otras_herramientas"]
         .forEach(id => {
           const el = document.getElementById(id);
-          if (el) el.required = false;
-          setAsterisk(id, false);
+          if (el) { el.required = false; setAsterisk(id,false); }
         });
+      break;
+    case "BASICO":
+    default:
+      // todo visible
       break;
   }
 }
 
 /* ====== PICKER ====== */
-function renderPicker(){
-  const grid=$("#plan-picker");
-  if(!grid) return;
-  grid.innerHTML=`
+function renderPicker() {
+  const grid = $("#plan-picker");
+  if (!grid) return;
+
+  grid.innerHTML = `
     <button type="button" class="tu-card-plan ${FREE_REMAINING<=0?'disabled':''}" data-plan="FREE">
-      <div class="tu-card-title">Gratis</div><div class="tu-card-badge">${Math.max(FREE_REMAINING,0)}</div><div class="tu-card-info">Restantes</div>
+      <div class="tu-card-title">Gratis</div>
+      <div class="tu-card-badge">${Math.max(FREE_REMAINING,0)}</div>
+      <div class="tu-card-info">Restantes</div>
     </button>
     <button type="button" class="tu-card-plan ${STOCK.BASICO<=0?'disabled':''}" data-plan="BASICO">
-      <div class="tu-card-title">Básico</div><div class="tu-card-badge">${STOCK.BASICO}</div><div class="tu-card-info">Stock</div>
+      <div class="tu-card-title">Básico</div>
+      <div class="tu-card-badge">${STOCK.BASICO}</div>
+      <div class="tu-card-info">Stock</div>
     </button>
     <button type="button" class="tu-card-plan ${STOCK.ESTANDAR<=0?'disabled':''}" data-plan="ESTANDAR">
-      <div class="tu-card-title">Estándar</div><div class="tu-card-badge">${STOCK.ESTANDAR}</div><div class="tu-card-info">Stock</div>
+      <div class="tu-card-title">Estándar</div>
+      <div class="tu-card-badge">${STOCK.ESTANDAR}</div>
+      <div class="tu-card-info">Stock</div>
     </button>
     <button type="button" class="tu-card-plan ${STOCK.PREMIUM<=0?'disabled':''}" data-plan="PREMIUM">
-      <div class="tu-card-title">Premium</div><div class="tu-card-badge">${STOCK.PREMIUM}</div><div class="tu-card-info">Stock</div>
-    </button>`;
-  $("#no-cupos-alert")?.classList.toggle("d-none",FREE_REMAINING>0||STOCK.BASICO>0||STOCK.ESTANDAR>0||STOCK.PREMIUM>0);
+      <div class="tu-card-title">Premium</div>
+      <div class="tu-card-badge">${STOCK.PREMIUM}</div>
+      <div class="tu-card-info">Stock</div>
+    </button>
+  `;
+
+  $("#no-cupos-alert")?.classList.toggle("d-none",
+    FREE_REMAINING>0 || STOCK.BASICO>0 || STOCK.ESTANDAR>0 || STOCK.PREMIUM>0
+  );
+
   refreshSubmitState();
 }
 
 /* ====== ESTADO FORM ====== */
-function refreshSubmitState(){
-  $("#btn-submit").disabled=!selection;
-  $("#formulario-publicar")?.classList.toggle("tu-blocked",!selection);
+function refreshSubmitState() {
+  $("#btn-submit").disabled = !selection;
+  $("#formulario-publicar")?.classList.toggle("tu-blocked", !selection);
 }
 
 /* ====== SELECCIONAR PLAN ====== */
-function setSelection(planKey){
-  selection={planKey};
-  $$(".tu-card-plan").forEach(n=>n.classList.remove("active"));
+function setSelection(planKey) {
+  selection = { planKey };
+  $$(".tu-card-plan").forEach(n => n.classList.remove("active"));
   document.querySelector(`.tu-card-plan[data-plan="${planKey}"]`)?.classList.add("active");
-  $("#chosen-text").textContent=planKey==='FREE'
+
+  $("#chosen-text").textContent = planKey === 'FREE'
     ? `Plan GRATIS · se usará 1 cupo mensual`
     : `Plan ${planKey} · se descontará 1 crédito`;
+
   $("#chosen-pill").classList.remove("d-none");
   $("#no-choice-msg").classList.add("d-none");
+
   refreshSubmitState();
   aplicarReglasPorPlan(planKey);
 }
 
 /* ====== ANULAR ELECCIÓN ====== */
-$("#btn-change-choice")?.addEventListener("click",()=>{
-  selection=null;
-  $$(".tu-card-plan").forEach(n=>n.classList.remove("active"));
+$("#btn-change-choice")?.addEventListener("click", () => {
+  selection = null;
+  $$(".tu-card-plan").forEach(n => n.classList.remove("active"));
   $("#chosen-pill").classList.add("d-none");
   $("#no-choice-msg").classList.remove("d-none");
-  $("#btn-submit").disabled=true;
+  $("#btn-submit").disabled = true;
   $("#formulario-publicar").classList.add("tu-blocked");
-  $$(".required-star").forEach(s=>s.style.display="none");
+  $$(".required-star").forEach(s => s.style.display="none");
 });
 
 /* ====== CLICK EN PLAN ====== */
-document.addEventListener("click",(e)=>{
-  const b=e.target.closest(".tu-card-plan");
-  if(!b||b.classList.contains("disabled"))return;
-  const plan=b.getAttribute("data-plan");
-  if(plan==='FREE'&&FREE_REMAINING<=0)return;
-  if(plan!=='FREE'&&(STOCK[plan]||0)<=0)return;
+document.addEventListener("click", (e) => {
+  const b = e.target.closest(".tu-card-plan");
+  if (!b || b.classList.contains("disabled")) return;
+
+  const plan = b.getAttribute("data-plan");
+  if (plan==='FREE' && FREE_REMAINING <= 0) return;
+  if (plan!=='FREE' && (STOCK[plan]||0) <= 0) return;
+
   setSelection(plan);
 });
 
@@ -494,16 +495,37 @@ async function crearOfertaYConsumir(e){
 }
 
 /* ====== INIT ====== */
-document.addEventListener("DOMContentLoaded",async()=>{
-  try{
+// document.addEventListener("DOMContentLoaded",async()=>{
+//   try{
+//     await ensureContext();
+//     await Promise.all([loadStock(),loadFreeRemaining()]);
+//   }catch(e){
+//     console.warn(e);
+//     await Swal.fire("Sesión/Stock","No se pudo cargar contexto o stock.","warning");
+//   }
+//   renderPicker();
+//   $("#chosen-pill").classList.add("d-none");
+//   $("#no-choice-msg").classList.remove("d-none");
+//   $("#formulario-publicar")?.addEventListener("submit",crearOfertaYConsumir);
+// });
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
     await ensureContext();
-    await Promise.all([loadStock(),loadFreeRemaining()]);
-  }catch(e){
+    await loadStock();     // ✅ Ya no se espera loadFreeRemaining()
+  } catch (e) {
     console.warn(e);
-    await Swal.fire("Sesión/Stock","No se pudo cargar contexto o stock.","warning");
+    await Swal.fire(
+      "Sesión / Stock",
+      "No se pudo cargar el contexto o el stock.",
+      "warning"
+    );
   }
+
+  // Inicialización visual
   renderPicker();
   $("#chosen-pill").classList.add("d-none");
   $("#no-choice-msg").classList.remove("d-none");
-  $("#formulario-publicar")?.addEventListener("submit",crearOfertaYConsumir);
+
+  // Listener del formulario
+  $("#formulario-publicar")?.addEventListener("submit", crearOfertaYConsumir);
 });
