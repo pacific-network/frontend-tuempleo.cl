@@ -64,6 +64,32 @@ function renderCualificados(lista) {
   });
 }
 
+export function attachVerCvEvents() {
+  document.querySelectorAll(".ver-cv").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const userId = btn.getAttribute("data-user-id");
+      const postulacionId = btn.getAttribute("data-postulacion-id");
+      const estado = btn.getAttribute("data-estado");
+      const OFERTA_ID = btn.getAttribute("data-oferta-id");
+
+      if (!userId || !postulacionId) {
+        console.error("❌ Faltan datos para la redirección");
+        return;
+      }
+
+      // Parámetros a encodear
+      const params = { userId, postulacionId, estado, OFERTA_ID };
+
+      // Base64 encode
+      const encoded = btoa(JSON.stringify(params));
+      console.log("➡️ Redirigiendo con data:", encoded);
+
+      // Redirección limpia
+      window.location.href = `empresas/employer-view-candidate.html?data=${encoded}`;
+    });
+  });
+}
+
 // =============================
 // Card HTML — con botón VER CV
 // =============================
@@ -138,12 +164,7 @@ function crearCardCualificado(item) {
         </div>
 
         <div class="ms-3">
-          <button 
-            class="btn btn-sm btn-outline-primary ver-cv" 
-            data-estado="${estado}"
-            data-postulacion-id="${postulacionId}"
-            data-user-id="${usuarioId}"
-            style="width: 80px; height: 35px;">
+            <button class="btn btn-sm btn-outline-primary ver-cv" data-postulacion-id="${postulacionId}" data-user-id="${usuarioId}" data-estado="${estado}" data-oferta-id="${OFERTA_ID}" style="width: 80px; height: 35px;">
             Ver CV
           </button>
         </div>
