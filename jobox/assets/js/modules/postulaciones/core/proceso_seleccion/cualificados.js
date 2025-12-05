@@ -85,7 +85,7 @@ export function attachVerCvEvents() {
       console.log("➡️ Redirigiendo con data:", encoded);
 
       // Redirección limpia
-      window.location.href = `empresas/employer-view-candidate.html?data=${encoded}`;
+      window.location.href = `/empresas/employer-view-candidate.html?data=${encoded}`;
     });
   });
 }
