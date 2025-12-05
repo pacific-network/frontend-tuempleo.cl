@@ -173,26 +173,3 @@ function crearCardCualificado(item) {
     </div>
   `;
 }
-
-// =============================
-// Evento → Redirección correcta
-// =============================
-
-function attachVerCvEvents() {
-  document.querySelectorAll(".ver-cv").forEach(btn => {
-    btn.addEventListener("click", e => {
-      const userId = e.target.getAttribute("data-user-id");
-      const postulacionId = e.target.getAttribute("data-postulacion-id");
-
-      if (!userId || !postulacionId) {
-        console.error("❌ Faltan datos para la redirección");
-        return;
-      }
-
-      console.log("➡️ Redirigiendo:", { userId, postulacionId });
-
-      window.location.href = `/empresas/employer-view-candidate.html?id=${userId}&postulacion=${postulacionId}`;
-    });
-  });
-}
-
