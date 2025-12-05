@@ -358,14 +358,6 @@ function crearCardCandidato(item) {
         <!-- BOTONES -->
         <div class="d-flex flex-column align-items-end ms-3">
 
-          <button 
-            class="btn btn-sm btn-outline-primary mb-1 ver-cv"
-            data-user-id="${item.postulante.usuario.id}"
-            style="width: 80px; height: 35px;"
-          >
-            Ver CV
-          </button>
-
           ${
             estado === "enviada"
               ? '<button class="btn btn-sm btn-outline-danger toggle-heart" style="width: 80px; height: 35px;">❤</button>'

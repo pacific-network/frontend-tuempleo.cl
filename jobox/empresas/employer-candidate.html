@@ -150,6 +150,7 @@
       border: none;
       padding: 12px 24px;
       font-weight: 500;
+      margin-top: 30px;
     }
 
     .nav-tabs .nav-link.active {
@@ -274,7 +275,7 @@
 
     .cupos-box {
       background: #f8f9fa;
-      padding: 6px 12px;
+      padding: 4px 10px;
       border-radius: 6px;
       border: 1px solid #dee2e6;
       font-size: 14px;
@@ -296,6 +297,72 @@
       color: #777;
       margin-top: 20px;
     }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #333;
+    }
+
+    .offer-stats {
+      display: flex;
+      align-items: center;
+      padding: 8px 14px;
+      /* ↓ antes 16px 20px */
+      background: #ffff;
+      border-radius: 12px;
+      /* ↓ un poco menos redondeado */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      /* ↓ sombra más baja */
+      gap: 14px;
+      /* ↓ antes 22px */
+      margin: 8px;
+      /* ↓ antes 10px */
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ← NUEVO: proporciones */
+    .stat:nth-child(1) {
+      flex: 2;
+    }
+
+    /* Vacantes a cubrir */
+    .stat:nth-child(3) {
+      flex: 2;
+    }
+
+    /* Cupos del plan */
+    .stat:nth-child(5) {
+      flex: 1;
+    }
+
+    /* Vacantes cubiertas (más pequeña) */
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+    .stat-divider {
+      width: 1px;
+      height: 32px;
+      background: #e5e7eb;
+    }
+
+
+
 
 
 
@@ -339,8 +406,15 @@
       <div class="container">
         <div class="row">
           <aside class="col-lg-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <button id="btn-volver" class="btn btn-outline-primary btn-xl w-100">
+                <i class="far fa-arrow-left me-1"></i> Volver
+              </button>
+            </div>
             <div class="user-profile-sidebar">
+
               <div class="user-profile-sidebar-top"></div>
+
               <ul class="user-profile-sidebar-list">
                 <li><a href="employer-dashboard.html"><i class="far fa-gauge-high"></i> Panel de Control</a></li>
                 <li><a href="employer-post-job.html"><i class="far fa-paper-plane"></i> Publicar un Trabajo</a></li>
@@ -365,11 +439,7 @@
           <main class="col-lg-9">
             <section class="user-profile-card">
               <header class="user-profile-card-header mb-4">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <button id="btn-volver" class="btn btn-outline-primary btn-sm">
-                    <i class="far fa-arrow-left me-1"></i> Volver
-                  </button>
-                </div>
+
 
 
                 <h4 class="user-profile-card-title">Todos los Candidatos</h4>
@@ -453,6 +523,34 @@
 
                 </div>
               </div>
+
+              <!-- INFO RESUMEN DE LA OFERTA -->
+              <h4 class="section-title">Información básica de tu oferta</h4>
+
+              <div class="offer-stats">
+                <div class="stat">
+                  <span class="stat-label">Vacantes a cubrir</span>
+                  <span class="stat-value" id="vacantes-total">0</span>
+                </div>
+
+                <div class="stat-divider"></div>
+
+                <div class="stat">
+                  <span class="stat-label">Cupos Disponibles</span>
+                  <span class="stat-value" id="cupos-plan">0</span>
+                </div>
+
+                <div class="stat-divider"></div>
+
+                <div class="stat">
+                  <span class="stat-label">Vacantes cubiertas</span>
+                  <span class="stat-value" id="vacantes-cubiertas">0</span>
+                </div>
+              </div>
+
+
+
+
               <!-- Tabs -->
               <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
 
@@ -502,10 +600,10 @@
                 </ul>
 
                 <!-- CONTADOR DE CUPOS -->
-                <div class="cupos-box ms-auto mt-2 mt-md-0">
+                <!-- <div class="cupos-box ms-auto mt-2 mt-md-0">
                   <span class="cupos-label">Cupos disponibles:</span>
                   <span class="cupos-value" id="cupos-restantes">0</span>
-                </div>
+                </div> -->
 
               </div>
 
@@ -630,7 +728,8 @@
   <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/pre-seleccionados.js"></script>
   <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/seleccionados.js"></script>
   <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/contratados.js"></script>
-  <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/descartados.js"></script>
+  <script type="module" src="../assets/js/modules/postulaciones/core/cupos/cupo-ofertas.js"></script>
+  <script src="../assets/js/modules/postulaciones/core/cupos/restantes.js"></script>
 </body>
 
 </html>

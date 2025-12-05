@@ -107,10 +107,6 @@
                                                     </div>
                                                 </div>
 
-                                                <a id="downloadCandidateCv" href="#" class="btn-download mt-3">
-                                                    <i class="far fa-file-arrow-down"></i>
-                                                    <span>Descargar CV</span>
-                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -118,15 +114,16 @@
 
                                 <!-- Informacion de contacto -->
                                 <h4 class="pb-2 m-2">Informacion de Contacto</h4>
+                                <!-- Informacion de contacto -->
                                 <div class="contact-card locked" id="contactCard">
 
-                                    <!-- Overlay con botón (NO se blurea) -->
+                                    <!-- Overlay con botón -->
                                     <div class="locked-overlay" id="lockedOverlay">
                                         <button id="unlockBtn" class="unlock-btn">🔓 Desbloquear información de
                                             contacto</button>
                                     </div>
 
-                                    <!-- Contenido original (blureado cuando está locked) -->
+                                    <!-- Contenido original -->
                                     <div class="locked-content">
                                         <ul>
                                             <li>
@@ -198,9 +195,17 @@
                                                 </div>
                                             </li>
                                         </ul>
-                                    </div>
 
+                                        <!-- Botón movido aquí -->
+                                        <a id="downloadCandidateCv" href="javascript:void(0)"
+                                            class="btn-download mt-3 d-flex align-items-center">
+                                            <i class="far fa-file-arrow-down"></i>
+                                            <span>Descargar CV</span>
+                                        </a>
+
+                                    </div>
                                 </div>
+
 
 
 
@@ -255,7 +260,7 @@
             Contratar / Finalizar Proceso
         </button>
 
-        <div id="modalContratar" class="modal hidden">
+        <!-- <div id="modalContratar" class="modal hidden">
             <div class="modal-content">
                 <h2>Confirmar Contratación</h2>
                 <p>
@@ -268,7 +273,25 @@
                     <button id="confirmarContratacion" class="btn-confirmar">Confirmar</button>
                 </div>
             </div>
+        </div> -->
+        <div id="modalContratar" class="modal hidden">
+            <div class="modal-content">
+                <h2>Confirmar Contratación</h2>
+
+                <p class="modal-user-info"></p> <!-- 🔥 aquí irá el nombre, rut, email -->
+
+                <p>
+                    ¿Estás seguro de que deseas <strong>contratar al candidato</strong>?<br>
+                    Esta acción es <strong>irreversible</strong>.
+                </p>
+
+                <div class="modal-actions">
+                    <button id="cancelarContratacion" class="btn-cancelar">Cancelar</button>
+                    <button id="confirmarContratacion" class="btn-confirmar">Confirmar</button>
+                </div>
+            </div>
         </div>
+
 
     </main>
     <!-- footer area -->
@@ -314,6 +337,8 @@
         <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/contratar.js"
             defer></script>
         <script type="module" src="../assets/js/modules/postulaciones/core/proceso_seleccion/descartar.js"></script>
+        <script type="module" src="../assets/js/modules/postulaciones/core/cupos/cupo-ofertas.js"></script>
+        <script src="../assets/js/modules/postulaciones/core/cv-downloader.js/cv-donwloader.js"></script>
 
         <script>
             document.addEventListener("DOMContentLoaded", async () => {
