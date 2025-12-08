@@ -127,6 +127,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const usuario = profileData.usuario;
             const datosPersonales = profileData.data.datos_personales;
             const preferencias = profileData.data.preferencias;
+            // Obtener el elemento <img>
+const profilePhotoEl = document.getElementById('profile-photo');
+
+// Actualizar src con la URL del backend
+if (profileData.usuario.perfil_foto) {
+    profilePhotoEl.src = `http://localhost:3000${profileData.usuario.perfil_foto}`;
+} else {
+    profilePhotoEl.src = 'assets/img/candidate/01.jpg'; // fallback
+}
             
             // Actualizar sidebar
             document.getElementById('profile-name').textContent = `${usuario.nombres} ${usuario.apellidos}`;
