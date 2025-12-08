@@ -1,3 +1,4 @@
+import { renderizarRentaPorPlan } from "../ofertas/dinamic-render/renta-handler.js";
 // ====== PUBLICAR OFERTA (CON ASTERISCOS SEGÚN PLAN ACTUALIZADO) ======
 const API = BASE_URL_API.replace(/\/$/, "");
 const OFERTAS_URL = `${API}/ofertas`;
@@ -27,6 +28,31 @@ input.addEventListener("keydown", (e) => {
     }
   }
 });
+
+function bindPlanPickerEvents() {
+  document
+    .querySelectorAll("#plan-picker .tu-card-plan")
+    .forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        const plan = e.currentTarget.dataset.plan;
+
+        // 🟦 1. Guardamos la selección
+        setSelection(plan);
+
+        // 🟩 2. Aplicamos las reglas del plan
+        aplicarReglasPorPlan(plan);
+
+        // 🟨 3. Renderizamos el bloque de renta
+        renderizarRentaPorPlan(plan);
+
+        // 🟥 4. Marcamos visualmente el seleccionado
+        marcarPlanActivo(e.currentTarget);
+
+        // 🟪 5. Refrescamos el estado del submit
+        refreshSubmitState();
+      });
+    });
+}
 
 function renderCustomTools() {
   listContainer.innerHTML = "";
@@ -371,6 +397,7 @@ function renderPicker() {
   );
 
   refreshSubmitState();
+  bindPlanPickerEvents();
 }
 
 /* ====== ESTADO FORM ====== */

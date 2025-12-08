@@ -468,9 +468,9 @@ Autor: Paulo Ramirez
                         </div>
 
                         <!-- ✅ Bloque de Renta Salarial -->
-                        <div class="form-section salary-accessibility">
-                          <!-- 💰 Renta Salarial -->
-                          <div class="card">
+                        <!-- <div class="form-section salary-accessibility"> -->
+                        <!-- 💰 Renta Salarial -->
+                        <!-- <div class="card">
                             <label class="d-block mb-2">Renta Salarial</label>
                             <div class="mb-2">
                               <label class="small fw-semibold">Desde:</label>
@@ -487,9 +487,37 @@ Autor: Paulo Ramirez
                                 name="renta_de_mercado" />
                               <label class="form-check-label small" for="acuerdoMercado">De acuerdo al mercado</label>
                             </div>
-                          </div>
+                          </div> -->
 
-                          <!-- ♿ Accesibilidad -->
+                        <!-- ✅ Bloque de Renta Salarial -->
+                        <div class="form-section salary-accessibility">
+                          <div class="card">
+                            <label class="d-block mb-2">Renta Salarial</label>
+
+                            <!-- 🔵 Añadir ID para mostrar/ocultar el bloque desde/hasta -->
+                            <div id="salary-range">
+                              <div class="mb-2">
+                                <label class="small fw-semibold">Desde:</label>
+                                <input class="form-control form-control-sm" id="salaryFrom" name="renta_desde"
+                                  placeholder="Ej: $900.000" />
+                              </div>
+                              <div class="mb-2">
+                                <label class="small fw-semibold">Hasta:</label>
+                                <input class="form-control form-control-sm" id="salaryTo" name="renta_hasta"
+                                  placeholder="Ej: $1.200.000" />
+                              </div>
+                            </div>
+
+                            <!-- 🔵 Añadir ID para mostrar/ocultar el checkbox -->
+                            <div class="form-check mt-2" id="salary-market">
+                              <input class="form-check-input" type="checkbox" id="acuerdoMercado"
+                                name="renta_de_mercado" />
+                              <label class="form-check-label small" for="acuerdoMercado">
+                                De acuerdo al mercado
+                              </label>
+                            </div>
+
+                          </div>
                           <div class="card">
                             <label class="d-block mb-2">Accesibilidad</label>
                             <div class="form-check mt-2">
@@ -501,72 +529,77 @@ Autor: Paulo Ramirez
                           </div>
                         </div>
 
-                        <!-- 🧰 Herramientas -->
-                        <div class="form-section tools-section">
-                          <label class="d-block mb-2 fw-semibold">Herramientas utilizadas en el trabajo</label>
 
-                          <div class="tool-grid mb-3">
-                            <label><input type="checkbox" /> Microsoft Office (Word, Excel, PowerPoint)</label>
-                            <label><input type="checkbox" /> Google Workspace (Docs, Sheets, Slides, Drive)</label>
-                            <label><input type="checkbox" /> PDF (Adobe Reader u otros)</label>
-                            <label><input type="checkbox" /> Correo electrónico (Outlook, Gmail, Yahoo Mail)</label>
-                            <label><input type="checkbox" /> Reuniones en línea (Zoom, Meet, Teams)</label>
-                            <label><input type="checkbox" /> WhatsApp o chat corporativo</label>
-                            <label><input type="checkbox" /> Calendario o agenda digital</label>
-                            <label><input type="checkbox" /> Plataformas de colaboración (Google Drive, OneDrive,
-                              Dropbox)</label>
-                            <label><input type="checkbox" /> Sistemas de gestión (ERP, CRM, software interno)</label>
-                            <label><input type="checkbox" /> Navegador web (Chrome, Edge, Firefox)</label>
-                          </div>
+                        <!-- ♿ Accesibilidad -->
 
-                          <!-- 🔸 Campo adicional -->
-                          <div class="specific-tools mt-4">
-                            <label class="fw-semibold d-block mb-1">Otras herramientas específicas</label>
-                            <small class="text-muted d-block mb-2">
-                              Escribe una herramienta y presiona <b>Enter</b> o <b>coma</b> para agregarla.
-                            </small>
+                      </div>
 
-                            <div class="custom-tools-container border rounded p-2" style="max-width: 100%;">
-                              <input id="customToolsInput" type="text" class="form-control border-0"
-                                placeholder="Ej: SAP, AutoCAD, Photoshop..." style="box-shadow:none; outline:none;" />
-                              <div id="customToolsList" class="mt-2 d-flex flex-wrap gap-2"></div>
-                            </div>
-                          </div>
+                      <!-- 🧰 Herramientas -->
+                      <div class="form-section tools-section">
+                        <label class="d-block mb-2 fw-semibold">Herramientas utilizadas en el trabajo</label>
+
+                        <div class="tool-grid mb-3">
+                          <label><input type="checkbox" /> Microsoft Office (Word, Excel, PowerPoint)</label>
+                          <label><input type="checkbox" /> Google Workspace (Docs, Sheets, Slides, Drive)</label>
+                          <label><input type="checkbox" /> PDF (Adobe Reader u otros)</label>
+                          <label><input type="checkbox" /> Correo electrónico (Outlook, Gmail, Yahoo Mail)</label>
+                          <label><input type="checkbox" /> Reuniones en línea (Zoom, Meet, Teams)</label>
+                          <label><input type="checkbox" /> WhatsApp o chat corporativo</label>
+                          <label><input type="checkbox" /> Calendario o agenda digital</label>
+                          <label><input type="checkbox" /> Plataformas de colaboración (Google Drive, OneDrive,
+                            Dropbox)</label>
+                          <label><input type="checkbox" /> Sistemas de gestión (ERP, CRM, software interno)</label>
+                          <label><input type="checkbox" /> Navegador web (Chrome, Edge, Firefox)</label>
                         </div>
 
+                        <!-- 🔸 Campo adicional -->
+                        <div class="specific-tools mt-4">
+                          <label class="fw-semibold d-block mb-1">Otras herramientas específicas</label>
+                          <small class="text-muted d-block mb-2">
+                            Escribe una herramienta y presiona <b>Enter</b> o <b>coma</b> para agregarla.
+                          </small>
 
-
-
-                        <div class="col-md-12" id="preguntas-section">
-                          <div class="form-group">
-                            <label class="fw-semibold">Preguntas personalizadas (máximo 5)</label>
-
-                            <div id="preguntas-container" class="mt-2"></div>
-
-                            <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="agregar-pregunta">
-                              + Agregar pregunta
-                            </button>
-                          </div>
-                        </div>
-
-                        <div class="col-md-12">
-                          <div class="form-group mt-3">
-                            <button type="submit" id="btn-submit" class="theme-btn" disabled>
-                              <span class="far fa-check-circle"></span> Publica Tu Empleo
-                            </button>
+                          <div class="custom-tools-container border rounded p-2" style="max-width: 100%;">
+                            <input id="customToolsInput" type="text" class="form-control border-0"
+                              placeholder="Ej: SAP, AutoCAD, Photoshop..." style="box-shadow:none; outline:none;" />
+                            <div id="customToolsList" class="mt-2 d-flex flex-wrap gap-2"></div>
                           </div>
                         </div>
                       </div>
-                    </form>
 
+
+
+
+                      <div class="col-md-12" id="preguntas-section">
+                        <div class="form-group">
+                          <label class="fw-semibold">Preguntas personalizadas (máximo 5)</label>
+
+                          <div id="preguntas-container" class="mt-2"></div>
+
+                          <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="agregar-pregunta">
+                            + Agregar pregunta
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="col-md-12">
+                        <div class="form-group mt-3">
+                          <button type="submit" id="btn-submit" class="theme-btn" disabled>
+                            <span class="far fa-check-circle"></span> Publica Tu Empleo
+                          </button>
+                        </div>
+                      </div>
                   </div>
-                </div>
+                  </form>
 
+                </div>
               </div>
+
             </div>
-          </div> <!-- /col-lg-9 -->
-        </div>
+          </div>
+        </div> <!-- /col-lg-9 -->
       </div>
+    </div>
     </div>
     <div class="modal fade" id="logoutModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
@@ -625,7 +658,7 @@ Autor: Paulo Ramirez
   <script src="../assets/js/form-register/regiones.js"></script>
 
   <!-- JS de esta página -->
-  <script src="../assets/js/modules/empresa/publicar-oferta.js"></script>
+  <script type="module" src="../assets/js/modules/empresa/publicar-oferta.js"></script>
 
   <script src="../assets/js/modules/empresa/preguntas-oferta.js"></script>
   <script src="../assets/js/logout-button-emp.js"></script>
@@ -633,6 +666,7 @@ Autor: Paulo Ramirez
   <script src="../assets/js/modules/empresa/max-char-postjob.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="../assets/js/config/token-exp.js"></script>
+  <script src="../assets/js/modules/ofertas/dinamic-render/renta-handler.js"></script>
 </body>
 
 </html>
