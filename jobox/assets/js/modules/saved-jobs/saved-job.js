@@ -23,7 +23,7 @@ function setGuardarDisabled(btn) {
   btn.style.cursor = 'not-allowed';
 
   // Texto/ícono
-  btn.innerHTML = '<span class="fe-bookmark"></span> Guardado';
+  btn.innerHTML = '<span class="fe-bookmark"></span>';
 
   // Remueve listeners para que quede inerte
   const clone = btn.cloneNode(true);  // clona con el mismo id
@@ -36,7 +36,8 @@ function setGuardarEnabled(btn) {
   btn.style.pointerEvents = 'auto';
   btn.style.opacity = '1';
   btn.style.cursor = 'pointer';
-  btn.innerHTML = '<span class="fe-bookmark"></span> Guardar Trabajo';
+  btn.innerHTML = '<span class="fe-bookmark" style="font-size:22px;"></span>';
+
 }
 
 async function initGuardarTrabajo() {
