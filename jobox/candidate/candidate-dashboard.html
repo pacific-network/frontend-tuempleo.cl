@@ -28,7 +28,34 @@
 
 </head>
 
+
 <body>
+    <style>
+        #paginationDots {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .pagination-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #d2d2d2;
+            margin: 0 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .pagination-dot.active {
+            background: #0d6efd;
+        }
+
+        .pagination-dot:hover {
+            background: #0b5ed7;
+        }
+    </style>
+
 
     <!-- preloader -->
     <div class="preloader">
@@ -81,25 +108,34 @@
                                 <p id="userCategory">Cargando...</p>
                             </div>
                             <ul class="user-profile-sidebar-list">
-                                <li><a class="active" href="candidate-dashboard.html"><i class="far fa-gauge-high"></i> Dashboard</a></li>
+                                <li><a class="active" href="candidate-dashboard.html"><i class="far fa-gauge-high"></i>
+                                        Dashboard</a></li>
                                 <li><a href="candidate-profile.html"><i class="far fa-user-tie"></i> Mi Perfil</a></li>
-                                <li><a href="candidate-applied-job.html"><i class="far fa-briefcase"></i> Trabajos Postulados</a></li>
-                                <li><a href="candidate-cv-manager.html"><i class="far fa-file-zipper"></i> Archivo CV</a></li>
-                                <li><a href="candidate-saved-job.html"><i class="far fa-bookmark"></i> Trabajos Guardados</a></li>
+                                <li><a href="candidate-applied-job.html"><i class="far fa-briefcase"></i> Trabajos
+                                        Postulados</a></li>
+                                <li><a href="candidate-cv-manager.html"><i class="far fa-file-zipper"></i> Archivo
+                                        CV</a></li>
+                                <li><a href="candidate-saved-job.html"><i class="far fa-bookmark"></i> Trabajos
+                                        Guardados</a></li>
                                 <li><a href="candidate-settings.html"><i class="far fa-cog"></i> Editar Perfil</a></li>
                                 <li><a href="#" id="logoutButton"><i class="far fa-sign-out"></i> Cerrar Sesión</a></li>
                             </ul>
                         </div>
-                        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel"
+                            aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="logoutModalLabel">¿Seguro que quieres cerrar sesión?</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                        <h5 class="modal-title" id="logoutModalLabel">¿Seguro que quieres cerrar sesión?
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Cerrar"></button>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                        <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar Sesión</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar
+                                            Sesión</button>
                                     </div>
                                 </div>
                             </div>
@@ -155,44 +191,32 @@
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="user-profile-card">
-                                        <h4 class="user-profile-card-title">Notifications</h4>
+                                        <h4 class="user-profile-card-title">Notificaciones</h4>
+
                                         <div class="user-notification">
-                                            <div class="user-notification-item">
-                                                <a href="#">
-                                                    <div class="user-notification-icon"> 
-                                                        <i class="far fa-briefcase"></i>
-                                                    </div>
-                                                    <div class="user-notification-info">
-                                                        <p>Tienes una nueva propuesta para <b>Diseñador Web</b>!</p>
-                                                        <span>justo ahora</span>
-                                                    </div>
-                                                </a>
+
+                                            <!-- Contenedor de notificaciones -->
+                                            <div id="notificationsList"></div>
+
+                                            <!-- Paginación + Cargar más -->
+                                            <div class="mt-3 text-center">
+
+                                                <!-- Dots -->
+                                                <div id="paginationDots" class="mb-2"></div>
+
+                                                <!-- Botón "Cargar más" (oculto inicialmente) -->
+                                                <button id="loadMoreNotifications"
+                                                    class="btn btn-outline-primary btn-sm px-4 d-none">
+                                                    Cargar más
+                                                </button>
+
                                             </div>
-                                            <div class="user-notification-item">
-                                                <a href="#">
-                                                    <div class="user-notification-icon"> 
-                                                        <i class="far fa-envelope"></i>
-                                                    </div>
-                                                    <div class="user-notification-info">
-                                                        <p>Tesla Jonsin Te Envió un <b>Mensaje Privado</b>!</p>
-                                                        <span>hace 15 minutos</span>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                            <div class="user-notification-item">
-                                                <a href="#">
-                                                    <div class="user-notification-icon"> 
-                                                        <i class="far fa-comment"></i>
-                                                    </div>
-                                                    <div class="user-notification-info">
-                                                        <p>You Have New Review For <b>#53454</b> This List</p>
-                                                        <span>15 days ago</span>
-                                                    </div>
-                                                </a>
-                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
+
+
                                 <div class="col-lg-12">
                                     <div class="user-profile-card">
                                         <h4 class="user-profile-card-title">Jobs Applied Recently</h4>
@@ -207,7 +231,8 @@
                                                             </div>
                                                             <div class="job-title">
                                                                 <h5><a href="#">Application Developer</a></h5>
-                                                                <a href="#" class="job-employer"><i class="far fa-building"></i> Circle Pixel</a>
+                                                                <a href="#" class="job-employer"><i
+                                                                        class="far fa-building"></i> Circle Pixel</a>
                                                             </div>
                                                         </div>
                                                         <div class="job-content">
@@ -215,7 +240,8 @@
                                                                 <li><i class="fe-briefcase"></i> Development</li>
                                                                 <li><i class="fe-check-circle"></i> Full Time</li>
                                                                 <li><i class="fe-clock"></i> 2 Hour Ago</li>
-                                                                <li><i class="fe-map-pin"></i> 25/B Milford Road, New York</li>
+                                                                <li><i class="fe-map-pin"></i> 25/B Milford Road, New
+                                                                    York</li>
                                                             </ul>
                                                             <div class="job-skill">
                                                                 <a href="#">Figma</a>
@@ -241,7 +267,8 @@
                                                             </div>
                                                             <div class="job-title">
                                                                 <h5><a href="#">Marketing Manager</a></h5>
-                                                                <a href="#" class="job-employer"><i class="far fa-building"></i> Azutine Growths</a>
+                                                                <a href="#" class="job-employer"><i
+                                                                        class="far fa-building"></i> Azutine Growths</a>
                                                             </div>
                                                         </div>
                                                         <div class="job-content">
@@ -249,7 +276,8 @@
                                                                 <li><i class="fe-briefcase"></i> Marketing</li>
                                                                 <li><i class="fe-check-circle"></i> Freelance</li>
                                                                 <li><i class="fe-clock"></i> 2 Hour Ago</li>
-                                                                <li><i class="fe-map-pin"></i> 25/B Milford Road, New York</li>
+                                                                <li><i class="fe-map-pin"></i> 25/B Milford Road, New
+                                                                    York</li>
                                                             </ul>
                                                             <div class="job-skill">
                                                                 <a href="#">Figma</a>
@@ -275,7 +303,8 @@
                                                             </div>
                                                             <div class="job-title">
                                                                 <h5><a href="#">Product Designer</a></h5>
-                                                                <a href="#" class="job-employer"><i class="far fa-building"></i> Larana Inc</a>
+                                                                <a href="#" class="job-employer"><i
+                                                                        class="far fa-building"></i> Larana Inc</a>
                                                             </div>
                                                         </div>
                                                         <div class="job-content">
@@ -283,7 +312,8 @@
                                                                 <li><i class="fe-briefcase"></i> Design</li>
                                                                 <li><i class="fe-check-circle"></i> Internship</li>
                                                                 <li><i class="fe-clock"></i> 2 Hour Ago</li>
-                                                                <li><i class="fe-map-pin"></i> 25/B Milford Road, New York</li>
+                                                                <li><i class="fe-map-pin"></i> 25/B Milford Road, New
+                                                                    York</li>
                                                             </ul>
                                                             <div class="job-skill">
                                                                 <a href="#">Figma</a>
@@ -309,7 +339,8 @@
                                                             </div>
                                                             <div class="job-title">
                                                                 <h5><a href="#">Creative Director</a></h5>
-                                                                <a href="#" class="job-employer"><i class="far fa-building"></i> Rubic Corner</a>
+                                                                <a href="#" class="job-employer"><i
+                                                                        class="far fa-building"></i> Rubic Corner</a>
                                                             </div>
                                                         </div>
                                                         <div class="job-content">
@@ -317,7 +348,8 @@
                                                                 <li><i class="fe-briefcase"></i> Design</li>
                                                                 <li><i class="fe-check-circle"></i> Full Time</li>
                                                                 <li><i class="fe-clock"></i> 2 Hour Ago</li>
-                                                                <li><i class="fe-map-pin"></i> 25/B Milford Road, New York</li>
+                                                                <li><i class="fe-map-pin"></i> 25/B Milford Road, New
+                                                                    York</li>
                                                             </ul>
                                                             <div class="job-skill">
                                                                 <a href="#">Figma</a>
@@ -376,8 +408,9 @@
     <script src="../assets/js/apexchart-custom.js"></script>
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/header-footer/loadHeaderFooterSI.js"></script>
-    <script src="../assets/js/logout-button.js" ></script>
+    <script src="../assets/js/logout-button.js"></script>
     <script src="../assets/js/candidate-name-category.js"></script>
+    <script src="../assets/js/modules/candidatos/candidate-notifications.js"></script>
 
 
 </body>
